@@ -6,7 +6,9 @@
       alt="Landscape"
       class="absolute inset-0 w-full h-full object-cover brightness-75"
     />
-
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/40"
+    ></div>
     <!-- Overlay -->
     <div
       class="relative z-10 flex flex-col justify-between h-full px-8 py-10 text-white"

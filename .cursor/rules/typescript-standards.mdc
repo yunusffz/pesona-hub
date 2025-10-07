@@ -1,0 +1,113 @@
+---
+globs: *.ts,*.vue
+description: TypeScript coding standards and best practices
+---
+
+# TypeScript Development Standards
+
+## Type Definitions
+
+- Place type definitions in `app/types/` directory
+- Use descriptive interface names with `I` prefix for interfaces
+- Use `type` for unions and computed types
+- Export types from index files for clean imports
+
+## Interface Design
+
+```typescript
+// Good: Descriptive interface names
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+}
+
+// Good: Optional properties clearly marked
+interface ApiResponse<T> {
+  data: T;
+  success: boolean;
+  message?: string;
+}
+```
+
+## Vue Component Types
+
+```typescript
+// Props interface
+interface Props {
+  title: string;
+  isVisible?: boolean;
+  items: Array<{ id: string; name: string }>;
+}
+
+// Emits interface
+interface Emits {
+  update: [value: string];
+  close: [];
+  submit: [data: FormData];
+}
+```
+
+## Composables Types
+
+```typescript
+// Return type for composables
+interface UseAuthReturn {
+  user: Ref<User | null>;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  logout: () => void;
+  isAuthenticated: ComputedRef<boolean>;
+}
+
+export const useAuth = (): UseAuthReturn => {
+  // implementation
+};
+```
+
+## API Types
+
+- Define request/response types for all API endpoints
+- Use generic types for reusable API patterns
+- Include error types for proper error handling
+
+## Strict TypeScript Configuration
+
+- Enable strict mode in [tsconfig.json](mdc:tsconfig.json)
+- Use `noImplicitAny: true`
+- Use `strictNullChecks: true`
+- Use `noImplicitReturns: true`
+
+## Type Guards and Assertions
+
+```typescript
+// Use type guards for runtime type checking
+function isUser(obj: unknown): obj is User {
+  return typeof obj === "object" && obj !== null && "id" in obj;
+}
+
+// Use type assertions sparingly and with caution
+const user = data as User;
+```
+
+## Import/Export Patterns
+
+- Use named exports for utilities and types
+- Use default exports for Vue components
+- Group imports: Vue imports, Nuxt imports, third-party, local imports
+
+## Error Handling Types
+
+```typescript
+// Define error types
+interface ApiError {
+  code: string;
+  message: string;
+  details?: Record<string, unknown>;
+}
+
+// Use Result pattern for error handling
+type Result<T, E = ApiError> =
+  | { success: true; data: T }
+  | { success: false; error: E };
+```

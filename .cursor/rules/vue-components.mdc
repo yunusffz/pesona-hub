@@ -1,0 +1,89 @@
+---
+globs: *.vue
+description: Vue component development standards and best practices
+---
+
+# Vue Component Development Standards
+
+## Component Structure
+
+Follow this order in Vue Single File Components:
+
+1. `<script setup>` (if using Composition API)
+2. `<template>`
+3. `<style>`
+
+## Composition API with `<script setup>`
+
+```vue
+<script setup lang="ts">
+  // Props with TypeScript
+  interface Props {
+    title: string;
+    isVisible?: boolean;
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    isVisible: true,
+  });
+
+  // Emits
+  const emit = defineEmits<{
+    close: [];
+    update: [value: string];
+  }>();
+
+  // Reactive state
+  const count = ref(0);
+  const isOpen = ref(false);
+
+  // Computed properties
+  const doubleCount = computed(() => count.value * 2);
+
+  // Methods
+  const handleClick = () => {
+    emit("update", "new value");
+  };
+</script>
+```
+
+## Props and Emits
+
+- Always define prop types with TypeScript interfaces
+- Use `withDefaults()` for default prop values
+- Define emit types for better type safety
+- Use descriptive prop and emit names
+
+## Component Organization
+
+- **Layout Components**: Place in `components/layout/`
+  - Example: [Navbar.vue](mdc:app/components/layout/navbar/Navbar.vue)
+- **Feature Components**: Place in `components/features/`
+- **UI Components**: Place in `components/ui/`
+
+## Styling Guidelines
+
+- Use Tailwind CSS classes in templates
+- Avoid scoped styles unless necessary
+- Use CSS custom properties for theming
+- Keep styles close to components
+
+## Component Naming
+
+- Use PascalCase for component names
+- Use descriptive, semantic names
+- Avoid abbreviations unless widely understood
+
+## Accessibility
+
+- Always include proper ARIA attributes
+- Use semantic HTML elements
+- Ensure keyboard navigation works
+- Provide proper focus management
+
+## Performance
+
+- Use `v-memo` for expensive list rendering
+- Implement proper key attributes for `v-for`
+- Use `shallowRef` for large objects that don't need deep reactivity
+- Consider `defineAsyncComponent` for code splitting

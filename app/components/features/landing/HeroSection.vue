@@ -1,0 +1,51 @@
+<template>
+  <section class="relative h-screen w-full overflow-hidden">
+    <!-- Background -->
+    <img
+      src="/assets/images/hero-bg.png"
+      alt="Landscape"
+      class="absolute inset-0 w-full h-full object-cover brightness-75"
+    />
+
+    <!-- Overlay -->
+    <div
+      class="relative z-10 flex flex-col justify-between h-full px-8 py-10 text-white"
+    >
+      <!-- Navbar -->
+      <Navbar />
+
+      <!-- Center Content -->
+      <div class="mt-auto mb-20 flex justify-between w-full">
+        <div class="max-w-xl">
+          <HeroTagline />
+          <h2 class="text-2xl md:text-[28px] font-medium leading-snug">
+            Pesona Hub Digi menjembatani KUPS dengan mitra B2B, B2C, dan CSR
+            untuk pembangunan ekonomi hijau dan berkelanjutan.
+          </h2>
+          <HeroCTA />
+        </div>
+
+        <!-- Bottom Right Title -->
+        <div class="text-right">
+          <h1 class="text-5xl md:text-[70px] font-medium leading-tight">
+            Akses Pasar<br />untuk<br />Masyarakat.
+          </h1>
+        </div>
+      </div>
+
+      <NuxtLink
+        to="#info"
+        class="justify-end inline-flex items-center mt-6 text-md hover:opacity-80 gap-2"
+      >
+        <div>Mulai eksplor informasi</div>
+        <Icon name="uil:arrow-down" size="24px" />
+      </NuxtLink>
+    </div>
+  </section>
+</template>
+
+<script setup lang="ts">
+  import HeroTagline from "./HeroTagline.vue";
+  import HeroCTA from "./HeroCTA.vue";
+  import Navbar from "../../layout/navbar/Navbar.vue";
+</script>

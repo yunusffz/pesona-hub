@@ -1,0 +1,47 @@
+---
+alwaysApply: true
+description: Project structure and organization guidelines for PeSoNa Hub
+---
+
+# PeSoNa Hub - Project Structure Guide
+
+This is a Nuxt 4 project with TypeScript and Tailwind CSS. Follow these organizational principles:
+
+## Directory Structure
+
+- **`app/`** - Main application directory (Nuxt 4 structure)
+  - **`components/`** - Vue components organized by feature and type
+    - **`layout/`** - Layout components (navbar, footer, etc.)
+    - **`features/`** - Feature-specific components
+    - **`ui/`** - Reusable UI components
+  - **`pages/`** - File-based routing pages
+  - **`layouts/`** - Layout templates
+  - **`composables/`** - Vue composables for shared logic
+  - **`stores/`** - Pinia stores for state management
+  - **`middleware/`** - Route middleware
+  - **`plugins/`** - Nuxt plugins
+  - **`types/`** - TypeScript type definitions
+  - **`utils/`** - Utility functions
+  - **`assets/`** - Static assets (images, fonts, styles)
+  - **`server/`** - Server-side code and API routes
+
+## Key Files
+
+- [nuxt.config.ts](mdc:nuxt.config.ts) - Nuxt configuration
+- [app.vue](mdc:app/app.vue) - Root component
+- [package.json](mdc:package.json) - Dependencies and scripts
+- [tsconfig.json](mdc:tsconfig.json) - TypeScript configuration
+
+## Naming Conventions
+
+- Use PascalCase for component files: `Navbar.vue`, `UserProfile.vue`
+- Use kebab-case for pages: `user-profile.vue`, `about-us.vue`
+- Use camelCase for composables: `useAuth.ts`, `useApi.ts`
+- Use kebab-case for layouts: `default.vue`, `admin.vue`
+
+## Component Organization
+
+- Group related components in feature folders
+- Keep layout components in `components/layout/`
+- Place reusable UI components in `components/ui/`
+- Use index files for clean imports when appropriate

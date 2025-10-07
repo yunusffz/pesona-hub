@@ -1,0 +1,68 @@
+---
+globs: *.vue,*.ts,*.js
+description: Nuxt.js development best practices and conventions
+---
+
+# Nuxt.js Development Guidelines
+
+## Nuxt 4 Specific Features
+
+- Use the new `app/` directory structure
+- Leverage auto-imports for Vue composables and Nuxt utilities
+- Utilize Nuxt's built-in TypeScript support
+
+## File-based Routing
+
+- Place pages in `app/pages/` directory
+- Use `index.vue` for route root (e.g., `pages/index.vue` for `/`)
+- Dynamic routes use `[param].vue` syntax
+- Nested routes use folders with `index.vue`
+
+## Auto-imports
+
+- Vue composables: `ref`, `reactive`, `computed`, `watch`, etc.
+- Nuxt utilities: `useState`, `useFetch`, `useAsyncData`, `navigateTo`
+- Components: All components in `components/` are auto-imported
+- Composables: All functions in `composables/` are auto-imported
+
+## Data Fetching
+
+```typescript
+// Use useFetch for simple data fetching
+const { data, pending, error } = await useFetch("/api/users");
+
+// Use useAsyncData for complex scenarios
+const { data, pending, error } = await useAsyncData("users", () =>
+  $fetch("/api/users")
+);
+```
+
+## State Management
+
+- Use Pinia stores in `stores/` directory
+- Access stores with `useStoreName()` pattern
+- Prefer composables for shared reactive state
+
+## Server-side Features
+
+- API routes in `server/api/` directory
+- Server middleware in `server/middleware/`
+- Use `$fetch` for server-side requests
+
+## SEO and Meta
+
+```vue
+<script setup>
+  // Use useSeoMeta for meta tags
+  useSeoMeta({
+    title: "Page Title",
+    description: "Page description",
+  });
+</script>
+```
+
+## Error Handling
+
+- Use `createError()` for custom errors
+- Implement error pages in `error.vue`
+- Use `throw createError()` for HTTP errors

@@ -1,0 +1,117 @@
+---
+globs: *.vue,*.css
+description: Tailwind CSS styling guidelines and best practices
+---
+
+# Tailwind CSS Styling Guidelines
+
+## Class Organization
+
+Order Tailwind classes in this sequence:
+
+1. Layout (display, position, top/right/bottom/left)
+2. Box Model (width, height, margin, padding)
+3. Typography (font, text, line-height)
+4. Visual (background, border, shadow)
+5. Misc (opacity, cursor, user-select)
+
+## Responsive Design
+
+```vue
+<template>
+  <!-- Mobile-first approach -->
+  <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+    <!-- Content -->
+  </div>
+</template>
+```
+
+## Component Styling Patterns
+
+```vue
+<template>
+  <!-- Use consistent spacing scale -->
+  <div class="p-4 md:p-6 lg:p-8">
+    <!-- Use semantic color names -->
+    <button class="bg-primary-500 hover:bg-primary-600 text-white">
+      <!-- Use consistent border radius -->
+      <div class="rounded-lg border border-gray-200">
+        <!-- Use consistent shadows -->
+        <div class="shadow-sm hover:shadow-md transition-shadow">
+</template>
+```
+
+## Color System
+
+- Use semantic color names: `primary`, `secondary`, `success`, `warning`, `error`
+- Define custom colors in Tailwind config
+- Use opacity modifiers: `bg-primary-500/20`
+- Prefer Tailwind's color palette over custom hex values
+
+## Spacing and Sizing
+
+- Use Tailwind's spacing scale (4, 8, 12, 16, 20, 24, etc.)
+- Be consistent with spacing throughout the app
+- Use `space-x-*` and `space-y-*` for consistent gaps
+- Use `divide-*` for borders between elements
+
+## Typography
+
+```vue
+<template>
+  <!-- Use semantic text sizes -->
+  <h1 class="text-4xl font-bold text-gray-900">Heading</h1>
+  <p class="text-base text-gray-600 leading-relaxed">Paragraph</p>
+
+  <!-- Use consistent line heights -->
+  <div class="text-sm leading-5">Small text</div>
+  <div class="text-base leading-6">Body text</div>
+</template>
+```
+
+## Interactive States
+
+```vue
+<template>
+  <!-- Hover states -->
+  <button class="bg-blue-500 hover:bg-blue-600 transition-colors">
+
+  <!-- Focus states for accessibility -->
+  <input class="focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+  <!-- Active states -->
+  <button class="active:scale-95 transition-transform">
+</template>
+```
+
+## Layout Patterns
+
+- Use CSS Grid with `grid` and `grid-cols-*`
+- Use Flexbox with `flex`, `items-center`, `justify-between`
+- Use `container` class for responsive containers
+- Use `mx-auto` for centering
+
+## Dark Mode Support
+
+```vue
+<template>
+  <!-- Use dark: prefix for dark mode -->
+  <div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+    <!-- Content -->
+  </div>
+</template>
+```
+
+## Performance Considerations
+
+- Avoid arbitrary values when possible: use `w-64` instead of `w-[256px]`
+- Use `@apply` directive sparingly
+- Prefer utility classes over custom CSS
+- Use `purge` configuration to remove unused styles
+
+## Component-Specific Styling
+
+- Keep component styles in the template using Tailwind classes
+- Use CSS custom properties for dynamic values
+- Avoid deep nesting of utility classes
+- Extract complex styling into reusable component classes

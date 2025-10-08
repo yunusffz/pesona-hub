@@ -11,13 +11,13 @@
     ></div>
     <!-- Overlay -->
     <div
-      class="relative z-10 flex flex-col justify-between h-full px-8 py-10 text-white"
+      class="relative z-10 flex flex-col justify-between h-full py-10 text-white"
     >
       <!-- Navbar -->
       <Navbar />
 
       <!-- Center Content -->
-      <div class="mt-auto mb-20 flex justify-between w-full">
+      <div class="mt-auto px-20 mb-20 flex justify-between w-full">
         <div class="max-w-xl">
           <HeroTagline />
           <h2 class="text-2xl md:text-[28px] font-medium leading-snug">
@@ -37,7 +37,7 @@
 
       <NuxtLink
         to="#info"
-        class="justify-end inline-flex items-center mt-6 text-md hover:opacity-80 gap-2"
+        class="justify-end inline-flex items-center mt-6 text-md hover:opacity-80 gap-2 px-20"
       >
         <div>Mulai eksplor informasi</div>
         <Icon name="uil:arrow-down" size="24px" />
@@ -49,5 +49,5 @@
 <script setup lang="ts">
   import HeroTagline from "./HeroTagline.vue";
   import HeroCTA from "./HeroCTA.vue";
-  import Navbar from "../../layout/navbar/Navbar.vue";
+  import Navbar from "~/components/layout/navbar/Navbar.vue";
 </script>

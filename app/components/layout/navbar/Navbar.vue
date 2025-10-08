@@ -1,6 +1,6 @@
 <template>
   <header
-    class="absolute top-0 left-0 w-full z-20 flex items-center justify-between px-8 py-4 text-white"
+    class="absolute top-0 left-0 w-full z-20 flex items-center justify-between px-20 py-4 text-white"
   >
     <div class="flex items-center space-x-2">
       <SvgIcon name="logo" size="68px" />

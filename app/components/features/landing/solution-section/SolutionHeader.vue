@@ -17,15 +17,12 @@
     </p>
 
     <NuxtLink>
-      <button
-        class="text-md font-medium text-white bg-forest-green rounded-full px-5 py-[18px] text-md hover:bg-forest-green/80"
-      >
-        Lihat Dampak
-      </button>
+      <BaseButton>Lihat Dampak</BaseButton>
     </NuxtLink>
   </div>
 </template>
 
 <script setup lang="ts">
   import SvgIcon from "~/components/ui/SvgIcon.vue";
+  import BaseButton from "~/components/ui/BaseButton.vue";
 </script>

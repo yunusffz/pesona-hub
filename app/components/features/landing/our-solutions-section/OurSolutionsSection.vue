@@ -1,6 +1,6 @@
 <template>
   <section
-    class="relative flex flex-col lg:flex-row lg:space-x-5 items-center px-6 lg:pl-20 py-5 overflow-hidden gap-5"
+    class="relative flex flex-col lg:flex-row lg:space-x-5 items-center px-6 lg:pl-20 pt-5 pb-6 overflow-hidden gap-5"
   >
     <div class="relative flex flex-col gap-6 w-full lg:w-[330px]">
       <div
@@ -16,6 +16,13 @@
         Melalui Pesona Hub Digi, setiap produk yang terhubung ke pasar membawa
         manfaat langsung bagi masyarakat dan kelestarian hutan.
       </p>
+      <NuxtLink>
+        <Button
+          class="text-md font-medium text-white bg-forest-green rounded-full px-5 py-[18px] text-md hover:bg-forest-green/80"
+        >
+          Lihat Dampak
+        </Button>
+      </NuxtLink>
     </div>
 
     <div

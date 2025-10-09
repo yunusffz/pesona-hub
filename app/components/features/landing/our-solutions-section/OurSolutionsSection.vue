@@ -17,11 +17,11 @@
         manfaat langsung bagi masyarakat dan kelestarian hutan.
       </p>
       <NuxtLink>
-        <Button
+        <button
           class="text-md font-medium text-white bg-forest-green rounded-full px-5 py-[18px] text-md hover:bg-forest-green/80"
         >
           Lihat Dampak
-        </Button>
+        </button>
       </NuxtLink>
     </div>
 
@@ -51,6 +51,7 @@
         @slide-change="handleSlideChange"
         slides-per-view="auto"
         space-between="24"
+        @swiper="onSwiper"
       >
         <SwiperSlide
           v-for="slide in slides"
@@ -99,6 +100,28 @@
           </div>
         </SwiperSlide>
       </Swiper>
+      <div class="flex justify-end gap-4 mt-8">
+        <button
+          class="w-10 h-10 rounded-full border flex items-center text-center justify-center backdrop-blur-md transition group hover:bg-primary hover:border-primary"
+          @click="swiper?.slidePrev()"
+        >
+          <Icon
+            name="quill:chevron-left"
+            size="20px"
+            class="group-hover:text-white text-[#333333] transition"
+          />
+        </button>
+        <button
+          class="w-10 h-10 rounded-full border flex items-center text-center justify-center backdrop-blur-md transition group hover:bg-primary hover:border-primary"
+          @click="swiper?.slideNext()"
+        >
+          <Icon
+            name="quill:chevron-right"
+            size="20px"
+            class="group-hover:text-white text-[#333333] transition"
+          />
+        </button>
+      </div>
     </div>
   </section>
 </template>
@@ -115,6 +138,7 @@
 
   // Track active slide index
   const activeSlideIndex = ref(0);
+  const swiper = ref<any>(null);
 
   const slides = [
     {
@@ -143,6 +167,9 @@
   const handleSlideChange = (swiper: { realIndex: number }) => {
     activeSlideIndex.value = swiper.realIndex;
   };
+  const onSwiper = (instance: any) => {
+    swiper.value = instance;
+  };
 </script>
 
 <style scoped>
@@ -164,7 +191,7 @@
   }
 
   :deep(.swiper-pagination-bullet-active) {
-    background: #333333;
+    background: var(--color-green-400);
     width: 32px;
     border-radius: 5px;
   }

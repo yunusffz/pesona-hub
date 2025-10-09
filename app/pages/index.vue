@@ -1,11 +1,13 @@
 <template>
   <main class="min-h-screen flex flex-col gap-20">
     <HeroSection />
-    <OurSolutionsSection />
+    <SolutionsSection />
+    <StatisticSection />
   </main>
 </template>
 
 <script setup lang="ts">
   import HeroSection from "~/components/features/landing/hero-section/HeroSection.vue";
-  import OurSolutionsSection from "~/components/features/landing/our-solutions-section/OurSolutionsSection.vue";
+  import SolutionsSection from "~/components/features/landing/solution-section/SolutionSection.vue";
+  import StatisticSection from "~/components/features/landing/statistic-section/StatisticSection.vue";
 </script>

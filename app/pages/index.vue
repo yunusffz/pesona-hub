@@ -3,7 +3,9 @@
     <HeroSection />
     <SolutionsSection />
     <StatisticSection />
-    <CatalogSection />
+    <section class="p-20 bg-[#FAFAFA] flex flex-col gap-[60px]">
+      <CatalogSection />
+    </section>
   </main>
 </template>
 

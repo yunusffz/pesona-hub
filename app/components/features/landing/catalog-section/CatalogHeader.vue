@@ -1,12 +1,7 @@
 <template>
   <section class="gap-10 flex flex-col">
     <div>
-      <button
-        class="flex items-center space-x-2 font-medium text-md px-3 py-1 border border-[#EBEBEB] rounded-full"
-      >
-        <SvgIcon name="plant" class="text-primary" size="18px" />
-        <span>Katalog Produk</span>
-      </button>
+      <IconBadge label="Katalog Produk" icon="plant" />
     </div>
     <div class="flex justify-between items-center gap-64">
       <div>
@@ -27,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+  import IconBadge from "~/components/ui/IconBadge.vue";
   import SvgIcon from "~/components/ui/SvgIcon.vue";
   import BaseButton from "~/components/ui/BaseButton.vue";
 </script>

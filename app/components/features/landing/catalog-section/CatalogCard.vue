@@ -1,10 +1,14 @@
 <template>
   <div class="rounded-2xl border border-neutral-200">
-    <img
-      src="/assets/images/product-2.png"
-      alt="Product Image"
-      class="w-full h-[308px] object-cover rounded-t-2xl"
-    />
+    <div class="relative">
+      <Badge class="absolute top-3 left-6" variant="info">New</Badge>
+      <Badge class="absolute top-3 right-6" variant="white">Produk</Badge>
+      <img
+        src="/assets/images/product-2.png"
+        alt="Product Image"
+        class="w-full h-[308px] object-cover rounded-t-2xl"
+      />
+    </div>
     <div class="flex flex-col px-5 py-4 gap-3">
       <div class="flex items-start justify-between gap-3">
         <div class="flex flex-col gap-3 flex-1 min-w-0 truncate">
@@ -51,3 +55,7 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+  import Badge from "~/components/ui/badge/Badge.vue";
+</script>

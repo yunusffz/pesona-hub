@@ -10,7 +10,12 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxt/fonts",
     "nuxt-swiper",
+    "shadcn-nuxt",
   ],
+  shadcn: {
+    prefix: "",
+    componentDir: "./app/components/ui",
+  },
   fonts: {
     families: [
       {
@@ -27,6 +32,7 @@ export default defineNuxtConfig({
     },
   },
   tailwindcss: {
+    exposeConfig: true,
     config: {
       theme: {
         extend: {
@@ -55,6 +61,7 @@ export default defineNuxtConfig({
               700: "#777777",
               800: "#606060",
               900: "#4A4A4A",
+              1000: "#333333",
             },
           },
         },

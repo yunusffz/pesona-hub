@@ -32,14 +32,6 @@
           </div>
         </div>
       </div>
-
-      <NuxtLink
-        to="#info"
-        class="justify-end inline-flex items-center mt-6 text-md hover:opacity-80 gap-2 px-20"
-      >
-        <div>Mulai eksplor informasi</div>
-        <Icon name="uil:arrow-down" size="24px" />
-      </NuxtLink>
     </div>
   </section>
 </template>

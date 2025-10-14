@@ -2,7 +2,7 @@
   <section class="relative h-screen w-full overflow-hidden">
     <!-- Background -->
     <img
-      src="/assets/images/hero-bg.png"
+      src="/assets/images/landing-hero-bg.png"
       alt="Landscape"
       class="absolute inset-0 w-full h-full object-cover brightness-75"
     />

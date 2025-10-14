@@ -17,7 +17,7 @@
     <!-- CTA -->
     <NuxtLink
       to="/gabung"
-      class="bg-white/20 backdrop-blur-sm px-5 py-[18px] rounded-full text-sm font-medium hover:bg-white/30"
+      class="bg-primary backdrop-blur-sm px-5 py-[18px] rounded-full text-sm font-medium hover:bg-primary/90"
     >
       Gabung Mitra
     </NuxtLink>

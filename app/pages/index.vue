@@ -1,5 +1,7 @@
 <template>
   <main class="min-h-screen flex flex-col gap-20">
+    <Navbar />
+
     <HeroSection />
     <SolutionsSection />
     <StatisticSection />
@@ -7,6 +9,7 @@
       <ProductSection />
       <TourSection />
     </section>
+    <Footer />
   </main>
 </template>
 
@@ -16,4 +19,6 @@
   import StatisticSection from "~/components/features/landing/statistic-section/StatisticSection.vue";
   import ProductSection from "~/components/features/landing/product-section/ProductSection.vue";
   import TourSection from "~/components/features/landing/tour-section/TourSection.vue";
+  import Navbar from "~/components/layout/navbar/Navbar.vue";
+  import Footer from "~/components/layout/Footer/Footer.vue";
 </script>

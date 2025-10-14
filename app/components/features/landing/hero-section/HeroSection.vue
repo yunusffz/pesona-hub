@@ -14,7 +14,6 @@
       class="relative z-10 flex flex-col justify-between h-full py-10 text-white"
     >
       <!-- Navbar -->
-      <Navbar />
 
       <!-- Center Content -->
       <div class="mt-auto px-20 mb-20 flex justify-between w-full">
@@ -49,5 +48,4 @@
 <script setup lang="ts">
   import HeroTagline from "./HeroTagline.vue";
   import HeroCTA from "./HeroCTA.vue";
-  import Navbar from "~/components/layout/navbar/Navbar.vue";
 </script>

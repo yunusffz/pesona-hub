@@ -5,7 +5,6 @@
         <CatalogCard :product="product" v-if="product" :linkText="linkText" />
       </template>
     </div>
-    />
   </div>
 </template>
 

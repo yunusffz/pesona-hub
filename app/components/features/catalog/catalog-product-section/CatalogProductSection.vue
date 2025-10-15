@@ -1,6 +1,9 @@
 <template>
-  <section class="p-20 bg-[#FAFAFA] flex flex-col gap-[60px]">
-    <div class="py-[60px] flex flex-col gap-10">
+  <section
+    class="relative -mx-[calc((100vw-1440px)/2)] px-[calc((100vw-1440px)/2)]"
+  >
+    <div class="bg-[#FAFAFA] absolute inset-0"></div>
+    <div class="relative py-[60px] flex flex-col gap-10">
       <CatalogHeader
         :title="title"
         :description="description"

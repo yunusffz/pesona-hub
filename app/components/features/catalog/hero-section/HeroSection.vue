@@ -1,13 +1,13 @@
 <template>
-  <section class="relative h-[450px] w-full overflow-hidden">
+  <section class="h-[450px] w-full overflow-hidden">
     <!-- Background -->
     <img
       src="/assets/images/catalog-hero-bg.png"
       alt="Landscape"
-      class="absolute inset-0 w-full h-full object-cover brightness-75"
+      class="absolute inset-0 w-full h-[450px] object-cover brightness-75"
     />
     <div
-      class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/40"
+      class="absolute h-[450px] inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/40"
     ></div>
     <!-- Overlay -->
     <div class="relative z-10 flex flex-col justify-between h-full text-white">

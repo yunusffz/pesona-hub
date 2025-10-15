@@ -1,13 +1,18 @@
 <template>
-  <main class="min-h-screen flex flex-col gap-20">
+  <main class="min-h-screen flex flex-col gap-20 max-w-[1440px] mx-auto">
     <Navbar />
 
     <HeroSection />
     <SolutionsSection />
     <StatisticSection />
-    <section class="p-20 bg-[#FAFAFA] flex flex-col gap-[60px]">
-      <ProductSection />
-      <TourSection />
+    <section
+      class="relative -mx-[calc((100vw-1440px)/2)] px-[calc((100vw-1440px)/2)]"
+    >
+      <div class="bg-[#FAFAFA] absolute inset-0"></div>
+      <div class="relative p-20 flex flex-col gap-[60px]">
+        <ProductSection />
+        <TourSection />
+      </div>
     </section>
     <Footer />
   </main>

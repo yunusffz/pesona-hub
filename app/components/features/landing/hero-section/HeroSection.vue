@@ -1,5 +1,5 @@
 <template>
-  <section class="relative h-screen w-full overflow-hidden">
+  <section class="h-screen w-full overflow-hidden">
     <!-- Background -->
     <img
       src="/assets/images/landing-hero-bg.png"

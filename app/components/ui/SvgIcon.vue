@@ -5,8 +5,6 @@
     :style="{ width: size, height: size }"
     v-html="svgContent"
   />
-  <div v-else-if="loading" class="svg-icon-loading">Loading...</div>
-  <div v-else-if="error" class="svg-icon-error">⚠️</div>
 </template>
 
 <script setup lang="ts">
@@ -53,12 +51,23 @@
       const svgElement = doc.querySelector("svg");
 
       if (svgElement) {
+        // Remove all static sizing
         svgElement.removeAttribute("width");
         svgElement.removeAttribute("height");
+        svgElement.removeAttribute("style");
+
+        // Force SVG to scale with parent
+        svgElement.setAttribute("width", "100%");
+        svgElement.setAttribute("height", "100%");
+        svgElement.style.width = "100%";
+        svgElement.style.height = "100%";
+
+        // Add fallback viewBox
         if (!svgElement.hasAttribute("viewBox")) {
           svgElement.setAttribute("viewBox", "0 0 24 24");
         }
 
+        // Apply color
         if (props.color) {
           svgElement
             .querySelectorAll('[fill]:not([fill="none"])')
@@ -68,6 +77,7 @@
           }
         }
 
+        // Apply stroke
         if (props.strokeColor) {
           svgElement
             .querySelectorAll("[stroke]")
@@ -77,6 +87,7 @@
         svgElement.setAttribute("role", "img");
         svgElement.setAttribute("aria-hidden", "true");
 
+        // ✅ Assign cleaned SVG
         svgContent.value = svgElement.outerHTML;
       }
     } catch (e) {
@@ -100,3 +111,11 @@
     }
   );
 </script>
+
+<style scoped>
+  .svg-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>

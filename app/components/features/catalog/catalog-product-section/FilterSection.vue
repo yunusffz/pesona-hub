@@ -3,7 +3,9 @@
     <div>
       <SearchInput />
     </div>
-    <div class="gap-4 ml-auto">
+    <div class="flex gap-4 ml-auto">
+      <FilterRegional />
+      <FilterRegional />
       <FilterRegional />
     </div>
   </div>

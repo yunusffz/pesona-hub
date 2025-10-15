@@ -17,13 +17,13 @@
           class="max-w-[625px] flex flex-col text-center justify-center gap-4"
         >
           <div class="flex justify-center">
-            <Badge
-              variant="transparent"
-              class="flex items-center justify-center gap-[11px] px-3 py-1"
-            >
-              <SvgIcon name="plant" size="17px" />
-              Produk dan Wisata</Badge
-            >
+            <IconBadge
+              label="Produk dan Wisata"
+              icon="plant"
+              variant="default"
+              iconClass="text-white"
+              buttonClass="bg-[#FFFFFF14] border border-[#EBEBEB8C]"
+            />
           </div>
           <div class="flex flex-col gap-1.5">
             <HeroTagline />
@@ -37,8 +37,7 @@
 </template>
 
 <script setup lang="ts">
-  import Badge from "~/components/ui/badge/Badge.vue";
-  import SvgIcon from "~/components/ui/SvgIcon.vue";
+  import IconBadge from "~/components/ui/IconBadge.vue";
   import HeroTagline from "./HeroTagline.vue";
   import HeroText from "./HeroText.vue";
 </script>

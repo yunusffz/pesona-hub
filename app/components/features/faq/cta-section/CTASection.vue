@@ -2,10 +2,7 @@
   <section class="px-20 py-10">
     <div class="rounded-[10px] background-cta p-[60px] grid grid-cols-2 gap-10">
       <div>
-        <Badge variant="white" class="flex text-md font-medium gap-2.5">
-          <SvgIcon name="plant" size="18px" class="text-primary" />
-          <span>Kontak Kami</span>
-        </Badge>
+        <IconBadge label="Kontak Kami" icon="plant" variant="white" />
       </div>
       <div>
         <h1 class="text-[62px] font-medium leading-[77px]">
@@ -27,6 +24,7 @@
   import { Badge } from "~/components/ui/badge";
   import SvgIcon from "~/components/ui/SvgIcon.vue";
   import BaseButton from "~/components/ui/BaseButton.vue";
+  import IconBadge from "~/components/ui/IconBadge.vue";
 </script>
 <style scoped>
   .background-cta {

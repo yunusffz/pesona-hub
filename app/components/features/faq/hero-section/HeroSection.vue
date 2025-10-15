@@ -5,10 +5,7 @@
         class="max-w-[673px] flex flex-col justify-center gap-4 pl-20 my-auto"
       >
         <div class="flex">
-          <Badge variant="white" class="flex items-center gap-3 px-3 py-1">
-            <SvgIcon name="plant" size="17px" class="text-primary" />
-            FAQ</Badge
-          >
+          <IconBadge label="FAQ" icon="plant" variant="white" />
         </div>
         <div class="flex flex-col gap-1.5">
           <HeroTagline />
@@ -24,8 +21,7 @@
 </template>
 
 <script setup lang="ts">
-  import Badge from "~/components/ui/badge/Badge.vue";
-  import SvgIcon from "~/components/ui/SvgIcon.vue";
+  import IconBadge from "~/components/ui/IconBadge.vue";
   import HeroTagline from "./HeroTagline.vue";
   import HeroText from "./HeroText.vue";
 </script>

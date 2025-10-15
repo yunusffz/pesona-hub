@@ -9,7 +9,7 @@
       >
       <Badge
         class="absolute top-3 right-6"
-        variant="white"
+        variant="white-transparent"
         v-if="props.product.catalogType"
         >{{ props.product.catalogType }}</Badge
       >

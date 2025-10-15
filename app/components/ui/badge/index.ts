@@ -17,8 +17,10 @@ export const badgeVariants = cva(
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         info: "border border-[#E8E8E8A6] font-semibold bg-[#A6B8F473] text-[#2955A9] [a&]:hover:bg-[#A6B8F473]/90 leading-[24px]",
-        white:
+        "white-transparent":
           "border border-[#E8E8E840] font-semibold bg-[#FFFFFFBF] text-neutral-1000 [a&]:hover:bg-[#FFFFFFBF]/90 leading-[24px]",
+        white:
+          "border border-[#E8E8E8] font-semibold bg-[#FFFFFF] text-neutral-1000 [a&]:hover:bg-[#FFFFFF]/90 leading-[24px]",
         transparent:
           "border border-[#EBEBEB8C] bg-[#FFFFFF14] text-md font-medium  text-[#FFFFFF]  [a&]:hover:bg-[#FFFFFFBF] leading-[24px]",
       },

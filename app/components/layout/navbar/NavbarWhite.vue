@@ -1,0 +1,29 @@
+<template>
+  <header
+    class="absolute top-0 left-0 w-full text-neutral-900 z-20 flex items-center justify-between px-20 py-4"
+  >
+    <div class="flex items-center space-x-2">
+      <SvgIcon name="logo" size="68px" />
+    </div>
+
+    <!-- Menu -->
+    <nav class="hidden md:flex items-center space-x-8 font-medium text-md">
+      <NuxtLink to="/">Beranda</NuxtLink>
+      <NuxtLink to="/tentang">Tentang Kami</NuxtLink>
+      <NuxtLink to="/katalog">Katalog</NuxtLink>
+      <NuxtLink to="/faq">FAQ</NuxtLink>
+    </nav>
+
+    <!-- CTA -->
+    <NuxtLink
+      to="/gabung"
+      class="bg-primary backdrop-blur-sm px-5 py-[18px] rounded-full text-sm font-medium hover:bg-primary/90 text-white"
+    >
+      Gabung Mitra
+    </NuxtLink>
+  </header>
+</template>
+
+<script setup lang="ts">
+  import SvgIcon from "~/components/ui/SvgIcon.vue";
+</script>

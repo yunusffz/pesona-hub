@@ -1,20 +1,20 @@
 <template>
   <section class="h-[564px] w-full overflow-hidden">
-    <div class="grid grid-cols-2 gap-[179px]">
+    <div class="grid grid-cols-2 xl:gap-20 gap-10">
+      <div class="flex">
+        <img src="/assets/images/about-hero.png" alt="About Hero Image" />
+      </div>
       <div
-        class="max-w-[673px] flex flex-col justify-center gap-4 pl-20 my-auto"
+        class="max-w-[673px] flex flex-col justify-center gap-4 pr-10 my-auto"
       >
         <div class="flex">
-          <IconBadge label="FAQ" icon="plant" variant="white" />
+          <IconBadge label="Tentang Kami" icon="plant" variant="white" />
         </div>
-        <div class="flex flex-col gap-1.5">
+        <div class="flex flex-col gap-4">
           <HeroTagline />
 
           <HeroText />
         </div>
-      </div>
-      <div class="flex justify-end">
-        <img src="/assets/images/faq-hero.png" alt="FAQ Hero Image" />
       </div>
     </div>
   </section>

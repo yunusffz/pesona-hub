@@ -1,21 +1,26 @@
 <template>
-  <section class="p-20 bg-[#FAFAFA] flex flex-col gap-[60px]">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-      <div class="flex flex-col gap-5">
-        <FaqItem
-          v-for="faq in leftColumnItems"
-          :key="faq.question"
-          :question="faq.question"
-          :answer="faq.answer"
-        />
-      </div>
-      <div class="flex flex-col gap-5">
-        <FaqItem
-          v-for="faq in rightColumnItems"
-          :key="faq.question"
-          :question="faq.question"
-          :answer="faq.answer"
-        />
+  <section
+    class="relative -mx-[calc((100vw-1536px)/2)] px-[calc((100vw-1536px)/2)]"
+  >
+    <div class="bg-[#FAFAFA] absolute inset-0"></div>
+    <div class="p-20 flex flex-col gap-[60px]">
+      <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div class="flex flex-col gap-5">
+          <FaqItem
+            v-for="faq in leftColumnItems"
+            :key="faq.question"
+            :question="faq.question"
+            :answer="faq.answer"
+          />
+        </div>
+        <div class="flex flex-col gap-5">
+          <FaqItem
+            v-for="faq in rightColumnItems"
+            :key="faq.question"
+            :question="faq.question"
+            :answer="faq.answer"
+          />
+        </div>
       </div>
     </div>
   </section>

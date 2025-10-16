@@ -1,5 +1,5 @@
 <template>
-  <main class="min-h-screen flex flex-col max-w-[1440px] mx-auto">
+  <main class="min-h-screen flex flex-col max-w-[1536px] mx-auto">
     <NavbarWhite />
 
     <section class="mt-[100px]">

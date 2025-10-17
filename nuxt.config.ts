@@ -12,6 +12,15 @@ export default defineNuxtConfig({
     "nuxt-swiper",
     "shadcn-nuxt",
   ],
+  image: {
+    provider: "ipx",
+    ipx: {
+      modifiers: {
+        quality: 90,
+      },
+      maxAge: 86400, // Cache images for 24 hours
+    },
+  },
   shadcn: {
     prefix: "",
     componentDir: "./app/components/ui",

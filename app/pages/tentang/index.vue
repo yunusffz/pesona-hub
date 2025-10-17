@@ -5,6 +5,7 @@
     <section class="mt-[100px] flex flex-col gap-20">
       <HeroSection />
       <StatisticSection />
+      <UsSection />
     </section>
     <Footer />
   </main>
@@ -14,4 +15,5 @@
   import Footer from "~/components/layout/Footer/Footer.vue";
   import HeroSection from "~/components/features/about/hero-section/HeroSection.vue";
   import StatisticSection from "~/components/common/statistic-section/StatisticSection.vue";
+  import UsSection from "~/components/features/about/us-section/UsSection.vue";
 </script>

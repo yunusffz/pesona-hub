@@ -3,7 +3,7 @@
     class="relative -mx-[calc((100vw-1536px)/2)] px-[calc((100vw-1536px)/2)]"
   >
     <div class="bg-[#FAFAFA] absolute inset-0"></div>
-    <div class="relative py-[60px] flex flex-col gap-10">
+    <div class="relative py-[60px] flex flex-col gap-10 px-20">
       <CatalogHeader
         :title="title"
         :description="description"

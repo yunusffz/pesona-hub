@@ -46,6 +46,9 @@ export default defineNuxtConfig({
       theme: {
         extend: {
           colors: {
+            text: {
+              secondary: "#9EA2AD",
+            },
             "rich-black": "#0D0D0E",
             "forest-green": "#035925",
             primary: {

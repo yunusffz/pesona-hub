@@ -1,13 +1,13 @@
 <template>
-  <section class="h-screen w-full overflow-hidden">
+  <section class="h-screen max-h-[800px] w-full overflow-hidden">
     <!-- Background -->
     <img
       src="/assets/images/landing-hero-bg.png"
       alt="Landscape"
-      class="absolute inset-0 w-full h-full object-cover brightness-75"
+      class="absolute inset-0 w-full h-full max-h-[800px] object-cover brightness-75"
     />
     <div
-      class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/40"
+      class="absolute inset-0 bg-gradient-to-b max-h-[800px] from-black/10 via-black/30 to-black/40"
     ></div>
     <!-- Overlay -->
     <div

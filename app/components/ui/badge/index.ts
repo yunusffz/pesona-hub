@@ -23,6 +23,7 @@ export const badgeVariants = cva(
           "border border-[#E8E8E8] font-semibold bg-[#FFFFFF] text-neutral-1000 [a&]:hover:bg-[#FFFFFF]/90 leading-[24px]",
         transparent:
           "border border-[#EBEBEB8C] bg-[#FFFFFF14] text-md font-medium  text-[#FFFFFF]  [a&]:hover:bg-[#FFFFFFBF] leading-[24px]",
+        grey: "border border-[#E8E8E8] font-semibold bg-[#F5F5F5] text-neutral-800 [a&]:hover:bg-[#F5F5F5]/90 leading-[24px]",
       },
     },
     defaultVariants: {

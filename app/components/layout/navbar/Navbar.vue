@@ -1,29 +1,104 @@
 <template>
   <header
-    class="absolute top-0 left-0 w-full z-20 flex items-center justify-between px-20 py-4 text-white"
+    :class="[
+      'top-0 left-0 w-full z-20 flex items-center justify-between px-20 py-4 transition-colors duration-300',
+      positionClass,
+      headerClasses,
+    ]"
   >
+    <!-- Logo -->
     <div class="flex items-center space-x-2">
       <SvgIcon name="logo" size="68px" />
     </div>
 
     <!-- Menu -->
-    <nav class="hidden md:flex items-center space-x-8 font-medium text-md">
+    <nav
+      :class="[
+        'hidden md:flex items-center space-x-8 font-medium text-md',
+        navClasses,
+      ]"
+    >
       <NuxtLink to="/">Beranda</NuxtLink>
       <NuxtLink to="/tentang">Tentang Kami</NuxtLink>
       <NuxtLink to="/katalog">Katalog</NuxtLink>
       <NuxtLink to="/faq">FAQ</NuxtLink>
     </nav>
-
-    <!-- CTA -->
     <NuxtLink
       to="/gabung"
-      class="bg-primary backdrop-blur-sm px-5 py-[18px] rounded-full text-sm font-medium hover:bg-primary/90"
+      :class="[
+        'backdrop-blur-sm px-5 py-[18px] rounded-full text-sm font-medium transition-all duration-200',
+        ctaClasses,
+      ]"
     >
-      Gabung Mitra
+      {{ ctaText }}
     </NuxtLink>
   </header>
 </template>
 
 <script setup lang="ts">
+  import { useRoute } from "vue-router";
+  import { computed } from "vue";
   import SvgIcon from "~/components/ui/SvgIcon.vue";
+
+  interface Props {
+    variant?: "light" | "transparent";
+    ctaText?: string;
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    variant: "light",
+    ctaText: "Gabung Mitra",
+  });
+
+  const route = useRoute();
+
+  // Determine current variant dynamically based on route
+  const currentVariant = computed(() => {
+    const path = route.path;
+
+    // Check for exact homepage match first
+    if (path === "/") return "transparent";
+    if (path === "/katalog") return "transparent";
+
+    // Check for katalog detail pages (e.g., /katalog/some-slug)
+    if (path.startsWith("/katalog/") && path !== "/katalog/") return "light";
+    if (path.startsWith("/tentang")) return "light";
+    if (path.startsWith("/faq")) return "light";
+    if (path.startsWith("/gabung")) return "light";
+
+    // Fallback to prop
+    return props.variant;
+  });
+
+  // Position class based on variant
+  const positionClass = computed(() => {
+    return currentVariant.value === "light" ? "relative" : "absolute";
+  });
+
+  // Header background and text color classes
+  const headerClasses = computed(() => {
+    switch (currentVariant.value) {
+      case "transparent":
+        return "text-white bg-transparent";
+      case "light":
+      default:
+        return "text-neutral-900 bg-white shadow-sm";
+    }
+  });
+
+  // Navigation text color classes
+  const navClasses = computed(() => {
+    switch (currentVariant.value) {
+      case "transparent":
+        return "text-white";
+      case "light":
+      default:
+        return "text-neutral-900";
+    }
+  });
+
+  // CTA button classes
+  const ctaClasses = computed(() => {
+    return "bg-primary text-white hover:bg-primary/90";
+  });
 </script>

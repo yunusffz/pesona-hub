@@ -6,6 +6,7 @@
       <HeroSection />
       <StatisticSection />
       <UsSection />
+      <OurJourneySection />
     </section>
     <Footer />
   </main>
@@ -16,4 +17,5 @@
   import HeroSection from "~/components/features/about/hero-section/HeroSection.vue";
   import StatisticSection from "~/components/common/statistic-section/StatisticSection.vue";
   import UsSection from "~/components/features/about/us-section/UsSection.vue";
+  import OurJourneySection from "~/components/features/about/our-journey-section/OurJourneySection.vue";
 </script>

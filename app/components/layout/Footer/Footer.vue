@@ -61,7 +61,7 @@
     </div>
 
     <!-- Social media icons -->
-    <div class="flex justify-center lg:justify-start gap-1 sm:gap-2">
+    <div class="flex flex-wrap justify-center lg:justify-start gap-1 sm:gap-2">
       <IconBadge label="Instagram" icon="instagram" />
       <IconBadge label="Youtube" icon="youtube" />
       <IconBadge label="Facebook" icon="facebook" />

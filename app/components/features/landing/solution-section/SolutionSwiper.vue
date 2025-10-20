@@ -25,7 +25,7 @@
       <SwiperSlide
         v-for="slide in slides"
         :key="slide.id"
-        class="!w-full sm:!w-[400px] lg:!w-[451px] flex-shrink-0"
+        class="!w-full sm:!w-[400px] flex-shrink-0"
       >
         <div
           class="w-full h-[220px] sm:h-[240px] lg:h-[261px] rounded-lg overflow-hidden relative"

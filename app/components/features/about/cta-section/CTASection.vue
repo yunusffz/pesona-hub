@@ -21,8 +21,6 @@
   </section>
 </template>
 <script setup lang="ts">
-  import { Badge } from "~/components/ui/badge";
-  import SvgIcon from "~/components/ui/SvgIcon.vue";
   import BaseButton from "~/components/ui/BaseButton.vue";
   import IconBadge from "~/components/ui/IconBadge.vue";
 </script>

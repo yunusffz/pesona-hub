@@ -82,7 +82,7 @@
         return "text-white bg-transparent";
       case "light":
       default:
-        return "text-neutral-900 bg-white shadow-sm";
+        return "text-neutral-900 bg-white ";
     }
   });
 

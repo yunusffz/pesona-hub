@@ -1,5 +1,5 @@
 <template>
-  <section class="relative flex flex-col px-6 2xl:pl-20 lg:pl-10 pl-4 gap-6">
+  <section class="relative flex flex-col px-4 2xl:pl-20 lg:pl-10 gap-6">
     <IconBadge
       label="Solusi Kami"
       icon="plant"
@@ -7,7 +7,7 @@
       class="flex items-center space-x-2.5 border border-[#EBEBEB] rounded-full px-3 py-1 max-w-fit 2xl:[330px] lg:w-[330px]"
     />
     <div
-      class="relative flex flex-col lg:flex-row lg:space-x-5 items-start pb-6 overflow-hidden"
+      class="relative flex flex-col lg:flex-row lg:space-x-5 items-start pb-6 overflow-hidden gap-10"
     >
       <SolutionHeader />
 

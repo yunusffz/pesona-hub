@@ -3,8 +3,10 @@
     <div v-if="props.label">
       <IconBadge :label="props.label" icon="plant" variant="white" />
     </div>
-    <div class="flex justify-between items-center">
-      <div class="pr-[180px]">
+    <div
+      class="flex flex-col lg:flex-row justify-between items-center gap-10 lg:gap-0"
+    >
+      <div class="lg:pr-[180px] pr-0">
         <h1 class="font-medium text-[40px] leading-[48px]">
           {{ props.title }}
         </h1>
@@ -16,9 +18,11 @@
           {{ props.description }}
         </p>
       </div>
-      <BaseButton class="whitespace-nowrap" v-if="props.linkText">{{
-        props.linkText
-      }}</BaseButton>
+      <BaseButton
+        class="whitespace-nowrap w-full lg:w-auto"
+        v-if="props.linkText"
+        >{{ props.linkText }}</BaseButton
+      >
     </div>
   </section>
 </template>

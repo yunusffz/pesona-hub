@@ -15,7 +15,7 @@
 
     <!-- Mask Divider integrated into header -->
     <div
-      class="hidden lg:block absolute -right-[100px] top-0 bottom-0 w-[150px] z-10 bg-white backdrop-blur-[20px]"
+      class="hidden lg:block absolute -right-[150px] top-0 bottom-0 w-[150px] z-10 bg-white backdrop-blur-[20px]"
       style="
         -webkit-mask-image: url('/assets/images/white-divider.png');
         -webkit-mask-repeat: no-repeat;

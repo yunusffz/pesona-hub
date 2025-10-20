@@ -1,22 +1,35 @@
 <template>
-  <div class="relative flex-1 overflow-hidden">
+  <div class="relative flex-1 overflow-hidden sm:px-6 lg:px-0 w-full lg:w-auto">
     <Swiper
       :modules="[SwiperAutoplay, SwiperPagination]"
       :autoplay="{ delay: 3000 }"
       :pagination="{ clickable: true }"
-      loop
+      :loop="slides.length > 1"
       class="mySwiper"
       @slide-change="handleSlideChange"
-      slides-per-view="auto"
-      space-between="24"
+      :slides-per-view="'auto'"
+      :space-between="16"
+      :breakpoints="{
+        320: {
+          spaceBetween: 16,
+        },
+        640: {
+          spaceBetween: 20,
+        },
+        1024: {
+          spaceBetween: 24,
+        },
+      }"
       @swiper="onSwiper"
     >
       <SwiperSlide
         v-for="slide in slides"
         :key="slide.id"
-        class="!w-[451px] flex-shrink-0"
+        class="!w-full sm:!w-[400px] lg:!w-[451px] flex-shrink-0"
       >
-        <div class="w-[451px] h-[261px] rounded-lg overflow-hidden relative">
+        <div
+          class="w-full h-[220px] sm:h-[240px] lg:h-[261px] rounded-lg overflow-hidden relative"
+        >
           <img
             :src="slide.image"
             :alt="slide.title"
@@ -39,11 +52,15 @@
           ></div>
 
           <div
-            class="absolute inset-0 rounded-lg flex flex-col justify-end p-6 z-20"
+            class="absolute inset-0 rounded-lg flex flex-col justify-end p-4 sm:p-5 lg:p-6 z-20"
           >
-            <div class="flex flex-col gap-2">
-              <h3 class="text-white text-2xl font-medium">{{ slide.title }}</h3>
-              <p class="text-white/80 text-sm leading-snug">
+            <div class="flex flex-col gap-1.5 sm:gap-2">
+              <h3 class="text-white text-xl sm:text-2xl font-medium">
+                {{ slide.title }}
+              </h3>
+              <p
+                class="text-white/80 text-xs sm:text-sm leading-snug line-clamp-2"
+              >
                 {{ slide.description }}
               </p>
             </div>
@@ -53,25 +70,27 @@
     </Swiper>
 
     <!-- Navigation buttons -->
-    <div class="flex justify-end gap-4 mt-8">
+    <div class="flex justify-center sm:justify-end gap-3 sm:gap-4 mt-6 sm:mt-8">
       <button
-        class="w-10 h-10 rounded-full border flex items-center text-center justify-center backdrop-blur-md transition group hover:bg-primary hover:border-primary"
+        class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center text-center justify-center backdrop-blur-md transition group hover:bg-primary hover:border-primary"
         @click="swiper?.slidePrev()"
+        aria-label="Previous slide"
       >
         <Icon
           name="quill:chevron-left"
-          size="20px"
-          class="group-hover:text-white text-[#333333] transition"
+          size="18px"
+          class="sm:!w-5 sm:!h-5 group-hover:text-white text-[#333333] transition"
         />
       </button>
       <button
-        class="w-10 h-10 rounded-full border flex items-center text-center justify-center backdrop-blur-md transition group hover:bg-primary hover:border-primary"
+        class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center text-center justify-center backdrop-blur-md transition group hover:bg-primary hover:border-primary"
         @click="swiper?.slideNext()"
+        aria-label="Next slide"
       >
         <Icon
           name="quill:chevron-right"
-          size="20px"
-          class="group-hover:text-white text-[#333333] transition"
+          size="18px"
+          class="sm:!w-5 sm:!h-5 group-hover:text-white text-[#333333] transition"
         />
       </button>
     </div>
@@ -127,20 +146,42 @@
     position: relative;
     display: flex;
     justify-content: center;
-    gap: 8px;
-    margin-top: 1.5rem;
+    gap: 6px;
+    margin-top: 1rem;
   }
+
+  @media (min-width: 640px) {
+    :deep(.swiper-pagination) {
+      gap: 8px;
+      margin-top: 1.5rem;
+    }
+  }
+
   :deep(.swiper-pagination-bullet) {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     background: #d1d5db;
     opacity: 1;
     transition: all 0.3s ease;
     margin: 0;
   }
+
+  @media (min-width: 640px) {
+    :deep(.swiper-pagination-bullet) {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
   :deep(.swiper-pagination-bullet-active) {
     background: var(--color-green-400);
-    width: 32px;
+    width: 24px;
     border-radius: 5px;
+  }
+
+  @media (min-width: 640px) {
+    :deep(.swiper-pagination-bullet-active) {
+      width: 32px;
+    }
   }
 </style>

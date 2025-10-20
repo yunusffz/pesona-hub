@@ -13,6 +13,10 @@
 </template>
 
 <script setup lang="ts">
-  import { InputGroup, InputGroupInput, InputGroupAddon } from "./input-group";
+  import {
+    InputGroup,
+    InputGroupInput,
+    InputGroupAddon,
+  } from "../ui/input-group";
   import { SearchIcon } from "lucide-vue-next";
 </script>

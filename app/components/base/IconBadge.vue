@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-  import SvgIcon from "~/components/ui/SvgIcon.vue";
+  import SvgIcon from "~/components/base/SvgIcon.vue";
   import { cn } from "~/lib/utils";
   import { cva, type VariantProps } from "class-variance-authority";
 

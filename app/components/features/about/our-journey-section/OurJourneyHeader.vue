@@ -11,5 +11,5 @@
   </div>
 </template>
 <script setup lang="ts">
-  import IconBadge from "~/components/ui/IconBadge.vue";
+  import IconBadge from "~/components/base/IconBadge.vue";
 </script>

@@ -21,8 +21,8 @@
   </section>
 </template>
 <script setup lang="ts">
-  import BaseButton from "~/components/ui/BaseButton.vue";
-  import IconBadge from "~/components/ui/IconBadge.vue";
+  import BaseButton from "~/components/base/BaseButton.vue";
+  import IconBadge from "~/components/base/IconBadge.vue";
 </script>
 <style scoped>
   .background-cta {

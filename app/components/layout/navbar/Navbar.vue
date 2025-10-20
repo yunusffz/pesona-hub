@@ -38,7 +38,7 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router";
   import { computed } from "vue";
-  import SvgIcon from "~/components/ui/SvgIcon.vue";
+  import SvgIcon from "~/components/base/SvgIcon.vue";
 
   interface Props {
     variant?: "light" | "transparent";

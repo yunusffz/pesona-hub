@@ -50,6 +50,6 @@
   </footer>
 </template>
 <script setup lang="ts">
-  import SvgIcon from "~/components/ui/SvgIcon.vue";
-  import IconBadge from "~/components/ui/IconBadge.vue";
+  import SvgIcon from "~/components/base/SvgIcon.vue";
+  import IconBadge from "~/components/base/IconBadge.vue";
 </script>

@@ -54,5 +54,5 @@
 
 <script lang="ts">
   import BaseButton from "~/components/base/BaseButton.vue";
-  import SvgIcon from "~/components/ui/SvgIcon.vue";
+  import SvgIcon from "~/components/base/SvgIcon.vue";
 </script>

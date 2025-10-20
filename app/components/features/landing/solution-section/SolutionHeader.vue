@@ -23,6 +23,6 @@
 </template>
 
 <script setup lang="ts">
-  import SvgIcon from "~/components/ui/SvgIcon.vue";
-  import BaseButton from "~/components/ui/BaseButton.vue";
+  import SvgIcon from "~/components/base/SvgIcon.vue";
+  import BaseButton from "~/components/base/BaseButton.vue";
 </script>

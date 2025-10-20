@@ -109,7 +109,7 @@
 <script setup lang="ts">
   import { computed, ref, watch } from "vue";
   import { Check, X, ChevronDown } from "lucide-vue-next";
-  import SvgIcon from "~/components/ui/SvgIcon.vue";
+  import SvgIcon from "~/components/base/SvgIcon.vue";
 
   // shadcn-vue components (generated into your project by shadcn-vue)
   // adjust the import alias if your paths differ

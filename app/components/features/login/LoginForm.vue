@@ -27,28 +27,50 @@
           style="transform: rotate(0deg)"
         />
       </div>
-      <div class="bg-white flex flex-col gap-10">
+      <div class="bg-white">
         <div
-          class="w-[350px] text-center h-full mx-auto flex flex-col justify-center items-center"
+          class="w-[350px] h-full mx-auto flex gap-10 flex-col justify-center items-center"
         >
-          <div class="text-center flex flex-col gap-4">
+          <div
+            class="text-center flex flex-col gap-4 justify-center items-center"
+          >
             <h1 class="text-2xl font-semibold w-[283px] text-center leading-8">
               Masuk ke Akun Mitra Pesona Hub Digi
             </h1>
-            <p
-              class="text-sm leading-5 text-muted-foreground w-[283px] text-center"
-            >
+            <p class="text-sm leading-5 text-muted-foreground text-center">
               Akses sistem promosi, laporan, dan kolaborasi Anda secara langsung
               dengan masyarakat, mitra usaha, dan kementerian.
             </p>
           </div>
 
-          <div class="flex flex-col gap-6">
-            <label for="email" class="text-sm leading-5 text-muted-foreground"
-              >Emailaaaaa</label
-            >
-            <Input type="email" placeholder="Email" />
+          <div class="flex flex-col gap-4 w-full">
+            <div class="flex flex-col gap-1.5">
+              <label for="email" class="text-sm leading-5 text-left"
+                >Username/Email Mitra</label
+              >
+              <Input
+                type="email"
+                class="placeholder:text-sm placeholder:text-muted-foreground"
+                placeholder="Masukkan Email Terdaftar Anda"
+              />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="password" class="text-sm leading-5 text-left"
+                >Kata Sandi</label
+              >
+              <Input
+                type="password"
+                class="placeholder:text-sm placeholder:text-muted-foreground"
+                placeholder="Masukkan Kata Sandi"
+              />
+            </div>
+            <BaseButton variant="primary" size="lg">Masuk Sekarang</BaseButton>
           </div>
+
+          <p class="text-sm leading-5 text-muted-foreground text-center">
+            Dengan melanjutkan, Anda menyetujui Ketentuan Layanan dan Kebijakan
+            Privasi Pesona Hub Digi.
+          </p>
         </div>
       </div>
     </div>
@@ -56,5 +78,6 @@
 </template>
 
 <script setup lang="ts">
-  import SvgIcon from "~/components/ui/SvgIcon.vue";
+  import SvgIcon from "~/components/base/SvgIcon.vue";
+  import Input from "~/components/base/StyledInput.vue";
 </script>

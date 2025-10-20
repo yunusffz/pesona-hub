@@ -12,6 +12,6 @@
 </template>
 
 <script setup lang="ts">
-  import SearchInput from "~/components/ui/SearchInput.vue";
+  import SearchInput from "~/components/base/SearchInput.vue";
   import FilterRegional from "./FilterRegional.vue";
 </script>

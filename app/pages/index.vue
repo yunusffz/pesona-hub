@@ -8,7 +8,7 @@
     >
       <div class="bg-[#FAFAFA] absolute inset-0"></div>
       <div
-        class="relative 2xl:p-20 lg:py-20 lg:px-10 p-4 flex flex-col gap-[60px]"
+        class="relative 2xl:p-20 py-20 lg:px-10 p-4 flex flex-col gap-[60px]"
       >
         <ProductSection />
         <TourSection />

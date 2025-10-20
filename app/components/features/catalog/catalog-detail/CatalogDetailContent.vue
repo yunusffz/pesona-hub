@@ -51,6 +51,12 @@
             :model-value="quantity"
             @update:model-value="quantity = $event"
           />
+          <div
+            class="flex items-center justify-between bg-[#F3F3F3] px-3 py-4 rounded-xl"
+          >
+            <span class="font-medium text-[18px] text-neutral-900">Total</span>
+            <span class="font-bold text-2xl">Rp. {{ quantity * 5000 }}</span>
+          </div>
         </div>
       </div>
     </div>

@@ -1,15 +1,17 @@
 <template>
-  <HeroSection />
-  <SolutionsSection />
-  <StatisticSection />
-  <section
-    class="relative -mx-[calc((100vw-1536px)/2)] px-[calc((100vw-1536px)/2)]"
-  >
-    <div class="bg-[#FAFAFA] absolute inset-0"></div>
-    <div class="relative p-20 flex flex-col gap-[60px]">
-      <ProductSection />
-      <TourSection />
-    </div>
+  <section class="flex flex-col gap-20">
+    <HeroSection />
+    <SolutionsSection />
+    <StatisticSection />
+    <section
+      class="relative 2xl:-mx-[calc((100vw-1536px)/2)] 2xl:px-[calc((100vw-1536px)/2)]"
+    >
+      <div class="bg-[#FAFAFA] absolute inset-0"></div>
+      <div class="relative p-20 flex flex-col gap-[60px]">
+        <ProductSection />
+        <TourSection />
+      </div>
+    </section>
   </section>
 </template>
 

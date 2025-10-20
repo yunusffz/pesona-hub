@@ -7,7 +7,7 @@
     ]"
   >
     <!-- Logo -->
-    <div class="h-[62px] overflow-hidden flex items-center justify-center">
+    <div class="!h-[62px] overflow-hidden flex items-center justify-center">
       <SvgIcon
         name="logo"
         size="157px"
@@ -30,15 +30,9 @@
       <NuxtLink to="/katalog">Katalog</NuxtLink>
       <NuxtLink to="/faq">FAQ</NuxtLink>
     </nav>
-    <NuxtLink
-      to="/gabung"
-      :class="[
-        'backdrop-blur-sm px-5 py-[18px] rounded-full text-sm font-medium transition-all duration-200',
-        ctaClasses,
-      ]"
+    <BaseButton variant="primary"
+      ><NuxtLink to="/gabung">Gabung Mitra</NuxtLink></BaseButton
     >
-      {{ ctaText }}
-    </NuxtLink>
   </header>
 </template>
 

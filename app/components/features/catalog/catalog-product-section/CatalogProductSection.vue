@@ -1,6 +1,6 @@
 <template>
   <section
-    class="relative -mx-[calc((100vw-1536px)/2)] px-[calc((100vw-1536px)/2)]"
+    class="relative 2xl:-mx-[calc((100vw-1536px)/2)] 2xl:px-[calc((100vw-1536px)/2)]"
   >
     <div class="bg-[#FAFAFA] absolute inset-0"></div>
     <div class="relative py-[60px] flex flex-col gap-10 px-20">

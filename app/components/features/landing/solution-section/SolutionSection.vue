@@ -1,6 +1,6 @@
 <template>
   <section
-    class="relative flex flex-col lg:flex-row lg:space-x-5 items-center px-6 lg:pl-20 pt-5 pb-6 overflow-hidden gap-5"
+    class="relative flex flex-col lg:flex-row lg:space-x-5 items-center px-6 lg:pl-20 pt-[60px] pb-6 overflow-hidden gap-5"
   >
     <SolutionHeader />
 

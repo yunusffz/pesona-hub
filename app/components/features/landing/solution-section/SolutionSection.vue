@@ -1,5 +1,8 @@
 <template>
-  <section class="relative flex flex-col px-4 2xl:pl-20 lg:pl-10 gap-6">
+  <section
+    class="relative flex flex-col px-4 2xl:pl-20 lg:pl-10 gap-6"
+    id="impact"
+  >
     <IconBadge
       label="Solusi Kami"
       icon="plant"

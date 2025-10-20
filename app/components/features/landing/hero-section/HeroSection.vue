@@ -33,17 +33,40 @@
       </div>
 
       <NuxtLink
-        to="#info"
-        class="lg:justify-end inline-flex items-center mt-6 text-md hover:opacity-80 gap-2 2xl:px-20 lg:px-10 px-4"
+        class="lg:justify-end inline-flex items-center mt-6 text-md hover:opacity-80 gap-2 2xl:px-20 lg:px-10 px-4 group transition-all duration-300 hover:translate-y-1"
+        @click="scrollToImpact"
       >
-        <div>Mulai eksplor informasi</div>
-        <Icon name="uil:arrow-down" size="24px" />
+        <div
+          class="transition-transform duration-300 group-hover:translate-y-0.5"
+        >
+          Mulai eksplor informasi
+        </div>
+        <Icon
+          name="uil:arrow-down"
+          size="24px"
+          class="transition-transform duration-300 group-hover:translate-y-1"
+        />
       </NuxtLink>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-  import HeroTagline from "./HeroTagline.vue";
   import HeroCTA from "./HeroCTA.vue";
+
+  const scrollToImpact = (event: Event) => {
+    event.preventDefault();
+    const infoElement = document.getElementById("impact");
+
+    if (infoElement) {
+      const yOffset = -100; // ubah sesuai padding/header height
+      const y =
+        infoElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({
+        top: y,
+        behavior: "smooth",
+      });
+    }
+  };
 </script>

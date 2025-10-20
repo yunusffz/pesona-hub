@@ -2,7 +2,11 @@
   <footer class="bg-white px-20 flex flex-col gap-10">
     <div class="grid grid-cols-2">
       <div>
-        <SvgIcon name="logo-footer" size="190px" />
+        <NuxtImg
+          src="/assets/images/logo.png"
+          alt="Logo Footer"
+          class="w-[327px] mb-1.5"
+        />
         <div class="text-2xl font-semibold w-[319px] text-neutral-1000">
           Menghubungkan Alam, Usaha, dan Masyarakat
         </div>

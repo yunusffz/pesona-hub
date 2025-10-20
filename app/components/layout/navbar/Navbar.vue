@@ -62,15 +62,15 @@
 
           <!-- Drawer -->
           <div
-            class="fixed top-0 right-0 h-screen w-80 max-w-[85vw] bg-white shadow-xl border-l"
+            class="fixed top-0 right-0 bottom-0 h-screen w-80 max-w-[85vw] bg-white shadow-xl border-l"
           >
             <div class="flex flex-col h-screen bg-white overflow-hidden">
               <!-- Mobile Menu Header -->
               <div
                 class="flex items-center justify-between p-4 border-b flex-shrink-0"
               >
-                <div class="flex items-center space-x-3">
-                  <SvgIcon name="logo" size="100px" class="text-neutral-900" />
+                <div class="flex items-center space-x-3 h-8">
+                  <SvgIcon name="logo" size="150px" class="text-neutral-900" />
                 </div>
                 <button
                   class="p-2 rounded-md hover:bg-neutral-100 transition-colors"
@@ -166,8 +166,25 @@
   watch(isMobileMenuOpen, (isOpen) => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+      document.body.dataset.scrollY = scrollY.toString();
     } else {
       document.body.style.overflow = "";
+      // Kembalikan posisi scroll setelah drawer ditutup
+      const scrollY = parseInt(document.body.dataset.scrollY || "0", 10);
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      window.scrollTo(0, scrollY);
+      delete document.body.dataset.scrollY;
     }
   });
 

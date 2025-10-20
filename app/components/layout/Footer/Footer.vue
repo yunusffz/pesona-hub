@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-white px-20 flex flex-col gap-10">
+  <footer class="bg-white 2xl:px-20 lg:px-10 flex flex-col gap-10 py-[140px]">
     <div class="grid grid-cols-2">
       <div>
         <NuxtImg
@@ -49,7 +49,7 @@
     </div>
 
     <p class="text-left text-[#585858] border-t border-[#EBEBEB] py-5">
-      &copy; 2025 Pesona Hub. All rights reserved.
+      &copy; Pesona Hub. All rights reserved.
     </p>
   </footer>
 </template>

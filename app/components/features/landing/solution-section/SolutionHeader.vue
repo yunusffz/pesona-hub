@@ -1,12 +1,5 @@
 <template>
-  <div class="relative flex flex-col gap-6 w-full lg:w-[330px]">
-    <div
-      class="flex items-center space-x-2.5 border border-[#EBEBEB] rounded-full px-4 py-2 max-w-fit"
-    >
-      <SvgIcon name="diamond" size="10px" class="text-forest-green" />
-      <span class="text-md font-medium text-rich-black">Our Solutions</span>
-    </div>
-
+  <div class="relative flex flex-col gap-6 w-full lg:w-[430px] lg:pr-20">
     <h2 class="text-[40px] font-medium text-rich-black leading-[48px]">
       Dampak Sosial & Lingkungan yang Nyata
     </h2>
@@ -16,13 +9,30 @@
       manfaat langsung bagi masyarakat dan kelestarian hutan.
     </p>
 
-    <NuxtLink>
+    <!-- <NuxtLink>
       <BaseButton>Lihat Dampak</BaseButton>
-    </NuxtLink>
+    </NuxtLink> -->
+
+    <!-- Mask Divider integrated into header -->
+    <div
+      class="hidden lg:block absolute -right-[100px] top-0 bottom-0 w-[150px] z-10 bg-white backdrop-blur-[20px]"
+      style="
+        -webkit-mask-image: url('/assets/images/white-divider.png');
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-size: 150px 472px;
+        -webkit-mask-position: center center;
+        -webkit-mask-mode: alpha;
+        mask-image: url('/assets/images/white-divider.png');
+        mask-repeat: no-repeat;
+        mask-size: 150px 472px;
+        mask-position: center center;
+        mask-mode: alpha;
+      "
+    ></div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import SvgIcon from "~/components/base/SvgIcon.vue";
   import BaseButton from "~/components/base/BaseButton.vue";
+  import IconBadge from "~/components/base/IconBadge.vue";
 </script>

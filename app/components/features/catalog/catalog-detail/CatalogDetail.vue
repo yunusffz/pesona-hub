@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <section class="mt-10 px-20 flex flex-col gap-10 mb-[60px]">
+  <section class="mt-10 2xl:px-20 lg:px-10 flex flex-col gap-10 mb-[60px]">
     <CatalogDetailHeader />
     <CatalogDetailContent />
   </section>

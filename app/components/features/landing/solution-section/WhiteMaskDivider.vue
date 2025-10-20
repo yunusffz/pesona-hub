@@ -1,6 +1,6 @@
 <template>
   <div
-    class="hidden lg:block absolute left-[360px] top-0 bottom-0 w-[150px] z-10 bg-white backdrop-blur-[20px]"
+    class="hidden lg:block absolute 2xl:left-[360px] lg:left-[420px] left-[160px] top-0 bottom-0 w-[150px] z-10 bg-white backdrop-blur-[20px]"
     style="
       -webkit-mask-image: url('/assets/images/white-divider.png');
       -webkit-mask-repeat: no-repeat;

@@ -1,5 +1,7 @@
 <template>
-  <section class="grid grid-cols-1 lg:grid-cols-3 gap-[74px] px-20">
+  <section
+    class="grid grid-cols-1 lg:grid-cols-3 gap-[74px] 2xl:px-20 lg:px-10"
+  >
     <StatisticContent
       number="500+"
       title="Produk kehutanan sosial terdaftar"

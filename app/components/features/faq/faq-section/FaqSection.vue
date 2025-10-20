@@ -3,7 +3,7 @@
     class="relative 2xl:-mx-[calc((100vw-1536px)/2)] 2xl:px-[calc((100vw-1536px)/2)]"
   >
     <div class="bg-[#FAFAFA] absolute inset-0"></div>
-    <div class="p-20 flex flex-col gap-[60px]">
+    <div class="2xl:p-20 lg:py-20 lg:px-10 p-4 flex flex-col gap-[60px]">
       <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div class="flex flex-col gap-5">
           <FaqItem

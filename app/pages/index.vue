@@ -7,7 +7,9 @@
       class="relative 2xl:-mx-[calc((100vw-1536px)/2)] 2xl:px-[calc((100vw-1536px)/2)]"
     >
       <div class="bg-[#FAFAFA] absolute inset-0"></div>
-      <div class="relative p-20 flex flex-col gap-[60px]">
+      <div
+        class="relative 2xl:p-20 lg:py-20 lg:px-10 p-4 flex flex-col gap-[60px]"
+      >
         <ProductSection />
         <TourSection />
       </div>

@@ -1,11 +1,11 @@
 <template>
   <section class="gap-10 flex flex-col">
     <div v-if="props.label">
-      <IconBadge :label="props.label" icon="plant" />
+      <IconBadge :label="props.label" icon="plant" variant="white" />
     </div>
-    <div class="flex justify-between items-center gap-64">
-      <div>
-        <h1 class="font-medium text-[40px]">
+    <div class="flex justify-between items-center">
+      <div class="pr-[180px]">
+        <h1 class="font-medium text-[40px] leading-[48px]">
           {{ props.title }}
         </h1>
         <p

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-10 px-20">
+  <div class="flex flex-col gap-10 2xl:px-20 lg:px-10">
     <OurJourneyHeader />
     <OurJourneyContent />
   </div>

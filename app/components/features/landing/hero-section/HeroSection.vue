@@ -16,7 +16,9 @@
       <!-- Navbar -->
 
       <!-- Center Content -->
-      <div class="mt-auto px-20 mb-20 flex justify-between w-full">
+      <div
+        class="mt-auto 2xl:px-20 lg:px-10 px-4 mb-20 flex justify-between w-full"
+      >
         <div class="max-w-xl">
           <HeroTagline />
           <h2 class="text-2xl md:text-[28px] font-medium leading-snug">
@@ -36,7 +38,7 @@
 
       <NuxtLink
         to="#info"
-        class="justify-end inline-flex items-center mt-6 text-md hover:opacity-80 gap-2 px-20"
+        class="justify-end inline-flex items-center mt-6 text-md hover:opacity-80 gap-2 2xl:px-20 lg:px-10"
       >
         <div>Mulai eksplor informasi</div>
         <Icon name="uil:arrow-down" size="24px" />

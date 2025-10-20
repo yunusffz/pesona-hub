@@ -7,8 +7,15 @@
     ]"
   >
     <!-- Logo -->
-    <div class="flex items-center space-x-2">
-      <SvgIcon name="logo" size="68px" />
+    <div class="h-[62px] overflow-hidden flex items-center justify-center">
+      <SvgIcon
+        name="logo"
+        size="157px"
+        class="shrink-0"
+        :class="
+          currentVariant === 'transparent' ? 'text-white' : 'text-neutral-900'
+        "
+      />
     </div>
 
     <!-- Menu -->

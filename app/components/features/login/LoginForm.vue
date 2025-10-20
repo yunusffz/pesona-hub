@@ -9,16 +9,7 @@
         </div>
 
         <!-- Linear gradient overlay -->
-        <div
-          class="absolute inset-0 z-10"
-          style="
-            background: linear-gradient(
-              189.82deg,
-              rgba(0, 0, 0, 0) -6.47%,
-              rgba(0, 0, 0, 0.43) 74.73%
-            );
-          "
-        ></div>
+        <div class="absolute inset-0 z-10 login-gradient-overlay"></div>
 
         <NuxtImg
           src="/assets/images/login.png"
@@ -49,6 +40,7 @@
                 >Username/Email Mitra</label
               >
               <Input
+                id="email"
                 type="email"
                 class="placeholder:text-sm placeholder:text-muted-foreground"
                 placeholder="Masukkan Email Terdaftar Anda"
@@ -59,6 +51,7 @@
                 >Kata Sandi</label
               >
               <Input
+                id="password"
                 type="password"
                 class="placeholder:text-sm placeholder:text-muted-foreground"
                 placeholder="Masukkan Kata Sandi"
@@ -79,5 +72,15 @@
 
 <script setup lang="ts">
   import SvgIcon from "~/components/base/SvgIcon.vue";
-  import Input from "~/components/base/StyledInput.vue";
+  import Input from "~/components/base/BaseInput.vue";
 </script>
+
+<style scoped>
+  .login-gradient-overlay {
+    background: linear-gradient(
+      189.82deg,
+      rgba(0, 0, 0, 0) -6.47%,
+      rgba(0, 0, 0, 0.43) 74.73%
+    );
+  }
+</style>

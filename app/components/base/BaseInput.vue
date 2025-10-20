@@ -2,6 +2,7 @@
   <div class="relative">
     <input
       v-model="modelValue"
+      :id="id"
       :placeholder="placeholder"
       :type="showPassword ? 'text' : type"
       :disabled="disabled"
@@ -20,8 +21,7 @@
       @click="togglePassword"
       class="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-1000 hover:text-neutral-800 transition-colors"
     >
-      <Eye v-if="!showPassword" class="w-5 h-5" />
-      <EyeOff v-else class="w-5 h-5" />
+      <component :is="showPassword ? EyeOff : Eye" class="w-5 h-5" />
     </button>
   </div>
 </template>
@@ -34,6 +34,7 @@
   import { ref } from "vue";
 
   interface Props {
+    id?: string;
     defaultValue?: string | number;
     modelValue?: string | number;
     placeholder?: string;

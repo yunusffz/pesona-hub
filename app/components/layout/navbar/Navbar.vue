@@ -18,7 +18,7 @@
       />
     </div>
 
-    <!-- Menu -->
+    <!-- Desktop Menu -->
     <nav
       :class="[
         'hidden md:flex items-center space-x-8 font-medium text-md',
@@ -30,15 +30,116 @@
       <NuxtLink to="/katalog">Katalog</NuxtLink>
       <NuxtLink to="/faq">FAQ</NuxtLink>
     </nav>
-    <BaseButton variant="primary"
-      ><NuxtLink to="/gabung">Gabung Mitra</NuxtLink></BaseButton
-    >
+
+    <!-- Desktop CTA Button -->
+    <div class="hidden md:block">
+      <BaseButton variant="primary">
+        <NuxtLink to="/gabung">Gabung Mitra</NuxtLink>
+      </BaseButton>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <Dialog v-model:open="isMobileMenuOpen">
+      <DialogTrigger as-child>
+        <button
+          class="md:hidden p-2 rounded-md transition-colors"
+          :class="
+            currentVariant === 'transparent'
+              ? 'text-white hover:bg-white/10'
+              : 'text-neutral-900 hover:bg-neutral-100'
+          "
+          aria-label="Open mobile menu"
+        >
+          <SvgIcon name="mobile-nav" size="30px" />
+        </button>
+      </DialogTrigger>
+
+      <!-- Mobile Menu Drawer -->
+      <Teleport to="body">
+        <div v-if="isMobileMenuOpen" class="fixed inset-0 z-50">
+          <!-- Backdrop -->
+          <div class="fixed inset-0 bg-black/50" @click="closeMobileMenu"></div>
+
+          <!-- Drawer -->
+          <div
+            class="fixed top-0 right-0 h-screen w-80 max-w-[85vw] bg-white shadow-xl border-l"
+          >
+            <div class="flex flex-col h-screen bg-white overflow-hidden">
+              <!-- Mobile Menu Header -->
+              <div
+                class="flex items-center justify-between p-4 border-b flex-shrink-0"
+              >
+                <div class="flex items-center space-x-3">
+                  <SvgIcon name="logo" size="100px" class="text-neutral-900" />
+                </div>
+                <button
+                  class="p-2 rounded-md hover:bg-neutral-100 transition-colors"
+                  aria-label="Close mobile menu"
+                  @click="closeMobileMenu"
+                >
+                  <SvgIcon
+                    name="mobile-nav"
+                    size="24px"
+                    class="text-neutral-600"
+                  />
+                </button>
+              </div>
+
+              <!-- Mobile Menu Navigation - Scrollable -->
+              <nav class="flex-1 px-4 py-6 overflow-y-auto">
+                <div class="space-y-4">
+                  <NuxtLink
+                    to="/"
+                    class="block text-lg font-medium text-neutral-900 hover:text-primary-600 transition-colors py-2"
+                    @click="closeMobileMenu"
+                  >
+                    Beranda
+                  </NuxtLink>
+                  <NuxtLink
+                    to="/tentang"
+                    class="block text-lg font-medium text-neutral-900 hover:text-primary-600 transition-colors py-2"
+                    @click="closeMobileMenu"
+                  >
+                    Tentang Kami
+                  </NuxtLink>
+                  <NuxtLink
+                    to="/katalog"
+                    class="block text-lg font-medium text-neutral-900 hover:text-primary-600 transition-colors py-2"
+                    @click="closeMobileMenu"
+                  >
+                    Katalog
+                  </NuxtLink>
+                  <NuxtLink
+                    to="/faq"
+                    class="block text-lg font-medium text-neutral-900 hover:text-primary-600 transition-colors py-2"
+                    @click="closeMobileMenu"
+                  >
+                    FAQ
+                  </NuxtLink>
+                </div>
+              </nav>
+
+              <!-- Mobile CTA Section - Fixed at bottom -->
+              <div class="p-4 border-t bg-neutral-50 flex-shrink-0">
+                <BaseButton
+                  variant="primary"
+                  class="w-full justify-center text-base py-3"
+                  @click="closeMobileMenu"
+                >
+                  <NuxtLink to="/gabung" class="w-full">Gabung Mitra</NuxtLink>
+                </BaseButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Teleport>
+    </Dialog>
   </header>
 </template>
 
 <script setup lang="ts">
   import { useRoute } from "vue-router";
-  import { computed } from "vue";
+  import { computed, ref, watch, onUnmounted, Teleport } from "vue";
   import SvgIcon from "~/components/base/SvgIcon.vue";
 
   interface Props {
@@ -52,6 +153,28 @@
   });
 
   const route = useRoute();
+
+  // Mobile menu state
+  const isMobileMenuOpen = ref(false);
+
+  // Close mobile menu method
+  const closeMobileMenu = () => {
+    isMobileMenuOpen.value = false;
+  };
+
+  // Prevent body scroll when mobile menu is open
+  watch(isMobileMenuOpen, (isOpen) => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  });
+
+  // Cleanup on unmount
+  onUnmounted(() => {
+    document.body.style.overflow = "";
+  });
 
   // Determine current variant dynamically based on route
   const currentVariant = computed(() => {

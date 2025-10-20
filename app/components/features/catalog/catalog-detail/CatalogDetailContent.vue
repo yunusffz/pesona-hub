@@ -29,14 +29,35 @@
         <div class="flex gap-2.5">
           <Button
             variant="outline"
-            class="py-6 px-[18px] border-2 border-neutral-900 rounded-xl"
+            class="!px-6 !py-[15px] border-2 border-neutral-900 rounded-xl inline-flex flex-col gap-1 h-auto"
           >
-            
-            Botol 500ml Rp. 50.000
+            <span class="font-medium text-[13px]">Botol 500ml</span>
+            <span class="font-semibold text-md">Rp. 50.000</span>
           </Button>
-          <Button variant="outline">Varian 2</Button>
+
+          <Button
+            variant="outline"
+            class="!px-6 !py-[15px] border-2 border-neutral-300 rounded-xl inline-flex flex-col gap-1 h-auto"
+          >
+            <span class="font-medium text-[13px]">Madu sachet 12ml</span>
+            <span class="font-semibold text-md">Rp. 6.000</span>
+          </Button>
+        </div>
+        <div class="flex flex-col gap-4">
+          <div class="font-semibold text-[18px] text-neutral-900">
+            Tambah ke Keranjang
+          </div>
+          <QuantityCounter
+            :model-value="quantity"
+            @update:model-value="quantity = $event"
+          />
         </div>
       </div>
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+  import QuantityCounter from "~/components/base/QuantityCounter.vue";
+  const quantity = ref(1);
+</script>

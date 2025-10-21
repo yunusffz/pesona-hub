@@ -1,6 +1,8 @@
 <template>
   <section class="2xl:px-20 lg:px-10 py-10">
-    <div class="rounded-[10px] background-cta p-[60px] grid grid-cols-2 gap-10">
+    <div
+      class="rounded-[10px] background-cta p-[60px] flex flex-col lg:flex-row gap-10"
+    >
       <div>
         <IconBadge label="Kontak Kami" icon="plant" variant="white" />
       </div>

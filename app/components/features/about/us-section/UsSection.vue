@@ -1,6 +1,6 @@
 <template>
   <section class="2xl:px-20 lg:px-10">
-    <div class="flex gap-5">
+    <div class="flex gap-5 flex-col lg:flex-row">
       <div class="flex flex-col gap-[224px] justify-between">
         <div>
           <IconBadge label="Mengapa Kami Hadir" icon="plant" variant="white" />

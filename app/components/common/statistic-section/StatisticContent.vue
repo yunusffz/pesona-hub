@@ -9,7 +9,7 @@
 </script>
 
 <template>
-  <section>
+  <section class="p-6 bg-white rounded-2xl">
     <h1 class="font-medium text-[70px] text-rich-black leading-tight">
       {{ props.number }}
     </h1>

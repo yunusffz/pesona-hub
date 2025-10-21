@@ -1,16 +1,22 @@
 <template>
-  <section class="h-[564px] w-full overflow-hidden">
-    <div class="grid grid-cols-2 xl:gap-20 gap-10">
-      <div class="flex">
-        <img src="/assets/images/about-hero.png" alt="About Hero Image" />
+  <section class="min-h-[564px] w-full overflow-hidden">
+    <div
+      class="flex gap-8 text-center lg:text-left lg:gap-20 lg:flex-row flex-col-reverse"
+    >
+      <div class="h-[300px] sm:h-[400px] lg:h-[620px]">
+        <img
+          src="/assets/images/about-hero.png"
+          class="w-full object-cover object-center"
+          alt="About Hero Image"
+        />
       </div>
       <div
-        class="max-w-[673px] flex flex-col justify-center gap-4 pr-10 my-auto"
+        class="max-w-[673px] flex flex-col justify-center items-center px-4 lg:px-6 lg:items-start gap-4 lg:pr-10 my-auto"
       >
-        <div class="flex">
+        <div class="flex w-full justify-center lg:justify-start">
           <IconBadge label="Tentang Kami" icon="plant" variant="white" />
         </div>
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 w-full items-center lg:items-start">
           <HeroTagline />
 
           <HeroText />

@@ -25,10 +25,66 @@
         navClasses,
       ]"
     >
-      <NuxtLink to="/">Beranda</NuxtLink>
-      <NuxtLink to="/tentang">Tentang Kami</NuxtLink>
-      <NuxtLink to="/katalog">Katalog</NuxtLink>
-      <NuxtLink to="/faq">FAQ</NuxtLink>
+      <NuxtLink
+        to="/"
+        :class="[
+          'relative pb-1 transition-colors hover:opacity-80',
+          isActiveRoute('/')
+            ? currentVariant === 'transparent'
+              ? 'border-b-2 border-white'
+              : 'border-b-2 border-primary-600'
+            : currentVariant === 'transparent'
+            ? 'hover:border-b-2 hover:border-white/50'
+            : 'hover:border-b-2 hover:border-primary-600/50',
+        ]"
+      >
+        Beranda
+      </NuxtLink>
+      <NuxtLink
+        to="/tentang"
+        :class="[
+          'relative pb-1 transition-colors hover:opacity-80',
+          isActiveRoute('/tentang')
+            ? currentVariant === 'transparent'
+              ? 'border-b-2 border-white'
+              : 'border-b-2 border-primary-600'
+            : currentVariant === 'transparent'
+            ? 'hover:border-b-2 hover:border-white/50'
+            : 'hover:border-b-2 hover:border-primary-600/50',
+        ]"
+      >
+        Tentang Kami
+      </NuxtLink>
+      <NuxtLink
+        to="/katalog"
+        :class="[
+          'relative pb-1 transition-colors hover:opacity-80',
+          isActiveRoute('/katalog')
+            ? currentVariant === 'transparent'
+              ? 'border-b-2 border-white'
+              : 'border-b-2 border-primary-600'
+            : currentVariant === 'transparent'
+            ? 'hover:border-b-2 hover:border-white/50'
+            : 'hover:border-b-2 hover:border-primary-600/50',
+        ]"
+      >
+        Katalog
+      </NuxtLink>
+      <NuxtLink
+        to="/faq"
+        :class="[
+          'relative pb-1 transition-colors hover:opacity-80',
+          isActiveRoute('/faq')
+            ? currentVariant === 'transparent'
+              ? 'border-b-2 border-white'
+              : 'border-b-2 border-primary-600'
+            : currentVariant === 'transparent'
+            ? 'hover:border-b-2 hover:border-white/50'
+            : 'hover:border-b-2 hover:border-primary-600/50',
+        ]"
+      >
+        FAQ
+      </NuxtLink>
     </nav>
 
     <!-- Desktop CTA Button -->
@@ -90,28 +146,48 @@
                 <div class="space-y-4">
                   <NuxtLink
                     to="/"
-                    class="block text-lg font-medium text-neutral-900 hover:text-primary-600 transition-colors py-2"
+                    :class="[
+                      'block text-lg font-medium transition-colors py-2 relative',
+                      isActiveRoute('/')
+                        ? 'text-primary-600 border-b-2 border-primary-600'
+                        : 'text-neutral-900 hover:text-primary-600',
+                    ]"
                     @click="closeMobileMenu"
                   >
                     Beranda
                   </NuxtLink>
                   <NuxtLink
                     to="/tentang"
-                    class="block text-lg font-medium text-neutral-900 hover:text-primary-600 transition-colors py-2"
+                    :class="[
+                      'block text-lg font-medium transition-colors py-2 relative',
+                      isActiveRoute('/tentang')
+                        ? 'text-primary-600 border-b-2 border-primary-600'
+                        : 'text-neutral-900 hover:text-primary-600',
+                    ]"
                     @click="closeMobileMenu"
                   >
                     Tentang Kami
                   </NuxtLink>
                   <NuxtLink
                     to="/katalog"
-                    class="block text-lg font-medium text-neutral-900 hover:text-primary-600 transition-colors py-2"
+                    :class="[
+                      'block text-lg font-medium transition-colors py-2 relative',
+                      isActiveRoute('/katalog')
+                        ? 'text-primary-600 border-b-2 border-primary-600'
+                        : 'text-neutral-900 hover:text-primary-600',
+                    ]"
                     @click="closeMobileMenu"
                   >
                     Katalog
                   </NuxtLink>
                   <NuxtLink
                     to="/faq"
-                    class="block text-lg font-medium text-neutral-900 hover:text-primary-600 transition-colors py-2"
+                    :class="[
+                      'block text-lg font-medium transition-colors py-2 relative',
+                      isActiveRoute('/faq')
+                        ? 'text-primary-600 border-b-2 border-primary-600'
+                        : 'text-neutral-900 hover:text-primary-600',
+                    ]"
                     @click="closeMobileMenu"
                   >
                     FAQ
@@ -242,4 +318,20 @@
   const ctaClasses = computed(() => {
     return "bg-primary text-white hover:bg-primary/90";
   });
+
+  // Active navigation logic
+  const isActiveRoute = (path: string) => {
+    const currentPath = route.path;
+
+    // For exact matches
+    if (path === "/" && currentPath === "/") return true;
+    if (path === "/katalog" && currentPath === "/katalog") return true;
+
+    // For nested routes (e.g., /katalog/some-slug should be active when on /katalog)
+    if (path === "/katalog" && currentPath.startsWith("/katalog/")) return true;
+    if (path === "/tentang" && currentPath.startsWith("/tentang")) return true;
+    if (path === "/faq" && currentPath.startsWith("/faq")) return true;
+
+    return false;
+  };
 </script>

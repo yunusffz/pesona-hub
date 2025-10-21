@@ -1,31 +1,34 @@
 <template>
-  <section class="2xl:px-20 lg:px-10">
+  <section class="px-4 sm:px-6 lg:px-10 2xl:px-20">
     <div class="flex gap-5 flex-col lg:flex-row">
-      <div class="flex flex-col gap-[224px] justify-between">
+      <div class="flex flex-col gap-8 lg:gap-[224px] justify-between">
         <div>
           <IconBadge label="Mengapa Kami Hadir" icon="plant" variant="white" />
         </div>
-        <!-- <img src="/assets/images/us-1.png" /> -->
         <NuxtImg
           src="/assets/images/us-1.png"
           alt="Hero banner"
-          class="rounded-[10px] h-[616px]"
+          class="rounded-[10px] h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[616px] w-full object-cover"
         />
       </div>
       <div class="flex-1 flex flex-col justify-between">
-        <div class="flex flex-col gap-5 max-w-[530px]">
-          <h1 class="text-[40px] font-medium leading-[48px]">
+        <div class="flex flex-col gap-4 lg:gap-5 max-w-[530px]">
+          <h1
+            class="text-2xl sm:text-3xl lg:text-4xl xl:text-[40px] font-medium leading-tight lg:leading-[48px]"
+          >
             Lebih dari sekadar platform — kami adalah mitra tumbuh yang
             berkelanjutan.
           </h1>
-          <p class="leading-6 text-md text-[#585858]">
+          <p class="leading-6 text-sm sm:text-base text-[#585858]">
             Pesona Hub Digi menghubungkan potensi masyarakat hutan dengan
             peluang ekonomi global. Kami percaya setiap kolaborasi dapat membawa
             dampak nyata bagi lingkungan dan kehidupan sosial.
           </p>
         </div>
-        <div class="grid grid-cols-2 gap-5 h-[616px]">
-          <div class="flex flex-col gap-5">
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5 mt-8 lg:mt-0"
+        >
+          <div class="flex flex-col gap-4 lg:gap-5">
             <UsCard
               :title="cards[0].title"
               v-if="cards[0]"
@@ -43,7 +46,7 @@
               :variant="cards[1].variant"
             />
           </div>
-          <div class="flex flex-col gap-5">
+          <div class="flex flex-col gap-4 lg:gap-5">
             <UsCard
               :title="cards[2].title"
               v-if="cards[2]"

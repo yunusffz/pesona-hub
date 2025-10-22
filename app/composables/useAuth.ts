@@ -1,0 +1,212 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+import type { components } from "~/types/pesona-hub-api";
+import { useApi, useAuthToken } from "./useApi";
+
+// Type definitions from OpenAPI
+type UserResponse = components["schemas"]["UserResponse"];
+type TokenResponse = components["schemas"]["TokenResponse"];
+type RegisterRequest = components["schemas"]["RegisterRequest"];
+
+interface LoginCredentials {
+  username: string;
+  password: string;
+}
+
+export const useAuth = () => {
+  const { setAuthToken, clearAuthToken } = useAuthToken();
+
+  const client = useApi();
+  const queryClient = useQueryClient();
+
+  // Cookie untuk simpan token
+  const accessToken = useCookie("access-token", {
+    maxAge: 60 * 60 * 24, // 1 day
+    sameSite: "lax",
+    secure: import.meta.env.PROD,
+  });
+
+  const refreshToken = useCookie("refresh-token", {
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    sameSite: "lax",
+    secure: import.meta.env.PROD,
+  });
+
+  // State untuk user
+  const user = useState<UserResponse | null>("auth-user", () => null);
+
+  const {
+    data: currentUser,
+    isLoading: isLoadingUser,
+    error: userError,
+  } = useQuery({
+    queryKey: ["auth", "me"],
+    queryFn: async () => {
+      if (!accessToken.value) return null;
+
+      return user.value;
+    },
+    enabled: computed(() => !!accessToken.value),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: false,
+  });
+
+  // Login mutation
+  const loginMutation = useMutation({
+    mutationFn: async (credentials: LoginCredentials) => {
+      // FastAPI OAuth2 form data format
+      const formData = new URLSearchParams();
+      formData.append("username", credentials.username);
+      formData.append("password", credentials.password);
+      formData.append("grant_type", "password");
+
+      const { data, error } = await client.POST("/auth/login", {
+        body: {
+          username: credentials.username,
+          password: credentials.password,
+          grant_type: "password",
+          scope: "",
+        } as any,
+        bodySerializer: (body: any) => {
+          const formData = new URLSearchParams();
+          formData.append("username", body.username);
+          formData.append("password", body.password);
+          formData.append("grant_type", body.grant_type || "password");
+          formData.append("scope", body.scope || "");
+          return formData;
+        },
+      });
+
+      if (error) {
+        throw new Error("Invalid username or password");
+      }
+
+      return data as TokenResponse;
+    },
+    onSuccess: (data) => {
+      if (data?.access_token) {
+        accessToken.value = data.access_token;
+        refreshToken.value = data.refresh_token;
+        setAuthToken(data.access_token);
+
+        // Invalidate user query untuk refetch
+        queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
+      }
+    },
+  });
+
+  // Register mutation
+  const registerMutation = useMutation({
+    mutationFn: async (userData: RegisterRequest) => {
+      const { data, error } = await client.POST("/auth/register", {
+        body: userData,
+      });
+
+      if (error) {
+        throw new Error(error.detail[0]?.msg || "Registration failed");
+      }
+
+      return data;
+    },
+    onSuccess: () => {
+      // Setelah register, user perlu login manual
+      // Atau bisa auto-login dengan data yang sama
+    },
+  });
+
+  // Refresh token mutation
+  const refreshTokenMutation = useMutation({
+    mutationFn: async () => {
+      if (!refreshToken.value) {
+        throw new Error("No refresh token available");
+      }
+
+      const { data, error } = await client.POST("/auth/refresh", {
+        body: {
+          refresh_token: refreshToken.value,
+        },
+      });
+
+      if (error) {
+        throw new Error("Failed to refresh token");
+      }
+
+      return data as TokenResponse;
+    },
+    onSuccess: (data) => {
+      if (data?.access_token) {
+        accessToken.value = data.access_token;
+        refreshToken.value = data.refresh_token;
+        setAuthToken(data.access_token);
+      }
+    },
+    onError: () => {
+      // Token refresh failed, logout user
+      logout();
+    },
+  });
+
+  // Auto refresh token sebelum expired
+  if (import.meta.client && accessToken.value) {
+    // Refresh token 5 menit sebelum expired (default expires_in biasanya 3600 detik)
+    const refreshInterval = 55 * 60 * 1000; // 55 minutes
+
+    const intervalId = setInterval(() => {
+      if (accessToken.value) {
+        refreshTokenMutation.mutate();
+      }
+    }, refreshInterval);
+
+    // Cleanup interval saat component unmount
+    onBeforeUnmount(() => {
+      clearInterval(intervalId);
+    });
+  }
+
+  // Logout function
+  const logout = async () => {
+    try {
+      // Call logout endpoint
+      await client.POST("/auth/logout");
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      // Clear tokens dan state
+      accessToken.value = null;
+      refreshToken.value = null;
+      user.value = null;
+      clearAuthToken();
+      queryClient.clear();
+      navigateTo("/login");
+    }
+  };
+
+  // Initialize auth token on composable creation
+  if (import.meta.client && accessToken.value) {
+    setAuthToken(accessToken.value);
+  }
+
+  return {
+    // State
+    user: computed(() => currentUser.value || user.value),
+    accessToken: readonly(accessToken),
+    refreshToken: readonly(refreshToken),
+    isAuthenticated: computed(() => !!accessToken.value),
+    isLoadingUser,
+    userError,
+
+    // Auth actions
+    login: loginMutation.mutateAsync,
+    register: registerMutation.mutateAsync,
+    logout,
+    refreshAuthToken: refreshTokenMutation.mutateAsync,
+
+    // Mutation states
+    isLoggingIn: computed(() => loginMutation.isPending),
+    isRegistering: computed(() => registerMutation.isPending),
+    isRefreshing: computed(() => refreshTokenMutation.isPending),
+
+    // Errors
+    loginError: computed(() => loginMutation.error),
+    registerError: computed(() => registerMutation.error),
+  };
+};

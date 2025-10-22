@@ -4,6 +4,12 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   css: ["~/assets/styles/global.css"],
+  runtimeConfig: {
+    public: {
+      BASE_API_URL:
+        process.env.NUXT_PUBLIC_BASE_API_URL || "http://localhost:5500",
+    },
+  },
   modules: [
     "@nuxtjs/tailwindcss",
     "@nuxt/image",

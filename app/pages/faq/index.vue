@@ -8,5 +8,5 @@
 <script setup lang="ts">
   import HeroSection from "~/components/features/faq/hero-section/HeroSection.vue";
   import FaqSection from "~/components/features/faq/faq-section/FaqSection.vue";
-  import CTASection from "~/components/features/faq/cta-section/CTASection.vue";
+  import CTASection from "~/components/common/cta-section/CTASection.vue";
 </script>

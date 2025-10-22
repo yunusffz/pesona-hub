@@ -1,13 +1,13 @@
 <template>
-  <section class="2xl:px-20 lg:px-10 py-10">
+  <section class="2xl:px-20 lg:px-10 py-10 px-4">
     <div
-      class="rounded-[10px] background-cta p-[60px] flex flex-col lg:flex-row gap-10"
+      class="rounded-[10px] background-cta py-[60px] px-3 md:px-10 lg:px-[60px] flex flex-col lg:flex-row gap-10 2xl:grid 2xl:grid-cols-2"
     >
-      <div>
+      <div class="min-w-[300px]">
         <IconBadge label="Kontak Kami" icon="plant" variant="white" />
       </div>
-      <div>
-        <h1 class="text-[62px] font-medium leading-[77px]">
+      <div class="flex-1">
+        <h1 class="text-5xl md:text-[62px] font-medium md:leading-[77px]">
           Mari tumbuh bersama untuk masa depan yang hijau.
         </h1>
         <p class="mt-6 text-md text-[#585858]">

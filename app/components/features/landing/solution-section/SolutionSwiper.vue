@@ -30,7 +30,7 @@
         <div
           class="w-full h-[220px] sm:h-[240px] lg:h-[261px] rounded-lg overflow-hidden relative"
         >
-          <img
+          <NuxtImg
             :src="slide.image"
             :alt="slide.title"
             class="absolute inset-0 w-full h-full object-cover rounded-lg"

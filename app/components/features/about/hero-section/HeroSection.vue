@@ -3,8 +3,8 @@
     <div
       class="flex gap-8 text-center lg:text-left lg:gap-20 lg:flex-row flex-col-reverse"
     >
-      <div class="h-[300px] sm:h-[400px] lg:h-[620px]">
-        <img
+      <div class="h-full w-full max-h-[620px]">
+        <NuxtImg
           src="/assets/images/about-hero.png"
           class="w-full object-cover object-center"
           alt="About Hero Image"

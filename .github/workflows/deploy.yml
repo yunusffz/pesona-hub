@@ -1,0 +1,57 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint --if-present
+        continue-on-error: true
+
+      - name: Run tests
+        run: npm run test --if-present
+        continue-on-error: true
+
+      - name: Build application
+        run: npm run build
+
+      - name: Build and deploy Docker container
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            git pull origin main
+            docker build -t nuxt-app:latest .
+            docker stop nuxt-app || true
+            docker rm nuxt-app || true
+            docker run -d \
+              --name nuxt-app \
+              --restart unless-stopped \
+              -p 9000:3000 \
+              nuxt-app:latest

@@ -73,14 +73,14 @@ jobs:
             docker pull $IMAGE_URL
 
             # Stop and remove old container
-            docker stop nuxt-app-main || true
-            docker rm nuxt-app-main || true
+            docker stop pesona-hub-frontend || true
+            docker rm pesona-hub-frontend || true
 
             # Run new container
             docker run -d \
-              --name nuxt-app-main \
+              --name pesona-hub-frontend \
               --restart unless-stopped \
-              -p 9000:3000 \
+              -p 7000:3000 \
               $IMAGE_URL
 
 

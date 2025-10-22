@@ -1,6 +1,6 @@
 <template>
   <section
-    class="grid grid-cols-1 lg:grid-cols-3 gap-[74px] px-4 2xl:px-20 lg:px-10 py-20 sm:py-[120px] bg-[#FAFAFA]"
+    class="grid grid-cols-1 lg:grid-cols-3 gap-[74px] px-4 2xl:px-20 lg:px-10 py-20 sm:py-[120px] lg:py-0"
   >
     <StatisticContent
       number="500+"

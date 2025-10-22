@@ -1,7 +1,7 @@
 <template>
   <section class="h-screen max-h-[800px] w-full overflow-hidden">
     <!-- Background -->
-    <img
+    <NuxtImg
       src="/assets/images/landing-hero-bg.png"
       alt="Landscape"
       class="absolute inset-0 w-full h-full max-h-[800px] object-cover brightness-75"

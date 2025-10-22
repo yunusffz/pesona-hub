@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <img src="/assets/images/faq-hero.png" alt="FAQ Hero Image" />
+        <NuxtImg src="/assets/images/faq-hero.png" alt="FAQ Hero Image" />
       </div>
     </div>
   </section>

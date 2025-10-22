@@ -7,8 +7,8 @@
         v-if="props.product.catalogType"
         >{{ props.product.catalogType }}</Badge
       >
-      <img
-        src="/assets/images/product-2.png"
+      <NuxtImg
+        :src="'/assets/images/product-2.png'"
         alt="Product Image"
         class="w-full h-[308px] object-cover rounded-t-2xl"
       />

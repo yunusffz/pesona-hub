@@ -12,6 +12,9 @@ export default defineNuxtConfig({
     "nuxt-swiper",
     "shadcn-nuxt",
   ],
+  nitro: {
+    preset: "bun",
+  },
   image: {
     provider: "ipx",
     ipx: {

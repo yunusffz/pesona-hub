@@ -4,7 +4,6 @@ export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig();
   const baseUrl = config.public.BASE_API_URL as string;
 
-  // Buat API client dengan runtime config
   const { client, setAuthToken, clearAuthToken, getAuthToken } =
     createApiClient(baseUrl);
 

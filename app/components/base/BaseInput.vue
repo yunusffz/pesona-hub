@@ -21,7 +21,10 @@
       @click="togglePassword"
       class="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-1000 hover:text-neutral-800 transition-colors"
     >
-      <component :is="showPassword ? EyeOff : Eye" class="w-5 h-5" />
+      <Icon
+        :name="showPassword ? 'mage:eye-off' : 'mage:eye-fill'"
+        class="w-4 h-4"
+      />
     </button>
   </div>
 </template>
@@ -30,7 +33,6 @@
   import type { HTMLAttributes } from "vue";
   import { useVModel } from "@vueuse/core";
   import { cn } from "@/lib/utils";
-  import { Eye, EyeOff } from "lucide-vue-next";
   import { ref } from "vue";
 
   interface Props {

@@ -17,10 +17,14 @@ This is a Nuxt 4 project with TypeScript and Tailwind CSS. Follow these organiza
   - **`pages/`** - File-based routing pages
   - **`layouts/`** - Layout templates
   - **`composables/`** - Vue composables for shared logic
+  - **`consts/`** - Application constants and configuration values
   - **`stores/`** - Pinia stores for state management
   - **`middleware/`** - Route middleware
   - **`plugins/`** - Nuxt plugins
   - **`types/`** - TypeScript type definitions
+  - **`lib/`** - Library utilities and shared functions
+  - **`queries/`** - TanStack Query hooks and data fetching logic
+  - **`schemas/`** - Data validation schemas and type definitions
   - **`utils/`** - Utility functions
   - **`assets/`** - Static assets (images, fonts, styles)
   - **`server/`** - Server-side code and API routes

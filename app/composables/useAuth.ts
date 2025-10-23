@@ -43,7 +43,14 @@ export const useAuth = () => {
     queryFn: async () => {
       if (!accessToken.value) return null;
 
-      return user.value;
+      // Fetch user data from API
+      const { data, error } = await client.GET("/auth/me");
+
+      if (error) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      return data;
     },
     enabled: computed(() => !!accessToken.value),
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -82,11 +89,23 @@ export const useAuth = () => {
 
       return data as TokenResponse;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data?.access_token) {
         accessToken.value = data.access_token;
         refreshToken.value = data.refresh_token;
         setAuthToken(data.access_token);
+
+        // Fetch user data after successful login
+        try {
+          const { data: userData, error: userError } = await client.GET(
+            "/auth/me"
+          );
+          if (!userError && userData) {
+            user.value = userData;
+          }
+        } catch (error) {
+          console.error("Failed to fetch user data:", error);
+        }
 
         // Invalidate user query untuk refetch
         queryClient.invalidateQueries({ queryKey: ["auth", "me"] });

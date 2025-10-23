@@ -60,8 +60,19 @@
               </p>
             </div>
 
+            <!-- Error Message -->
+            <div
+              v-if="errors.general"
+              class="bg-red-50 border border-red-200 rounded-lg p-3"
+            >
+              <p class="text-sm text-red-600">{{ errors.general }}</p>
+            </div>
+
             <!-- Form Fields -->
-            <div class="flex flex-col gap-4 lg:gap-5">
+            <form
+              @submit.prevent="handleSubmit"
+              class="flex flex-col gap-4 lg:gap-5"
+            >
               <div class="flex flex-col gap-2">
                 <label
                   for="email-desktop"
@@ -71,10 +82,16 @@
                 </label>
                 <Input
                   id="email-desktop"
+                  v-model="formData.username"
                   type="email"
                   class="placeholder:text-sm lg:placeholder:text-base placeholder:text-muted-foreground h-11 lg:h-12"
+                  :class="{ 'border-red-500': errors.username }"
                   placeholder="Masukkan Email Terdaftar Anda"
+                  @input="clearErrors"
                 />
+                <p v-if="errors.username" class="text-sm text-red-600">
+                  {{ errors.username }}
+                </p>
               </div>
 
               <div class="flex flex-col gap-2">
@@ -86,20 +103,29 @@
                 </label>
                 <Input
                   id="password-desktop"
+                  v-model="formData.password"
                   type="password"
                   class="placeholder:text-sm lg:placeholder:text-base placeholder:text-muted-foreground h-11 lg:h-12"
+                  :class="{ 'border-red-500': errors.password }"
                   placeholder="Masukkan Kata Sandi"
+                  @input="clearErrors"
                 />
+                <p v-if="errors.password" class="text-sm text-red-600">
+                  {{ errors.password }}
+                </p>
               </div>
 
               <BaseButton
+                type="submit"
                 variant="primary"
                 size="lg"
                 class="h-11 lg:h-12 text-base lg:text-lg font-medium mt-2"
+                :disabled="isLoggingIn"
               >
-                Masuk Sekarang
+                <span v-if="isLoggingIn">Memproses...</span>
+                <span v-else>Masuk Sekarang</span>
               </BaseButton>
-            </div>
+            </form>
 
             <!-- Footer Text -->
             <p
@@ -134,8 +160,16 @@
             </p>
           </div>
 
+          <!-- Error Message -->
+          <div
+            v-if="errors.general"
+            class="bg-red-50 border border-red-200 rounded-lg p-3"
+          >
+            <p class="text-sm text-red-600">{{ errors.general }}</p>
+          </div>
+
           <!-- Form Fields -->
-          <div class="flex flex-col gap-4">
+          <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
             <div class="flex flex-col gap-2">
               <label
                 for="email-mobile"
@@ -145,10 +179,16 @@
               </label>
               <Input
                 id="email-mobile"
+                v-model="formData.username"
                 type="email"
                 class="placeholder:text-sm placeholder:text-muted-foreground h-11"
+                :class="{ 'border-red-500': errors.username }"
                 placeholder="Masukkan Email Terdaftar Anda"
+                @input="clearErrors"
               />
+              <p v-if="errors.username" class="text-sm text-red-600">
+                {{ errors.username }}
+              </p>
             </div>
 
             <div class="flex flex-col gap-2">
@@ -160,20 +200,29 @@
               </label>
               <Input
                 id="password-mobile"
+                v-model="formData.password"
                 type="password"
                 class="placeholder:text-sm placeholder:text-muted-foreground h-11"
+                :class="{ 'border-red-500': errors.password }"
                 placeholder="Masukkan Kata Sandi"
+                @input="clearErrors"
               />
+              <p v-if="errors.password" class="text-sm text-red-600">
+                {{ errors.password }}
+              </p>
             </div>
 
             <BaseButton
+              type="submit"
               variant="primary"
               size="lg"
               class="h-11 text-base font-medium mt-2"
+              :disabled="isLoggingIn"
             >
-              Masuk Sekarang
+              <span v-if="isLoggingIn">Memproses...</span>
+              <span v-else>Masuk Sekarang</span>
             </BaseButton>
-          </div>
+          </form>
 
           <!-- Footer Text -->
           <p class="text-xs leading-4 text-muted-foreground text-center">
@@ -189,6 +238,73 @@
 <script setup lang="ts">
   import SvgIcon from "~/components/base/SvgIcon.vue";
   import Input from "~/components/base/BaseInput.vue";
+  import BaseButton from "~/components/base/BaseButton.vue";
+
+  // Form data
+  const formData = reactive({
+    username: "",
+    password: "",
+  });
+
+  // Form validation
+  const errors = reactive({
+    username: "",
+    password: "",
+    general: "",
+  });
+
+  // Auth composable
+  const { login, isLoggingIn, loginError } = useAuth();
+
+  // Form validation
+  const validateForm = () => {
+    errors.username = "";
+    errors.password = "";
+    errors.general = "";
+
+    if (!formData.username.trim()) {
+      errors.username = "Username/Email harus diisi";
+      return false;
+    }
+
+    if (!formData.password.trim()) {
+      errors.password = "Kata sandi harus diisi";
+      return false;
+    }
+
+    return true;
+  };
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
+
+    try {
+      await login({
+        username: formData.username,
+        password: formData.password,
+      });
+
+      // Redirect to dashboard or home page after successful login
+      await navigateTo("/");
+    } catch (error) {
+      console.error("Login error:", error);
+      errors.general =
+        "Login gagal. Periksa kembali username dan password Anda.";
+    }
+  };
+
+  // Clear errors when user types
+  const clearErrors = () => {
+    errors.general = "";
+  };
+
+  // Watch for login errors
+  watch(loginError, (error) => {
+    if (error) {
+      errors.general = "Username atau password salah";
+    }
+  });
 </script>
 
 <style scoped>

@@ -89,8 +89,29 @@
 
     <!-- Desktop CTA Button -->
     <div class="hidden md:block">
-      <BaseButton variant="primary">
+      <!-- <BaseButton variant="primary">
         <NuxtLink to="/gabung">Gabung Mitra</NuxtLink>
+      </BaseButton> -->
+
+      <BaseButton
+        variant="solid"
+        :class="[
+          'gap-4 py-2 px-4 border ',
+          currentVariant === 'transparent'
+            ? 'bg-[#FFFFFF42] text-white  hover:border-neutral-300 hover:bg-[#FFFFFF73]'
+            : 'hover:bg-[#FFFFFFD9] bg-[#FFFFFF73] hover:text-neutral-1000  border-neutral-200 hover:border-neutral-300',
+        ]"
+      >
+        <Avatar
+          class="text-neutral-1000 flex items-center justify-center bg-neutral-100"
+        >
+          LP
+        </Avatar>
+        <div class="flex justiy-start text-left flex-col">
+          <span class="font-medium leading-6">Lora Pradita </span>
+          <span class="text-xs">Kementrian </span>
+        </div>
+        <Icon name="uil:angle-down" size="24px" />
       </BaseButton>
     </div>
 
@@ -217,6 +238,7 @@
   import { useRoute } from "vue-router";
   import { computed, ref, watch, onUnmounted, Teleport } from "vue";
   import SvgIcon from "~/components/base/SvgIcon.vue";
+  import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
   interface Props {
     variant?: "light" | "transparent";

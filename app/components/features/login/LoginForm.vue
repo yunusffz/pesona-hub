@@ -1,233 +1,164 @@
 <template>
   <section
-    class="relative overflow-hidden h-screen w-full 2xl:max-w-[1536px] 2xl:max-h-[960px] 2xl:mx-auto 2xl:shadow-lg"
+    class="relative grid grid-cols-1 lg:grid-cols-2 min-h-screen w-full 2xl:max-w-[1536px] 2xl:mx-auto bg-white overflow-hidden"
   >
-    <!-- Background Image (Mobile & Tablet) -->
-    <div class="absolute inset-0 lg:hidden">
-      <!-- Linear gradient overlay -->
+    <NuxtImg
+      src="/assets/images/login.png"
+      alt="Login Image"
+      class="lg:hidden absolute inset-0 object-cover w-full h-full z-10"
+      loading="lazy"
+    />
+    <div class="relative hidden lg:block overflow-hidden">
+      <!-- Gradient Overlay -->
       <div class="absolute inset-0 z-10 login-gradient-overlay"></div>
 
+      <!-- Background image -->
       <NuxtImg
         src="/assets/images/login.png"
         alt="Login Image"
         class="absolute inset-0 object-cover w-full h-full"
       />
 
-      <!-- Logo on top of background -->
+      <!-- Logo -->
       <div
-        class="absolute top-6 h-[40px] left-6 z-20 flex items-center justify-center text-white"
+        class="absolute h-[130px] top-10 left-10 z-20 flex items-center justify-center text-white"
       >
         <SvgIcon name="logo" size="327px" class="shrink-0" />
       </div>
     </div>
 
-    <!-- Desktop Layout: Side by Side -->
-    <div class="hidden lg:flex lg:flex-row h-full">
-      <!-- Image Section (Desktop) -->
-      <div class="relative flex-1 overflow-hidden">
-        <div
-          class="absolute left-6 top-10 h-[100px] z-20 flex items-center justify-center text-white"
-        >
-          <SvgIcon name="logo" size="327px" class="shrink-0" />
-        </div>
-
-        <!-- Linear gradient overlay -->
-        <div class="absolute inset-0 z-10 login-gradient-overlay"></div>
-
-        <NuxtImg
-          src="/assets/images/login.png"
-          alt="Login Image"
-          class="absolute inset-0 object-cover w-full h-full"
-        />
-      </div>
-
-      <!-- Form Section (Desktop) -->
-      <div class="flex-1 flex items-center justify-center bg-white p-8 xl:p-12">
-        <div class="w-full max-w-[400px] xl:max-w-[440px]">
-          <div class="flex flex-col gap-6 lg:gap-8">
-            <!-- Header -->
-            <div class="text-center flex flex-col gap-3 lg:gap-4">
-              <h1
-                class="text-xl sm:text-2xl lg:text-3xl font-semibold leading-7 sm:leading-8 lg:leading-9"
-              >
-                Masuk ke Akun Mitra Pesona Hub Digi
-              </h1>
-              <p
-                class="text-sm lg:text-base leading-5 lg:leading-6 text-muted-foreground"
-              >
-                Akses sistem promosi, laporan, dan kolaborasi Anda secara
-                langsung dengan masyarakat, mitra usaha, dan kementerian.
-              </p>
-            </div>
-
-            <!-- Error Message -->
-            <div
-              v-if="errors.general"
-              class="bg-red-50 border border-red-200 rounded-lg p-3"
-            >
-              <p class="text-sm text-red-600">{{ errors.general }}</p>
-            </div>
-
-            <!-- Form Fields -->
-            <form
-              @submit.prevent="handleSubmit"
-              class="flex flex-col gap-4 lg:gap-5"
-            >
-              <div class="flex flex-col gap-2">
-                <label
-                  for="email-desktop"
-                  class="text-sm lg:text-base leading-5 lg:leading-6 text-left font-medium"
-                >
-                  Username/Email Mitra
-                </label>
-                <Input
-                  id="email-desktop"
-                  v-model="formData.username"
-                  type="email"
-                  class="placeholder:text-sm lg:placeholder:text-base placeholder:text-muted-foreground h-11 lg:h-12"
-                  :class="{ 'border-red-500': errors.username }"
-                  placeholder="Masukkan Email Terdaftar Anda"
-                  @input="clearErrors"
-                />
-                <p v-if="errors.username" class="text-sm text-red-600">
-                  {{ errors.username }}
-                </p>
-              </div>
-
-              <div class="flex flex-col gap-2">
-                <label
-                  for="password-desktop"
-                  class="text-sm lg:text-base leading-5 lg:leading-6 text-left font-medium"
-                >
-                  Kata Sandi
-                </label>
-                <Input
-                  id="password-desktop"
-                  v-model="formData.password"
-                  type="password"
-                  class="placeholder:text-sm lg:placeholder:text-base placeholder:text-muted-foreground h-11 lg:h-12"
-                  :class="{ 'border-red-500': errors.password }"
-                  placeholder="Masukkan Kata Sandi"
-                  @input="clearErrors"
-                />
-                <p v-if="errors.password" class="text-sm text-red-600">
-                  {{ errors.password }}
-                </p>
-              </div>
-
-              <BaseButton
-                type="submit"
-                variant="primary"
-                size="lg"
-                class="h-11 lg:h-12 text-base lg:text-lg font-medium mt-2"
-                :disabled="isLoggingIn"
-              >
-                <span v-if="isLoggingIn">Memproses...</span>
-                <span v-else>Masuk Sekarang</span>
-              </BaseButton>
-            </form>
-
-            <!-- Footer Text -->
-            <p
-              class="text-xs lg:text-sm leading-4 lg:leading-5 text-muted-foreground text-center"
-            >
-              Dengan melanjutkan, Anda menyetujui Ketentuan Layanan dan
-              Kebijakan Privasi Pesona Hub Digi.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mobile/Tablet Layout: Form over background -->
+    <!-- FORM SECTION -->
     <div
-      class="lg:hidden relative z-30 h-full flex items-center justify-center p-6"
+      class="relative z-20 flex items-center justify-center p-6 sm:p-8 xl:p-12 lg:bg-white"
     >
       <div
-        class="w-full max-w-[380px] bg-white rounded-2xl shadow-2xl p-6 sm:p-8"
+        class="w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[440px] bg-white lg:bg-transparent rounded-2xl lg:rounded-none shadow-2xl lg:shadow-none p-6 sm:p-8 lg:p-0 lg:px-2 max-h-screen overflow-y-auto lg:py-12"
       >
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-4 sm:gap-6 lg:gap-8">
           <!-- Header -->
-          <div class="text-center flex flex-col gap-3">
-            <h1
-              class="text-xl sm:text-2xl font-semibold leading-7 sm:leading-8"
-            >
-              Masuk ke Akun Mitra Pesona Hub Digi
+          <div class="text-center flex flex-col gap-2 sm:gap-3 lg:gap-4">
+            <h1 class="text-xl sm:text-2xl font-semibold leading-8">
+              Masuk ke Akun Pesona Hub Digi
             </h1>
-            <p class="text-sm leading-5 text-muted-foreground">
-              Akses sistem promosi, laporan, dan kolaborasi Anda secara langsung
-              dengan masyarakat, mitra usaha, dan kementerian.
+            <p class="text-sm lg:text-base text-neutral-500">
+              Akses Informasi & Kolaborasi
             </p>
           </div>
 
           <!-- Error Message -->
           <div
-            v-if="errors.general"
-            class="bg-red-50 border border-red-200 rounded-lg p-3"
+            v-if="errorMessage || loginError?.value"
+            class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm"
           >
-            <p class="text-sm text-red-600">{{ errors.general }}</p>
+            {{ errorMessage || loginError?.value?.message }}
           </div>
 
-          <!-- Form Fields -->
-          <form @submit.prevent="handleSubmit" class="flex flex-col gap-4">
+          <!-- FORM -->
+          <form
+            @submit.prevent="handleLogin"
+            class="flex flex-col gap-3 sm:gap-4 lg:gap-5"
+          >
+            <!-- Username/Email -->
             <div class="flex flex-col gap-2">
               <label
-                for="email-mobile"
-                class="text-sm leading-5 text-left font-medium"
+                for="username"
+                class="text-sm lg:text-base font-medium text-left"
               >
-                Username/Email Mitra
+                Username/Email
               </label>
               <Input
-                id="email-mobile"
-                v-model="formData.username"
-                type="email"
-                class="placeholder:text-sm placeholder:text-muted-foreground h-11"
-                :class="{ 'border-red-500': errors.username }"
-                placeholder="Masukkan Email Terdaftar Anda"
-                @input="clearErrors"
+                id="username"
+                v-model="form.username"
+                type="text"
+                required
+                autocomplete="username"
+                placeholder="Masukkan Username/Email Anda"
+                :class="[
+                  'h-[55px] placeholder:text-sm lg:placeholder:text-base placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary',
+                  getFieldError('username') ? 'border-red-500' : '',
+                ]"
               />
-              <p v-if="errors.username" class="text-sm text-red-600">
-                {{ errors.username }}
+              <p v-if="getFieldError('username')" class="text-sm text-red-600">
+                {{ getFieldError("username") }}
               </p>
             </div>
 
+            <!-- Password -->
             <div class="flex flex-col gap-2">
               <label
-                for="password-mobile"
-                class="text-sm leading-5 text-left font-medium"
+                for="password"
+                class="text-sm lg:text-base font-medium text-left"
               >
                 Kata Sandi
               </label>
               <Input
-                id="password-mobile"
-                v-model="formData.password"
+                id="password"
+                v-model="form.password"
                 type="password"
-                class="placeholder:text-sm placeholder:text-muted-foreground h-11"
-                :class="{ 'border-red-500': errors.password }"
+                required
+                autocomplete="current-password"
                 placeholder="Masukkan Kata Sandi"
-                @input="clearErrors"
+                :class="[
+                  'h-[55px] placeholder:text-sm lg:placeholder:text-base placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary',
+                  getFieldError('password') ? 'border-red-500' : '',
+                ]"
               />
-              <p v-if="errors.password" class="text-sm text-red-600">
-                {{ errors.password }}
+              <p v-if="getFieldError('password')" class="text-sm text-red-600">
+                {{ getFieldError("password") }}
               </p>
             </div>
 
+            <!-- Submit -->
             <BaseButton
               type="submit"
               variant="primary"
               size="lg"
-              class="h-11 text-base font-medium mt-2"
-              :disabled="isLoggingIn"
+              :disabled="isLoggingIn?.value || !isValid"
+              class="h-11 lg:h-12 text-base lg:text-lg font-medium mt-2"
             >
-              <span v-if="isLoggingIn">Memproses...</span>
+              <span
+                v-if="isLoggingIn?.value"
+                class="flex items-center justify-center"
+              >
+                <svg
+                  class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  />
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0
+                    0 5.373 0 12h4zm2
+                    5.291A7.962 7.962 0 014
+                    12H0c0 3.042 1.135 5.824 3
+                    7.938l3-2.647z"
+                  />
+                </svg>
+                Memproses...
+              </span>
               <span v-else>Masuk Sekarang</span>
             </BaseButton>
           </form>
 
-          <!-- Footer Text -->
-          <p class="text-xs leading-4 text-muted-foreground text-center">
-            Dengan melanjutkan, Anda menyetujui Ketentuan Layanan dan Kebijakan
-            Privasi Pesona Hub Digi.
+          <!-- Footer -->
+          <p class="text-xs lg:text-sm text-neutral-500 text-center">
+            Belum memiliki akun?
+            <NuxtLink
+              to="/register"
+              class="font-bold text-primary hover:text-primary-hover"
+            >
+              Daftar di sini
+            </NuxtLink>
           </p>
         </div>
       </div>
@@ -236,75 +167,73 @@
 </template>
 
 <script setup lang="ts">
+  import { useAuth } from "~/composables/useAuth";
+  import { useFormValidation } from "~/composables/useFormValidation";
+  import { loginSchema, type LoginFormData } from "~/schemas/auth";
   import SvgIcon from "~/components/base/SvgIcon.vue";
   import Input from "~/components/base/BaseInput.vue";
   import BaseButton from "~/components/base/BaseButton.vue";
 
-  // Form data
-  const formData = reactive({
-    username: "",
-    password: "",
-  });
-
-  // Form validation
-  const errors = reactive({
-    username: "",
-    password: "",
-    general: "",
-  });
-
-  // Auth composable
+  const router = useRouter();
   const { login, isLoggingIn, loginError } = useAuth();
 
   // Form validation
-  const validateForm = () => {
-    errors.username = "";
-    errors.password = "";
-    errors.general = "";
+  const {
+    errors,
+    isValid,
+    validate,
+    validateField,
+    getFieldError,
+    checkValidity,
+    updateValidity,
+  } = useFormValidation(loginSchema);
 
-    if (!formData.username.trim()) {
-      errors.username = "Username/Email harus diisi";
-      return false;
-    }
+  const form = reactive<LoginFormData>({
+    username: "",
+    password: "",
+  });
 
-    if (!formData.password.trim()) {
-      errors.password = "Kata sandi harus diisi";
-      return false;
-    }
+  const errorMessage = ref("");
 
-    return true;
-  };
+  // Watch for all form changes and validate entire form
+  watch(
+    () => form,
+    () => {
+      // Only validate if all required fields have values
+      if (form.username && form.password) {
+        const isFormValid = checkValidity(form);
+        updateValidity(isFormValid);
+      } else {
+        updateValidity(false);
+      }
+    },
+    { deep: true }
+  );
 
-  // Handle form submission
-  const handleSubmit = async () => {
-    if (!validateForm()) return;
-
+  const handleLogin = async () => {
     try {
+      errorMessage.value = "";
+
+      // Validate form with Zod
+      const validation = validate(form);
+      if (!validation.success) {
+        errorMessage.value = "Silakan periksa form Anda";
+        return;
+      }
+
       await login({
-        username: formData.username,
-        password: formData.password,
+        username: form.username,
+        password: form.password,
       });
 
       // Redirect to dashboard or home page after successful login
       await navigateTo("/");
-    } catch (error) {
-      console.error("Login error:", error);
-      errors.general =
+    } catch (error: any) {
+      errorMessage.value =
+        error.message ||
         "Login gagal. Periksa kembali username dan password Anda.";
     }
   };
-
-  // Clear errors when user types
-  const clearErrors = () => {
-    errors.general = "";
-  };
-
-  // Watch for login errors
-  watch(loginError, (error) => {
-    if (error) {
-      errors.general = "Username atau password salah";
-    }
-  });
 </script>
 
 <style scoped>

@@ -61,26 +61,17 @@ export const useAuth = () => {
   // Login mutation
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginCredentials) => {
-      // FastAPI OAuth2 form data format
+      // FastAPI OAuth2 form data format - send as URL encoded form data
       const formData = new URLSearchParams();
       formData.append("username", credentials.username);
       formData.append("password", credentials.password);
       formData.append("grant_type", "password");
+      formData.append("scope", "");
 
       const { data, error } = await client.POST("/auth/login", {
-        body: {
-          username: credentials.username,
-          password: credentials.password,
-          grant_type: "password",
-          scope: "",
-        } as any,
-        bodySerializer: (body: any) => {
-          const formData = new URLSearchParams();
-          formData.append("username", body.username);
-          formData.append("password", body.password);
-          formData.append("grant_type", body.grant_type || "password");
-          formData.append("scope", body.scope || "");
-          return formData;
+        body: formData,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
 

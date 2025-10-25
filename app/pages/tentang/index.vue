@@ -8,6 +8,10 @@
   </section>
 </template>
 <script setup lang="ts">
+  useSeoMeta({
+    title: "Tentang",
+    description: "Tentang Pesona Hub Digi",
+  });
   import HeroSection from "~/components/features/about/hero-section/HeroSection.vue";
   import StatisticSection from "~/components/common/statistic-section/StatisticSection.vue";
   import UsSection from "~/components/features/about/us-section/UsSection.vue";

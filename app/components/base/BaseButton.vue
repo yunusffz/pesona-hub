@@ -18,9 +18,9 @@
           primary:
             "text-white bg-primary hover:bg-primary/80 hover:bg-[#B0C834]",
           secondary:
-            "bg-[#FFFFFF33] border border-neutral-200 text-neutral-1000 hover:bg-white",
+            "bg-[#FFFFFF33] border border-neutral-200 text-neutral-1000 hover:bg-white hover:bg-[#B0C834] hover:text-white",
           solid:
-            "bg-white border border-neutral-200 text-neutral-1000 hover:bg-[#B0C834]  hover:text-white",
+            "bg-white border border-neutral-200 text-neutral-1000 hover:bg-[#B0C834] hover:text-white",
         },
         size: {
           default: "px-5 py-[18px]",

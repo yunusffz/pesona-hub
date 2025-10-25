@@ -65,6 +65,7 @@ export default defineNuxtConfig({
               DEFAULT: "#035925",
               light: "#047a32",
               dark: "#024a1c",
+              hover: "#B0C834",
             },
             secondary: {
               DEFAULT: "#0D0D0E",

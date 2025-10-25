@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import type { components } from "~/types/pesona-hub-api";
 import { useApi, useAuthToken } from "./useApi";
+import { mapErrorMessage } from "~/utils/error-mapper";
 
 // Type definitions from OpenAPI
 type UserResponse = components["schemas"]["UserResponse"];
@@ -121,7 +122,8 @@ export const useAuth = () => {
       });
 
       if (error) {
-        throw new Error(error.detail[0]?.msg || "Registration failed");
+        const mappedError = mapErrorMessage(error);
+        throw new Error(mappedError);
       }
 
       return data;

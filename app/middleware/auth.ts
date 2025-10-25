@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware((to, from) => {
-  const token = useCookie("access-token");
+  const token = useCookie("auth-token");
 
   // Check if route requires authentication
   const isProtected = to.meta.requiresAuth !== false;

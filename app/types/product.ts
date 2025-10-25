@@ -1,16 +1,20 @@
-interface Product {
-  image: string;
-  title: string;
-  description: string;
-  price: string;
-  contact: string;
-  catalogType: string;
-  kps: string;
-  kups: string;
+import type { components } from "./pesona-hub-api";
+
+// API Product type from the schema
+type ApiProduct = components["schemas"]["Product"];
+
+// Extended Product interface for UI display
+interface Product extends ApiProduct {
+  title?: string; // Alias for name from API
+  image?: string;
+  price?: string;
+  contact?: string;
+  catalogType?: string;
+  kps?: string;
+  kups?: string;
   size?: string;
   isNew?: boolean;
-  productType?: string;
-  link: string;
+  link?: string;
 }
 
-export type { Product };
+export type { Product, ApiProduct };

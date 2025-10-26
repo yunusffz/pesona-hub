@@ -3,7 +3,7 @@
     <BaseButton
       variant="solid"
       size="sm"
-      class="w-full lg:w-auto justify-center lg:justify-start"
+      class="w-full md:w-auto justify-center lg:justify-start"
     >
       <div>Lihat Katalog Produk</div>
       <div class="lg:ml-auto h-6">

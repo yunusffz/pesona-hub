@@ -21,7 +21,7 @@
     <!-- Desktop Menu -->
     <nav
       :class="[
-        'hidden md:flex items-center space-x-8 font-medium text-md',
+        'hidden lg:flex items-center space-x-8 font-medium text-md',
         navClasses,
       ]"
     >
@@ -88,7 +88,7 @@
     </nav>
 
     <!-- Desktop CTA Button -->
-    <div class="hidden md:block">
+    <div class="hidden lg:block">
       <!-- Show UserProfileDropdown if authenticated, otherwise show Gabung Mitra button -->
       <UserProfileDropdown
         v-if="isAuthenticated"
@@ -103,7 +103,7 @@
     <Dialog v-model:open="isMobileMenuOpen">
       <DialogTrigger as-child>
         <button
-          class="md:hidden p-2 rounded-md transition-colors"
+          class="lg:hidden p-2 rounded-md transition-colors"
           :class="
             currentVariant === 'transparent'
               ? 'text-white hover:bg-white/10'
@@ -247,7 +247,7 @@
                     </BaseButton>
                     <BaseButton
                       variant="solid"
-                      class="w-full justify-center text-base py-3 bg-red-500 hover:bg-red-600 text-white border-red-500"
+                      class="w-full justify-center text-base py-3"
                       @click="handleLogoutClick"
                     >
                       <Icon name="uil:signout" size="16px" class="mr-2" />

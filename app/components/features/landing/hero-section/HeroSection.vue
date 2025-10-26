@@ -14,9 +14,9 @@
       class="relative z-10 flex flex-col justify-between h-full py-10 text-white"
     >
       <div
-        class="mt-auto 2xl:px-20 lg:px-10 px-4 mb-20 flex justify-between lg:flex-row flex-col-reverse w-full text-center lg:text-left gap-12"
+        class="mt-auto 2xl:px-20 lg:px-10 px-4 mb-20 flex justify-between lg:flex-row flex-col-reverse w-full text-center md:text-left gap-12"
       >
-        <div class="max-w-xl flex flex-col gap-9">
+        <div class="max-w-xl flex flex-col gap-9 mx-auto md:mx-0">
           <h2 class="text-2xl md:text-[28px] font-medium leading-snug pt-4">
             Pesona Hub Digi menjembatani KUPS dengan mitra B2B, B2C, dan CSR
             untuk pembangunan ekonomi hijau dan berkelanjutan.
@@ -25,8 +25,8 @@
         </div>
 
         <!-- Bottom Right Title -->
-        <div class="text-center lg:text-right">
-          <h1 class="text-5xl md:text-[70px] font-medium leading-tight">
+        <div class="text-center md:text-left lg:text-right">
+          <h1 class="text-5xl lg:text-[70px] font-medium leading-tight">
             Akses Pasar<br />untuk<br />Masyarakat.
           </h1>
         </div>

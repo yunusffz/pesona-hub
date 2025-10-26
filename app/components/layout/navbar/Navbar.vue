@@ -89,11 +89,14 @@
 
     <!-- Desktop CTA Button -->
     <div class="hidden md:block">
-      <!-- <BaseButton variant="primary">
-        <NuxtLink to="/gabung">Gabung Mitra</NuxtLink>
-      </BaseButton> -->
-
-      <UserProfileDropdown :current-variant="currentVariant" />
+      <!-- Show UserProfileDropdown if authenticated, otherwise show Gabung Mitra button -->
+      <UserProfileDropdown
+        v-if="isAuthenticated"
+        :current-variant="currentVariant"
+      />
+      <BaseButton v-else variant="primary">
+        <NuxtLink to="/register">Gabung Mitra</NuxtLink>
+      </BaseButton>
     </div>
 
     <!-- Mobile Menu Button -->
@@ -199,12 +202,70 @@
 
               <!-- Mobile CTA Section - Fixed at bottom -->
               <div class="p-4 border-t bg-neutral-50 flex-shrink-0">
+                <!-- Show user profile section if authenticated -->
+                <div v-if="isAuthenticated" class="space-y-3">
+                  <!-- User Info -->
+                  <div
+                    class="flex items-center space-x-3 p-3 bg-white rounded-lg border"
+                  >
+                    <Avatar
+                      class="text-neutral-1000 flex items-center justify-center bg-neutral-100"
+                    >
+                      {{ userInitials }}
+                    </Avatar>
+                    <div class="flex-1">
+                      <div class="font-medium text-neutral-900">
+                        {{ user?.name || "User" }}
+                      </div>
+                      <div class="text-sm text-neutral-600">
+                        {{ user?.email || "user@example.com" }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Mobile Menu Actions -->
+                  <div class="space-y-2">
+                    <BaseButton
+                      variant="secondary"
+                      class="w-full justify-center text-base py-3"
+                      @click="handleProfileClick"
+                    >
+                      <Icon name="uil:user" size="16px" class="mr-2" />
+                      Profil Saya
+                    </BaseButton>
+                    <BaseButton
+                      variant="secondary"
+                      class="w-full justify-center text-base py-3"
+                      @click="handleDashboardClick"
+                    >
+                      <Icon
+                        name="mingcute:layout-line"
+                        size="16px"
+                        class="mr-2"
+                      />
+                      Dashboard
+                    </BaseButton>
+                    <BaseButton
+                      variant="solid"
+                      class="w-full justify-center text-base py-3 bg-red-500 hover:bg-red-600 text-white border-red-500"
+                      @click="handleLogoutClick"
+                    >
+                      <Icon name="uil:signout" size="16px" class="mr-2" />
+                      Keluar
+                    </BaseButton>
+                  </div>
+                </div>
+
+                <!-- Show Gabung Mitra button if not authenticated -->
                 <BaseButton
+                  v-else
                   variant="primary"
                   class="w-full justify-center text-base py-3"
                   @click="closeMobileMenu"
                 >
-                  <NuxtLink to="/gabung" class="w-full">Gabung Mitra</NuxtLink>
+                  <NuxtLink to="/register" class="w-full"
+                    >Gabung Mitra</NuxtLink
+                  >
                 </BaseButton>
               </div>
             </div>
@@ -219,8 +280,8 @@
   import { useRoute } from "vue-router";
   import { computed, ref, watch, onUnmounted, Teleport } from "vue";
   import SvgIcon from "~/components/base/SvgIcon.vue";
-  import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
   import UserProfileDropdown from "./UserProfileDropdown.vue";
+  import { useAuth } from "~/composables/useAuth";
 
   interface Props {
     variant?: "light" | "transparent";
@@ -234,12 +295,41 @@
 
   const route = useRoute();
 
+  // Authentication
+  const { user, isAuthenticated, logout } = useAuth();
+
   // Mobile menu state
   const isMobileMenuOpen = ref(false);
+
+  // User initials for avatar
+  const userInitials = computed(() => {
+    if (!user.value?.name) return "U";
+    const names = user.value.name.split(" ");
+    if (names.length >= 2) {
+      return `${names[0][0]}${names[1][0]}`.toUpperCase();
+    }
+    return names[0][0].toUpperCase();
+  });
 
   // Close mobile menu method
   const closeMobileMenu = () => {
     isMobileMenuOpen.value = false;
+  };
+
+  // Mobile menu action handlers
+  const handleProfileClick = () => {
+    closeMobileMenu();
+    navigateTo("/profile");
+  };
+
+  const handleDashboardClick = () => {
+    closeMobileMenu();
+    navigateTo("/dashboard");
+  };
+
+  const handleLogoutClick = async () => {
+    closeMobileMenu();
+    await logout();
   };
 
   // Prevent body scroll when mobile menu is open

@@ -14,11 +14,11 @@
         <Avatar
           class="text-neutral-1000 flex items-center justify-center bg-neutral-100"
         >
-          LP
+          {{ userInitials }}
         </Avatar>
         <div class="flex justify-start text-left flex-col">
-          <span class="font-medium leading-6">Lora Pradita</span>
-          <span class="text-xs">Kementrian</span>
+          <span class="font-medium leading-6">{{ user?.name || "User" }}</span>
+          <span class="text-xs">{{ user?.email || "user@example.com" }}</span>
         </div>
         <Icon name="uil:angle-down" size="24px" />
       </BaseButton>
@@ -39,7 +39,7 @@
       </DropdownMenuItem>
       <!-- Menu Items -->
       <DropdownMenuItem
-        @click="handleProfileClick"
+        @click="handleDashboardClick"
         class="hover:bg-[#D2D2D2BF] rounded-lg cursor-pointer"
       >
         <Icon name="mingcute:layout-line" size="16px" />
@@ -61,14 +61,15 @@
 </template>
 
 <script setup lang="ts">
+  import { computed } from "vue";
   import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "~/components/ui/dropdown-menu";
+  import { useAuth } from "~/composables/useAuth";
 
   interface Props {
     currentVariant?: "light" | "transparent";
@@ -78,25 +79,32 @@
     currentVariant: "light",
   });
 
+  // Authentication
+  const { user, logout } = useAuth();
+
+  // User initials for avatar
+  const userInitials = computed(() => {
+    if (!user.value?.name) return "U";
+    const names = user.value.name.split(" ");
+    if (names.length >= 2) {
+      return `${names[0][0]}${names[1][0]}`.toUpperCase();
+    }
+    return names[0][0].toUpperCase();
+  });
+
   // Handle menu item clicks
   const handleProfileClick = () => {
     // Navigate to profile page
     navigateTo("/profile");
   };
 
-  const handleSettingsClick = () => {
-    // Navigate to settings page
-    navigateTo("/settings");
+  const handleDashboardClick = () => {
+    // Navigate to dashboard page
+    navigateTo("/dashboard");
   };
 
-  const handleHelpClick = () => {
-    // Navigate to help page
-    navigateTo("/help");
-  };
-
-  const handleLogoutClick = () => {
+  const handleLogoutClick = async () => {
     // Handle logout logic
-    console.log("Logout clicked");
-    // You can implement actual logout logic here
+    await logout();
   };
 </script>

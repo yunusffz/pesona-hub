@@ -55,7 +55,9 @@ export default defineNuxtConfig({
       theme: {
         extend: {
           colors: {
-            "muted-foreground": "#737373",
+            background: "#FAFAFA",
+            muted: "#F4F4F5",
+            "muted-foreground": "#71717A",
             text: {
               secondary: "#9EA2AD",
             },

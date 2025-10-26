@@ -372,6 +372,7 @@
     // Check for exact homepage match first
     if (path === "/") return "transparent";
     if (path === "/katalog") return "transparent";
+    if (path === "/dashboard") return "transparent";
 
     // Check for katalog detail pages (e.g., /katalog/some-slug)
     if (path.startsWith("/katalog/") && path !== "/katalog/") return "light";

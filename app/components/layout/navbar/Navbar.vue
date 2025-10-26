@@ -1,22 +1,24 @@
 <template>
   <header
     :class="[
-      'top-0 left-0 w-full z-20 flex items-center justify-between 2xl:px-20 lg:px-10 py-4 transition-colors duration-300 px-4',
+      ' mx-auto w-full 2xl:max-w-[1536px] z-20 flex items-center justify-between 2xl:px-20 lg:px-10 py-4 transition-colors duration-300 px-4',
       positionClass,
       headerClasses,
     ]"
   >
     <!-- Logo -->
-    <div class="!h-[62px] overflow-hidden flex items-center justify-center">
-      <SvgIcon
-        name="logo"
-        size="157px"
-        class="shrink-0"
-        :class="
-          currentVariant === 'transparent' ? 'text-white' : 'text-neutral-900'
-        "
-      />
-    </div>
+    <a href="/">
+      <div class="!h-[62px] overflow-hidden flex items-center justify-center">
+        <SvgIcon
+          name="logo"
+          size="157px"
+          class="shrink-0"
+          :class="
+            currentVariant === 'transparent' ? 'text-white' : 'text-neutral-900'
+          "
+        />
+      </div>
+    </a>
 
     <!-- Desktop Menu -->
     <nav

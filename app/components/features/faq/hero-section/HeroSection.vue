@@ -1,6 +1,6 @@
 <template>
   <section class="h-[564px] w-full overflow-hidden">
-    <div class="grid grid-cols-2 gap-[179px]">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-[179px]">
       <div
         class="max-w-[673px] flex flex-col justify-center gap-4 2xl:pl-20 lg:pl-10 pl-4 my-auto"
       >
@@ -14,7 +14,11 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <NuxtImg src="/assets/images/faq-hero.png" alt="FAQ Hero Image" />
+        <NuxtImg
+          src="/assets/images/faq-hero.png"
+          alt="FAQ Hero Image"
+          class="w-full h-full object-cover"
+        />
       </div>
     </div>
   </section>

@@ -97,7 +97,7 @@
         :current-variant="currentVariant"
       />
       <BaseButton v-else variant="primary">
-        <NuxtLink to="/register">Gabung Mitra</NuxtLink>
+        <NuxtLink to="/login">Gabung Mitra</NuxtLink>
       </BaseButton>
     </div>
 

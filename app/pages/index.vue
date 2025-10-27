@@ -12,6 +12,7 @@
       >
         <ProductSection />
         <TourSection />
+        <IntegratedSection />
       </div>
     </section>
   </section>
@@ -23,4 +24,5 @@
   import StatisticSection from "~/components/common/statistic-section/StatisticSection.vue";
   import ProductSection from "~/components/features/landing/product-section/ProductSection.vue";
   import TourSection from "~/components/features/landing/tour-section/TourSection.vue";
+  import IntegratedSection from "~/components/features/landing/integrated-section/IntegratedSection.vue";
 </script>

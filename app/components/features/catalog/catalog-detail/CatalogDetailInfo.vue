@@ -28,7 +28,7 @@
         </span>
       </div>
 
-      <div class="flex items-center gap-3">
+      <!-- <div class="flex items-center gap-3">
         <span class="text-sm font-medium text-neutral-700 whitespace-nowrap">
           Kontak Supplier
         </span>
@@ -47,7 +47,7 @@
             Nomor resmi supplier yang telah diverifikasi oleh Balai PS setempat.
           </span>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

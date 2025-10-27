@@ -28,7 +28,7 @@
           </p>
         </div>
         <BaseBadge variant="grey" size="xs">{{
-          props.product.productType
+          props.product.product_type
         }}</BaseBadge>
       </div>
       <div class="text-neutral-700 text-xs flex flex-col gap-1">
@@ -40,14 +40,19 @@
       </div>
       <div class="py-2 flex 2xl:flex-row flex-col gap-4">
         <div class="flex flex-col gap-1 flex-1">
-          <div class="text-lg font-bold">Rp {{ props.product.price }}</div>
-          <div class="text-neutral-500 text-xs italic">
+          <div v-if="isAuthenticated" class="text-lg font-bold">
+            {{
+              formatRupiah(Number(props.product.price) ?? 0) ?? "Rp. xxx.xxx"
+            }}
+          </div>
+          <div v-else class="text-lg font-bold">Rp xxx.xxx</div>
+          <div v-if="!isAuthenticated" class="text-neutral-500 text-xs italic">
             Login untuk melihat harga & kontak supplier
           </div>
         </div>
         <div>
           <a
-            :href="props.product.link"
+            :href="'/katalog' + props.product.link"
             class="border inline-flex items-center justify-center w-full 2xl:w-auto border-neutral-200 rounded-full px-5 py-[10px] text-md bg-white text-neutral-800 font-medium"
           >
             {{ props.linkText }}
@@ -62,8 +67,12 @@
   import Badge from "~/components/ui/badge/Badge.vue";
   import BaseBadge from "~/components/base/BaseBadge.vue";
   import type { Product } from "~/types/product";
+  import { formatRupiah } from "~/utils/format-number";
+
   const props = defineProps<{
     product: Product;
     linkText: string;
   }>();
+
+  const { isAuthenticated } = useAuth();
 </script>

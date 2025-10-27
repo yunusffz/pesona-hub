@@ -115,112 +115,16 @@
       </div>
 
       <!-- Footer with Pagination -->
-      <div
-        class="px-6 py-4 border-t border-gray-200 flex items-center justify-between"
-      >
-        <div class="text-sm text-gray-600">
-          {{ startItem }} of {{ totalItems }} Baris terpilih.
-        </div>
-
-        <div class="flex items-center gap-4">
-          <!-- Items per page -->
-          <div class="flex items-center gap-2">
-            <span class="text-sm text-gray-600">Baris per halaman</span>
-            <select
-              v-model="itemsPerPage"
-              class="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option :value="10">10</option>
-              <option :value="20">20</option>
-              <option :value="50">50</option>
-            </select>
-          </div>
-
-          <!-- Page info -->
-          <div class="text-sm text-gray-600">
-            Halaman {{ currentPage }} of {{ totalPages }}
-          </div>
-
-          <!-- Navigation buttons -->
-          <div class="flex items-center gap-1">
-            <button
-              @click="goToPage(1)"
-              :disabled="currentPage === 1"
-              class="p-1.5 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
-                />
-              </svg>
-            </button>
-            <button
-              @click="previousPage"
-              :disabled="currentPage === 1"
-              class="p-1.5 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </button>
-            <button
-              @click="nextPage"
-              :disabled="currentPage === totalPages"
-              class="p-1.5 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-            <button
-              @click="goToPage(totalPages)"
-              :disabled="currentPage === totalPages"
-              class="p-1.5 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 5l7 7-7 7M5 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
+      <div class="px-6 py-4 border-t border-gray-200">
+        <Pagination
+          :current-page="currentPage"
+          :total-pages="totalPages"
+          :total-items="totalItems"
+          :items-per-page="itemsPerPage"
+          :start-item="startItem"
+          @update:current-page="currentPage = $event"
+          @update:items-per-page="itemsPerPage = $event"
+        />
       </div>
     </div>
   </div>
@@ -228,6 +132,7 @@
 
 <script setup>
   import { ref, computed } from "vue";
+  import Pagination from "~/components/ui/pagination/Pagination.vue";
 
   const currentPage = ref(1);
   const itemsPerPage = ref(10);
@@ -343,6 +248,17 @@
       icon: "🍯",
       color: "#FFE082",
     },
+    {
+      id: 11,
+      name: "Madu Hutan Tropis Riau",
+      category: "Produk Perlebahan",
+      status: "Done",
+      production: "1,5 ton",
+      period: "bulan",
+      partner: "KUPS Hutan Tropis Riau",
+      icon: "🍯",
+      color: "#FFE082",
+    },
   ]);
 
   const totalItems = computed(() => tableData.value.length);
@@ -359,20 +275,4 @@
   const startItem = computed(() => {
     return (currentPage.value - 1) * itemsPerPage.value;
   });
-
-  const nextPage = () => {
-    if (currentPage.value < totalPages.value) {
-      currentPage.value++;
-    }
-  };
-
-  const previousPage = () => {
-    if (currentPage.value > 1) {
-      currentPage.value--;
-    }
-  };
-
-  const goToPage = (page) => {
-    currentPage.value = page;
-  };
 </script>

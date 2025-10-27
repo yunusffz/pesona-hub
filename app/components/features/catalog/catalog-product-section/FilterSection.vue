@@ -1,9 +1,9 @@
 <template>
-  <div class="flex gap-4">
+  <div class="flex xl:flex-row flex-col gap-4 justify-start lg:justify-between">
     <div>
-      <SearchInput />
+      <SearchInput class="w-full md:w-[484px]" />
     </div>
-    <div class="flex gap-4 ml-auto">
+    <div class="flex md:flex-row flex-col gap-4">
       <FilterRegional />
       <FilterRegional />
       <FilterRegional />

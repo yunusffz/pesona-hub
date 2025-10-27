@@ -59,6 +59,7 @@ jobs:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
           IMAGE_URL: ${{ env.REGISTRY }}/${{ github.repository }}:main
+          NUXT_PUBLIC_BASE_API_URL: ${{ secrets.NUXT_PUBLIC_BASE_API_URL }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}

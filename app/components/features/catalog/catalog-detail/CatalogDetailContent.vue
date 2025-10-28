@@ -2,57 +2,43 @@
   <section class="flex gap-[60px]">
     <div class="rounded-3xl flex-1">
       <NuxtImg
-        src="/assets/images/product-1.png"
-        alt="Catalog Detail 1"
+        :src="productImage"
+        :alt="product?.name || 'Product Image'"
         class="w-full h-full object-cover rounded-3xl max-h-[579px]"
       />
     </div>
     <div class="flex flex-col gap-6 w-[468px] h-[648px] overflow-y-auto">
       <div class="flex flex-col gap-4">
         <h1 class="text-[40px] font-medium leading-[48px]">
-          Pupuk Cair Organik KUPS Agroforestri Danau Raya
+          {{ product?.name || "Nama Produk" }}
         </h1>
         <div class="flex items-center gap-2">
-          <Badge variant="grey" class="text-xs font-medium"
-            >Pupuk Organik</Badge
-          >
+          <Badge variant="grey" class="text-xs font-medium">
+            {{ product?.product_usage || "Kategori" }}
+          </Badge>
         </div>
         <p class="text-md text-[#585858] leading-6">
-          Berikan yang terbaik untuk tanaman Anda dengan pupuk ramah lingkungan
-          dari Nagari Danau Raya.
+          {{ product?.description || "Deskripsi produk tidak tersedia." }}
         </p>
       </div>
       <div class="flex flex-col gap-4 p-2">
-        <div class="text-[18px] font-semibold text-neutral-900">
-          Pilih varian
-        </div>
         <div class="flex gap-2.5">
           <Button
             variant="outline"
             :class="[
               '!px-6 !py-[15px] border-2 rounded-xl inline-flex flex-col gap-1 h-auto',
-              selectedVariant === 'bottle'
+              selectedVariant === 'default'
                 ? 'border-neutral-900 bg-neutral-900 text-white'
                 : 'border-neutral-300 hover:border-neutral-400',
             ]"
-            @click="selectedVariant = 'bottle'"
+            @click="selectedVariant = 'default'"
           >
-            <span class="font-medium text-[13px]">Botol 500ml</span>
-            <span class="font-semibold text-md">Rp. 50.000</span>
-          </Button>
-
-          <Button
-            variant="outline"
-            :class="[
-              '!px-6 !py-[15px] border-2 rounded-xl inline-flex flex-col gap-1 h-auto',
-              selectedVariant === 'sachet'
-                ? 'border-neutral-900 bg-neutral-900 text-white'
-                : 'border-neutral-300 hover:border-neutral-400',
-            ]"
-            @click="selectedVariant = 'sachet'"
-          >
-            <span class="font-medium text-[13px]">Madu sachet 12ml</span>
-            <span class="font-semibold text-md">Rp. 6.000</span>
+            <span class="font-medium text-[13px]">{{
+              props.product?.unit
+            }}</span>
+            <span class="font-semibold text-md">{{
+              formatRupiah(productPrice)
+            }}</span>
           </Button>
         </div>
         <div class="flex flex-col gap-4">
@@ -67,16 +53,13 @@
             class="flex items-center justify-between bg-[#F3F3F3] px-3 py-4 rounded-xl"
           >
             <span class="font-medium text-[18px] text-neutral-900">Total</span>
-            <span class="font-bold text-2xl"
-              >Rp.
-              {{
-                quantity * (selectedVariant === "bottle" ? 50000 : 6000)
-              }}</span
-            >
+            <span class="font-bold text-2xl">{{
+              formatRupiah(quantity * productPrice)
+            }}</span>
           </div>
           <BaseButton @click="handleQuoteRequest">Ajukan Penawaran</BaseButton>
           <hr />
-          <CatalogDetailInfo />
+          <CatalogDetailInfo :product="product" />
         </div>
       </div>
     </div>
@@ -87,15 +70,48 @@
   import QuantityCounter from "~/components/base/QuantityCounter.vue";
   import CatalogDetailInfo from "./CatalogDetailInfo.vue";
   import BaseButton from "~/components/base/BaseButton.vue";
+  import type { ApiProduct } from "~/types/api-product";
+  import { formatRupiah } from "~/utils/format-number";
+
+  interface Props {
+    product?: ApiProduct | null;
+  }
+
+  const props = defineProps<Props>();
 
   const quantity = ref(1);
-  const selectedVariant = ref<"bottle" | "sachet">("bottle");
+  const selectedVariant = ref<"default">("default");
+
+  // Computed property for product image
+  const productImage = computed(() => {
+    if (
+      props.product?.thumbnails &&
+      Array.isArray(props.product.thumbnails) &&
+      props.product.thumbnails.length > 0
+    ) {
+      // Assuming thumbnails is an array of image objects with url property
+      const firstImage = props.product.thumbnails[0] as any;
+      return firstImage?.url || "/assets/images/product-1.png";
+    }
+    return "/assets/images/product-1.png";
+  });
+
+  // Computed property for product price
+  const productPrice = computed(() => {
+    return props.product?.price || 0;
+  });
+
+  // Computed property for product unit
+  const productUnit = computed(() => {
+    return props.product?.unit || "unit";
+  });
 
   const handleQuoteRequest = () => {
-    const productName = "Pupuk Cair Organik KUPS Agroforestri Danau Raya";
-    const variantName =
-      selectedVariant.value === "bottle" ? "Botol 500ml" : "Madu sachet 12ml";
-    const unitPrice = selectedVariant.value === "bottle" ? 50000 : 6000;
+    const productName = props.product?.name || "Produk";
+    const unitPrice =
+      selectedVariant.value === "default"
+        ? productPrice.value
+        : productPrice.value;
     const totalPrice = quantity.value * unitPrice;
 
     // Format price with thousand separators
@@ -109,10 +125,8 @@
     const message = `Halo, saya tertarik dengan produk:
 
 • *${productName}*
-• Varian: ${variantName}
-• Jumlah: ${quantity.value} ${
-      selectedVariant.value === "bottle" ? "botol" : "sachet"
-    }
+• Varian: ${productName}
+• Jumlah: ${quantity.value} ${productUnit.value}
 • Total Harga: ${formattedPrice}
 
 Mohon informasi lebih lanjut mengenai produk ini. Terima kasih!`;

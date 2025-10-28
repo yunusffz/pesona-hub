@@ -1,7 +1,7 @@
 import type { components } from "./pesona-hub-api";
 
 // API Product type from the schema
-type ApiProduct = components["schemas"]["Product"];
+type ApiProduct = components["schemas"]["ProductCreate"];
 
 // Extended Product interface for UI display
 interface Product extends ApiProduct {

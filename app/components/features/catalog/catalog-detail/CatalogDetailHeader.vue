@@ -13,7 +13,7 @@
         class="text-text-secondary flex items-center gap-2 hover:text-neutral-1000"
         >Katalog <Icon name="uil:angle-right" size="20px"
       /></NuxtLink>
-      <div class="text-neutral-1000">Produk</div>
+      <div class="text-neutral-1000">{{ product?.name || "Produk" }}</div>
     </div>
     <div class="flex items-center gap-2">
       <BaseLinkButton
@@ -30,4 +30,12 @@
     </div>
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import type { ApiProduct } from "~/types/api-product";
+
+  interface Props {
+    product?: ApiProduct | null;
+  }
+
+  const props = defineProps<Props>();
+</script>

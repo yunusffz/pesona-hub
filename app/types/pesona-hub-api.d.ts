@@ -248,361 +248,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/commodities/category/{category}": {
+    "/economics": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get Commodities By Category */
-        get: operations["get_commodities_by_category_commodities_category__category__get"];
+        /** Get Economics */
+        get: operations["get_economics_economics_get"];
         put?: never;
+        /** Create Economic */
+        post: operations["create_economic_economics_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/economics/{economic_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Economic */
+        get: operations["get_economic_economics__economic_id__get"];
+        /** Update Economic */
+        put: operations["update_economic_economics__economic_id__put"];
         post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/province-apis": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Province Apis */
-        get: operations["get_province_apis_harvesting_province_apis_get"];
-        put?: never;
-        /** Create Province Api */
-        post: operations["create_province_api_harvesting_province_apis_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/province-apis/{api_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Province Api */
-        get: operations["get_province_api_harvesting_province_apis__api_id__get"];
-        /** Update Province Api */
-        put: operations["update_province_api_harvesting_province_apis__api_id__put"];
-        post?: never;
-        /** Delete Province Api */
-        delete: operations["delete_province_api_harvesting_province_apis__api_id__delete"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/harvest/{api_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Harvest Province Api */
-        post: operations["harvest_province_api_harvesting_harvest__api_id__post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/harvest-all": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Harvest All Province Apis */
-        post: operations["harvest_all_province_apis_harvesting_harvest_all_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Harvesting Status */
-        get: operations["get_harvesting_status_harvesting_status_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/validate-api": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Validate Province Api */
-        post: operations["validate_province_api_harvesting_validate_api_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/scheduler/jobs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Scheduled Jobs */
-        get: operations["get_scheduled_jobs_harvesting_scheduler_jobs_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/scheduler/jobs/daily": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Add Daily Job */
-        post: operations["add_daily_job_harvesting_scheduler_jobs_daily_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/scheduler/jobs/hourly": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Add Hourly Job */
-        post: operations["add_hourly_job_harvesting_scheduler_jobs_hourly_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/scheduler/jobs/weekly": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Add Weekly Job */
-        post: operations["add_weekly_job_harvesting_scheduler_jobs_weekly_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/scheduler/jobs/custom": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Add Custom Job */
-        post: operations["add_custom_job_harvesting_scheduler_jobs_custom_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/scheduler/jobs/{job_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Remove Job */
-        delete: operations["remove_job_harvesting_scheduler_jobs__job_id__delete"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/scheduler/jobs/{job_id}/pause": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Pause Job */
-        post: operations["pause_job_harvesting_scheduler_jobs__job_id__pause_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/scheduler/jobs/{job_id}/resume": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Resume Job */
-        post: operations["resume_job_harvesting_scheduler_jobs__job_id__resume_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/scheduler/jobs/{job_id}/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Job Status */
-        get: operations["get_job_status_harvesting_scheduler_jobs__job_id__status_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/tasks/{task_id}/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Task Status */
-        get: operations["get_task_status_harvesting_tasks__task_id__status_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/tasks/{task_id}/cancel": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Cancel Task */
-        post: operations["cancel_task_harvesting_tasks__task_id__cancel_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/queue/stats": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Queue Stats */
-        get: operations["get_queue_stats_harvesting_queue_stats_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/queue/cleanup": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Cleanup Old Tasks */
-        post: operations["cleanup_old_tasks_harvesting_queue_cleanup_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/harvesting/health": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Health Check */
-        get: operations["health_check_harvesting_health_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
+        /** Delete Economic */
+        delete: operations["delete_economic_economics__economic_id__delete"];
         options?: never;
         head?: never;
         patch?: never;
@@ -698,23 +375,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/financing/type/{financing_type}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Financings By Type */
-        get: operations["get_financings_by_type_financing_type__financing_type__get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/locations": {
         parameters: {
             query?: never;
@@ -747,40 +407,6 @@ export interface paths {
         post?: never;
         /** Delete Location */
         delete: operations["delete_location_locations__location_id__delete"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/locations/province/{province}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Locations By Province */
-        get: operations["get_locations_by_province_locations_province__province__get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/locations/nearby": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Nearby Locations */
-        get: operations["get_nearby_locations_locations_nearby_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -889,8 +515,8 @@ export interface paths {
         };
         /** Get Social Forestry Group */
         get: operations["get_social_forestry_group_social_forestry_groups__social_forestry_group_id__get"];
-        /** Update Social Forestry Group Full */
-        put: operations["update_social_forestry_group_full_social_forestry_groups__social_forestry_group_id__put"];
+        /** Update Social Forestry Group */
+        put: operations["update_social_forestry_group_social_forestry_groups__social_forestry_group_id__put"];
         post?: never;
         /** Delete Social Forestry Group */
         delete: operations["delete_social_forestry_group_social_forestry_groups__social_forestry_group_id__delete"];
@@ -898,6 +524,44 @@ export interface paths {
         head?: never;
         /** Patch Social Forestry Group */
         patch: operations["patch_social_forestry_group_social_forestry_groups__social_forestry_group_id__patch"];
+        trace?: never;
+    };
+    "/social-forestry-business-groups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Social Forestry Business Group List */
+        get: operations["get_social_forestry_business_group_list_social_forestry_business_groups_get"];
+        put?: never;
+        /** Create Social Forestry Business Group */
+        post: operations["create_social_forestry_business_group_social_forestry_business_groups_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/social-forestry-business-groups/{social_forestry_business_group_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Social Forestry Business Group */
+        get: operations["get_social_forestry_business_group_social_forestry_business_groups__social_forestry_business_group_id__get"];
+        /** Update Social Forestry Business Group Full */
+        put: operations["update_social_forestry_business_group_full_social_forestry_business_groups__social_forestry_business_group_id__put"];
+        post?: never;
+        /** Delete Social Forestry Business Group */
+        delete: operations["delete_social_forestry_business_group_social_forestry_business_groups__social_forestry_business_group_id__delete"];
+        options?: never;
+        head?: never;
+        /** Patch Social Forestry Business Group */
+        patch: operations["patch_social_forestry_business_group_social_forestry_business_groups__social_forestry_business_group_id__patch"];
         trace?: never;
     };
     "/users": {
@@ -942,112 +606,11 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** APIValidationResponse */
-        APIValidationResponse: {
-            /** Valid */
-            valid: boolean;
-            /** Status Code */
-            status_code?: number | null;
-            /** Has Meta */
-            has_meta?: boolean | null;
-            /** Has Data */
-            has_data?: boolean | null;
-            /** Data Count */
-            data_count?: number | null;
-            /** Response Time */
-            response_time?: number | null;
-            /** Error */
-            error?: string | null;
-        };
         /**
          * AccessType
          * @enum {string}
          */
         AccessType: "public" | "internal" | "private";
-        /** ActivityLogDetailResponse */
-        ActivityLogDetailResponse: {
-            /** Id */
-            id: number;
-            /** Event Type */
-            event_type: string;
-            /** Access Type */
-            access_type: string;
-            /** Entity Type */
-            entity_type: string;
-            /** Entity Id */
-            entity_id?: number | null;
-            /** Entity Slug */
-            entity_slug?: string | null;
-            /** User Id */
-            user_id?: number | null;
-            /** User Agent */
-            user_agent?: string | null;
-            /** Ip Address */
-            ip_address?: string | null;
-            /** Endpoint */
-            endpoint?: string | null;
-            /** Method */
-            method?: string | null;
-            /** Referer */
-            referer?: string | null;
-            /** Extra Data */
-            extra_data?: {
-                [key: string]: unknown;
-            } | null;
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at: string;
-        };
-        /** BaseResponse[APIValidationResponse] */
-        BaseResponse_APIValidationResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["APIValidationResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[ActivityLogDetailResponse] */
-        BaseResponse_ActivityLogDetailResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["ActivityLogDetailResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[CertificationResponse] */
-        BaseResponse_CertificationResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["CertificationResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[CommodityResponse] */
-        BaseResponse_CommodityResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["CommodityResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
         /** BaseResponse[Dict[str, Any]] */
         BaseResponse_Dict_str__Any__: {
             /** @description Response code, use from Message Code */
@@ -1060,99 +623,15 @@ export interface components {
                 [key: string]: unknown;
             } | unknown[] | null;
         };
-        /** BaseResponse[EntityStatsResponse] */
-        BaseResponse_EntityStatsResponse_: {
+        /** BaseResponse[SocialForestryBusinessGroupResponse] */
+        BaseResponse_SocialForestryBusinessGroupResponse_: {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
              * Data
              * @description Response data, can be an array, dict, or None
              */
-            data?: components["schemas"]["EntityStatsResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[FileResponse] */
-        BaseResponse_FileResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["FileResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[FinancingResponse] */
-        BaseResponse_FinancingResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["FinancingResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[HarvestingRunResponse] */
-        BaseResponse_HarvestingRunResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["HarvestingRunResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[LocationResponse] */
-        BaseResponse_LocationResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["LocationResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[Product] */
-        BaseResponse_Product_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["Product"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[ProvinceAPIResponse] */
-        BaseResponse_ProvinceAPIResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["ProvinceAPIResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[SettingResponse] */
-        BaseResponse_SettingResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["SettingResponse"] | {
+            data?: components["schemas"]["SocialForestryBusinessGroupResponse"] | {
                 [key: string]: unknown;
             } | unknown[] | null;
         };
@@ -1168,39 +647,15 @@ export interface components {
                 [key: string]: unknown;
             } | unknown[] | null;
         };
-        /** BaseResponse[TrendingListResponse] */
-        BaseResponse_TrendingListResponse_: {
+        /** BaseResponse[Union[Dict[str, Any], NoneType]] */
+        BaseResponse_Union_Dict_str__Any___NoneType__: {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
              * Data
              * @description Response data, can be an array, dict, or None
              */
-            data?: components["schemas"]["TrendingListResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[Union[FileResponse, NoneType]] */
-        BaseResponse_Union_FileResponse__NoneType__: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["FileResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[Union[Product, NoneType]] */
-        BaseResponse_Union_Product__NoneType__: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["Product"] | {
+            data?: {
                 [key: string]: unknown;
             } | unknown[] | null;
         };
@@ -1215,108 +670,6 @@ export interface components {
             data?: components["schemas"]["SettingResponse"] | {
                 [key: string]: unknown;
             } | unknown[] | null;
-        };
-        /** BaseResponse[Union[UserResponse, NoneType]] */
-        BaseResponse_Union_UserResponse__NoneType__: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["UserResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[UserResponse] */
-        BaseResponse_UserResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["UserResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[dict] */
-        BaseResponse_dict_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[list] */
-        BaseResponse_list_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: unknown[] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** Body_add_custom_job_harvesting_scheduler_jobs_custom_post */
-        Body_add_custom_job_harvesting_scheduler_jobs_custom_post: {
-            /**
-             * Job Id
-             * @description Unique job ID
-             */
-            job_id: string;
-            /**
-             * Cron Expression
-             * @description Cron expression (e.g., '0 2 * * *' for daily at 2 AM)
-             */
-            cron_expression: string;
-            /**
-             * Name
-             * @description Job name
-             */
-            name?: string | null;
-        };
-        /** Body_add_daily_job_harvesting_scheduler_jobs_daily_post */
-        Body_add_daily_job_harvesting_scheduler_jobs_daily_post: {
-            /**
-             * Hour
-             * @description Hour to run (24-hour format)
-             * @default 2
-             */
-            hour: number;
-            /**
-             * Minute
-             * @description Minute to run
-             * @default 0
-             */
-            minute: number;
-        };
-        /** Body_add_weekly_job_harvesting_scheduler_jobs_weekly_post */
-        Body_add_weekly_job_harvesting_scheduler_jobs_weekly_post: {
-            /**
-             * Day Of Week
-             * @description Day of week (0=Monday, 6=Sunday)
-             * @default 0
-             */
-            day_of_week: number;
-            /**
-             * Hour
-             * @description Hour to run (24-hour format)
-             * @default 3
-             */
-            hour: number;
-            /**
-             * Minute
-             * @description Minute to run
-             * @default 0
-             */
-            minute: number;
         };
         /** Body_login_auth_login_post */
         Body_login_auth_login_post: {
@@ -1352,18 +705,6 @@ export interface components {
             /** Description */
             description?: string | null;
         };
-        /** Body_validate_province_api_harvesting_validate_api_post */
-        Body_validate_province_api_harvesting_validate_api_post: {
-            /** Api Url */
-            api_url: string;
-            /** Api Key */
-            api_key?: string | null;
-        };
-        /**
-         * CategoryFile
-         * @enum {string}
-         */
-        CategoryFile: "DATASET" | "FILE";
         /** CertificationCreate */
         CertificationCreate: {
             /**
@@ -1379,41 +720,6 @@ export interface components {
              * @example Environmental management system certification
              */
             description?: string | null;
-        };
-        /** CertificationResponse */
-        CertificationResponse: {
-            /**
-             * Id
-             * @description Certification ID
-             */
-            id: number;
-            /**
-             * Name
-             * @description Certification name
-             */
-            name: string;
-            /**
-             * Description
-             * @description Certification description
-             */
-            description?: string | null;
-            /**
-             * Status
-             * @description Certification status
-             */
-            status: string;
-            /**
-             * Created At
-             * Format: date-time
-             * @description Creation timestamp
-             */
-            created_at: string;
-            /**
-             * Updated At
-             * Format: date-time
-             * @description Last update timestamp
-             */
-            updated_at: string;
         };
         /** CertificationUpdate */
         CertificationUpdate: {
@@ -1457,46 +763,6 @@ export interface components {
              */
             category?: string | null;
         };
-        /** CommodityResponse */
-        CommodityResponse: {
-            /**
-             * Id
-             * @description Commodity ID
-             */
-            id: number;
-            /**
-             * Name
-             * @description Commodity name
-             */
-            name: string;
-            /**
-             * Description
-             * @description Commodity description
-             */
-            description?: string | null;
-            /**
-             * Category
-             * @description Commodity category
-             */
-            category?: string | null;
-            /**
-             * Status
-             * @description Commodity status
-             */
-            status: string;
-            /**
-             * Created At
-             * Format: date-time
-             * @description Creation timestamp
-             */
-            created_at: string;
-            /**
-             * Updated At
-             * Format: date-time
-             * @description Last update timestamp
-             */
-            updated_at: string;
-        };
         /** CommodityUpdate */
         CommodityUpdate: {
             /**
@@ -1520,24 +786,90 @@ export interface components {
              */
             status?: string | null;
         };
-        /** EntityStatsResponse */
-        EntityStatsResponse: {
-            /** Entity Type */
-            entity_type: string;
-            /** Entity Id */
-            entity_id: number | null;
+        /** EconomicCreate */
+        EconomicCreate: {
             /**
-             * Stats
-             * @description Event counts by type
+             * Social Forestry Business Group Id
+             * @description Social Forestry Business Group ID
+             * @example 1
+             * @example 2
+             * @example 3
              */
-            stats: {
-                [key: string]: number;
-            };
+            social_forestry_business_group_id?: number | null;
             /**
-             * Total
-             * @description Total events
+             * Year
+             * @description Year
+             * @example 2024
+             * @example 2025
              */
-            total: number;
+            year?: number | null;
+            /**
+             * Commodity Id
+             * @description Commodity ID
+             * @example 1
+             * @example 2
+             * @example 3
+             */
+            commodity_id?: number | null;
+            /**
+             * Production
+             * @description Production quantity
+             * @example 2000
+             * @example 3000
+             */
+            production?: number | null;
+            /**
+             * Economic Value
+             * @description Economic value (must be positive)
+             * @example 2000
+             * @example 3000
+             */
+            economic_value?: number | null;
+            /**
+             * Description
+             * @description Description/Notes
+             * @example High quality production
+             * @example Premium grade
+             */
+            description?: string | null;
+        };
+        /** EconomicUpdate */
+        EconomicUpdate: {
+            /**
+             * Social Forestry Business Group Id
+             * @description Social Forestry Business Group ID
+             */
+            social_forestry_business_group_id?: number | null;
+            /**
+             * Year
+             * @description Year
+             */
+            year?: number | null;
+            /**
+             * Commodity Id
+             * @description Commodity ID
+             */
+            commodity_id?: number | null;
+            /**
+             * Production
+             * @description Production quantity
+             */
+            production?: number | null;
+            /**
+             * Economic Value
+             * @description Economic value (must be positive)
+             */
+            economic_value?: number | null;
+            /**
+             * Description
+             * @description Description/Notes
+             */
+            description?: string | null;
+            /**
+             * @description Economic record status
+             * @default ACTIVE
+             */
+            status: components["schemas"]["Status"] | null;
         };
         /**
          * EntityType
@@ -1587,33 +919,6 @@ export interface components {
          * @enum {string}
          */
         EventType: "view" | "download" | "upload" | "create" | "update" | "delete" | "share" | "export" | "api_access" | "click" | "authenticate";
-        /** FileResponse */
-        FileResponse: {
-            /** Id */
-            id: number;
-            /** Filename */
-            filename: string;
-            category: components["schemas"]["CategoryFile"];
-            /** Bucket Name */
-            bucket_name: string | null;
-            /** Object Name */
-            object_name: string;
-            /** Content Type */
-            content_type: string;
-            /** Size */
-            size: number;
-            /** Description */
-            description: string | null;
-            /** Url */
-            url: string;
-            /** User Id */
-            user_id: number | null;
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at: string;
-        };
         /** FinancingCreate */
         FinancingCreate: {
             /**
@@ -1650,53 +955,6 @@ export interface components {
              */
             currency?: string | null;
         };
-        /** FinancingResponse */
-        FinancingResponse: {
-            /**
-             * Id
-             * @description Financing ID
-             */
-            id: number;
-            /**
-             * Name
-             * @description Financing name
-             */
-            name: string;
-            /**
-             * Description
-             * @description Financing description
-             */
-            description?: string | null;
-            /** @description Type of financing */
-            financing_type: components["schemas"]["FinancingTypeEnum"];
-            /**
-             * Amount
-             * @description Financing amount
-             */
-            amount?: number | null;
-            /**
-             * Currency
-             * @description Currency
-             */
-            currency?: string | null;
-            /**
-             * Status
-             * @description Financing status
-             */
-            status: string;
-            /**
-             * Created At
-             * Format: date-time
-             * @description Creation timestamp
-             */
-            created_at: string;
-            /**
-             * Updated At
-             * Format: date-time
-             * @description Last update timestamp
-             */
-            updated_at: string;
-        };
         /**
          * FinancingTypeEnum
          * @enum {string}
@@ -1727,57 +985,22 @@ export interface components {
              */
             currency?: string | null;
             /**
-             * Status
              * @description Financing status
+             * @default ACTIVE
              */
-            status?: string | null;
+            status: components["schemas"]["Status"] | null;
         };
-        /** HarvestingRunResponse */
-        HarvestingRunResponse: {
-            /** Id */
-            id: number;
-            /** Province Api Id */
-            province_api_id?: number | null;
-            status: components["schemas"]["HarvestingStatus"];
-            /** Started At */
-            started_at?: string | null;
-            /** Completed At */
-            completed_at?: string | null;
-            /** Records Processed */
-            records_processed?: number | null;
-            /** Records Created */
-            records_created?: number | null;
-            /** Records Updated */
-            records_updated?: number | null;
-            /** Records Failed */
-            records_failed?: number | null;
-            /** Error Message */
-            error_message?: string | null;
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at: string;
-            /**
-             * Updated At
-             * Format: date-time
-             */
-            updated_at: string;
-        };
-        /**
-         * HarvestingStatus
-         * @enum {string}
-         */
-        HarvestingStatus: "PENDING" | "RUNNING" | "COMPLETED" | "FAILED" | "CANCELLED";
-        /** ListResponse[ActivityLogDetailResponse] */
-        "ListResponse_ActivityLogDetailResponse_-Input": {
+        /** ListResponse[Dict[str, Any]] */
+        "ListResponse_Dict_str__Any__-Input": {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
              * Data
              * @description Response data, can be an array, dict, or None
              */
-            data?: components["schemas"]["ActivityLogDetailResponse"][] | {
+            data?: {
+                [key: string]: unknown;
+            }[] | {
                 [key: string]: unknown;
             } | unknown[] | null;
             /**
@@ -1788,15 +1011,17 @@ export interface components {
                 [key: string]: unknown;
             } | null;
         };
-        /** ListResponse[ActivityLogDetailResponse] */
-        "ListResponse_ActivityLogDetailResponse_-Output": {
+        /** ListResponse[Dict[str, Any]] */
+        "ListResponse_Dict_str__Any__-Output": {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
              * Data
              * @description Response data, can be an array, dict, or None
              */
-            data?: components["schemas"]["ActivityLogDetailResponse"][] | {
+            data?: {
+                [key: string]: unknown;
+            }[] | {
                 [key: string]: unknown;
             } | unknown[] | null;
             /**
@@ -1807,15 +1032,15 @@ export interface components {
                 [key: string]: unknown;
             } | null;
         };
-        /** ListResponse[CertificationResponse] */
-        "ListResponse_CertificationResponse_-Input": {
+        /** ListResponse[SocialForestryBusinessGroupResponse] */
+        "ListResponse_SocialForestryBusinessGroupResponse_-Input": {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
              * Data
              * @description Response data, can be an array, dict, or None
              */
-            data?: components["schemas"]["CertificationResponse"][] | {
+            data?: components["schemas"]["SocialForestryBusinessGroupResponse"][] | {
                 [key: string]: unknown;
             } | unknown[] | null;
             /**
@@ -1826,186 +1051,15 @@ export interface components {
                 [key: string]: unknown;
             } | null;
         };
-        /** ListResponse[CertificationResponse] */
-        "ListResponse_CertificationResponse_-Output": {
+        /** ListResponse[SocialForestryBusinessGroupResponse] */
+        "ListResponse_SocialForestryBusinessGroupResponse_-Output": {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
              * Data
              * @description Response data, can be an array, dict, or None
              */
-            data?: components["schemas"]["CertificationResponse"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[CommodityResponse] */
-        ListResponse_CommodityResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["CommodityResponse"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[FileResponse] */
-        "ListResponse_FileResponse_-Input": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["FileResponse"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[FileResponse] */
-        "ListResponse_FileResponse_-Output": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["FileResponse"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[FinancingResponse] */
-        ListResponse_FinancingResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["FinancingResponse"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[LocationResponse] */
-        ListResponse_LocationResponse_: {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["LocationResponse"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[Product] */
-        "ListResponse_Product_-Input": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["Product"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[Product] */
-        "ListResponse_Product_-Output": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["Product"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[ProvinceAPIResponse] */
-        "ListResponse_ProvinceAPIResponse_-Input": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["ProvinceAPIResponse"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[ProvinceAPIResponse] */
-        "ListResponse_ProvinceAPIResponse_-Output": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["ProvinceAPIResponse"][] | {
+            data?: components["schemas"]["SocialForestryBusinessGroupResponse"][] | {
                 [key: string]: unknown;
             } | unknown[] | null;
             /**
@@ -2096,44 +1150,6 @@ export interface components {
                 [key: string]: unknown;
             } | null;
         };
-        /** ListResponse[UserResponse] */
-        "ListResponse_UserResponse_-Input": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["UserResponse"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[UserResponse] */
-        "ListResponse_UserResponse_-Output": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["UserResponse"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
         /** LocationCreate */
         LocationCreate: {
             /**
@@ -2200,76 +1216,6 @@ export interface components {
              */
             longitude?: number | null;
         };
-        /** LocationResponse */
-        LocationResponse: {
-            /**
-             * Id
-             * @description Location ID
-             */
-            id: number;
-            /**
-             * Hall
-             * @description Hall name
-             */
-            hall?: string | null;
-            /**
-             * Province
-             * @description Province name
-             */
-            province?: string | null;
-            /**
-             * Regency
-             * @description Regency name
-             */
-            regency?: string | null;
-            /**
-             * District
-             * @description District name
-             */
-            district?: string | null;
-            /**
-             * Village
-             * @description Village name
-             */
-            village?: string | null;
-            /**
-             * Secretary
-             * @description Secretary name
-             */
-            secretary?: string | null;
-            /**
-             * Forestry Management Unit
-             * @description Forest Management Unit
-             */
-            forestry_management_unit?: string | null;
-            /**
-             * Latitude
-             * @description Latitude coordinate
-             */
-            latitude?: number | null;
-            /**
-             * Longitude
-             * @description Longitude coordinate
-             */
-            longitude?: number | null;
-            /**
-             * Status
-             * @description Location status
-             */
-            status: string;
-            /**
-             * Created At
-             * Format: date-time
-             * @description Creation timestamp
-             */
-            created_at: string;
-            /**
-             * Updated At
-             * Format: date-time
-             * @description Last update timestamp
-             */
-            updated_at: string;
-        };
         /** LocationUpdate */
         LocationUpdate: {
             /**
@@ -2318,10 +1264,10 @@ export interface components {
              */
             longitude?: number | null;
             /**
-             * Status
              * @description Location status
+             * @default ACTIVE
              */
-            status?: string | null;
+            status: components["schemas"]["Status"] | null;
         };
         /** LogActivityRequest */
         LogActivityRequest: {
@@ -2385,15 +1331,8 @@ export interface components {
              */
             page_count: number;
         };
-        /** Product */
-        Product: {
-            /** Id */
-            id?: number | null;
-            /**
-             * Social Forestry Group Id
-             * @description Social Forestry Groups ID
-             */
-            social_forestry_group_id?: number | null;
+        /** ProductCreate */
+        ProductCreate: {
             /**
              * Name
              * @description Product name
@@ -2405,93 +1344,31 @@ export interface components {
              */
             description?: string | null;
             /**
-             * Status
-             * @description Product status
-             * @default ACTIVE
+             * Product Usage
+             * @description Product usage
              */
-            status: string;
-            /**
-             * Commodity Id
-             * @description Commodity ID
-             */
-            commodity_id?: number | null;
-            /**
-             * Product Type
-             * @description Product type
-             */
-            product_type?: string | null;
+            product_usage?: string | null;
             /**
              * Value Chain
              * @description Value chain
              */
             value_chain?: string | null;
             /**
-             * Updated At Src
-             * @description Source update timestamp
+             * Thumbnails
+             * @description Product thumbnails
              */
-            updated_at_src?: string | null;
+            thumbnails?: unknown[] | null;
             /**
-             * Economic Ts
-             * @description Economic timestamp
+             * Social Forestry Business Group Id
+             * @description Social Forestry Business Groups ID
              */
-            economic_ts?: string | null;
-            /**
-             * Metadatas
-             * @description metadatas data as JSON
-             */
-            metadatas?: {
-                [key: string]: unknown;
-            }[] | {
-                [key: string]: unknown;
-            } | null;
-            /**
-             * Created At
-             * Format: date-time
-             * @description Creation timestamp
-             */
-            created_at?: string;
-            /**
-             * Updated At
-             * Format: date-time
-             * @description Last update timestamp
-             */
-            updated_at?: string;
-        };
-        /** ProductCreate */
-        ProductCreate: {
-            /**
-             * External Id
-             * @description External product ID
-             */
-            external_id: string;
-            /**
-             * Social Forestry Groups Id
-             * @description KUPS ID
-             */
-            social_forestry_groups_id?: string | null;
-            /**
-             * Name
-             * @description Product name
-             */
-            name: string;
-            /**
-             * Description
-             * @description Product description
-             */
-            description?: string | null;
+            social_forestry_business_group_id?: number | null;
             /**
              * Commodity Id
              * @description Commodity ID
              */
             commodity_id?: number | null;
             /**
-             * Product Type
-             * @description Product type
-             */
-            product_type?: string | null;
-            /** @description Value chain */
-            value_chain?: components["schemas"]["ValueChain"] | null;
-            /**
              * Metadatas
              * @description metadatas data as JSON
              */
@@ -2500,16 +1377,6 @@ export interface components {
             }[] | {
                 [key: string]: unknown;
             } | null;
-            /**
-             * Economic Ts
-             * @description Economic timestamp
-             */
-            economic_ts?: string | null;
-            /**
-             * @description Product status
-             * @default ACTIVE
-             */
-            status: components["schemas"]["Status"] | null;
         };
         /** ProductUpdate */
         ProductUpdate: {
@@ -2524,22 +1391,40 @@ export interface components {
              */
             description?: string | null;
             /**
-             * Social Forestry Group Id
-             * @description Social Forestry Groups ID
+             * Product Usage
+             * @description Product usage
              */
-            social_forestry_group_id?: number | null;
+            product_usage?: string | null;
+            /**
+             * Value Chain
+             * @description Value chain
+             */
+            value_chain?: string | null;
+            /**
+             * Thumbnails
+             * @description Product thumbnails
+             */
+            thumbnails?: unknown[] | null;
+            /**
+             * Price
+             * @description Product price
+             */
+            price?: number | null;
+            /**
+             * Unit
+             * @description Product unit
+             */
+            unit?: string | null;
+            /**
+             * Social Forestry Business Group Id
+             * @description Social Forestry Business Groups ID
+             */
+            social_forestry_business_group_id?: number | null;
             /**
              * Commodity Id
              * @description Commodity ID
              */
             commodity_id?: number | null;
-            /**
-             * Product Type
-             * @description Product type
-             */
-            product_type?: string | null;
-            /** @description Value chain */
-            value_chain?: components["schemas"]["ValueChain"] | null;
             /**
              * Metadatas
              * @description metadatas data as JSON
@@ -2549,132 +1434,8 @@ export interface components {
             }[] | {
                 [key: string]: unknown;
             } | null;
-            /**
-             * Economic Ts
-             * @description Economic timestamp
-             */
-            economic_ts?: string | null;
             /** @description Product status */
             status?: components["schemas"]["Status"] | null;
-        };
-        /** ProvinceAPICreate */
-        ProvinceAPICreate: {
-            /**
-             * Province Name
-             * @description Province name
-             */
-            province_name: string;
-            /**
-             * Api Url
-             * @description API endpoint URL
-             */
-            api_url: string;
-            /**
-             * Api Key
-             * @description API key if required
-             */
-            api_key?: string | null;
-            /**
-             * Description
-             * @description API description
-             */
-            description?: string | null;
-            /**
-             * Rate Limit
-             * @description Requests per minute
-             * @default 60
-             */
-            rate_limit: number | null;
-            /**
-             * Timeout
-             * @description Request timeout in seconds
-             * @default 30
-             */
-            timeout: number | null;
-            /**
-             * Enabled
-             * @description Whether API is enabled
-             * @default true
-             */
-            enabled: boolean;
-        };
-        /** ProvinceAPIResponse */
-        ProvinceAPIResponse: {
-            /** Id */
-            id: number;
-            /** Province Name */
-            province_name: string;
-            /** Api Url */
-            api_url: string;
-            /** Api Key */
-            api_key?: string | null;
-            /** Description */
-            description?: string | null;
-            /** Rate Limit */
-            rate_limit?: number | null;
-            /** Timeout */
-            timeout?: number | null;
-            /** Enabled */
-            enabled: boolean;
-            /** Last Harvested */
-            last_harvested?: string | null;
-            /** Total Records */
-            total_records?: number | null;
-            /** Status */
-            status: string;
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at: string;
-            /**
-             * Updated At
-             * Format: date-time
-             */
-            updated_at: string;
-        };
-        /** ProvinceAPIUpdate */
-        ProvinceAPIUpdate: {
-            /**
-             * Province Name
-             * @description Province name
-             */
-            province_name?: string | null;
-            /**
-             * Api Url
-             * @description API endpoint URL
-             */
-            api_url?: string | null;
-            /**
-             * Api Key
-             * @description API key if required
-             */
-            api_key?: string | null;
-            /**
-             * Description
-             * @description API description
-             */
-            description?: string | null;
-            /**
-             * Rate Limit
-             * @description Requests per minute
-             */
-            rate_limit?: number | null;
-            /**
-             * Timeout
-             * @description Request timeout in seconds
-             */
-            timeout?: number | null;
-            /**
-             * Enabled
-             * @description Whether API is enabled
-             */
-            enabled?: boolean | null;
-            /**
-             * Status
-             * @description API status
-             */
-            status?: string | null;
         };
         /** RefreshTokenRequest */
         RefreshTokenRequest: {
@@ -2707,7 +1468,7 @@ export interface components {
          * Roles
          * @enum {string}
          */
-        Roles: "ADMINISTRATOR" | "PARTNER";
+        Roles: "MINISTRY" | "ADMINISTRATOR" | "PARTNER";
         /** SettingCreate */
         SettingCreate: {
             /** Key */
@@ -2737,25 +1498,23 @@ export interface components {
                 [key: string]: unknown;
             } | unknown[] | null;
         };
-        /**
-         * SocialForestryGroupClass
-         * @enum {string}
-         */
-        SocialForestryGroupClass: "SILVER" | "GOLD" | "PLATINUM";
-        /** SocialForestryGroupCreate */
-        SocialForestryGroupCreate: {
+        /** SocialForestryBusinessGroupCreate */
+        SocialForestryBusinessGroupCreate: {
+            /**
+             * External Id
+             * @description External product ID
+             */
+            external_id: string;
             /**
              * Name
              * @description Group name
              */
             name: string;
             /**
-             * Secretary
-             * @description Secretary name
+             * Class
+             * @description Group class
              */
-            secretary?: string | null;
-            /** @description Group class */
-            class_?: components["schemas"]["SocialForestryGroupClass"] | null;
+            class_?: string | null;
             /**
              * Location Id
              * @description Location ID
@@ -2767,15 +1526,16 @@ export interface components {
              */
             financing_id?: number | null;
         };
-        /** SocialForestryGroupResponse */
-        SocialForestryGroupResponse: {
+        /** SocialForestryBusinessGroupResponse */
+        SocialForestryBusinessGroupResponse: {
             /** Id */
             id: number;
+            /** External Id */
+            external_id: string;
             /** Name */
             name: string;
-            /** Secretary */
-            secretary?: string | null;
-            class_?: components["schemas"]["SocialForestryGroupClass"] | null;
+            /** Class */
+            class_?: string | null;
             /** Location Id */
             location_id?: number | null;
             /** Financing Id */
@@ -2793,20 +1553,23 @@ export interface components {
              */
             updated_at: string;
         };
-        /** SocialForestryGroupUpdate */
-        SocialForestryGroupUpdate: {
+        /** SocialForestryBusinessGroupUpdate */
+        SocialForestryBusinessGroupUpdate: {
+            /**
+             * External Id
+             * @description External product ID
+             */
+            external_id?: string | null;
             /**
              * Name
              * @description Group name
              */
             name?: string | null;
             /**
-             * Secretary
-             * @description Secretary name
+             * Class
+             * @description Group class
              */
-            secretary?: string | null;
-            /** @description Group class */
-            class_?: components["schemas"]["SocialForestryGroupClass"] | null;
+            class_?: string | null;
             /**
              * Location Id
              * @description Location ID
@@ -2822,6 +1585,41 @@ export interface components {
              * @description Group status
              */
             status?: string | null;
+        };
+        /** SocialForestryGroupCreate */
+        SocialForestryGroupCreate: {
+            /**
+             * Name
+             * @description Group name
+             */
+            name: string;
+            /**
+             * Location Id
+             * @description Location ID
+             */
+            location_id?: number | null;
+        };
+        /** SocialForestryGroupResponse */
+        SocialForestryGroupResponse: {
+            /** Id */
+            id: number;
+            /** Name */
+            name: string;
+            /** Location Id */
+            location_id?: number | null;
+        };
+        /** SocialForestryGroupUpdate */
+        SocialForestryGroupUpdate: {
+            /**
+             * Name
+             * @description Group name
+             */
+            name?: string | null;
+            /**
+             * Location Id
+             * @description Location ID
+             */
+            location_id?: number | null;
         };
         /**
          * Status
@@ -2841,29 +1639,6 @@ export interface components {
             token_type: string;
             /** Expires In */
             expires_in: number;
-        };
-        /** TrendingEntityResponse */
-        TrendingEntityResponse: {
-            /** Entity Id */
-            entity_id: number | null;
-            /** Entity Slug */
-            entity_slug?: string | null;
-            /**
-             * Count
-             * @description Event count
-             */
-            count: number;
-        };
-        /** TrendingListResponse */
-        TrendingListResponse: {
-            /** Entity Type */
-            entity_type: string;
-            /** Event Type */
-            event_type: string;
-            /** Period Days */
-            period_days: number;
-            /** Trending */
-            trending: components["schemas"]["TrendingEntityResponse"][];
         };
         /** UserCreate */
         UserCreate: {
@@ -2892,37 +1667,6 @@ export interface components {
              * @description Role name (converted to role_id)
              */
             role?: string | null;
-        };
-        /** UserResponse */
-        UserResponse: {
-            /** Id */
-            id: number;
-            /** Name */
-            name: string;
-            /** Username */
-            username: string;
-            /** Role */
-            role?: string | null;
-            /** Email */
-            email: string;
-            /** Address */
-            address?: string | null;
-            /** Phone */
-            phone?: string | null;
-            /** Thumbnail */
-            thumbnail?: string | null;
-            /** Status */
-            status: string;
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at: string;
-            /**
-             * Updated At
-             * Format: date-time
-             */
-            updated_at: string;
         };
         /** UserUpdate */
         UserUpdate: {
@@ -2965,11 +1709,6 @@ export interface components {
                 [key: string]: unknown;
             } | null;
         };
-        /**
-         * ValueChain
-         * @enum {string}
-         */
-        ValueChain: "PRIMARY PRODUCT" | "PROCESSED PRODUCT" | "ENVIRONMENTAL SERVICE";
     };
     responses: never;
     parameters: never;
@@ -3049,7 +1788,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_ActivityLogDetailResponse_-Output"] | components["schemas"]["BaseResponse_ActivityLogDetailResponse_"] | null;
+                    "application/json": components["schemas"]["ListResponse_Dict_str__Any__-Output"] | components["schemas"]["BaseResponse_Dict_str__Any__"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -3099,7 +1838,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_EntityStatsResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3146,7 +1885,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_TrendingListResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3440,7 +2179,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_CertificationResponse_-Output"] | components["schemas"]["BaseResponse_CertificationResponse_"] | null;
+                    "application/json": components["schemas"]["ListResponse_Dict_str__Any__-Output"] | components["schemas"]["BaseResponse_Dict_str__Any__"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -3482,7 +2221,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_CertificationResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3507,7 +2246,12 @@ export interface operations {
     };
     get_certification_certifications__certification_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
             header?: never;
             path: {
                 certification_id: number;
@@ -3522,7 +2266,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_CertificationResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3566,7 +2310,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_CertificationResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3655,7 +2399,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_CommodityResponse_"] | components["schemas"]["BaseResponse_CommodityResponse_"] | null;
+                    "application/json": components["schemas"]["ListResponse_Dict_str__Any__-Output"] | components["schemas"]["BaseResponse_Dict_str__Any__"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -3697,7 +2441,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_CommodityResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3722,7 +2466,12 @@ export interface operations {
     };
     get_commodity_commodities__commodity_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
             header?: never;
             path: {
                 commodity_id: number;
@@ -3737,7 +2486,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_CommodityResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3781,7 +2530,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_CommodityResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3842,47 +2591,7 @@ export interface operations {
             };
         };
     };
-    get_commodities_by_category_commodities_category__category__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                category: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ListResponse_CommodityResponse_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_province_apis_harvesting_province_apis_get: {
+    get_economics_economics_get: {
         parameters: {
             query?: {
                 /** @description Full-text search query. Use this parameter to search across multiple fields in the resource. */
@@ -3910,7 +2619,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_ProvinceAPIResponse_-Output"] | components["schemas"]["BaseResponse_ProvinceAPIResponse_"] | null;
+                    "application/json": components["schemas"]["ListResponse_Dict_str__Any__-Output"] | components["schemas"]["BaseResponse_Dict_str__Any__"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -3933,7 +2642,7 @@ export interface operations {
             };
         };
     };
-    create_province_api_harvesting_province_apis_post: {
+    create_economic_economics_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -3942,7 +2651,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["ProvinceAPICreate"];
+                "application/json": components["schemas"]["EconomicCreate"];
             };
         };
         responses: {
@@ -3952,7 +2661,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_ProvinceAPIResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3975,12 +2684,17 @@ export interface operations {
             };
         };
     };
-    get_province_api_harvesting_province_apis__api_id__get: {
+    get_economic_economics__economic_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
             header?: never;
             path: {
-                api_id: number;
+                economic_id: number;
             };
             cookie?: never;
         };
@@ -3992,7 +2706,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_ProvinceAPIResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -4015,18 +2729,18 @@ export interface operations {
             };
         };
     };
-    update_province_api_harvesting_province_apis__api_id__put: {
+    update_economic_economics__economic_id__put: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                api_id: number;
+                economic_id: number;
             };
             cookie?: never;
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["ProvinceAPIUpdate"];
+                "application/json": components["schemas"]["EconomicUpdate"];
             };
         };
         responses: {
@@ -4036,7 +2750,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_ProvinceAPIResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -4059,12 +2773,12 @@ export interface operations {
             };
         };
     };
-    delete_province_api_harvesting_province_apis__api_id__delete: {
+    delete_economic_economics__economic_id__delete: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                api_id: number;
+                economic_id: number;
             };
             cookie?: never;
         };
@@ -4076,728 +2790,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    harvest_province_api_harvesting_harvest__api_id__post: {
-        parameters: {
-            query?: {
-                is_background?: boolean;
-            };
-            header?: never;
-            path: {
-                api_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            202: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_HarvestingRunResponse_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    harvest_all_province_apis_harvesting_harvest_all_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            202: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_harvesting_status_harvesting_status_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    validate_province_api_harvesting_validate_api_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["Body_validate_province_api_harvesting_validate_api_post"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_APIValidationResponse_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_scheduled_jobs_harvesting_scheduler_jobs_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_list_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    add_daily_job_harvesting_scheduler_jobs_daily_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["Body_add_daily_job_harvesting_scheduler_jobs_daily_post"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    add_hourly_job_harvesting_scheduler_jobs_hourly_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": number;
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    add_weekly_job_harvesting_scheduler_jobs_weekly_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["Body_add_weekly_job_harvesting_scheduler_jobs_weekly_post"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    add_custom_job_harvesting_scheduler_jobs_custom_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["Body_add_custom_job_harvesting_scheduler_jobs_custom_post"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    remove_job_harvesting_scheduler_jobs__job_id__delete: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                job_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    pause_job_harvesting_scheduler_jobs__job_id__pause_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                job_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    resume_job_harvesting_scheduler_jobs__job_id__resume_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                job_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_job_status_harvesting_scheduler_jobs__job_id__status_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                job_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_task_status_harvesting_tasks__task_id__status_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                task_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    cancel_task_harvesting_tasks__task_id__cancel_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                task_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_queue_stats_harvesting_queue_stats_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    cleanup_old_tasks_harvesting_queue_cleanup_post: {
-        parameters: {
-            query?: {
-                older_than_hours?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    health_check_harvesting_health_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_"];
-                };
             };
             /** @description Unprocessable Content */
             422: {
@@ -4847,7 +2839,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_FileResponse_-Output"] | components["schemas"]["BaseResponse_FileResponse_"] | null;
+                    "application/json": components["schemas"]["ListResponse_Dict_str__Any__-Output"] | components["schemas"]["BaseResponse_Dict_str__Any__"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -4889,7 +2881,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_FileResponse__NoneType__"];
+                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -4914,7 +2906,12 @@ export interface operations {
     };
     get_file_files__id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
             header?: never;
             path: {
                 id: number;
@@ -4929,7 +2926,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_FileResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5056,7 +3053,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_FinancingResponse_"] | components["schemas"]["BaseResponse_FinancingResponse_"] | null;
+                    "application/json": components["schemas"]["ListResponse_Dict_str__Any__-Output"] | components["schemas"]["BaseResponse_Dict_str__Any__"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -5098,7 +3095,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_FinancingResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5123,7 +3120,12 @@ export interface operations {
     };
     get_financing_financing__financing_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
             header?: never;
             path: {
                 financing_id: number;
@@ -5138,7 +3140,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_FinancingResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5182,7 +3184,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_FinancingResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5243,47 +3245,6 @@ export interface operations {
             };
         };
     };
-    get_financings_by_type_financing_type__financing_type__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Financing type */
-                financing_type: components["schemas"]["FinancingTypeEnum"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ListResponse_FinancingResponse_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
     get_locations_locations_get: {
         parameters: {
             query?: {
@@ -5312,7 +3273,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_LocationResponse_"] | components["schemas"]["BaseResponse_LocationResponse_"] | null;
+                    "application/json": components["schemas"]["ListResponse_Dict_str__Any__-Output"] | components["schemas"]["BaseResponse_Dict_str__Any__"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -5354,7 +3315,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_LocationResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5379,7 +3340,12 @@ export interface operations {
     };
     get_location_locations__location_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
             header?: never;
             path: {
                 location_id: number;
@@ -5394,7 +3360,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_LocationResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5438,7 +3404,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_LocationResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5499,91 +3465,6 @@ export interface operations {
             };
         };
     };
-    get_locations_by_province_locations_province__province__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                province: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ListResponse_LocationResponse_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_nearby_locations_locations_nearby_get: {
-        parameters: {
-            query: {
-                /** @description Latitude coordinate */
-                latitude: number;
-                /** @description Longitude coordinate */
-                longitude: number;
-                /** @description Search radius in kilometers */
-                radius?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ListResponse_LocationResponse_"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
     get_products_products_get: {
         parameters: {
             query?: {
@@ -5612,7 +3493,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_Product_-Output"] | components["schemas"]["BaseResponse_Product_"] | null;
+                    "application/json": components["schemas"]["ListResponse_Dict_str__Any__-Output"] | components["schemas"]["BaseResponse_Dict_str__Any__"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -5654,7 +3535,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_Product__NoneType__"];
+                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5679,7 +3560,12 @@ export interface operations {
     };
     get_product_products__product_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
             header?: never;
             path: {
                 product_id: number;
@@ -5694,7 +3580,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Product_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5738,7 +3624,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_Product__NoneType__"];
+                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5822,7 +3708,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_Product__NoneType__"];
+                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5915,7 +3801,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_SettingResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5955,7 +3841,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_SettingResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -5999,7 +3885,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_SettingResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -6081,7 +3967,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_SettingResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -6174,7 +4060,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_SocialForestryGroupResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -6199,10 +4085,15 @@ export interface operations {
     };
     get_social_forestry_group_social_forestry_groups__social_forestry_group_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
             header?: never;
             path: {
-                social_forestry_group_id: string;
+                social_forestry_group_id: number;
             };
             cookie?: never;
         };
@@ -6214,7 +4105,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_SocialForestryGroupResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -6237,12 +4128,12 @@ export interface operations {
             };
         };
     };
-    update_social_forestry_group_full_social_forestry_groups__social_forestry_group_id__put: {
+    update_social_forestry_group_social_forestry_groups__social_forestry_group_id__put: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                social_forestry_group_id: string;
+                social_forestry_group_id: number;
             };
             cookie?: never;
         };
@@ -6258,7 +4149,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_SocialForestryGroupResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -6288,7 +4179,7 @@ export interface operations {
             };
             header?: never;
             path: {
-                social_forestry_group_id: string;
+                social_forestry_group_id: number;
             };
             cookie?: never;
         };
@@ -6326,7 +4217,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                social_forestry_group_id: string;
+                social_forestry_group_id: number;
             };
             cookie?: never;
         };
@@ -6342,7 +4233,273 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_SocialForestryGroupResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_social_forestry_business_group_list_social_forestry_business_groups_get: {
+        parameters: {
+            query?: {
+                /** @description Full-text search query. Use this parameter to search across multiple fields in the resource. */
+                search?: string | null;
+                /** @description Strapi-style filter configuration. Supports nested filtering using bracket notation, e.g. filters[username][$eq]=John. Accepts either a JSON string or repeated query parameters. */
+                filters?: string | null;
+                /** @description Populate configuration for including related resources. Can specify relations to populate, e.g. populate=profile or populate[profile][fields][0]=avatar. Accepts a JSON string or repeated query parameters. */
+                populate?: string | null;
+                /** @description List of fields to include in the response. Can be a comma-separated string or repeated fields parameters, e.g. fields=name&fields=email. */
+                fields?: string | null;
+                /** @description Sorting configuration for results. Accepts a comma-separated string or repeated sort parameters, e.g. sort=createdAt:desc. */
+                sort?: string | null;
+                /** @description Pagination configuration. Supports page-based or offset-based pagination, e.g. pagination[page]=1&pagination[pageSize]=10. Accepts a JSON string or repeated query parameters. */
+                pagination?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ListResponse_SocialForestryBusinessGroupResponse_-Output"] | components["schemas"]["BaseResponse_SocialForestryBusinessGroupResponse_"] | null;
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    create_social_forestry_business_group_social_forestry_business_groups_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SocialForestryBusinessGroupCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_social_forestry_business_group_social_forestry_business_groups__social_forestry_business_group_id__get: {
+        parameters: {
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
+            header?: never;
+            path: {
+                social_forestry_business_group_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    update_social_forestry_business_group_full_social_forestry_business_groups__social_forestry_business_group_id__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                social_forestry_business_group_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SocialForestryBusinessGroupUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    delete_social_forestry_business_group_social_forestry_business_groups__social_forestry_business_group_id__delete: {
+        parameters: {
+            query?: {
+                permanent?: boolean;
+            };
+            header?: never;
+            path: {
+                social_forestry_business_group_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    patch_social_forestry_business_group_social_forestry_business_groups__social_forestry_business_group_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                social_forestry_business_group_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SocialForestryBusinessGroupUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -6393,7 +4550,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_UserResponse_-Output"] | components["schemas"]["BaseResponse_UserResponse_"] | null;
+                    "application/json": components["schemas"]["ListResponse_Dict_str__Any__-Output"] | components["schemas"]["BaseResponse_Dict_str__Any__"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -6435,7 +4592,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_UserResponse__NoneType__"];
+                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -6460,7 +4617,12 @@ export interface operations {
     };
     get_user_users__username__get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
             header?: never;
             path: {
                 username: string;
@@ -6475,7 +4637,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_UserResponse_"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -6519,7 +4681,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_UserResponse__NoneType__"];
+                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -6603,7 +4765,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_UserResponse__NoneType__"];
+                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"];
                 };
             };
             /** @description Unprocessable Content */

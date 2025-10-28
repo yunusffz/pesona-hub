@@ -1,5 +1,12 @@
 <script setup lang="ts">
   import BaseLinkButton from "~/components/base/BaseLinkButton.vue";
+  import type { ApiProduct } from "~/types/api-product";
+
+  interface Props {
+    product?: ApiProduct | null;
+  }
+
+  const props = defineProps<Props>();
 </script>
 
 <template>
@@ -16,7 +23,7 @@
           Wilayah:
         </span>
         <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
-          LPHN Limo Koto
+          {{ product?.social_forestry_business_group?.name || "N/A" }}
         </span>
       </div>
       <div class="flex flex-col gap-1">
@@ -24,7 +31,34 @@
           Komoditas:
         </span>
         <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
-          KUPS Madu Lambah Sighabungan
+          {{ product?.name || "N/A" }}
+        </span>
+      </div>
+      <div v-if="product?.product_usage" class="flex flex-col gap-1">
+        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
+          Penggunaan:
+        </span>
+        <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
+          {{ product.product_usage }}
+        </span>
+      </div>
+      <div v-if="product?.value_chain" class="flex flex-col gap-1">
+        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
+          Rantai Nilai:
+        </span>
+        <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
+          {{ product.value_chain }}
+        </span>
+      </div>
+      <div
+        v-if="product?.social_forestry_business_group?.contact?.chief_contact"
+        class="flex flex-col gap-1"
+      >
+        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
+          Kontak:
+        </span>
+        <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
+          {{ product.social_forestry_business_group.contact.chief_contact }}
         </span>
       </div>
 
@@ -51,8 +85,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-  import BaseButton from "~/components/base/BaseButton.vue";
-  import SvgIcon from "~/components/base/SvgIcon.vue";
-</script>

@@ -4,7 +4,7 @@ import { useApi, useAuthToken } from "./useApi";
 import { mapErrorMessage } from "~/utils/error-mapper";
 
 // Type definitions from OpenAPI
-type UserResponse = components["schemas"]["UserResponse"];
+type UserResponse = components["schemas"]["UserUpdate"];
 type TokenResponse = components["schemas"]["TokenResponse"];
 type RegisterRequest = components["schemas"]["RegisterRequest"];
 

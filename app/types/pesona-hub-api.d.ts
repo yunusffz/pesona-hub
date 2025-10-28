@@ -1378,6 +1378,46 @@ export interface components {
                 [key: string]: unknown;
             } | null;
         };
+        /** ProductResponse */
+        ProductResponse: {
+            /** Id */
+            id: number;
+            /** Name */
+            name: string;
+            /** Description */
+            description?: string | null;
+            /** Product Usage */
+            product_usage?: string | null;
+            /** Value Chain */
+            value_chain?: string | null;
+            /** Thumbnails */
+            thumbnails?: unknown[] | null;
+            /** Price */
+            price?: number | null;
+            /** Unit */
+            unit?: string | null;
+            /** Social Forestry Business Group Id */
+            social_forestry_business_group_id?: number | null;
+            /** Commodity Id */
+            commodity_id?: number | null;
+            /** Metadatas */
+            metadatas?: {
+                [key: string]: unknown;
+            }[] | {
+                [key: string]: unknown;
+            } | null;
+            status: components["schemas"]["Status"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
         /** ProductUpdate */
         ProductUpdate: {
             /**
@@ -1525,6 +1565,11 @@ export interface components {
              * @description Financing ID
              */
             financing_id?: number | null;
+            /**
+             * Contact Id
+             * @description Contact ID
+             */
+            contact_id?: number | null;
         };
         /** SocialForestryBusinessGroupResponse */
         SocialForestryBusinessGroupResponse: {
@@ -1540,6 +1585,8 @@ export interface components {
             location_id?: number | null;
             /** Financing Id */
             financing_id?: number | null;
+            /** Contact Id */
+            contact_id?: number | null;
             /** Status */
             status: string;
             /**
@@ -1585,6 +1632,11 @@ export interface components {
              * @description Group status
              */
             status?: string | null;
+            /**
+             * Contact Id
+             * @description Contact ID
+             */
+            contact_id?: number | null;
         };
         /** SocialForestryGroupCreate */
         SocialForestryGroupCreate: {
@@ -3493,7 +3545,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_Dict_str__Any__-Output"] | components["schemas"]["BaseResponse_Dict_str__Any__"] | null;
+                    "application/json": components["schemas"]["ProductResponse"] | components["schemas"]["ListResponse_Dict_str__Any__-Output"] | components["schemas"]["BaseResponse_Dict_str__Any__"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -3535,7 +3587,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"];
+                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"] | components["schemas"]["ProductResponse"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3580,7 +3632,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"];
+                    "application/json": components["schemas"]["BaseResponse_Dict_str__Any__"] | components["schemas"]["ProductResponse"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3624,7 +3676,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"];
+                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"] | components["schemas"]["ProductResponse"];
                 };
             };
             /** @description Unprocessable Content */
@@ -3708,7 +3760,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"];
+                    "application/json": components["schemas"]["BaseResponse_Union_Dict_str__Any___NoneType__"] | components["schemas"]["ProductResponse"];
                 };
             };
             /** @description Unprocessable Content */

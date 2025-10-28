@@ -2,7 +2,7 @@
   <div class="rounded-2xl border border-neutral-200">
     <div class="relative">
       <Badge class="absolute top-3 right-6" variant="white-transparent">{{
-        props.product.catalogType || "Produk"
+        props.product.product_usage || "Produk"
       }}</Badge>
       <NuxtImg
         :src="'/assets/images/product-2.png'"
@@ -25,7 +25,7 @@
           </p>
         </div>
         <BaseBadge variant="grey" size="xs">{{
-          props.product.product_type
+          props.product.product_usage
         }}</BaseBadge>
       </div>
       <div class="text-neutral-700 text-xs flex flex-col gap-1">
@@ -66,10 +66,10 @@
   import Badge from "~/components/ui/badge/Badge.vue";
   import BaseBadge from "~/components/base/BaseBadge.vue";
   import { formatRupiah } from "~/utils/format-number";
-  import type { ApiProduct } from "~/types/api-product";
+  import type { ProductWithRelations } from "~/types/product";
 
   const props = defineProps<{
-    product: Partial<ApiProduct>;
+    product: Partial<ProductWithRelations>;
     linkText: string;
   }>();
 

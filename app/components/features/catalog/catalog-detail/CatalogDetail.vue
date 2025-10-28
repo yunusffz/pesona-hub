@@ -1,9 +1,8 @@
 <script setup lang="ts">
   import CatalogDetailHeader from "./CatalogDetailHeader.vue";
   import CatalogDetailContent from "./CatalogDetailContent.vue";
-  import type { ApiProduct } from "~/types/api-product";
   import { useProduct } from "~/queries";
-
+  import type { ProductWithRelations } from "~/types/product";
   // Get product ID from route params
   const route = useRoute();
   const productId = route.params.slug as string;
@@ -19,9 +18,9 @@
   });
 
   // Extract product data from API response
-  const product = computed<ApiProduct | null>(() => {
+  const product = computed<ProductWithRelations | null>(() => {
     if (!productData.value?.data) return null;
-    return productData.value.data as ApiProduct;
+    return productData.value.data as ProductWithRelations;
   });
 
   // Provide product data to child components

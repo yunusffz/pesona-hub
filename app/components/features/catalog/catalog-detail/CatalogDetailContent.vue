@@ -67,76 +67,75 @@
 </template>
 
 <script setup lang="ts">
-  import QuantityCounter from "~/components/base/QuantityCounter.vue";
-  import CatalogDetailInfo from "./CatalogDetailInfo.vue";
-  import BaseButton from "~/components/base/BaseButton.vue";
-  import type { ApiProduct } from "~/types/api-product";
-  import { formatRupiah } from "~/utils/format-number";
+    import QuantityCounter from "~/components/base/QuantityCounter.vue";
+    import CatalogDetailInfo from "./CatalogDetailInfo.vue";
+    import BaseButton from "~/components/base/BaseButton.vue";
+    import { formatRupiah } from "~/utils/format-number";
+    import type { ProductWithRelations } from "~/types/product";
 
-  interface Props {
-    product?: ApiProduct | null;
-  }
+    interface Props {
+      product?: ProductWithRelations
 
-  const props = defineProps<Props>();
+    const props = defineProps<Props>();
 
-  const quantity = ref(1);
-  const selectedVariant = ref<"default">("default");
+    const quantity = ref(1);
+    const selectedVariant = ref<"default">("default");
 
-  // Computed property for product image
-  const productImage = computed(() => {
-    if (
-      props.product?.thumbnails &&
-      Array.isArray(props.product.thumbnails) &&
-      props.product.thumbnails.length > 0
-    ) {
-      // Assuming thumbnails is an array of image objects with url property
-      const firstImage = props.product.thumbnails[0] as any;
-      return firstImage?.url || "/assets/images/product-1.png";
-    }
-    return "/assets/images/product-1.png";
-  });
+    // Computed property for product image
+    const productImage = computed(() => {
+      if (
+        props.product?.thumbnails &&
+        Array.isArray(props.product.thumbnails) &&
+        props.product.thumbnails.length > 0
+      ) {
+        // Assuming thumbnails is an array of image objects with url property
+        const firstImage = props.product.thumbnails[0] as any;
+        return firstImage?.url || "/assets/images/product-1.png";
+      }
+      return "/assets/images/product-1.png";
+    });
 
-  // Computed property for product price
-  const productPrice = computed(() => {
-    return props.product?.price || 0;
-  });
+    // Computed property for product price
+    const productPrice = computed(() => {
+      return props.product?.price || 0;
+    });
 
-  // Computed property for product unit
-  const productUnit = computed(() => {
-    return props.product?.unit || "unit";
-  });
+    // Computed property for product unit
+    const productUnit = computed(() => {
+      return props.product?.unit || "unit";
+    });
 
-  const handleQuoteRequest = () => {
-    const productName = props.product?.name || "Produk";
-    const unitPrice =
-      selectedVariant.value === "default"
-        ? productPrice.value
-        : productPrice.value;
-    const totalPrice = quantity.value * unitPrice;
+    const handleQuoteRequest = () => {
+      const productName = props.product?.name || "Produk";
+      const unitPrice =
+        selectedVariant.value === "default"
+          ? productPrice.value
+          : productPrice.value;
+      const totalPrice = quantity.value * unitPrice;
 
-    // Format price with thousand separators
-    const formattedPrice = new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(totalPrice);
+      // Format price with thousand separators
+      const formattedPrice = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(totalPrice);
 
-    const message = `Halo, saya tertarik dengan produk:
+      const message = `Halo, saya tertarik dengan produk:
 
-• *${productName}*
-• Varian: ${productName}
-• Jumlah: ${quantity.value} ${productUnit.value}
-• Total Harga: ${formattedPrice}
+  • *${productName}*
+  • Varian: ${productName}
+  • Jumlah: ${quantity.value} ${productUnit.value}
+  • Total Harga: ${formattedPrice}
 
-Mohon informasi lebih lanjut mengenai produk ini. Terima kasih!`;
+  Mohon informasi lebih lanjut mengenai produk ini. Terima kasih!`;
 
-    // WhatsApp number (dummy number for demo)
-    const whatsappNumber = "<number-whatsapp-xxxx>";
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+      // WhatsApp number (dummy number for demo)
+      const whatsappNumber = "<number-whatsapp-xxxx>";
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-    // Open WhatsApp in new tab
-    window.open(whatsappUrl, "_blank");
-  };
+      // Open WhatsApp in new tab
+      window.open(whatsappUrl, "_blank");
+    };
 </script>

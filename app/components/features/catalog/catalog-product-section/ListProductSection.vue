@@ -46,9 +46,8 @@
 
 <script setup lang="ts">
   import CatalogCard from "~/components/common/catalog-section/CatalogCard.vue";
-  import type { ApiProduct } from "~/types/api-product";
   import { useProducts } from "~/queries";
-
+  import type { ProductWithRelations } from "~/types/product";
   // Props
   interface Props {
     search?: string;
@@ -79,9 +78,9 @@
   const products = computed(() => {
     const productsData = data.value?.data;
     if (Array.isArray(productsData)) {
-      return productsData as ApiProduct[];
+      return productsData as unknown as ProductWithRelations[];
     }
-    return [] as ApiProduct[];
+    return [] as ProductWithRelations[];
   });
 
   const linkText = "Lihat Detail";

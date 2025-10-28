@@ -1,20 +1,10 @@
 import type { components } from "./pesona-hub-api";
 
-// API Product type from the schema
-type ApiProduct = components["schemas"]["ProductCreate"];
+type ProductResponse = components["schemas"]["ProductResponse"];
 
-// Extended Product interface for UI display
-interface Product extends ApiProduct {
-  title?: string; // Alias for name from API
-  image?: string;
-  price?: string;
-  contact?: string;
-  catalogType?: string;
-  kps?: string;
-  kups?: string;
-  size?: string;
-  isNew?: boolean;
-  link?: string;
-}
+type ProductWithRelations = ProductResponse & {
+  social_forestry_group: components["schemas"]["SocialForestryGroupResponse"];
+  social_forestry_business_group: components["schemas"]["SocialForestryBusinessGroupResponse"];
+};
 
-export type { Product, ApiProduct };
+export type { ProductWithRelations };

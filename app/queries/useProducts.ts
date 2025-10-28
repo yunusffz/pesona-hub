@@ -78,7 +78,10 @@ const buildStrapiParams = (options: UseProductsOptions): URLSearchParams => {
             addNestedFilter(value, paramKey);
           } else {
             // Handle primitive values and arrays
-            params.append(`filters[${paramKey}]`, String(value));
+            const finalKey = prefix
+              ? `filters[${prefix}][${key}]`
+              : `filters[${key}]`;
+            params.append(finalKey, String(value));
           }
         });
       };

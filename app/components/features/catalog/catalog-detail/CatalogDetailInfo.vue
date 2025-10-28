@@ -1,9 +1,13 @@
 <script setup lang="ts">
-  import BaseLinkButton from "~/components/base/BaseLinkButton.vue";
-  import type { ApiProduct } from "~/types/api-product";
-
+  import type { ProductWithRelations } from "~/types/product";
   interface Props {
-    product?: ApiProduct | null;
+    product?: ProductWithRelations & {
+      social_forestry_business_group: {
+        contact?: {
+          chief_contact: string;
+        };
+      };
+    };
   }
 
   const props = defineProps<Props>();

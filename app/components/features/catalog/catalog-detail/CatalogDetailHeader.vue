@@ -31,10 +31,9 @@
   </div>
 </template>
 <script setup lang="ts">
-  import type { ApiProduct } from "~/types/api-product";
-
+  import type { ProductWithRelations } from "~/types/product";
   interface Props {
-    product?: ApiProduct | null;
+    product?: ProductWithRelations | null;
   }
 
   const props = defineProps<Props>();

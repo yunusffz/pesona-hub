@@ -4,19 +4,27 @@
       <SearchInput class="w-full md:w-[484px]" :onSearch="onSearch" />
     </div>
     <div class="flex md:flex-row flex-col gap-4">
-      <FilterRegional />
-      <FilterRegional />
-      <FilterRegional />
+      <FilterLocation :selected="selectedLocation" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import SearchInput from "~/components/base/SearchInput.vue";
-  import FilterRegional from "./FilterRegional.vue";
+  import FilterLocation from "./FilterLocation.vue";
   import { useCatalogStore } from "~/stores/useCatalogStore";
   const catalogStore = useCatalogStore();
   const onSearch = (value: string) => {
     catalogStore.setSearchQuery(value);
   };
+  const selectedLocation = ref<string[]>([]);
+
+  // Sync with store
+  watch(
+    () => catalogStore.selectedLocations,
+    (newLocations) => {
+      selectedLocation.value = newLocations;
+    },
+    { immediate: true }
+  );
 </script>

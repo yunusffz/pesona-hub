@@ -7,23 +7,23 @@ type ListResponse =
   components["schemas"]["ListResponse_Dict_str__Any__-Output"];
 type BaseResponse = components["schemas"]["BaseResponse_Dict_str__Any__"];
 
-export const useProducts = (options: UseStrapiParamsOptions = {}) => {
+export const useLocations = (options: UseStrapiParamsOptions = {}) => {
   const { $apiClient } = useNuxtApp();
 
   const { enabled = true } = options;
 
   return useQuery({
-    queryKey: ["products", options],
+    queryKey: ["locations", options],
     queryFn: async (): Promise<ListResponse> => {
       const params = buildStrapiParams(options);
       const queryString = params.toString();
 
       const { data, error } = await $apiClient.GET(
-        `/products${queryString ? `?${queryString}` : ""}`
+        `/locations${queryString ? `?${queryString}` : ""}`
       );
 
       if (error) {
-        throw new Error(`Failed to fetch products: ${error}`);
+        throw new Error(`Failed to fetch locations: ${error}`);
       }
 
       return data;
@@ -34,8 +34,8 @@ export const useProducts = (options: UseStrapiParamsOptions = {}) => {
   });
 };
 
-export const useProduct = (
-  productId: string | number,
+export const useLocation = (
+  locationId: string | number,
   options: Omit<UseStrapiParamsOptions, "pagination" | "page" | "limit"> = {}
 ) => {
   const { $apiClient } = useNuxtApp();
@@ -43,29 +43,29 @@ export const useProduct = (
   const { enabled = true } = options;
 
   return useQuery({
-    queryKey: ["product", productId, options],
+    queryKey: ["location", locationId, options],
     queryFn: async (): Promise<BaseResponse> => {
       const params = buildStrapiParams(options);
       const queryString = params.toString();
 
       const { data, error } = await $apiClient.GET(
-        `/products/{product_id}${queryString ? `?${queryString}` : ""}`,
+        `/locations/{location_id}${queryString ? `?${queryString}` : ""}`,
         {
           params: {
             path: {
-              product_id: productId.toString(),
+              location_id: locationId.toString(),
             },
           },
         }
       );
 
       if (error) {
-        throw new Error(`Failed to fetch product: ${error}`);
+        throw new Error(`Failed to fetch location: ${error}`);
       }
 
       return data;
     },
-    enabled: !!productId && enabled,
+    enabled: !!locationId && enabled,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });

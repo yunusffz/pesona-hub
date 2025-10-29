@@ -41,6 +41,19 @@
       <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada produk</h3>
       <p class="text-gray-500">Produk akan segera ditambahkan.</p>
     </div>
+
+    <div class="flex justify-end p-3">
+      <Pagination
+        :is-items-per-page="false"
+        :current-page="paginationMeta.currentPage"
+        :total-pages="paginationMeta.totalPages"
+        :total-items="paginationMeta.totalItems"
+        :items-per-page="paginationMeta.itemsPerPage"
+        :start-item="paginationMeta.startItem"
+        @update:current-page="handlePageChange"
+        @update:items-per-page="handleItemsPerPageChange"
+      />
+    </div>
   </div>
 </template>
 
@@ -48,6 +61,9 @@
   import CatalogCard from "~/components/common/catalog-section/CatalogCard.vue";
   import { useProducts } from "~/queries";
   import type { ProductWithRelations } from "~/types/product";
+  import { useCatalogStore } from "~/stores/useCatalogStore";
+  import Pagination from "~/components/ui/pagination/Pagination.vue";
+
   // Props
   interface Props {
     search?: string;
@@ -58,14 +74,25 @@
   const props = withDefaults(defineProps<Props>(), {
     search: "",
     page: 1,
-    limit: 3,
+    limit: 12,
   });
 
-  // Use products query
+  const catalogStore = useCatalogStore();
+
+  // Use products query with reactive parameters
   const { data, isLoading, error, refetch } = useProducts({
-    search: props.search,
-    page: props.page,
-    limit: props.limit,
+    get search() {
+      return catalogStore.searchQuery;
+    },
+    get page() {
+      return catalogStore.currentPage;
+    },
+    get limit() {
+      return catalogStore.itemsPerPage;
+    },
+    get filters() {
+      return catalogStore.filters;
+    },
     fields: ["id", "name", "thumbnails", "price", "unit"],
     populate: [
       "social_forestry_business_group.contact",
@@ -82,6 +109,42 @@
     }
     return [] as ProductWithRelations[];
   });
+
+  // Extract pagination metadata from API response
+  const paginationMeta = computed(() => {
+    const meta = data.value?.meta;
+    if (meta && typeof meta === "object" && "pagination" in meta) {
+      const pagination = meta.pagination as any;
+      return {
+        totalItems: pagination.total || 0,
+        totalPages: pagination.page_count || 0,
+        currentPage: pagination.page || 1,
+        itemsPerPage: 12,
+        startItem:
+          ((pagination.page || 1) - 1) *
+            (pagination.page_size || catalogStore.itemsPerPage) +
+          1,
+      };
+    }
+    return {
+      totalItems: 0,
+      totalPages: 0,
+      currentPage: catalogStore.currentPage,
+      itemsPerPage: catalogStore.itemsPerPage,
+      startItem: 0,
+    };
+  });
+
+  // Pagination metadata is now accessed via paginationMeta computed property
+
+  // Handle pagination events
+  const handlePageChange = (page: number) => {
+    catalogStore.setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (items: number) => {
+    catalogStore.setItemsPerPage(items);
+  };
 
   const linkText = "Lihat Detail";
 </script>

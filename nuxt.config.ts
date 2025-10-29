@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     "@nuxt/fonts",
     "nuxt-swiper",
     "shadcn-nuxt",
+    "@pinia/nuxt",
   ],
   nitro: {
     preset: "bun",

@@ -1,15 +1,11 @@
 <template>
   <div class="flex items-center justify-between">
-    <!-- Items info -->
-    <div class="text-sm text-gray-600">
-      {{ startItem }} of {{ totalItems }} Baris terpilih.
-    </div>
-
     <div class="flex items-center gap-4">
       <!-- Items per page -->
       <div class="flex items-center gap-2">
         <span class="text-sm text-gray-600">Baris per halaman</span>
         <select
+          v-if="isItemsPerPage"
           :value="itemsPerPage"
           @change="handleItemsPerPageChange"
           class="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -71,6 +67,7 @@
     totalItems: number;
     itemsPerPage: number;
     startItem: number;
+    isItemsPerPage?: boolean;
   }
 
   interface Emits {
@@ -78,7 +75,9 @@
     "update:itemsPerPage": [itemsPerPage: number];
   }
 
-  const props = defineProps<Props>();
+  const props = withDefaults(defineProps<Props>(), {
+    isItemsPerPage: true,
+  });
   const emit = defineEmits<Emits>();
 
   const goToFirstPage = () => {

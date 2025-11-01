@@ -3,11 +3,9 @@
     <div
       class="content-stretch flex flex-col gap-[28px] items-start relative w-full max-w-[666px]"
     >
-      <!-- Header -->
       <div
         class="content-stretch flex flex-col gap-[14px] items-start relative shrink-0 w-full"
       >
-        <!-- Title -->
         <div
           class="content-stretch flex h-[21px] items-center justify-between relative shrink-0 w-full"
         >

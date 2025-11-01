@@ -4,7 +4,8 @@
       <SearchInput class="w-full md:w-[484px]" :onSearch="onSearch" />
     </div>
     <div class="flex md:flex-row flex-col gap-4">
-      <FilterLocation :selected="selectedLocation" />
+      <FilterLocation />
+      <FilterCommodity />
     </div>
   </div>
 </template>
@@ -12,6 +13,7 @@
 <script setup lang="ts">
   import SearchInput from "~/components/base/SearchInput.vue";
   import FilterLocation from "./FilterLocation.vue";
+  import FilterCommodity from "./FilterCommodity.vue";
   import { useCatalogStore } from "~/stores/useCatalogStore";
   const catalogStore = useCatalogStore();
   const onSearch = (value: string) => {

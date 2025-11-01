@@ -2,7 +2,7 @@
   <section class="h-[564px] w-full overflow-hidden">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-[179px]">
       <div
-        class="max-w-[673px] flex flex-col justify-center gap-4 2xl:pl-20 lg:pl-10 pl-4 my-auto"
+        class="max-w-[673px] flex flex-col justify-center gap-4 2xl:pl-20 lg:pl-10 pl-4 mx-auto"
       >
         <div class="flex">
           <IconBadge label="FAQ" icon="plant" variant="white" />

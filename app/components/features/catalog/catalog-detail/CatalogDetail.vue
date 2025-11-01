@@ -38,8 +38,8 @@
 
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-20">
-      <h2 class="text-2xl font-semibold text-red-600 mb-4">
-        Error Loading Product
+      <h2 class="text-2xl font-semibold text-neutral-900 mb-4">
+        Data Produk Tidak Ditemukan
       </h2>
       <p class="text-gray-600">{{ error.message }}</p>
     </div>

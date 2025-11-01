@@ -9,6 +9,12 @@
         alt="Product Image"
         class="w-full h-[308px] object-cover rounded-t-2xl"
       />
+      <div class="absolute bottom-3 right-6">
+        <RankBadges
+          v-if="props.product.social_forestry_business_group?.class_group"
+          :rank="props.product.social_forestry_business_group?.class_group as 'silver' | 'gold' | 'platinum'"
+        />
+      </div>
     </div>
     <div class="flex flex-col px-5 py-4 gap-3">
       <div
@@ -67,6 +73,7 @@
   import BaseBadge from "~/components/base/BaseBadge.vue";
   import { formatRupiah } from "~/utils/format-number";
   import type { ProductWithRelations } from "~/types/product";
+  import RankBadges from "~/components/base/RankBadges.vue";
 
   const props = defineProps<{
     product: Partial<ProductWithRelations>;

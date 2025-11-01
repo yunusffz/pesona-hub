@@ -6,6 +6,7 @@ export const useCatalogStore = defineStore("catalog", () => {
   const searchQuery = ref("");
   const selectedRegions = ref<string[]>([]);
   const selectedLocations = ref<string[]>([]);
+  const selectedCommodities = ref<number[]>([]);
   const priceRange = ref<{ min: number; max: number } | null>(null);
 
   // Pagination state
@@ -31,6 +32,10 @@ export const useCatalogStore = defineStore("catalog", () => {
       };
     }
 
+    if (selectedCommodities.value.length > 0) {
+      filterObj.commodity_id = { $in: selectedCommodities.value };
+    }
+
     // Debug: Log the filter structure
     if (selectedLocations.value.length > 0) {
       console.log("Filter structure:", filterObj);
@@ -50,10 +55,16 @@ export const useCatalogStore = defineStore("catalog", () => {
     currentPage.value = 1;
   };
 
+  const setSelectedCommodities = (commodityIds: number[]) => {
+    selectedCommodities.value = commodityIds;
+    currentPage.value = 1;
+  };
+
   const clearAllFilters = () => {
     searchQuery.value = "";
     selectedRegions.value = [];
     selectedLocations.value = [];
+    selectedCommodities.value = [];
     priceRange.value = null;
     currentPage.value = 1;
   };
@@ -63,6 +74,7 @@ export const useCatalogStore = defineStore("catalog", () => {
       searchQuery.value !== "" ||
       selectedRegions.value.length > 0 ||
       selectedLocations.value.length > 0 ||
+      selectedCommodities.value.length > 0 ||
       priceRange.value !== null
     );
   });
@@ -99,6 +111,7 @@ export const useCatalogStore = defineStore("catalog", () => {
     // State
     searchQuery,
     selectedLocations,
+    selectedCommodities,
     priceRange,
     currentPage,
     itemsPerPage,
@@ -110,6 +123,7 @@ export const useCatalogStore = defineStore("catalog", () => {
     // Actions
     setSearchQuery,
     setSelectedLocations,
+    setSelectedCommodities,
     clearAllFilters,
     setCurrentPage,
     setItemsPerPage,

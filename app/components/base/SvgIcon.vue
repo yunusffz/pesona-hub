@@ -16,6 +16,7 @@
     color?: string;
     strokeColor?: string;
     folder?: string;
+    preserveOriginalColors?: boolean;
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -23,6 +24,7 @@
     color: "currentColor",
     strokeColor: "",
     folder: "",
+    preserveOriginalColors: false,
   });
 
   const svgContent = ref("");
@@ -67,8 +69,8 @@
           svgElement.setAttribute("viewBox", "0 0 24 24");
         }
 
-        // Apply color
-        if (props.color) {
+        // Apply color unless preserving original colors
+        if (!props.preserveOriginalColors && props.color) {
           svgElement
             .querySelectorAll('[fill]:not([fill="none"])')
             .forEach((el) => el.setAttribute("fill", props.color));
@@ -77,8 +79,8 @@
           }
         }
 
-        // Apply stroke
-        if (props.strokeColor) {
+        // Apply stroke unless preserving original colors
+        if (!props.preserveOriginalColors && props.strokeColor) {
           svgElement
             .querySelectorAll("[stroke]")
             .forEach((el) => el.setAttribute("stroke", props.strokeColor));
@@ -105,7 +107,13 @@
 
   // Re-load when props change
   watch(
-    () => [props.name, props.folder, props.color, props.strokeColor],
+    () => [
+      props.name,
+      props.folder,
+      props.color,
+      props.strokeColor,
+      props.preserveOriginalColors,
+    ],
     () => {
       if (process.client) loadSvg();
     }

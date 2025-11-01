@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full">
+  <div class="w-full" v-if="isMounted">
     <Popover v-model:open="open">
       <PopoverTrigger as-child>
         <Button
@@ -34,7 +34,7 @@
 
           <CommandList :class="['bg-white', listClass]">
             <CommandEmpty>No results.</CommandEmpty>
-            <CommandGroup>
+            <CommandGroup v-if="isMounted">
               <template v-for="opt in options" :key="String(opt.value)">
                 <CommandItem
                   :value="opt.value"
@@ -66,7 +66,7 @@
 
             <CommandSeparator />
 
-            <CommandGroup>
+            <CommandGroup v-if="isMounted">
               <CommandItem
                 value=""
                 :disabled="internal.length === 0"
@@ -107,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, watch } from "vue";
+  import { computed, ref, watch, onMounted } from "vue";
   import { Check, X, ChevronDown } from "lucide-vue-next";
   import SvgIcon from "~/components/base/SvgIcon.vue";
 
@@ -170,6 +170,11 @@
 
   const open = ref(false);
   const internal = ref<(string | number)[]>([...props.modelValue]);
+  const isMounted = ref(false);
+
+  onMounted(() => {
+    isMounted.value = true;
+  });
 
   watch(
     () => props.modelValue,

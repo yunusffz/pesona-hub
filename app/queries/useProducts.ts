@@ -2,10 +2,8 @@ import { useQuery } from "@tanstack/vue-query";
 import type { components } from "~/types/pesona-hub-api";
 import type { UseStrapiParamsOptions } from "~/types/strapi";
 import { buildStrapiParams } from "~/utils/strapi";
-// The API now returns generic Dict[str, Any] types
-type ListResponse =
-  components["schemas"]["ListResponse_Dict_str__Any__-Output"];
-type BaseResponse = components["schemas"]["BaseResponse_Dict_str__Any__"];
+
+type ListResponse = components["schemas"]["BaseResponse_dict_str__Any__"];
 
 export const useProducts = (options: UseStrapiParamsOptions = {}) => {
   const { $apiClient } = useNuxtApp();
@@ -44,7 +42,7 @@ export const useProduct = (
 
   return useQuery({
     queryKey: ["product", productId, options],
-    queryFn: async (): Promise<BaseResponse> => {
+    queryFn: async (): Promise<ListResponse> => {
       const params = buildStrapiParams(options);
       const queryString = params.toString();
 

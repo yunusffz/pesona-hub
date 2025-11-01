@@ -2,18 +2,16 @@
   <div>
     <!-- Loading State -->
     <div v-if="isLoading" class="flex justify-center items-center py-12">
-      <div
-        class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"
-      ></div>
+      <Loader />
     </div>
 
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-12">
-      <div class="text-red-500 mb-4">
-        <Icon name="uil:error" class="mx-auto h-12 w-12" />
+      <div class="text-[#6B7280] mb-4">
+        <Icon name="uil:search" class="mx-auto h-12 w-12" />
       </div>
       <h3 class="text-lg font-medium text-gray-900 mb-2">
-        Gagal memuat produk
+        Tidak ada produk yang ditemukan
       </h3>
       <button
         @click="() => refetch()"
@@ -63,7 +61,7 @@
   import type { ProductWithRelations } from "~/types/product";
   import { useCatalogStore } from "~/stores/useCatalogStore";
   import Pagination from "~/components/ui/pagination/Pagination.vue";
-
+  import Loader from "~/components/base/Loader.vue";
   // Props
   interface Props {
     search?: string;

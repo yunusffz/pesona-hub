@@ -1,40 +1,40 @@
 import { useQuery } from "@tanstack/vue-query";
-import type { components } from "~/types/pesona-hub-api";
 import type { UseStrapiParamsOptions } from "~/types/strapi";
 import { buildStrapiParams } from "~/utils/strapi";
-// The API now returns generic Dict[str, Any] types
-type ListResponse =
-  components["schemas"]["BaseResponse_LocationResponse_-Output"];
 
-export const useLocations = (options: UseStrapiParamsOptions = {}) => {
+// Keep types generic to accommodate schema evolution
+type ListResponse = any;
+type BaseResponse = any;
+
+export const useCommodities = (options: UseStrapiParamsOptions = {}) => {
   const { $apiClient } = useNuxtApp();
 
   const { enabled = true } = options;
 
   return useQuery({
-    queryKey: ["locations", options],
+    queryKey: ["commodities", options],
     queryFn: async (): Promise<ListResponse> => {
       const params = buildStrapiParams(options);
       const queryString = params.toString();
 
       const { data, error } = await $apiClient.GET(
-        `/locations${queryString ? `?${queryString}` : ""}`
+        `/commodities${queryString ? `?${queryString}` : ""}`
       );
 
       if (error) {
-        throw new Error(`Failed to fetch locations: ${error}`);
+        throw new Error(`Failed to fetch commodities: ${error}`);
       }
 
       return data;
     },
     enabled,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 };
 
-export const useLocation = (
-  locationId: string | number,
+export const useCommodity = (
+  commodityId: string | number,
   options: Omit<UseStrapiParamsOptions, "pagination" | "page" | "limit"> = {}
 ) => {
   const { $apiClient } = useNuxtApp();
@@ -42,30 +42,32 @@ export const useLocation = (
   const { enabled = true } = options;
 
   return useQuery({
-    queryKey: ["location", locationId, options],
-    queryFn: async (): Promise<ListResponse> => {
+    queryKey: ["commodity", commodityId, options],
+    queryFn: async (): Promise<BaseResponse> => {
       const params = buildStrapiParams(options);
       const queryString = params.toString();
 
       const { data, error } = await $apiClient.GET(
-        `/locations/{location_id}${queryString ? `?${queryString}` : ""}`,
+        `/commodities/{commodity_id}${queryString ? `?${queryString}` : ""}`,
         {
           params: {
             path: {
-              location_id: locationId.toString(),
+              commodity_id: commodityId.toString(),
             },
           },
         }
       );
 
       if (error) {
-        throw new Error(`Failed to fetch location: ${error}`);
+        throw new Error(`Failed to fetch commodity: ${error}`);
       }
 
       return data;
     },
-    enabled: !!locationId && enabled,
+    enabled: !!commodityId && enabled,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
 };
+
+

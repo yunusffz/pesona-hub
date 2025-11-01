@@ -11,7 +11,7 @@
         />
       </div>
       <div
-        class="max-w-[673px] flex flex-col justify-center items-center px-4 lg:px-6 lg:items-start gap-4 lg:pr-10 my-auto"
+        class="max-w-[673px] flex flex-col justify-center items-center px-4 lg:px-6 lg:items-start gap-4 lg:pr-10 mx-auto"
       >
         <div class="flex w-full justify-center lg:justify-start">
           <IconBadge label="Tentang Kami" icon="plant" variant="white" />

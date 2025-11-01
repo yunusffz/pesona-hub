@@ -57,8 +57,33 @@
                 formatRupiah(quantity * productPrice)
               }}</span>
             </div>
-            <BaseButton @click="handleQuoteRequest"
-              >Ajukan Penawaran</BaseButton
+            <div className="bg-[#f4f9f6] relative rounded-[12px] size-full">
+              <div
+                aria-hidden="true"
+                className="absolute border border-[#024c26] border-solid inset-0 pointer-events-none rounded-[12px]"
+              />
+              <div className="flex flex-row items-center size-full">
+                <div
+                  className="box-border content-stretch flex gap-[16px] items-center px-[12px] py-[16px] relative size-full"
+                >
+                  <Icon
+                    name="bi:info-circle-fill"
+                    class="text-primary fill-primary"
+                    size="20px"
+                  />
+                  <div
+                    className="basis-0 flex flex-col font-medium grow justify-center leading-[0] min-h-px min-w-px relative shrink-0 text-neutral-900 text-sm tracking-[-0.28px]"
+                  >
+                    <p className="leading-[21px]">
+                      Jalin kerjasama lebih lanjut dengan mengklik tombol
+                      dibawah
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <BaseButton @click="showConfirmDialog = true"
+              >Ajukan Kerjasama</BaseButton
             >
             <hr />
             <CatalogDetailInfo :product="product" />
@@ -96,6 +121,44 @@
       </div>
     </div>
   </section>
+
+  <!-- Confirmation Dialog -->
+  <Dialog
+    :open="showConfirmDialog"
+    @update:open="(value) => (showConfirmDialog = value)"
+  >
+    <DialogContent class="max-w-md py-10 px-8 rounded-3xl">
+      <DialogHeader>
+        <div class="flex flex-col gap-4 justify-center items-center">
+          <span class="font-bold text-2xl text-neutral-1000 text-center">
+            Ajukan Kerjasama dengan KUPS
+          </span>
+          <p class="text-neutral-900 text-center">
+            Lengkapi detail singkat berikut untuk memulai kolaborasi dengan KUPS
+            terkait.Tim kami akan meninjau pengajuan Anda dan menghubungkan Anda
+            dengan pengelola KUPS secara langsung.
+          </p>
+        </div>
+      </DialogHeader>
+      <DialogFooter class="gap-2 flex">
+        <BaseButton
+          variant="secondary"
+          @click="showConfirmDialog = false"
+          class="w-full"
+          size="sm"
+        >
+          Batal
+        </BaseButton>
+        <BaseButton
+          variant="primary"
+          @click="confirmQuoteRequest"
+          class="w-full"
+          size="sm"
+          >Kirim Pengajuan
+        </BaseButton>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -107,6 +170,15 @@
   import SvgIcon from "~/components/base/SvgIcon.vue";
   import { useAuth } from "~/composables/useAuth";
   import RankBadges from "~/components/base/RankBadges.vue";
+  import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+  } from "@/components/ui/dialog";
+  import { Button } from "@/components/ui/button";
 
   const { isAuthenticated } = useAuth();
 
@@ -118,6 +190,7 @@
 
   const quantity = ref(1);
   const selectedVariant = ref<"default">("default");
+  const showConfirmDialog = ref(false);
 
   // Computed property for product image
   const productImage = computed(() => {
@@ -142,6 +215,11 @@
   const productUnit = computed(() => {
     return props.product?.unit || "unit";
   });
+
+  const confirmQuoteRequest = () => {
+    showConfirmDialog.value = false;
+    handleQuoteRequest();
+  };
 
   const handleQuoteRequest = () => {
     const productName = props.product?.name || "Produk";
@@ -169,7 +247,8 @@
   Mohon informasi lebih lanjut mengenai produk ini. Terima kasih!`;
 
     // WhatsApp number (dummy number for demo)
-    const whatsappNumber = "<number-whatsapp-xxxx>";
+    const whatsappNumber =
+      props.product?.social_forestry_business_group?.contact?.chief_contact;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 

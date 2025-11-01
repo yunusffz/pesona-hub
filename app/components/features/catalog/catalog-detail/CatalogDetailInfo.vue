@@ -54,38 +54,6 @@
           {{ product.value_chain }}
         </span>
       </div>
-      <div
-        v-if="product?.social_forestry_business_group?.contact?.chief_contact"
-        class="flex flex-col gap-1"
-      >
-        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
-          Kontak:
-        </span>
-        <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
-          {{ product.social_forestry_business_group.contact.chief_contact }}
-        </span>
-      </div>
-
-      <!-- <div class="flex items-center gap-3">
-        <span class="text-sm font-medium text-neutral-700 whitespace-nowrap">
-          Kontak Supplier
-        </span>
-        <div class="flex-1 border-t border-neutral-200"></div>
-      </div>
-      <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-6">
-          <BaseButton variant="solid" size="sm"> Telepon </BaseButton>
-          <BaseButton size="sm"
-            ><Icon name="uil:whatsapp" class="w-4 h-4" /> Whatsapp</BaseButton
-          >
-        </div>
-        <div class="flex items-center gap-2">
-          <SvgIcon name="approve" size="17px" />
-          <span class="text-sm text-neutral-500 italic whitespace-nowrap">
-            Nomor resmi supplier yang telah diverifikasi oleh Balai PS setempat.
-          </span>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>

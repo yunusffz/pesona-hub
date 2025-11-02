@@ -13,13 +13,18 @@ export const useProducts = (options: UseStrapiParamsOptions = {}) => {
 
   // Create a reactive query key that includes actual filter values
   const queryKey = computed(() => {
-    const search = typeof options.search === "function" ? options.search() : options.search;
-    const filters = typeof options.filters === "function" ? options.filters() : options.filters;
-    const sort = typeof options.sort === "function" ? options.sort() : options.sort;
-    
+    const search =
+      typeof options.search === "function" ? options.search : options.search;
+    const filters =
+      typeof options.filters === "function"
+        ? options.filters()
+        : options.filters;
+    const sort =
+      typeof options.sort === "function" ? options.sort : options.sort;
+
     // Convert filters to a serializable format for query key
     const filtersKey = filters ? JSON.stringify(filters) : null;
-    
+
     return [
       "products",
       {
@@ -38,9 +43,7 @@ export const useProducts = (options: UseStrapiParamsOptions = {}) => {
     queryKey: queryKey,
     queryFn: async (): Promise<ListResponse> => {
       const params = buildStrapiParams(options);
-      const queryString = params.toString();
-
-      console.log("useProducts - Fetching with query string:", queryString);
+      const queryString = params?.toString();
 
       const { data, error } = await $apiClient.GET(
         `/products${queryString ? `?${queryString}` : ""}`
@@ -70,7 +73,7 @@ export const useProduct = (
     queryKey: ["product", productId, options],
     queryFn: async (): Promise<ListResponse> => {
       const params = buildStrapiParams(options);
-      const queryString = params.toString();
+      const queryString = params?.toString();
 
       const { data, error } = await $apiClient.GET(
         `/products/{product_id}${queryString ? `?${queryString}` : ""}`,

@@ -34,13 +34,10 @@ export const useCatalogStore = defineStore("catalog", () => {
     }
 
     if (selectedCommodities.value.length > 0) {
-      filterObj.commodity = {
-        id: { $in: selectedCommodities.value },
-      };
+      // Use commodity_id directly as it's a foreign key field in Product schema
+      filterObj.commodity_id = { $in: selectedCommodities.value };
       console.log("Store - Adding commodity filter:", {
-        commodity: {
-          id: { $in: selectedCommodities.value },
-        },
+        commodity_id: { $in: selectedCommodities.value },
         selectedCommodities: selectedCommodities.value,
       });
     }
@@ -52,7 +49,7 @@ export const useCatalogStore = defineStore("catalog", () => {
       selectedCommodities: selectedCommodities.value,
       priceRange: priceRange.value,
       hasFilters: Object.keys(filterObj).length > 0,
-      hasCommodityFilter: !!filterObj.commodity,
+      hasCommodityFilter: !!filterObj.commodity_id,
       hasLocationFilter: !!filterObj.social_forestry_business_group,
       hasPriceFilter: !!filterObj.price,
     });

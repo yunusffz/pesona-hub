@@ -35,7 +35,6 @@
   const searchQueryComputed = computed(() => catalogStore.searchQuery);
   const filtersComputed = computed(() => {
     const filters = catalogStore.filters;
-    console.log("SupplyTable - Filters computed:", filters);
     return filters;
   });
   const sortComputed = computed(() => {
@@ -49,7 +48,6 @@
     },
     get filters() {
       const filters = filtersComputed.value;
-      console.log("SupplyTable - Passing filters to useProducts:", filters);
       return filters;
     },
     get sort() {

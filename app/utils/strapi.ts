@@ -153,19 +153,19 @@ export const buildStrapiParams = (options: UseStrapiParamsOptions) => {
 
                   if (Array.isArray(operatorValue)) {
                     // Handle array values for operators like $in
-                    // Strapi expects indexed format: filters[field][$in][0]=value1&filters[field][$in][1]=value2
+                    // Strapi expects comma-separated format: filters[field][$in]=value1,value2
                     if (operatorValue.length > 0) {
                       console.log(
                         `Processing array for ${baseKey}:`,
                         operatorValue
                       );
-                      operatorValue.forEach((item, index) => {
-                        const paramKey = `${baseKey}[${index}]`;
-                        params.append(paramKey, String(item));
-                        console.log(
-                          `Added filter param: ${paramKey} = ${item}`
-                        );
-                      });
+                      const commaSeparatedValue = operatorValue
+                        .map((item) => String(item))
+                        .join(",");
+                      params.append(baseKey, commaSeparatedValue);
+                      console.log(
+                        `Added filter param: ${baseKey} = ${commaSeparatedValue}`
+                      );
                     } else {
                       console.warn(`Empty array for ${baseKey}, skipping`);
                     }

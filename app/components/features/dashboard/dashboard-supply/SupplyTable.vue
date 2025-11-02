@@ -9,6 +9,7 @@
       <BaseButton
         variant="solid"
         class="pr-2 px-3 py-2 justify-between text-sm"
+        @click="handleExportToExcel"
       >
         <Icon name="uil:file-export" class="w-4 h-4" />
         Export
@@ -89,4 +90,93 @@
       );
     });
   });
+
+  // Helper function to get capacity from metadatas
+  const getCapacity = (product: ProductWithRelations): string => {
+    if (!product.metadatas) return "-";
+
+    // Handle array format
+    if (Array.isArray(product.metadatas)) {
+      const capacityMeta = product.metadatas.find(
+        (meta: any) =>
+          meta?.capacity || meta?.supply_capacity || meta?.kapasitas
+      );
+      if (capacityMeta) {
+        const capacity =
+          capacityMeta.capacity ||
+          capacityMeta.supply_capacity ||
+          capacityMeta.kapasitas;
+        if (capacity) return String(capacity);
+      }
+    }
+
+    // Handle object format
+    if (typeof product.metadatas === "object" && product.metadatas !== null) {
+      const meta = product.metadatas as Record<string, unknown>;
+      const capacity = meta.capacity || meta.supply_capacity || meta.kapasitas;
+      if (capacity) return String(capacity);
+    }
+
+    return "-";
+  };
+
+  // Helper function to get region (province)
+  const getRegion = (product: ProductWithRelations): string => {
+    const businessGroup = product.social_forestry_business_group as any;
+    const location = businessGroup?.location;
+    const province = location?.province;
+    return province || "-";
+  };
+
+  // Export to Excel function
+  const handleExportToExcel = async () => {
+    try {
+      // Dynamically import xlsx library
+      // @ts-expect-error - xlsx types may not be available until package is installed
+      const XLSX = await import("xlsx");
+
+      // Limit to 100 products
+      const productsToExport = filteredProducts.value.slice(0, 100);
+
+      // Prepare data for Excel
+      const excelData = productsToExport.map((product) => {
+        return {
+          "Nama Brand/Produk": product.name || "-",
+          Komoditas: (product as any).commodity?.name || "-",
+          "Kapasitas Penyediaan": getCapacity(product),
+          "Rantai Nilai": product.value_chain || "-",
+          Wilayah: getRegion(product),
+          "Nama KUPS": product.social_forestry_business_group?.name || "-",
+        };
+      });
+
+      // Create workbook and worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Produk");
+
+      // Set column widths
+      const columnWidths = [
+        { wch: 30 }, // Nama Brand/Produk
+        { wch: 20 }, // Komoditas
+        { wch: 20 }, // Kapasitas Penyediaan
+        { wch: 20 }, // Rantai Nilai
+        { wch: 20 }, // Wilayah
+        { wch: 30 }, // Nama KUPS
+      ];
+      worksheet["!cols"] = columnWidths;
+
+      // Generate filename with timestamp
+      const timestamp = new Date().toISOString().split("T")[0];
+      const filename = `Data_Produk_${timestamp}.xlsx`;
+
+      // Export file
+      XLSX.writeFile(workbook, filename);
+    } catch (error) {
+      console.error("Error exporting to Excel:", error);
+      alert(
+        "Failed to export to Excel. Please make sure the xlsx library is installed."
+      );
+    }
+  };
 </script>

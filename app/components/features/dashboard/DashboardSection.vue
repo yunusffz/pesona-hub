@@ -34,8 +34,8 @@
                   <TabsTrigger value="demand" class="rounded-xl">
                     Demand
                   </TabsTrigger>
-                  <TabsTrigger value="monitoring" class="rounded-xl">
-                    Monitoring
+                  <TabsTrigger value="activity" class="rounded-xl">
+                    Activity Log
                   </TabsTrigger>
                 </TabsList>
                 <div>
@@ -55,8 +55,8 @@
               <TabsContent value="demand" class="p-4">
                 <DashboardDemand />
               </TabsContent>
-              <TabsContent value="monitoring" class="p-4">
-                Change your password here.
+              <TabsContent value="activity" class="p-4">
+                <DashboardActivity />
               </TabsContent>
             </Tabs>
           </div>
@@ -69,6 +69,7 @@
 <script setup lang="ts">
   import DashboardSupply from "@/components/features/dashboard/dashboard-supply/DashboardSupply.vue";
   import DashboardDemand from "@/components/features/dashboard/dashboard-demand/DashboardDemand.vue";
+  import DashboardActivity from "@/components/features/dashboard/dashboard-activity/DashboardActivity.vue";
   import FilterSheet from "@/components/features/dashboard/dashboard-supply/FilterSheet.vue";
   import {
     Tabs,

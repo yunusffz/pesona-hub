@@ -6,3 +6,4 @@ export {
   useSocialForestryBusinessGroups,
   useSocialForestryBusinessGroup,
 } from "./useSocialForestryBusinessGroups";
+export { useActivityLogs } from "./useActivityLogs";

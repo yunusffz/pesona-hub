@@ -8,11 +8,10 @@
       />
       <BaseButton
         variant="solid"
-        class="pr-2 pl-3 py-2 justify-between text-sm"
+        class="pr-2 px-3 py-2 justify-between text-sm"
       >
         <Icon name="uil:file-export" class="w-4 h-4" />
         Export
-        <Icon name="uil:angle-down" class="w-5 h-5 font-medium" />
       </BaseButton>
     </div>
     <div class="mt-4">

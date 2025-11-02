@@ -38,7 +38,7 @@
               >
                 Nama KUPS
               </th>
-              <th class="bg-gray-50 px-6 py-3 rounded-tr-2xl"></th>
+              <!-- <th class="bg-gray-50 px-6 py-3 rounded-tr-2xl"></th> -->
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
@@ -50,13 +50,13 @@
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <div
-                    v-if="getThumbnail(product)"
                     class="w-10 h-10 rounded-md overflow-hidden flex-shrink-0 bg-gray-100"
                   >
                     <img
-                      :src="getThumbnail(product) || undefined"
+                      :src="getImageSrc(product)"
                       :alt="product.name"
                       class="w-full h-full object-cover"
+                      @error="handleImageError($event, product)"
                     />
                   </div>
                   <div class="flex flex-col gap-1">
@@ -94,23 +94,11 @@
                   product.social_forestry_business_group?.name || "-"
                 }}</span>
               </td>
-              <td class="px-6 py-4">
+              <!-- <td class="px-6 py-4">
                 <button class="text-gray-400 hover:text-gray-600">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
-                    />
-                  </svg>
+                  <Icon name="uil:ellipsis-v" class="w-5 h-5" />
                 </button>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -166,26 +154,84 @@
     return (currentPage.value - 1) * itemsPerPage.value;
   });
 
-  // Helper function to get thumbnail image
-  const getThumbnail = (product: ProductWithRelations): string | null => {
+  // Array of 5 random placeholder images for products
+  const placeholderImages = [
+    "/assets/images/product-1.png",
+    "/assets/images/product-2.png",
+    "/assets/images/product-3.png",
+  ];
+
+  // Helper function to get random placeholder image based on product ID
+  const getRandomPlaceholderImage = (
+    productId: string | number | undefined
+  ): string => {
+    if (productId === undefined) {
+      // Use a random index if no ID is provided
+      const randomIndex = Math.floor(Math.random() * placeholderImages.length);
+      const selectedImage = placeholderImages[randomIndex];
+      return (
+        selectedImage ?? placeholderImages[0] ?? "/assets/images/product-1.png"
+      );
+    }
+    const id =
+      typeof productId === "string" ? parseInt(productId) || 0 : productId;
+    const index = id % placeholderImages.length;
+    const selectedImage = placeholderImages[index];
+    return (
+      selectedImage ?? placeholderImages[0] ?? "/assets/images/product-1.png"
+    );
+  };
+
+  // Map to store failed image URLs for each product
+  const failedImages = ref<Map<string | number, boolean>>(new Map());
+
+  // Helper function to get image source (thumbnail or placeholder)
+  const getImageSrc = (product: ProductWithRelations): string => {
+    // If image already failed, use placeholder immediately
+    if (failedImages.value.get(product.id)) {
+      return getRandomPlaceholderImage(product.id);
+    }
+
+    // Try to get thumbnail first
     if (
       product.thumbnails &&
       Array.isArray(product.thumbnails) &&
       product.thumbnails.length > 0
     ) {
       const thumbnail = product.thumbnails[0];
-      if (typeof thumbnail === "string") {
-        return thumbnail;
-      }
-      if (
+      let imageUrl = "";
+
+      if (typeof thumbnail === "string" && thumbnail.trim() !== "") {
+        imageUrl = thumbnail.trim();
+      } else if (
         typeof thumbnail === "object" &&
         thumbnail !== null &&
-        "url" in thumbnail
+        "url" in thumbnail &&
+        thumbnail.url
       ) {
-        return (thumbnail as { url: string }).url;
+        imageUrl = (thumbnail as { url: string }).url.trim();
+      }
+
+      // If we have a valid image URL, return it
+      if (imageUrl) {
+        return imageUrl;
       }
     }
-    return null;
+
+    // Return random placeholder image if no thumbnail exists
+    return getRandomPlaceholderImage(product.id);
+  };
+
+  // Handle image load error
+  const handleImageError = (
+    event: Event,
+    product: ProductWithRelations
+  ): void => {
+    const img = event.target as HTMLImageElement;
+    // Mark this product's image as failed
+    failedImages.value.set(product.id, true);
+    // Set fallback placeholder image
+    img.src = getRandomPlaceholderImage(product.id);
   };
 
   // Helper function to get capacity from metadatas

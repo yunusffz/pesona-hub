@@ -1,96 +1,98 @@
 <template>
   <div class="w-full">
-    <div class="rounded-2xl border border-gray-200">
+    <div v-if="isLoading" class="flex justify-center items-center py-20">
+      <Loader />
+    </div>
+    <div v-else class="rounded-2xl border border-gray-200">
       <div class="overflow-x-auto">
         <table class="w-full">
           <thead class="border-b border-gray-200">
             <tr>
-              <th class="bg-gray-50 px-6 py-3 text-left rounded-tl-2xl">
-                <input
-                  type="checkbox"
-                  class="w-4 h-4 rounded border-gray-300"
-                />
+              <th
+                class="bg-gray-50 px-6 rounded-tl-2xl py-3 text-left text-sm font-medium text-gray-700"
+              >
+                Nama Brand/Produk
               </th>
               <th
                 class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
               >
-                Produk/Wisata
+                Komoditas
               </th>
               <th
                 class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
               >
-                Kategori
+                Kapasitas Penyediaan
               </th>
               <th
                 class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
               >
-                Status
+                Rantai Nilai
               </th>
               <th
                 class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
               >
-                Produksi
+                Wilayah
               </th>
               <th
                 class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
               >
-                Pengelola / Mitra
+                Nama KUPS
               </th>
               <th class="bg-gray-50 px-6 py-3 rounded-tr-2xl"></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
             <tr
-              v-for="item in paginatedData"
-              :key="item.id"
+              v-for="product in paginatedData"
+              :key="product.id"
               class="hover:bg-gray-50 transition-colors"
             >
               <td class="px-6 py-4">
-                <input
-                  type="checkbox"
-                  class="w-4 h-4 rounded border-gray-300"
-                />
-              </td>
-              <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <div
-                    class="w-10 h-10 rounded-md overflow-hidden flex-shrink-0"
-                    :style="{ backgroundColor: item.color }"
+                    v-if="getThumbnail(product)"
+                    class="w-10 h-10 rounded-md overflow-hidden flex-shrink-0 bg-gray-100"
                   >
-                    <span class="text-2xl">{{ item.icon }}</span>
+                    <img
+                      :src="getThumbnail(product) || undefined"
+                      :alt="product.name"
+                      class="w-full h-full object-cover"
+                    />
                   </div>
-                  <span class="text-sm font-medium text-gray-900">{{
-                    item.name
-                  }}</span>
+                  <div class="flex flex-col gap-1">
+                    <span class="text-sm font-medium text-gray-900">{{
+                      product.name
+                    }}</span>
+                    <span v-if="product.status" class="text-xs text-gray-500">
+                      {{ product.status }}
+                    </span>
+                  </div>
                 </div>
               </td>
               <td class="px-6 py-4">
-                <span class="text-sm text-gray-600">{{ item.category }}</span>
+                <span class="text-sm text-gray-600">{{
+                  (product as any).commodity?.name || "-"
+                }}</span>
               </td>
               <td class="px-6 py-4">
-                <span
-                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium"
-                  :class="
-                    item.status === 'Done'
-                      ? 'bg-green-50 text-green-700'
-                      : 'bg-gray-100 text-gray-600'
-                  "
-                >
-                  <span
-                    class="w-1.5 h-1.5 rounded-full"
-                    :class="
-                      item.status === 'Done' ? 'bg-green-500' : 'bg-gray-400'
-                    "
-                  ></span>
-                  {{ item.status }}
-                </span>
+                <span class="text-sm text-gray-900">{{
+                  getCapacity(product)
+                }}</span>
               </td>
               <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{ item.production }}</span>
-                <span class="text-sm text-gray-500"> / {{ item.period }}</span>
+                <span class="text-sm text-gray-600">{{
+                  product.value_chain || "-"
+                }}</span>
               </td>
               <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{ item.partner }}</span>
+                <span class="text-sm text-gray-600">{{
+                  getRegion(product)
+                }}</span>
+              </td>
+              <td class="px-6 py-4">
+                <span class="text-sm text-gray-900">{{
+                  product.social_forestry_business_group?.name || "-"
+                }}</span>
               </td>
               <td class="px-6 py-4">
                 <button class="text-gray-400 hover:text-gray-600">
@@ -130,138 +132,26 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { ref, computed } from "vue";
   import Pagination from "~/components/ui/pagination/Pagination.vue";
+  import Loader from "~/components/base/Loader.vue";
+  import type { ProductWithRelations } from "~/types/product";
+
+  interface Props {
+    products?: ProductWithRelations[];
+    isLoading?: boolean;
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    products: () => [],
+    isLoading: false,
+  });
 
   const currentPage = ref(1);
   const itemsPerPage = ref(10);
 
-  const tableData = ref([
-    {
-      id: 1,
-      name: "Pupuk Cair Organik KUPS Danau Raya",
-      category: "Pupuk Organik",
-      status: "In Process",
-      production: "1,5 ton",
-      period: "bulan",
-      partner: "LPHN Limo Koto",
-      icon: "🌱",
-      color: "#E8F5E9",
-    },
-    {
-      id: 2,
-      name: "Arang Briket Tempurung Kelapa",
-      category: "Energi Terbarukan",
-      status: "Done",
-      production: "1,5 ton",
-      period: "bulan",
-      partner: "KUPS Agroforest Dana...",
-      icon: "🔥",
-      color: "#FFE0E6",
-    },
-    {
-      id: 3,
-      name: "Produk Pangan",
-      category: "Produk Perlebahan",
-      status: "Done",
-      production: "1,5 ton",
-      period: "bulan",
-      partner: "KUPS Madu Lambah Si...",
-      icon: "🍯",
-      color: "#FFF3E0",
-    },
-    {
-      id: 4,
-      name: "Gula Semut Organik",
-      category: "Produk Pangan",
-      status: "Done",
-      production: "1,5 ton",
-      period: "bulan",
-      partner: "KUPS Aren Tumbang",
-      icon: "🍬",
-      color: "#F3E5F5",
-    },
-    {
-      id: 5,
-      name: "Briket Kayu Hutan Rakyat",
-      category: "Perhutanan Non-Kayu",
-      status: "In Process",
-      production: "1,5 ton",
-      period: "bulan",
-      partner: "KUPS Hijau Mandiri",
-      icon: "🪵",
-      color: "#E0F2F1",
-    },
-    {
-      id: 6,
-      name: "Minyak VCO Kelapa",
-      category: "Produk Olahan",
-      status: "In Process",
-      production: "1,5 ton",
-      period: "bulan",
-      partner: "KUPS Kelapa Sejahtera",
-      icon: "🥥",
-      color: "#E8EAF6",
-    },
-    {
-      id: 7,
-      name: "Kopi Arabika Gunung Pasaman",
-      category: "Produk Pangan",
-      status: "In Process",
-      production: "1,5 ton",
-      period: "bulan",
-      partner: "KUPS Kopi Gunung Pa...",
-      icon: "☕",
-      color: "#EFEBE9",
-    },
-    {
-      id: 8,
-      name: "Sabun Herbal Daun Sirih",
-      category: "Produk Turunan",
-      status: "In Process",
-      production: "1,5 ton",
-      period: "bulan",
-      partner: "KUPS EcoNatural Sum...",
-      icon: "🧼",
-      color: "#E1F5FE",
-    },
-    {
-      id: 9,
-      name: "Media Tanam Cocopeat",
-      category: "Produk Hortikultura",
-      status: "In Process",
-      production: "1,5 ton",
-      period: "bulan",
-      partner: "KUPS CocoFarm Jatim",
-      icon: "🌿",
-      color: "#FFF9C4",
-    },
-    {
-      id: 10,
-      name: "Madu Hutan Tropis Riau",
-      category: "Produk Perlebahan",
-      status: "Done",
-      production: "1,5 ton",
-      period: "bulan",
-      partner: "KUPS Hutan Tropis Riau",
-      icon: "🍯",
-      color: "#FFE082",
-    },
-    {
-      id: 11,
-      name: "Madu Hutan Tropis Riau",
-      category: "Produk Perlebahan",
-      status: "Done",
-      production: "1,5 ton",
-      period: "bulan",
-      partner: "KUPS Hutan Tropis Riau",
-      icon: "🍯",
-      color: "#FFE082",
-    },
-  ]);
-
-  const totalItems = computed(() => tableData.value.length);
+  const totalItems = computed(() => props.products.length);
   const totalPages = computed(() =>
     Math.ceil(totalItems.value / itemsPerPage.value)
   );
@@ -269,10 +159,69 @@
   const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage.value;
     const end = start + itemsPerPage.value;
-    return tableData.value.slice(start, end);
+    return props.products.slice(start, end);
   });
 
   const startItem = computed(() => {
     return (currentPage.value - 1) * itemsPerPage.value;
   });
+
+  // Helper function to get thumbnail image
+  const getThumbnail = (product: ProductWithRelations): string | null => {
+    if (
+      product.thumbnails &&
+      Array.isArray(product.thumbnails) &&
+      product.thumbnails.length > 0
+    ) {
+      const thumbnail = product.thumbnails[0];
+      if (typeof thumbnail === "string") {
+        return thumbnail;
+      }
+      if (
+        typeof thumbnail === "object" &&
+        thumbnail !== null &&
+        "url" in thumbnail
+      ) {
+        return (thumbnail as { url: string }).url;
+      }
+    }
+    return null;
+  };
+
+  // Helper function to get capacity from metadatas
+  const getCapacity = (product: ProductWithRelations): string => {
+    if (!product.metadatas) return "-";
+
+    // Handle array format
+    if (Array.isArray(product.metadatas)) {
+      const capacityMeta = product.metadatas.find(
+        (meta: any) =>
+          meta?.capacity || meta?.supply_capacity || meta?.kapasitas
+      );
+      if (capacityMeta) {
+        const capacity =
+          capacityMeta.capacity ||
+          capacityMeta.supply_capacity ||
+          capacityMeta.kapasitas;
+        if (capacity) return String(capacity);
+      }
+    }
+
+    // Handle object format
+    if (typeof product.metadatas === "object" && product.metadatas !== null) {
+      const meta = product.metadatas as Record<string, unknown>;
+      const capacity = meta.capacity || meta.supply_capacity || meta.kapasitas;
+      if (capacity) return String(capacity);
+    }
+
+    return "-";
+  };
+
+  // Helper function to get region (province)
+  const getRegion = (product: ProductWithRelations): string => {
+    const businessGroup = product.social_forestry_business_group as any;
+    const location = businessGroup?.location;
+    const province = location?.province;
+    return province || "-";
+  };
 </script>

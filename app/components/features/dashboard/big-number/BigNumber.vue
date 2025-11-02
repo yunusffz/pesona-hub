@@ -2,9 +2,12 @@
   <section
     class="p-6 bg-white rounded-2xl border border-[#E4E4E7] flex flex-col gap-3"
   >
-    <div class="flex items-center justify-between">
+    <div class="flex items-start justify-between">
       <div class="font-medium text-sm text-neutral-1000">{{ props.title }}</div>
-      <Icon name="uil:user" class="w-4 h-4 text-muted-foreground" />
+      <Icon
+        :name="props.icon || 'uil:user'"
+        class="w-4 h-4 text-muted-foreground"
+      />
     </div>
     <div>
       <h1 class="font-bold text-2xl text-rich-black leading-tight">
@@ -46,6 +49,7 @@
     unit?: string;
     description?: string;
     growth?: number;
+    icon?: string;
   }
 
   const props = defineProps<Props>();

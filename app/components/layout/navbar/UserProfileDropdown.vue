@@ -95,7 +95,7 @@
   // Handle menu item clicks
   const handleProfileClick = () => {
     // Navigate to profile page
-    navigateTo("/profile");
+    navigateTo("/profil");
   };
 
   const handleDashboardClick = () => {

@@ -964,7 +964,7 @@ export interface paths {
         patch: operations["patch_social_forestry_business_group_social_forestry_business_groups__social_forestry_business_group_id__patch"];
         trace?: never;
     };
-    "/users": {
+    "/users/users": {
         parameters: {
             query?: never;
             header?: never;
@@ -972,17 +972,17 @@ export interface paths {
             cookie?: never;
         };
         /** Get Users */
-        get: operations["get_users_users_get"];
+        get: operations["get_users_users_users_get"];
         put?: never;
         /** Create User */
-        post: operations["create_user_users_post"];
+        post: operations["create_user_users_users_post"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/users/{username}": {
+    "/users/users/{username}": {
         parameters: {
             query?: never;
             header?: never;
@@ -990,16 +990,33 @@ export interface paths {
             cookie?: never;
         };
         /** Get User */
-        get: operations["get_user_users__username__get"];
+        get: operations["get_user_users_users__username__get"];
         /** Update User Full */
-        put: operations["update_user_full_users__username__put"];
+        put: operations["update_user_full_users_users__username__put"];
         post?: never;
         /** Delete User */
-        delete: operations["delete_user_users__username__delete"];
+        delete: operations["delete_user_users_users__username__delete"];
         options?: never;
         head?: never;
         /** Patch User */
-        patch: operations["patch_user_users__username__patch"];
+        patch: operations["patch_user_users_users__username__patch"];
+        trace?: never;
+    };
+    "/users/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Current User */
+        get: operations["get_current_user_users_me_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
 }
@@ -6700,7 +6717,7 @@ export interface operations {
             };
         };
     };
-    get_users_users_get: {
+    get_users_users_users_get: {
         parameters: {
             query?: {
                 /** @description Full-text search query. Use this parameter to search across multiple fields in the resource. */
@@ -6751,7 +6768,7 @@ export interface operations {
             };
         };
     };
-    create_user_users_post: {
+    create_user_users_users_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -6793,7 +6810,7 @@ export interface operations {
             };
         };
     };
-    get_user_users__username__get: {
+    get_user_users_users__username__get: {
         parameters: {
             query?: {
                 /** @description Fields to include in the response. */
@@ -6838,7 +6855,7 @@ export interface operations {
             };
         };
     };
-    update_user_full_users__username__put: {
+    update_user_full_users_users__username__put: {
         parameters: {
             query?: never;
             header?: never;
@@ -6882,7 +6899,7 @@ export interface operations {
             };
         };
     };
-    delete_user_users__username__delete: {
+    delete_user_users_users__username__delete: {
         parameters: {
             query?: {
                 permanent?: boolean;
@@ -6922,7 +6939,7 @@ export interface operations {
             };
         };
     };
-    patch_user_users__username__patch: {
+    patch_user_users_users__username__patch: {
         parameters: {
             query?: never;
             header?: never;
@@ -6944,6 +6961,49 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BaseResponse_Union_dict_str__Any___NoneType__"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_current_user_users_me_get: {
+        parameters: {
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */

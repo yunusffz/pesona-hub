@@ -321,7 +321,7 @@
   // Mobile menu action handlers
   const handleProfileClick = () => {
     closeMobileMenu();
-    navigateTo("/profile");
+    navigateTo("/profil]");
   };
 
   const handleDashboardClick = () => {

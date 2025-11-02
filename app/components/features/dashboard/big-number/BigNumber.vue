@@ -44,7 +44,7 @@
     number: string;
     title: string;
     unit?: string;
-    description: string;
+    description?: string;
     growth?: number;
   }
 

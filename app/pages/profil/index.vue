@@ -1,4 +1,17 @@
 <template>
+  <!-- Loading Overlay -->
+  <div
+    v-if="isSubmitting.value"
+    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+  >
+    <div class="bg-white rounded-lg p-6 flex flex-col items-center gap-4">
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#035925]"
+      ></div>
+      <p class="text-sm font-medium text-gray-700">Menyimpan data profil...</p>
+    </div>
+  </div>
+
   <div class="min-h-screen bg-[#FAFAFA] flex items-center justify-center p-6">
     <div
       class="content-stretch flex flex-col gap-[28px] items-start relative w-full max-w-[666px]"
@@ -79,185 +92,29 @@
         class="bg-[#f8faf8] relative rounded-[10.5px] w-full p-[24px] border border-[#d9d9d9]"
       >
         <!-- STEP 1 -->
-        <template v-if="currentStep === 1">
-          <div class="flex flex-col items-start gap-4">
-            <div
-              class="flex flex-col items-center justify-center text-center gap-2 w-[150px]"
-            >
-              <ImageUploader
-                v-model="logoPreview"
-                additionalIcon="lucide:building-2"
-              />
-              <p class="text-xs text-[#6B7280] text-center">
-                Upload logo perusahaan <br />
-                <span class="text-[11px] text-center"
-                  >Klik atau drag & drop gambar</span
-                >
-              </p>
-            </div>
-
-            <div class="w-full flex flex-col gap-4">
-              <!-- Nama Lembaga -->
-              <div>
-                <label class="text-sm font-medium"
-                  >Nama Lembaga / Perusahaan</label
-                >
-                <input
-                  v-model="formData.companyName"
-                  type="text"
-                  placeholder="Masukkan nama lembaga"
-                  class="border border-[#d9d9d9] rounded-[8.5px] px-3 py-2 w-full text-sm"
-                />
-              </div>
-
-              <!-- Level Mitra dan WhatsApp -->
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <label class="text-sm font-medium">Level Mitra</label>
-                  <select
-                    v-model="formData.partnerLevel"
-                    class="border border-[#d9d9d9] rounded-[8.5px] px-3 py-2 w-full text-sm"
-                  >
-                    <option value="">Pilih level mitra</option>
-                    <option value="bronze">Bronze</option>
-                    <option value="silver">Silver</option>
-                    <option value="gold">Gold</option>
-                    <option value="platinum">Platinum</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="text-sm font-medium">Nomor WhatsApp</label>
-                  <input
-                    v-model="formData.whatsappNumber"
-                    type="tel"
-                    placeholder="08xxxxxxxxxx"
-                    class="border border-[#d9d9d9] rounded-[8.5px] px-3 py-2 w-full text-sm"
-                  />
-                </div>
-              </div>
-
-              <!-- Website -->
-              <div>
-                <label class="text-sm font-medium"
-                  >Website / Sosial Media (opsional)</label
-                >
-                <input
-                  v-model="formData.websiteUrl"
-                  type="url"
-                  placeholder="https://..."
-                  class="border border-[#d9d9d9] rounded-[8.5px] px-3 py-2 w-full text-sm"
-                />
-              </div>
-            </div>
-          </div>
-        </template>
+        <Step1Identity
+          v-if="currentStep === 1"
+          v-model="formData"
+          v-model:logo-preview="logoPreview"
+        />
 
         <!-- STEP 2 -->
-        <template v-else-if="currentStep === 2">
-          <div class="flex flex-col gap-4">
-            <div>
-              <label class="text-sm font-medium"
-                >Area Minat (pilih semua yang sesuai)</label
-              >
-              <div class="grid grid-cols-2 gap-2 mt-2">
-                <label
-                  v-for="interest in interests"
-                  :key="interest"
-                  class="flex items-center gap-2 border border-[#d9d9d9] rounded-[8.5px] p-2 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    :value="interest"
-                    v-model="formData.interests"
-                    class="accent-[#035925]"
-                  />
-                  <span class="text-sm">{{ interest }}</span>
-                </label>
-              </div>
-            </div>
-
-            <div>
-              <label class="text-sm font-medium">Area Fokus Utama</label>
-              <input
-                v-model="formData.focusArea"
-                type="text"
-                placeholder="Masukkan area fokus utama"
-                class="border border-[#d9d9d9] rounded-[8.5px] px-3 py-2 w-full text-sm"
-              />
-            </div>
-
-            <div>
-              <label class="text-sm font-medium">Keahlian / Expertise</label>
-              <textarea
-                v-model="formData.expertise"
-                rows="4"
-                placeholder="Deskripsikan keahlian dan pengalaman organisasi Anda"
-                class="border border-[#d9d9d9] rounded-[8.5px] px-3 py-2 w-full text-sm resize-none"
-              ></textarea>
-            </div>
-          </div>
-        </template>
+        <Step2Interests v-else-if="currentStep === 2" v-model="formData" />
 
         <!-- STEP 3 -->
-        <template v-else-if="currentStep === 3">
-          <div class="flex flex-col gap-4">
-            <div>
-              <label class="text-sm font-medium"
-                >Tipe Kolaborasi yang Diminati</label
-              >
-              <div class="grid grid-cols-2 gap-2 mt-2">
-                <label
-                  v-for="type in collaborationTypes"
-                  :key="type"
-                  class="flex items-center gap-2 border border-[#d9d9d9] rounded-[8.5px] p-2 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    :value="type"
-                    v-model="formData.collaborationType"
-                    class="accent-[#035925]"
-                  />
-                  <span class="text-sm">{{ type }}</span>
-                </label>
-              </div>
-            </div>
+        <Step3Collaboration v-else-if="currentStep === 3" v-model="formData" />
 
-            <div>
-              <label class="text-sm font-medium">Ketersediaan Waktu</label>
-              <select
-                v-model="formData.availability"
-                class="border border-[#d9d9d9] rounded-[8.5px] px-3 py-2 w-full text-sm"
-              >
-                <option value="">Pilih ketersediaan waktu</option>
-                <option value="segera">Segera</option>
-                <option value="1-3-bulan">1-3 Bulan</option>
-                <option value="3-6-bulan">3-6 Bulan</option>
-                <option value="lebih-6-bulan">Lebih dari 6 Bulan</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="text-sm font-medium"
-                >Informasi Tambahan (opsional)</label
-              >
-              <textarea
-                v-model="formData.additionalInfo"
-                rows="4"
-                placeholder="Tambahkan informasi lain yang relevan untuk kolaborasi"
-                class="border border-[#d9d9d9] rounded-[8.5px] px-3 py-2 w-full text-sm resize-none"
-              ></textarea>
-            </div>
-          </div>
-        </template>
+        <!-- STEP SUCCESS -->
+        <StepSuccess v-else-if="currentStep === 4" />
 
         <!-- Navigation -->
         <div
           class="flex justify-between items-center pt-6 border-t border-[#d9d9d9] mt-6"
+          v-if="currentStep !== 4"
         >
           <button
             @click="handleBack"
-            :disabled="currentStep === 1"
+            :disabled="currentStep === 1 || isSubmitting.value"
             class="flex items-center gap-2 px-3 py-2 rounded-full border border-[#d9d9d9] bg-[#f8faf8] hover:bg-gray-100 disabled:opacity-0 disabled:pointer-events-none"
           >
             <ChevronLeft class="w-4 h-4 text-[#1a1a1a]" />
@@ -266,7 +123,8 @@
 
           <button
             @click="currentStep === 3 ? handleSubmit() : handleNext()"
-            class="flex items-center gap-2 px-3 py-2 rounded-full bg-[#174c36] hover:bg-[#035925] text-white"
+            :disabled="isSubmitting.value"
+            class="flex items-center gap-2 px-3 py-2 rounded-full bg-[#174c36] hover:bg-[#035925] text-white disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span class="text-sm font-medium">
               {{ currentStep === 3 ? "Selesai" : "Lanjutkan" }}
@@ -283,9 +141,17 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
-  import { ChevronLeft, ChevronRight, Upload, Check } from "lucide-vue-next";
-  import ImageUploader from "@/components/base/ImageUploader.vue";
+  import { ref, computed, onMounted } from "vue";
+  import { ChevronLeft, ChevronRight, Check } from "lucide-vue-next";
+  import Step1Identity from "@/components/features/profile/Step1Identity.vue";
+  import Step2Interests from "@/components/features/profile/Step2Interests.vue";
+  import Step3Collaboration from "@/components/features/profile/Step3Collaboration.vue";
+  import StepSuccess from "@/components/features/profile/StepSuccess.vue";
+  import { useUser } from "~/composables/useUser";
+  import { useAuth } from "~/composables/useAuth";
+  import type { components } from "~/types/pesona-hub-api";
+
+  type UserDetail = components["schemas"]["UserDetail"];
 
   interface FormData {
     logo: File | null;
@@ -299,10 +165,19 @@
     collaborationType: string[];
     availability: string;
     additionalInfo: string;
+    commodities: (string | number)[];
+    productionEstimate: string;
+    productionUnit: string;
+    materialType: string;
+    targetKupsClass?: string;
   }
+
+  const { user } = useAuth();
+  const { updateProfile, isUpdating, updateError } = useUser();
 
   const currentStep = ref(1);
   const logoPreview = ref<string | null>(null);
+  const isSubmitting = computed(() => isUpdating.value);
 
   const formData = ref<FormData>({
     logo: null,
@@ -316,6 +191,46 @@
     collaborationType: [],
     availability: "",
     additionalInfo: "",
+    commodities: [],
+    productionEstimate: "",
+    productionUnit: "kg",
+    materialType: "",
+    targetKupsClass: "",
+  });
+
+  // Load existing user data on mount
+  onMounted(() => {
+    if (user.value) {
+      // Map existing user data to form
+      if (user.value.details) {
+        formData.value.companyName = user.value.details.institution_name || "";
+        formData.value.whatsappNumber = user.value.details.contact_phone || "";
+        formData.value.websiteUrl = user.value.details.website || "";
+        formData.value.additionalInfo =
+          user.value.details.product_service_description || "";
+
+        // Map commodities if available
+        if (user.value.details.collaboration_commodity_ids) {
+          formData.value.commodities =
+            user.value.details.collaboration_commodity_ids;
+        }
+
+        // Map collaborations if available
+        if (user.value.details.collaboration_ids) {
+          formData.value.collaborationType =
+            user.value.details.collaboration_ids.map(String);
+        }
+      }
+
+      // Map basic user data
+      if (user.value.phone) {
+        formData.value.whatsappNumber = user.value.phone;
+      }
+
+      if (user.value.thumbnail) {
+        logoPreview.value = user.value.thumbnail;
+      }
+    }
   });
 
   const steps = [
@@ -323,33 +238,6 @@
     { id: 2, label: "Minat" },
     { id: 3, label: "Kolaborasi" },
   ];
-
-  const interests = [
-    "Pendidikan",
-    "Kesehatan",
-    "Teknologi",
-    "Lingkungan",
-    "Sosial",
-    "Ekonomi",
-  ];
-  const collaborationTypes = [
-    "Proyek Jangka Pendek",
-    "Proyek Jangka Panjang",
-    "Konsultasi",
-    "Pelatihan",
-    "Sponsorship",
-    "Kemitraan Strategis",
-  ];
-
-  function handleLogoUpload(e: Event) {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (file) {
-      formData.value.logo = file;
-      const reader = new FileReader();
-      reader.onloadend = () => (logoPreview.value = reader.result as string);
-      reader.readAsDataURL(file);
-    }
-  }
 
   function handleNext() {
     if (currentStep.value < 3) currentStep.value++;
@@ -359,8 +247,64 @@
     if (currentStep.value > 1) currentStep.value--;
   }
 
-  function handleSubmit() {
-    console.log("Form submitted:", formData.value);
-    alert("Profil mitra berhasil dilengkapi!");
+  async function handleSubmit() {
+    console.log(user);
+    if (!user.value?.username) {
+      alert("User tidak ditemukan. Silakan login kembali.");
+      return;
+    }
+
+    try {
+      // Map form data to UserDetail structure
+      const userDetail: UserDetail = {
+        institution_name: formData.value.companyName || undefined,
+        contact_phone: formData.value.whatsappNumber || undefined,
+        website: formData.value.websiteUrl || undefined,
+        product_service_description: formData.value.additionalInfo || undefined,
+        collaboration_commodity_ids:
+          formData.value.commodities.length > 0
+            ? formData.value.commodities.filter(
+                (c): c is number => typeof c === "number"
+              ).length > 0
+              ? formData.value.commodities.filter(
+                  (c): c is number => typeof c === "number"
+                )
+              : undefined
+            : undefined,
+        collaboration_ids:
+          formData.value.collaborationType.length > 0
+            ? formData.value.collaborationType
+                .map((id) => {
+                  const numId = typeof id === "string" ? parseInt(id, 10) : id;
+                  return isNaN(numId) ? undefined : numId;
+                })
+                .filter((id): id is number => id !== undefined)
+            : undefined,
+      };
+
+      // Remove undefined fields
+      Object.keys(userDetail).forEach((key) => {
+        if (userDetail[key as keyof UserDetail] === undefined) {
+          delete userDetail[key as keyof UserDetail];
+        }
+      });
+
+      await updateProfile(user.value.username, {
+        name: formData.value.companyName || undefined,
+        phone: formData.value.whatsappNumber || undefined,
+        logoFile: formData.value.logo,
+        details: Object.keys(userDetail).length > 0 ? userDetail : undefined,
+      });
+
+      // Navigate to success page
+      await navigateTo("/profil/sukses");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Terjadi kesalahan saat menyimpan profil";
+      alert(`Error: ${errorMessage}`);
+      console.error("Error updating profile:", error);
+    }
   }
 </script>

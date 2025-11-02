@@ -21,13 +21,7 @@
       unit="%"
       description="Supply Description"
     />
-    <BigNumber
-      number="100"
-      title="Supply"
-      :growth="-10"
-      unit="%"
-      description="Supply Description"
-    />
+    <BigNumber number="3,138,025,000" title="Nilai Transaksi Ekonomi" />
   </div>
 </template>
 <script setup lang="ts">

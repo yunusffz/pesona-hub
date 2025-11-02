@@ -45,10 +45,15 @@ export const useAuth = () => {
       if (!accessToken.value) return null;
 
       // Fetch user data from API
-      const { data, error } = await client.GET("/auth/me");
+      const { data, error } = await client.GET("/users/me");
 
       if (error) {
         throw new Error("Failed to fetch user data");
+      }
+
+      // API returns BaseResponse format, extract data field
+      if (data && typeof data === "object" && "data" in data) {
+        return (data as any).data;
       }
 
       return data;
@@ -90,10 +95,19 @@ export const useAuth = () => {
         // Fetch user data after successful login
         try {
           const { data: userData, error: userError } = await client.GET(
-            "/auth/me"
+            "/users/me"
           );
           if (!userError && userData) {
-            user.value = userData;
+            // API returns BaseResponse format, extract data field
+            if (
+              userData &&
+              typeof userData === "object" &&
+              "data" in userData
+            ) {
+              user.value = (userData as any).data;
+            } else {
+              user.value = userData as any;
+            }
           }
         } catch (error) {
           console.error("Failed to fetch user data:", error);

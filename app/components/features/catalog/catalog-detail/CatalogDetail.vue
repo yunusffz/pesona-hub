@@ -3,6 +3,7 @@
   import CatalogDetailContent from "./CatalogDetailContent.vue";
   import { useProduct } from "~/queries";
   import type { ProductWithRelations } from "~/types/product";
+  import Loader from "~/components/base/Loader.vue";
   // Get product ID from route params
   const route = useRoute();
   const productId = route.params.slug as string;

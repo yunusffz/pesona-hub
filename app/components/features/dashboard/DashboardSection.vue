@@ -53,7 +53,7 @@
                 <DashboardSupply />
               </TabsContent>
               <TabsContent value="demand" class="p-4">
-                Change your password here.
+                <DashboardDemand />
               </TabsContent>
               <TabsContent value="monitoring" class="p-4">
                 Change your password here.
@@ -68,6 +68,7 @@
 
 <script setup lang="ts">
   import DashboardSupply from "@/components/features/dashboard/dashboard-supply/DashboardSupply.vue";
+  import DashboardDemand from "@/components/features/dashboard/dashboard-demand/DashboardDemand.vue";
   import FilterSheet from "@/components/features/dashboard/dashboard-supply/FilterSheet.vue";
   import {
     Tabs,

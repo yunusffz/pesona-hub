@@ -27,14 +27,18 @@
               <div
                 class="flex items-center justify-between p-4 border-b border-[#E4E4E7]"
               >
-                <TabsList class="grid grid-cols-3 rounded-2xl w-[300px]">
+                <TabsList :class="tabsListClass">
                   <TabsTrigger value="supply" class="rounded-xl">
                     Supply
                   </TabsTrigger>
-                  <TabsTrigger value="demand" class="rounded-xl">
+                  <TabsTrigger v-if="isAdmin" value="demand" class="rounded-xl">
                     Demand
                   </TabsTrigger>
-                  <TabsTrigger value="activity" class="rounded-xl">
+                  <TabsTrigger
+                    v-if="isAdmin"
+                    value="activity"
+                    class="rounded-xl"
+                  >
                     Activity Log
                   </TabsTrigger>
                 </TabsList>
@@ -52,10 +56,10 @@
               <TabsContent value="supply" class="p-8">
                 <DashboardSupply />
               </TabsContent>
-              <TabsContent value="demand" class="p-4">
+              <TabsContent v-if="isAdmin" value="demand" class="p-4">
                 <DashboardDemand />
               </TabsContent>
-              <TabsContent value="activity" class="p-4">
+              <TabsContent v-if="isAdmin" value="activity" class="p-4">
                 <DashboardActivity />
               </TabsContent>
             </Tabs>
@@ -67,6 +71,7 @@
 </template>
 
 <script setup lang="ts">
+  import { computed } from "vue";
   import DashboardSupply from "@/components/features/dashboard/dashboard-supply/DashboardSupply.vue";
   import DashboardDemand from "@/components/features/dashboard/dashboard-demand/DashboardDemand.vue";
   import DashboardActivity from "@/components/features/dashboard/dashboard-activity/DashboardActivity.vue";
@@ -78,4 +83,13 @@
     TabsContent,
   } from "@/components/ui/tabs";
   import { SheetTrigger } from "@/components/ui/sheet";
+  import { useAuth } from "@/composables/useAuth";
+
+  const { user } = useAuth();
+  const isAdmin = computed(() => user.value?.role === "ADMINISTRATOR");
+  const tabsListClass = computed(() =>
+    isAdmin.value
+      ? "grid grid-cols-3 rounded-2xl w-[300px]"
+      : "grid grid-cols-1 rounded-2xl w-[100px]"
+  );
 </script>

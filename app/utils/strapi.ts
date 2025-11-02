@@ -114,8 +114,6 @@ export const buildStrapiParams = (options: UseStrapiParamsOptions) => {
       Object.keys(filtersValue).length === 0;
 
     if (!isEmptyObject) {
-      console.log("buildStrapiParams - Processing filters:", filtersValue);
-
       if (typeof filtersValue === "string") {
         params.append("filters", filtersValue);
       } else {
@@ -146,26 +144,14 @@ export const buildStrapiParams = (options: UseStrapiParamsOptions) => {
                   const fullPath = pathSegments.join("][");
                   const baseKey = `filters[${fullPath}][${operator}]`;
 
-                  console.log(
-                    `Building key: prefix="${prefix}", key="${key}", operator="${operator}"`
-                  );
-                  console.log(`Base key: ${baseKey}`);
-
                   if (Array.isArray(operatorValue)) {
                     // Handle array values for operators like $in
                     // Strapi expects comma-separated format: filters[field][$in]=value1,value2
                     if (operatorValue.length > 0) {
-                      console.log(
-                        `Processing array for ${baseKey}:`,
-                        operatorValue
-                      );
                       const commaSeparatedValue = operatorValue
                         .map((item) => String(item))
                         .join(",");
                       params.append(baseKey, commaSeparatedValue);
-                      console.log(
-                        `Added filter param: ${baseKey} = ${commaSeparatedValue}`
-                      );
                     } else {
                       console.warn(`Empty array for ${baseKey}, skipping`);
                     }
@@ -174,10 +160,6 @@ export const buildStrapiParams = (options: UseStrapiParamsOptions) => {
                   }
                 });
               } else {
-                // Recursively handle nested objects
-                console.log(
-                  `Recursive call: prefix="${prefix}", key="${key}", paramKey="${paramKey}"`
-                );
                 addNestedFilter(value, paramKey);
               }
             } else {
@@ -191,12 +173,6 @@ export const buildStrapiParams = (options: UseStrapiParamsOptions) => {
         };
 
         addNestedFilter(filtersValue);
-
-        // Debug: Log the generated parameters
-        console.log("Generated URL parameters:");
-        for (const [key, value] of params.entries()) {
-          console.log(`${key}: ${value}`);
-        }
       }
     }
 

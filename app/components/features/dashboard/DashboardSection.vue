@@ -39,10 +39,14 @@
                   </TabsTrigger>
                 </TabsList>
                 <div>
-                  <BaseButton variant="solid" class="px-4 py-2">
-                    <Icon name="uil:filter" class="w-4 h-4" />
-                    Filter
-                  </BaseButton>
+                  <FilterSheet>
+                    <SheetTrigger as-child>
+                      <BaseButton variant="solid" class="px-4 py-2">
+                        <Icon name="uil:filter" class="w-4 h-4" />
+                        Filter
+                      </BaseButton>
+                    </SheetTrigger>
+                  </FilterSheet>
                 </div>
               </div>
               <TabsContent value="supply" class="p-8">
@@ -64,10 +68,12 @@
 
 <script setup lang="ts">
   import DashboardSupply from "@/components/features/dashboard/dashboard-supply/DashboardSupply.vue";
+  import FilterSheet from "@/components/features/dashboard/dashboard-supply/FilterSheet.vue";
   import {
     Tabs,
     TabsList,
     TabsTrigger,
     TabsContent,
   } from "@/components/ui/tabs";
+  import { SheetTrigger } from "@/components/ui/sheet";
 </script>

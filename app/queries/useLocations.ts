@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/vue-query";
+import { computed, toValue } from "vue";
 import type { components } from "~/types/pesona-hub-api";
 import type { UseStrapiParamsOptions } from "~/types/strapi";
 import { buildStrapiParams } from "~/utils/strapi";
@@ -11,11 +12,39 @@ export const useLocations = (options: UseStrapiParamsOptions = {}) => {
 
   const { enabled = true } = options;
 
+  // Create a reactive query key
+  const queryKey = computed(() => {
+    const search =
+      typeof options.search === "function" ? options.search : options.search;
+    const filters =
+      typeof options.filters === "function" ? options.filters : options.filters;
+    const sort =
+      typeof options.sort === "function" ? options.sort : options.sort;
+
+    // Convert filters to a serializable format for query key
+    const filtersKey = filters ? JSON.stringify(toValue(filters)) : null;
+
+    return [
+      "locations",
+      {
+        search: toValue(search),
+        filters: filtersKey,
+        sort: toValue(sort),
+        populate: options.populate,
+        fields: options.fields,
+        page: options.page,
+        limit: options.limit,
+      },
+    ];
+  });
+
   return useQuery({
-    queryKey: ["locations", options],
+    queryKey: queryKey,
     queryFn: async (): Promise<ListResponse> => {
       const params = buildStrapiParams(options);
-      const queryString = params.toString();
+      const queryString = params?.toString();
+
+      console.log("useLocations - Fetching with query string:", queryString);
 
       const { data, error } = await $apiClient.GET(
         `/locations${queryString ? `?${queryString}` : ""}`
@@ -45,7 +74,7 @@ export const useLocation = (
     queryKey: ["location", locationId, options],
     queryFn: async (): Promise<ListResponse> => {
       const params = buildStrapiParams(options);
-      const queryString = params.toString();
+      const queryString = params?.toString();
 
       const { data, error } = await $apiClient.GET(
         `/locations/{location_id}${queryString ? `?${queryString}` : ""}`,

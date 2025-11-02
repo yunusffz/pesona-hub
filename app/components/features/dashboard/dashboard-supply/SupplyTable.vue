@@ -26,9 +26,35 @@
   import DataTable from "../data-table/DataTable.vue";
   import { useProducts } from "~/queries/useProducts";
   import type { ProductWithRelations } from "~/types/product";
-  import { computed, ref } from "vue";
+  import { useCatalogStore } from "~/stores/useCatalogStore";
+  import { computed, ref, watch } from "vue";
 
-  const { data, isLoading } = useProducts({
+  const catalogStore = useCatalogStore();
+
+  // Create reactive computed values for query options
+  const searchQueryComputed = computed(() => catalogStore.searchQuery);
+  const filtersComputed = computed(() => {
+    const filters = catalogStore.filters;
+    console.log("SupplyTable - Filters computed:", filters);
+    return filters;
+  });
+  const sortComputed = computed(() => {
+    const sortValue = (catalogStore as any).sortBy;
+    return sortValue || undefined;
+  });
+
+  const { data, isLoading, refetch } = useProducts({
+    get search() {
+      return searchQueryComputed.value;
+    },
+    get filters() {
+      const filters = filtersComputed.value;
+      console.log("SupplyTable - Passing filters to useProducts:", filters);
+      return filters;
+    },
+    get sort() {
+      return sortComputed.value;
+    },
     populate: [
       "commodity",
       "social_forestry_business_group",
@@ -36,6 +62,15 @@
     ],
     fields: ["id", "name", "value_chain", "metadatas", "thumbnails"],
   });
+
+  // Watch for filter changes and refetch
+  watch(
+    [filtersComputed, sortComputed, searchQueryComputed],
+    () => {
+      refetch();
+    },
+    { deep: true, flush: "post" }
+  );
 
   const products = computed(() => {
     const productsData = data.value?.data;

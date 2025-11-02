@@ -15,7 +15,7 @@ export const useCommodities = (options: UseStrapiParamsOptions = {}) => {
     queryKey: ["commodities", options],
     queryFn: async (): Promise<ListResponse> => {
       const params = buildStrapiParams(options);
-      const queryString = params.toString();
+      const queryString = params?.toString();
 
       const { data, error } = await $apiClient.GET(
         `/commodities${queryString ? `?${queryString}` : ""}`
@@ -45,7 +45,7 @@ export const useCommodity = (
     queryKey: ["commodity", commodityId, options],
     queryFn: async (): Promise<BaseResponse> => {
       const params = buildStrapiParams(options);
-      const queryString = params.toString();
+      const queryString = params?.toString();
 
       const { data, error } = await $apiClient.GET(
         `/commodities/{commodity_id}${queryString ? `?${queryString}` : ""}`,
@@ -69,5 +69,3 @@ export const useCommodity = (
     gcTime: 10 * 60 * 1000,
   });
 };
-
-

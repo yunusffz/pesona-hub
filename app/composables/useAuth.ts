@@ -23,13 +23,13 @@ export const useAuth = () => {
   const accessToken = useCookie("access-token", {
     maxAge: 60 * 60 * 24, // 1 day
     sameSite: "lax",
-    secure: import.meta.env.PROD,
+    // secure: import.meta.env.PROD,
   });
 
   const refreshToken = useCookie("refresh-token", {
     maxAge: 60 * 60 * 24 * 7, // 7 days
     sameSite: "lax",
-    secure: import.meta.env.PROD,
+    // secure: import.meta.env.PROD,
   });
 
   // State untuk user

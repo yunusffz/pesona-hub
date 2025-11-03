@@ -46,7 +46,7 @@ export const useUsers = (options: UseStrapiParamsOptions = {}) => {
       const queryString = params?.toString();
 
       const { data, error } = await $apiClient.GET(
-        `/users/users${queryString ? `?${queryString}` : ""}`
+        `/users${queryString ? `?${queryString}` : ""}`
       );
 
       if (error) {
@@ -60,4 +60,3 @@ export const useUsers = (options: UseStrapiParamsOptions = {}) => {
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 };
-

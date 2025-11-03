@@ -164,7 +164,10 @@
   // Create maps for quick lookup
   const commoditiesMap = computed(() => {
     const map = new Map<number, string>();
-    if (commoditiesData.value?.data && Array.isArray(commoditiesData.value.data)) {
+    if (
+      commoditiesData.value?.data &&
+      Array.isArray(commoditiesData.value.data)
+    ) {
       (commoditiesData.value.data as any[]).forEach((commodity: any) => {
         if (commodity.id && commodity.name) {
           map.set(commodity.id, commodity.name);
@@ -176,10 +179,11 @@
 
   const collaborationsMap = computed(() => {
     const map = new Map<number, string>();
-    const data = collaborationsData.value && "data" in collaborationsData.value
-      ? collaborationsData.value.data
-      : collaborationsData.value;
-    
+    const data =
+      collaborationsData.value && "data" in collaborationsData.value
+        ? collaborationsData.value.data
+        : collaborationsData.value;
+
     if (Array.isArray(data)) {
       data.forEach((collab: any) => {
         if (collab.id && collab.name) {
@@ -203,7 +207,7 @@
       const names = ids
         .map((id: number) => commoditiesMap.value.get(id))
         .filter((name): name is string => !!name);
-      
+
       if (names.length > 0) {
         return names.join(", ");
       }
@@ -219,7 +223,7 @@
       const names = ids
         .map((id: number) => collaborationsMap.value.get(id))
         .filter((name): name is string => !!name);
-      
+
       if (names.length > 0) {
         return names.join(", ");
       }
@@ -231,11 +235,11 @@
   const getLocation = (partner: UserResponse): string => {
     const details = partner.details;
     if (!details) return "-";
-    
+
     const locationParts: string[] = [];
     if (details.province) locationParts.push(details.province);
     if (details.regency) locationParts.push(details.regency);
-    
+
     return locationParts.length > 0 ? locationParts.join(", ") : "-";
   };
 
@@ -270,7 +274,9 @@
   const handleExportToExcel = async () => {
     try {
       // Dynamically import xlsx library
-      // @ts-expect-error - xlsx types may not be available until package is installed
+      // Note: Suppress potential type error if types are missing (runtime use only)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const XLSX = await import("xlsx");
 
       // Limit to 100 partners
@@ -318,4 +324,3 @@
     }
   };
 </script>
-

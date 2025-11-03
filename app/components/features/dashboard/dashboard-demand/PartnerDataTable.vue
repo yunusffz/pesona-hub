@@ -48,21 +48,14 @@
             >
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
-                  <div
-                    class="w-10 h-10 rounded-md overflow-hidden flex-shrink-0 bg-gray-100"
-                  >
-                    <img
-                      :src="getImageSrc(partner)"
-                      :alt="partner.name"
-                      class="w-full h-full object-cover"
-                      @error="handleImageError($event, partner)"
-                    />
-                  </div>
                   <div class="flex flex-col gap-1">
                     <span class="text-sm font-medium text-gray-900">{{
                       partner.name || "-"
                     }}</span>
-                    <span v-if="partner.details?.institution_name" class="text-xs text-gray-500">
+                    <span
+                      v-if="partner.details?.institution_name"
+                      class="text-xs text-gray-500"
+                    >
                       {{ partner.details.institution_name }}
                     </span>
                   </div>
@@ -91,7 +84,10 @@
               <td class="px-6 py-4">
                 <a
                   v-if="getWhatsAppNumber(partner)"
-                  :href="`https://wa.me/${getWhatsAppNumber(partner)?.replace(/[^0-9]/g, '')}`"
+                  :href="`https://wa.me/${getWhatsAppNumber(partner)?.replace(
+                    /[^0-9]/g,
+                    ''
+                  )}`"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-sm text-green-600 hover:text-green-700 hover:underline flex items-center gap-1"
@@ -167,7 +163,10 @@
   // Create maps for quick lookup
   const commoditiesMap = computed(() => {
     const map = new Map<number, string>();
-    if (commoditiesData.value?.data && Array.isArray(commoditiesData.value.data)) {
+    if (
+      commoditiesData.value?.data &&
+      Array.isArray(commoditiesData.value.data)
+    ) {
       (commoditiesData.value.data as any[]).forEach((commodity: any) => {
         if (commodity.id && commodity.name) {
           map.set(commodity.id, commodity.name);
@@ -179,10 +178,11 @@
 
   const collaborationsMap = computed(() => {
     const map = new Map<number, string>();
-    const data = collaborationsData.value && "data" in collaborationsData.value
-      ? collaborationsData.value.data
-      : collaborationsData.value;
-    
+    const data =
+      collaborationsData.value && "data" in collaborationsData.value
+        ? collaborationsData.value.data
+        : collaborationsData.value;
+
     if (Array.isArray(data)) {
       data.forEach((collab: any) => {
         if (collab.id && collab.name) {
@@ -212,7 +212,8 @@
       const randomIndex = Math.floor(Math.random() * placeholderImages.length);
       return placeholderImages[randomIndex] ?? placeholderImages[0];
     }
-    const id = typeof partnerId === "string" ? parseInt(partnerId) || 0 : partnerId;
+    const id =
+      typeof partnerId === "string" ? parseInt(partnerId) || 0 : partnerId;
     const index = id % placeholderImages.length;
     return placeholderImages[index] ?? placeholderImages[0];
   };
@@ -244,7 +245,7 @@
       const names = ids
         .map((id: number) => commoditiesMap.value.get(id))
         .filter((name): name is string => !!name);
-      
+
       if (names.length > 0) {
         return names.join(", ");
       }
@@ -260,7 +261,7 @@
       const names = ids
         .map((id: number) => collaborationsMap.value.get(id))
         .filter((name): name is string => !!name);
-      
+
       if (names.length > 0) {
         return names.join(", ");
       }
@@ -272,11 +273,11 @@
   const getLocation = (partner: UserResponse): string => {
     const details = partner.details;
     if (!details) return "-";
-    
+
     const locationParts: string[] = [];
     if (details.province) locationParts.push(details.province);
     if (details.regency) locationParts.push(details.regency);
-    
+
     return locationParts.length > 0 ? locationParts.join(", ") : "-";
   };
 
@@ -308,4 +309,3 @@
     return null;
   };
 </script>
-

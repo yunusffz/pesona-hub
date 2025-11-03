@@ -37,7 +37,7 @@ export const useUser = () => {
       // Extract file URL from response
       // Response format: BaseResponse_Union_dict_str__Any___NoneType__
       if (data && typeof data === "object" && "data" in data) {
-        const fileData = (data.data as any);
+        const fileData = data.data as any;
         // API returns object_name or id, we need to get the URL
         // Typically it's something like: /files/{object_name} or /files/{id}
         if (fileData?.object_name) {
@@ -68,17 +68,14 @@ export const useUser = () => {
       username: string;
       userData: UserUpdate;
     }) => {
-      const { data, error } = await client.PATCH(
-        "/users/users/{username}",
-        {
-          params: {
-            path: {
-              username,
-            },
+      const { data, error } = await client.PATCH("/users/{username}", {
+        params: {
+          path: {
+            username,
           },
-          body: userData,
-        }
-      );
+        },
+        body: userData,
+      });
 
       if (error) {
         const mappedError = mapErrorMessage(error);
@@ -127,7 +124,9 @@ export const useUser = () => {
   return {
     updateProfile,
     uploadFile: uploadFileMutation.mutateAsync,
-    isUpdating: computed(() => updateUserMutation.isPending || uploadFileMutation.isPending),
+    isUpdating: computed(
+      () => updateUserMutation.isPending || uploadFileMutation.isPending
+    ),
     isUploading: computed(() => uploadFileMutation.isPending),
     updateError: computed(() => updateUserMutation.error),
     uploadError: computed(() => uploadFileMutation.error),

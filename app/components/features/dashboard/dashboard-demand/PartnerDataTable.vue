@@ -210,12 +210,18 @@
   ): string => {
     if (partnerId === undefined) {
       const randomIndex = Math.floor(Math.random() * placeholderImages.length);
-      return placeholderImages[randomIndex] ?? placeholderImages[0];
+      // Always return a string, never undefined
+      return placeholderImages[randomIndex] || placeholderImages[0] || "";
     }
     const id =
-      typeof partnerId === "string" ? parseInt(partnerId) || 0 : partnerId;
-    const index = id % placeholderImages.length;
-    return placeholderImages[index] ?? placeholderImages[0];
+      typeof partnerId === "string"
+        ? Number.isNaN(parseInt(partnerId))
+          ? 0
+          : parseInt(partnerId)
+        : Number(partnerId);
+    // Ensure index is a non-negative integer within bounds
+    const index = Math.abs(id) % placeholderImages.length;
+    return placeholderImages[index] || placeholderImages[0] || "";
   };
 
   const failedImages = ref<Map<string | number, boolean>>(new Map());

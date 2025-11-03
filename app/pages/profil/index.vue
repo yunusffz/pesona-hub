@@ -204,6 +204,7 @@
       // Map existing user data to form
       if (user.value.details) {
         formData.value.companyName = user.value.details.institution_name || "";
+        formData.value.partnerLevel = user.value.details.stakeholder_type || "";
         formData.value.whatsappNumber = user.value.details.contact_phone || "";
         formData.value.websiteUrl = user.value.details.website || "";
         formData.value.additionalInfo =
@@ -223,7 +224,7 @@
       }
 
       // Map basic user data
-      if (user.value.phone) {
+      if (user.value.phone && !formData.value.whatsappNumber) {
         formData.value.whatsappNumber = user.value.phone;
       }
 
@@ -248,52 +249,69 @@
   }
 
   async function handleSubmit() {
-    console.log(user);
     if (!user.value?.username) {
       alert("User tidak ditemukan. Silakan login kembali.");
       return;
     }
 
     try {
-      // Map form data to UserDetail structure
+      // Convert commodities to numbers array
+      const commodityIds: number[] = formData.value.commodities
+        .map((c) => {
+          if (typeof c === "number") return c;
+          const numId = typeof c === "string" ? parseInt(c, 10) : null;
+          return isNaN(numId as any) ? null : numId;
+        })
+        .filter((c): c is number => c !== null);
+
+      // Convert collaboration types to numbers array
+      const collaborationIds: number[] = formData.value.collaborationType
+        .map((id) => {
+          const numId = typeof id === "string" ? parseInt(id, 10) : id;
+          return isNaN(numId as any) ? null : numId;
+        })
+        .filter((id): id is number => id !== null);
+
+      // Map form data to UserDetail structure with all fields
       const userDetail: UserDetail = {
-        institution_name: formData.value.companyName || undefined,
-        contact_phone: formData.value.whatsappNumber || undefined,
-        website: formData.value.websiteUrl || undefined,
-        product_service_description: formData.value.additionalInfo || undefined,
+        // Fields from form
+        institution_name: formData.value.companyName || null,
+        stakeholder_type: formData.value.partnerLevel || null,
+        contact_phone: formData.value.whatsappNumber || null,
+        website: formData.value.websiteUrl || null,
+        product_service_description: formData.value.additionalInfo || null,
         collaboration_commodity_ids:
-          formData.value.commodities.length > 0
-            ? formData.value.commodities.filter(
-                (c): c is number => typeof c === "number"
-              ).length > 0
-              ? formData.value.commodities.filter(
-                  (c): c is number => typeof c === "number"
-                )
-              : undefined
-            : undefined,
+          commodityIds.length > 0 ? commodityIds : null,
         collaboration_ids:
-          formData.value.collaborationType.length > 0
-            ? formData.value.collaborationType
-                .map((id) => {
-                  const numId = typeof id === "string" ? parseInt(id, 10) : id;
-                  return isNaN(numId) ? undefined : numId;
-                })
-                .filter((id): id is number => id !== undefined)
-            : undefined,
+          collaborationIds.length > 0 ? collaborationIds : null,
+
+        // Fields without form inputs - set to empty
+        legal_entity_type: null,
+        legal_number: null,
+        office_address: null,
+        province: null,
+        regency: null,
+        contact_name: null,
+        contact_position: null,
+        contact_email: null,
+        operation_scale: null,
+        main_sector: null,
+        certifications: null,
+        collaboration_impact_ids: null,
+        collaboration_location_ids: null,
       };
 
-      // Remove undefined fields
-      Object.keys(userDetail).forEach((key) => {
-        if (userDetail[key as keyof UserDetail] === undefined) {
-          delete userDetail[key as keyof UserDetail];
-        }
-      });
-
+      // At step 3 (final step), don't upload logo again
+      // Logo is already handled in step 1 if user uploaded a new one
+      // Only use existing thumbnail if available
       await updateProfile(user.value.username, {
         name: formData.value.companyName || undefined,
         phone: formData.value.whatsappNumber || undefined,
-        logoFile: formData.value.logo,
-        details: Object.keys(userDetail).length > 0 ? userDetail : undefined,
+        thumbnail:
+          logoPreview.value && logoPreview.value.startsWith("http")
+            ? logoPreview.value
+            : undefined,
+        details: userDetail,
       });
 
       // Navigate to success page

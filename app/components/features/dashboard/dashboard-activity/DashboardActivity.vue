@@ -8,3 +8,4 @@
   import ActivityTable from "./ActivityTable.vue";
 </script>
 
+

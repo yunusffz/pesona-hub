@@ -56,23 +56,31 @@
 <script setup lang="ts">
   import { ref, watch } from "vue";
   import { Upload, Loader2 } from "lucide-vue-next";
+  import { useApi } from "~/composables/useApi";
+  import { mapErrorMessage } from "~/utils/error-mapper";
 
   interface Props {
     /** optional preview from parent (URL or base64) */
     modelValue?: string | null;
-    /** show spinner overlay */
-    loading?: boolean;
     /** label placeholder text */
     label?: string;
-
     additionalIcon?: string;
+    /** disable auto-upload, just emit file */
+    disableAutoUpload?: boolean;
   }
   const props = defineProps<Props>();
-  const emit = defineEmits(["update:modelValue", "file"]);
+  const emit = defineEmits<{
+    "update:modelValue": [value: string | null];
+    file: [file: File];
+    uploaded: [fileUrl: string];
+    error: [error: string];
+  }>();
 
+  const client = useApi();
   const fileInput = ref<HTMLInputElement | null>(null);
   const preview = ref<string | null>(props.modelValue || null);
   const isDragging = ref(false);
+  const loading = ref(false);
 
   watch(
     () => props.modelValue,
@@ -90,13 +98,76 @@
     if (file) handleFile(file);
   };
 
-  const handleFile = (file: File) => {
+  const uploadFile = async (file: File): Promise<string | null> => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const { data, error } = await client.POST("/files", {
+        body: formData,
+      });
+
+      if (error) {
+        const mappedError = mapErrorMessage(error);
+        emit("error", mappedError);
+        return null;
+      }
+
+      // Extract file URL from response
+      if (data && typeof data === "object" && "data" in data) {
+        const fileData = data.data as any;
+        if (fileData?.object_name) {
+          return fileData.object_name;
+        }
+        if (fileData?.id) {
+          return String(fileData.id);
+        }
+        // Try to find object_name or id in nested structure
+        if (typeof fileData === "object") {
+          const objName = fileData.object_name || fileData.id;
+          if (objName) {
+            return String(objName);
+          }
+        }
+      }
+
+      emit("error", "Failed to get file URL from response");
+      return null;
+    } catch (err: any) {
+      const errorMessage =
+        err?.message || mapErrorMessage(err) || "Failed to upload file";
+      emit("error", errorMessage);
+      return null;
+    }
+  };
+
+  const handleFile = async (file: File) => {
+    // Show preview immediately
     const reader = new FileReader();
     reader.onloadend = () => {
       preview.value = reader.result as string;
-      emit("update:modelValue", reader.result as string);
-      emit("file", file);
     };
     reader.readAsDataURL(file);
+
+    emit("file", file);
+
+    // Upload if auto-upload is enabled (default: true)
+    if (!props.disableAutoUpload) {
+      loading.value = true;
+      try {
+        const fileUrl = await uploadFile(file);
+        if (fileUrl) {
+          emit("update:modelValue", fileUrl);
+          emit("uploaded", fileUrl);
+          // Update preview to use the uploaded URL if available
+          preview.value = fileUrl;
+        }
+      } finally {
+        loading.value = false;
+      }
+    } else {
+      // If auto-upload is disabled, just emit base64 preview
+      emit("update:modelValue", preview.value);
+    }
   };
 </script>

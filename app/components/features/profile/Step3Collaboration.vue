@@ -70,7 +70,6 @@
   import MultiSelectCombobox from "~/components/common/multi-select-combobox/MultiSelectComboBox.vue";
 
   interface FormData {
-    logo: File | null;
     companyName: string;
     partnerLevel: string;
     whatsappNumber: string;

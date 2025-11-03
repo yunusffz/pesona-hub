@@ -35,6 +35,24 @@ export const useAuth = () => {
   // State untuk user
   const user = useState<UserResponse | null>("auth-user", () => null);
 
+  // Logout function - defined early so it can be used in useQuery
+  const logout = async () => {
+    try {
+      // Call logout endpoint
+      await client.POST("/auth/logout");
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      // Clear tokens dan state
+      accessToken.value = null;
+      refreshToken.value = null;
+      user.value = null;
+      clearAuthToken();
+      queryClient.clear();
+      navigateTo("/login");
+    }
+  };
+
   const {
     data: currentUser,
     isLoading: isLoadingUser,
@@ -45,10 +63,18 @@ export const useAuth = () => {
       if (!accessToken.value) return null;
 
       // Fetch user data from API
-      const { data, error } = await client.GET("/users/me");
+      const { data, error } = await client.GET("/me");
 
       if (error) {
-        throw new Error("Failed to fetch user data");
+        // Check if error is 401 (unauthorized)
+        const status = (error as any)?.status || (error as any)?.statusCode;
+        if (status === 401) {
+          // Logout user if unauthorized
+          await logout();
+          // Return null to prevent query from retrying
+          return null;
+        }
+        throw error;
       }
 
       // API returns BaseResponse format, extract data field
@@ -94,9 +120,7 @@ export const useAuth = () => {
 
         // Fetch user data after successful login
         try {
-          const { data: userData, error: userError } = await client.GET(
-            "/users/me"
-          );
+          const { data: userData, error: userError } = await client.GET("/me");
           if (!userError && userData) {
             // API returns BaseResponse format, extract data field
             if (
@@ -187,24 +211,6 @@ export const useAuth = () => {
       clearInterval(intervalId);
     });
   }
-
-  // Logout function
-  const logout = async () => {
-    try {
-      // Call logout endpoint
-      await client.POST("/auth/logout");
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
-      // Clear tokens dan state
-      accessToken.value = null;
-      refreshToken.value = null;
-      user.value = null;
-      clearAuthToken();
-      queryClient.clear();
-      navigateTo("/login");
-    }
-  };
 
   // Initialize auth token on composable creation
   if (import.meta.client && accessToken.value) {

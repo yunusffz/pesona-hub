@@ -208,10 +208,12 @@
   const getRandomPlaceholderImage = (
     partnerId: string | number | undefined
   ): string => {
+    const defaultImage = placeholderImages[0] || "";
     if (partnerId === undefined) {
       const randomIndex = Math.floor(Math.random() * placeholderImages.length);
       // Always return a string, never undefined
-      return placeholderImages[randomIndex] || placeholderImages[0] || "";
+      const image = placeholderImages[randomIndex];
+      return image || defaultImage;
     }
     const id =
       typeof partnerId === "string"
@@ -221,7 +223,8 @@
         : Number(partnerId);
     // Ensure index is a non-negative integer within bounds
     const index = Math.abs(id) % placeholderImages.length;
-    return placeholderImages[index] || placeholderImages[0] || "";
+    const image = placeholderImages[index];
+    return image || defaultImage;
   };
 
   const failedImages = ref<Map<string | number, boolean>>(new Map());

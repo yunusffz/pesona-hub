@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
   import MultiSelectCombobox from "~/components/common/multi-select-combobox/MultiSelectComboBox.vue";
-  import { ref, watch } from "vue";
+  import { computed } from "vue";
   import { useCommodities } from "~/queries/useCommodities";
   import { useCatalogStore } from "~/stores/useCatalogStore";
 
@@ -31,29 +31,19 @@
     );
   });
 
-  const selected = ref<(string | number)[]>(
-    (catalogStore as any).selectedCommodities
-  );
-
-  watch(
-    selected,
-    (newValues) => {
-      (catalogStore as any).setSelectedCommodities(
-        newValues
-          .map((v) => (typeof v === "string" ? Number(v) : v))
-          .filter((v) => v !== null && v !== undefined) as number[]
-      );
+  // Use computed with getter/setter to avoid circular dependency
+  const selected = computed<(string | number)[]>({
+    get() {
+      return (catalogStore as any).selectedCommodities || [];
     },
-    { deep: true }
-  );
-
-  watch(
-    () => (catalogStore as any).selectedCommodities,
-    (newValues) => {
-      selected.value = newValues;
+    set(newValues) {
+      const numericValues = newValues
+        .map((v) => (typeof v === "string" ? Number(v) : v))
+        .filter((v) => v !== null && v !== undefined && !isNaN(Number(v))) as number[];
+      
+      (catalogStore as any).setSelectedCommodities(numericValues);
     },
-    { deep: true }
-  );
+  });
 
   defineExpose({
     selected,

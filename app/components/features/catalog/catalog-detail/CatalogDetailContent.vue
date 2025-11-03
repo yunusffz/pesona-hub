@@ -179,11 +179,21 @@
     DialogTitle,
   } from "@/components/ui/dialog";
   import { Button } from "@/components/ui/button";
+  import { useLogActivity } from "~/queries/useActivityLogs";
+  import type { components } from "~/types/pesona-hub-api";
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const route = useRoute();
+  const { mutate: logActivity } = useLogActivity();
 
   interface Props {
-    product?: ProductWithRelations;
+    product?: ProductWithRelations & {
+      social_forestry_business_group?: {
+        contact?: {
+          chief_contact: string;
+        };
+      };
+    };
   }
 
   const props = defineProps<Props>();
@@ -222,12 +232,47 @@
   };
 
   const handleQuoteRequest = () => {
-    const productName = props.product?.name || "Produk";
-    const unitPrice =
-      selectedVariant.value === "default"
-        ? productPrice.value
-        : productPrice.value;
+    if (!props.product) return;
+
+    const productName = props.product.name || "Produk";
+    const productId = props.product.id;
+    const productSlug = (route.params.slug as string) || null;
+    const unitPrice = productPrice.value;
     const totalPrice = quantity.value * unitPrice;
+
+    // Log activity before opening WhatsApp
+    const activityLog: components["schemas"]["LogActivityRequest"] = {
+      event_type: "create",
+      entity_type: "product",
+      entity_id: productId || null,
+      entity_slug: productSlug,
+      access_type: "public",
+      extra_data: {
+        product_name: productName,
+        product_id: productId || null,
+        product_price: unitPrice,
+        product_quantity: quantity.value,
+        product_unit: props.product.unit || null,
+        total_price: totalPrice,
+        product_usage: props.product.product_usage || null,
+        product_description: props.product.description || null,
+        kups_name: props.product.social_forestry_business_group?.name || null,
+        kups_class:
+          props.product.social_forestry_business_group?.class_group || null,
+        kups_contact:
+          props.product.social_forestry_business_group?.contact
+            ?.chief_contact || null,
+        commodity_name: props.product.commodity?.name || null,
+        commodity_id: props.product.commodity?.id || null,
+        user_id: user.value?.id || null,
+        user_name: user.value?.name || null,
+        user_email: user.value?.email || null,
+        user_phone: user.value?.phone || null,
+      },
+    };
+
+    // Use mutation hook - fires and forgets, won't block the flow
+    logActivity(activityLog);
 
     // Format price with thousand separators
     const formattedPrice = new Intl.NumberFormat("id-ID", {

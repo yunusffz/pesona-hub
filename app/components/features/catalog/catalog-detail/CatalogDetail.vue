@@ -19,9 +19,20 @@
   });
 
   // Extract product data from API response
-  const product = computed<ProductWithRelations | null>(() => {
+  const product = computed<
+    | (ProductWithRelations & {
+        social_forestry_business_group?: {
+          contact?: { chief_contact: string };
+        };
+      })
+    | null
+  >(() => {
     if (!productData.value?.data) return null;
-    return productData.value.data as ProductWithRelations;
+    return productData.value.data as ProductWithRelations & {
+      social_forestry_business_group?: {
+        contact?: { chief_contact: string };
+      };
+    };
   });
 
   // Provide product data to child components

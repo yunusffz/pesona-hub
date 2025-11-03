@@ -175,72 +175,74 @@ export const buildStrapiParams = (options: UseStrapiParamsOptions) => {
         addNestedFilter(filtersValue);
       }
     }
-
-    // Populate parameter - support both array and object formats
-    if (options.populate) {
-      if (typeof options.populate === "string") {
-        // Handle comma-separated string format
-        const populateFields = options.populate.split(",");
-        populateFields.forEach((field, index) => {
-          params.append(`populate[${index}]`, field.trim());
-        });
-      } else if (Array.isArray(options.populate)) {
-        // Handle array format
-        options.populate.forEach((field, index) => {
-          params.append(`populate[${index}]`, field);
-        });
-      } else {
-        // Handle object format (legacy)
-        params.append("populate", JSON.stringify(options.populate));
-      }
-    }
-
-    // Fields parameter - support both array and object formats
-    if (options.fields && options.fields.length > 0) {
-      options.fields.forEach((field, index) => {
-        params.append(`fields[${index}]`, field);
-      });
-    }
-
-    // Sort parameter
-    if (options.sort) {
-      if (typeof options.sort === "string") {
-        params.append("sort", options.sort);
-      } else {
-        const sortArray = Object.entries(options.sort).map(
-          ([key, value]) => `${key}:${value}`
-        );
-        params.append("sort", sortArray.join(","));
-      }
-    }
-
-    // Pagination parameter
-    if (options.pagination) {
-      if (options.pagination.page !== undefined) {
-        params.append("pagination[page]", options.pagination.page.toString());
-      }
-      if (options.pagination.page_size !== undefined) {
-        params.append(
-          "pagination[page_size]",
-          options.pagination.page_size.toString()
-        );
-      }
-      if (options.pagination.start !== undefined) {
-        params.append("pagination[start]", options.pagination.start.toString());
-      }
-      if (options.pagination.limit !== undefined) {
-        params.append("pagination[limit]", options.pagination.limit.toString());
-      }
-    } else if (options.page || options.limit) {
-      // Legacy pagination support
-      if (options.page !== undefined) {
-        params.append("pagination[page]", options.page.toString());
-      }
-      if (options.limit !== undefined) {
-        params.append("pagination[page_size]", options.limit.toString());
-      }
-    }
-
-    return params;
   }
+
+  // Populate parameter - support both array and object formats
+  if (options.populate) {
+    if (typeof options.populate === "string") {
+      // Handle comma-separated string format
+      const populateFields = options.populate.split(",");
+      populateFields.forEach((field, index) => {
+        params.append(`populate[${index}]`, field.trim());
+      });
+    } else if (Array.isArray(options.populate)) {
+      // Handle array format - send field as-is including dot notation
+      options.populate.forEach((field, index) => {
+        params.append(`populate[${index}]`, field);
+      });
+    } else {
+      // Handle object format (legacy)
+      params.append("populate", JSON.stringify(options.populate));
+    }
+  }
+
+  // Fields parameter - support both array and object formats
+  if (options.fields && options.fields.length > 0) {
+    options.fields.forEach((field, index) => {
+      if (field) {
+        params.append(`fields[${index}]`, field);
+      }
+    });
+  }
+
+  // Sort parameter
+  if (options.sort) {
+    if (typeof options.sort === "string") {
+      params.append("sort", options.sort);
+    } else {
+      const sortArray = Object.entries(options.sort).map(
+        ([key, value]) => `${key}:${value}`
+      );
+      params.append("sort", sortArray.join(","));
+    }
+  }
+
+  // Pagination parameter
+  if (options.pagination) {
+    if (options.pagination.page !== undefined) {
+      params.append("pagination[page]", options.pagination.page.toString());
+    }
+    if (options.pagination.page_size !== undefined) {
+      params.append(
+        "pagination[page_size]",
+        options.pagination.page_size.toString()
+      );
+    }
+    if (options.pagination.start !== undefined) {
+      params.append("pagination[start]", options.pagination.start.toString());
+    }
+    if (options.pagination.limit !== undefined) {
+      params.append("pagination[limit]", options.pagination.limit.toString());
+    }
+  } else if (options.page || options.limit) {
+    // Legacy pagination support
+    if (options.page !== undefined) {
+      params.append("pagination[page]", options.page.toString());
+    }
+    if (options.limit !== undefined) {
+      params.append("pagination[page_size]", options.limit.toString());
+    }
+  }
+
+  return params;
 };

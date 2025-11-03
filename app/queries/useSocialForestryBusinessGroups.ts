@@ -4,7 +4,7 @@ import type { UseStrapiParamsOptions } from "~/types/strapi";
 import { buildStrapiParams } from "~/utils/strapi";
 
 type ListResponse =
-  | components["schemas"]["ListResponse_SocialForestryBusinessGroupResponse_-Output"]
+  | components["schemas"]["BaseResponse_dict_str__Any__"]
   | components["schemas"]["BaseResponse_SocialForestryBusinessGroupResponse_"]
   | {
       [key: string]: unknown;
@@ -29,7 +29,9 @@ export const useSocialForestryBusinessGroups = (
       const queryString = params.toString();
 
       const { data, error } = await $apiClient.GET(
-        `/social-forestry-business-groups${queryString ? `?${queryString}` : ""}`
+        `/social-forestry-business-groups${
+          queryString ? `?${queryString}` : ""
+        }`
       );
 
       if (error) {
@@ -65,7 +67,9 @@ export const useSocialForestryBusinessGroup = (
       const queryString = params.toString();
 
       const { data, error } = await $apiClient.GET(
-        `/social-forestry-business-groups/{social_forestry_business_group_id}${queryString ? `?${queryString}` : ""}`,
+        `/social-forestry-business-groups/{social_forestry_business_group_id}${
+          queryString ? `?${queryString}` : ""
+        }`,
         {
           params: {
             path: {
@@ -91,4 +95,3 @@ export const useSocialForestryBusinessGroup = (
     gcTime: 10 * 60 * 1000,
   });
 };
-

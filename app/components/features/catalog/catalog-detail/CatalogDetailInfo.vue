@@ -2,7 +2,7 @@
   import type { ProductWithRelations } from "~/types/product";
   interface Props {
     product?: ProductWithRelations & {
-      social_forestry_business_group: {
+      social_forestry_business_group?: {
         contact?: {
           chief_contact: string;
         };

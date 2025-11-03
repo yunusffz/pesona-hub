@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware((to, from) => {
-  const token = useCookie("auth-token");
+  const token = useCookie("access-token"); // Ubah dari "auth-token" ke "access-token"
 
   // Check if route requires authentication
   const isProtected = to.meta.requiresAuth !== false;
@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
   if (isProtected && !token.value) {
     return navigateTo({
       path: "/login",
-      query: { redirect: to.fullPath }, // Save redirect path
+      query: { redirect: to.fullPath },
     });
   }
 });

@@ -7,6 +7,12 @@ export default defineNuxtPlugin(() => {
   const { client, setAuthToken, clearAuthToken, getAuthToken } =
     createApiClient(baseUrl);
 
+  // Initialize token from cookie on both server and client
+  const accessToken = useCookie("access-token");
+  if (accessToken.value) {
+    setAuthToken(accessToken.value);
+  }
+
   return {
     provide: {
       apiClient: client,

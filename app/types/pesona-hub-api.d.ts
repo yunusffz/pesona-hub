@@ -964,7 +964,7 @@ export interface paths {
         patch: operations["patch_social_forestry_business_group_social_forestry_business_groups__social_forestry_business_group_id__patch"];
         trace?: never;
     };
-    "/users/users": {
+    "/users": {
         parameters: {
             query?: never;
             header?: never;
@@ -972,17 +972,17 @@ export interface paths {
             cookie?: never;
         };
         /** Get Users */
-        get: operations["get_users_users_users_get"];
+        get: operations["get_users_users_get"];
         put?: never;
         /** Create User */
-        post: operations["create_user_users_users_post"];
+        post: operations["create_user_users_post"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/users/users/{username}": {
+    "/users/{username}": {
         parameters: {
             query?: never;
             header?: never;
@@ -990,19 +990,19 @@ export interface paths {
             cookie?: never;
         };
         /** Get User */
-        get: operations["get_user_users_users__username__get"];
+        get: operations["get_user_users__username__get"];
         /** Update User Full */
-        put: operations["update_user_full_users_users__username__put"];
+        put: operations["update_user_full_users__username__put"];
         post?: never;
         /** Delete User */
-        delete: operations["delete_user_users_users__username__delete"];
+        delete: operations["delete_user_users__username__delete"];
         options?: never;
         head?: never;
         /** Patch User */
-        patch: operations["patch_user_users_users__username__patch"];
+        patch: operations["patch_user_users__username__patch"];
         trace?: never;
     };
-    "/users/me": {
+    "/me": {
         parameters: {
             query?: never;
             header?: never;
@@ -1010,7 +1010,7 @@ export interface paths {
             cookie?: never;
         };
         /** Get Current User */
-        get: operations["get_current_user_users_me_get"];
+        get: operations["get_current_user_me_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1029,19 +1029,7 @@ export interface components {
          */
         AccessType: "public" | "internal" | "private";
         /** BaseResponse[LocationResponse] */
-        "BaseResponse_LocationResponse_-Input": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["LocationResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[LocationResponse] */
-        "BaseResponse_LocationResponse_-Output": {
+        BaseResponse_LocationResponse_: {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
@@ -1101,19 +1089,7 @@ export interface components {
             } | unknown[] | null;
         };
         /** BaseResponse[UserResponse] */
-        "BaseResponse_UserResponse_-Input": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["UserResponse"] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-        };
-        /** BaseResponse[UserResponse] */
-        "BaseResponse_UserResponse_-Output": {
+        BaseResponse_UserResponse_: {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
@@ -1538,26 +1514,7 @@ export interface components {
          */
         EventType: "view" | "download" | "upload" | "create" | "update" | "delete" | "share" | "export" | "api_access" | "click" | "authenticate";
         /** ListResponse[SocialForestryBusinessGroupResponse] */
-        "ListResponse_SocialForestryBusinessGroupResponse_-Input": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["SocialForestryBusinessGroupResponse"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[SocialForestryBusinessGroupResponse] */
-        "ListResponse_SocialForestryBusinessGroupResponse_-Output": {
+        ListResponse_SocialForestryBusinessGroupResponse_: {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
@@ -1576,26 +1533,7 @@ export interface components {
             } | null;
         };
         /** ListResponse[SocialForestryGroupResponse] */
-        "ListResponse_SocialForestryGroupResponse_-Input": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: components["schemas"]["SocialForestryGroupResponse"][] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[SocialForestryGroupResponse] */
-        "ListResponse_SocialForestryGroupResponse_-Output": {
+        ListResponse_SocialForestryGroupResponse_: {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
@@ -1614,28 +1552,7 @@ export interface components {
             } | null;
         };
         /** ListResponse[Union[SettingResponse, dict[str, Any]]] */
-        "ListResponse_Union_SettingResponse__dict_str__Any___-Input": {
-            /** @description Response code, use from Message Code */
-            message_code: components["schemas"]["MessageCode"];
-            /**
-             * Data
-             * @description Response data, can be an array, dict, or None
-             */
-            data?: (components["schemas"]["SettingResponse"] | {
-                [key: string]: unknown;
-            })[] | {
-                [key: string]: unknown;
-            } | unknown[] | null;
-            /**
-             * Meta
-             * @description Pagination metadata
-             */
-            meta?: components["schemas"]["MetaResponse"] | components["schemas"]["PaginationResponse"] | {
-                [key: string]: unknown;
-            } | null;
-        };
-        /** ListResponse[Union[SettingResponse, dict[str, Any]]] */
-        "ListResponse_Union_SettingResponse__dict_str__Any___-Output": {
+        ListResponse_Union_SettingResponse__dict_str__Any___: {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
@@ -1947,6 +1864,21 @@ export interface components {
              */
             product_category?: string | null;
             /**
+             * Price
+             * @description Product price
+             */
+            price?: number | null;
+            /**
+             * Capacity
+             * @description Product capacity
+             */
+            capacity?: number | null;
+            /**
+             * Unit
+             * @description Product unit
+             */
+            unit?: string | null;
+            /**
              * Value Chain
              * @description Value chain
              */
@@ -1956,6 +1888,16 @@ export interface components {
              * @description Product thumbnails
              */
             thumbnails?: unknown[] | null;
+            /**
+             * Certification Id
+             * @description Certification ID
+             */
+            certification_id?: number | null;
+            /**
+             * Social Forestry Group Id
+             * @description Social Forestry Groups ID
+             */
+            social_forestry_group_id?: number | null;
             /**
              * Social Forestry Business Group Id
              * @description Social Forestry Business Groups ID
@@ -1975,6 +1917,12 @@ export interface components {
             }[] | {
                 [key: string]: unknown;
             } | null;
+            /**
+             * Status
+             * @description Product status
+             * @default ACTIVE
+             */
+            status: string | null;
         };
         /** ProductResponse */
         ProductResponse: {
@@ -1988,14 +1936,20 @@ export interface components {
             product_usage?: string | null;
             /** Product Category */
             product_category?: string | null;
+            /** Price */
+            price?: number | null;
+            /** Capacity */
+            capacity?: number | null;
+            /** Unit */
+            unit?: string | null;
             /** Value Chain */
             value_chain?: string | null;
             /** Thumbnails */
             thumbnails?: unknown[] | null;
-            /** Price */
-            price?: number | null;
-            /** Unit */
-            unit?: string | null;
+            /** Certification Id */
+            certification_id?: number | null;
+            /** Social Forestry Group Id */
+            social_forestry_group_id?: number | null;
             /** Social Forestry Business Group Id */
             social_forestry_business_group_id?: number | null;
             /** Commodity Id */
@@ -2006,7 +1960,8 @@ export interface components {
             }[] | {
                 [key: string]: unknown;
             } | null;
-            status: components["schemas"]["Status"];
+            /** Status */
+            status: string;
             /**
              * Created At
              * Format: date-time
@@ -2041,6 +1996,21 @@ export interface components {
              */
             product_category?: string | null;
             /**
+             * Price
+             * @description Product price
+             */
+            price?: number | null;
+            /**
+             * Capacity
+             * @description Product capacity
+             */
+            capacity?: number | null;
+            /**
+             * Unit
+             * @description Product unit
+             */
+            unit?: string | null;
+            /**
              * Value Chain
              * @description Value chain
              */
@@ -2051,15 +2021,15 @@ export interface components {
              */
             thumbnails?: unknown[] | null;
             /**
-             * Price
-             * @description Product price
+             * Certification Id
+             * @description Certification ID
              */
-            price?: number | null;
+            certification_id?: number | null;
             /**
-             * Unit
-             * @description Product unit
+             * Social Forestry Group Id
+             * @description Social Forestry Groups ID
              */
-            unit?: string | null;
+            social_forestry_group_id?: number | null;
             /**
              * Social Forestry Business Group Id
              * @description Social Forestry Business Groups ID
@@ -2079,8 +2049,11 @@ export interface components {
             }[] | {
                 [key: string]: unknown;
             } | null;
-            /** @description Product status */
-            status?: components["schemas"]["Status"] | null;
+            /**
+             * Status
+             * @description Product status
+             */
+            status?: string | null;
         };
         /** ProvinceAPICreate */
         ProvinceAPICreate: {
@@ -5466,7 +5439,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_dict_str__Any__"] | components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["BaseResponse_LocationResponse_-Output"] | null;
+                    "application/json": components["schemas"]["ListResponse_dict_str__Any__"] | components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["BaseResponse_LocationResponse_"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -5952,7 +5925,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_Union_SettingResponse__dict_str__Any___-Output"] | components["schemas"]["BaseResponse_Union_SettingResponse__dict_str__Any___"] | null;
+                    "application/json": components["schemas"]["ListResponse_Union_SettingResponse__dict_str__Any___"] | components["schemas"]["BaseResponse_Union_SettingResponse__dict_str__Any___"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -6211,7 +6184,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_SocialForestryGroupResponse_-Output"] | components["schemas"]["BaseResponse_SocialForestryGroupResponse_"] | null;
+                    "application/json": components["schemas"]["ListResponse_SocialForestryGroupResponse_"] | components["schemas"]["BaseResponse_SocialForestryGroupResponse_"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -6479,7 +6452,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         [key: string]: unknown;
-                    } | components["schemas"]["ListResponse_SocialForestryBusinessGroupResponse_-Output"] | components["schemas"]["BaseResponse_SocialForestryBusinessGroupResponse_"] | null;
+                    } | components["schemas"]["ListResponse_SocialForestryBusinessGroupResponse_"] | components["schemas"]["BaseResponse_SocialForestryBusinessGroupResponse_"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -6717,7 +6690,7 @@ export interface operations {
             };
         };
     };
-    get_users_users_users_get: {
+    get_users_users_get: {
         parameters: {
             query?: {
                 /** @description Full-text search query. Use this parameter to search across multiple fields in the resource. */
@@ -6768,7 +6741,7 @@ export interface operations {
             };
         };
     };
-    create_user_users_users_post: {
+    create_user_users_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -6787,7 +6760,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_dict_str__Any___NoneType__"] | components["schemas"]["BaseResponse_UserResponse_-Output"];
+                    "application/json": components["schemas"]["BaseResponse_Union_dict_str__Any___NoneType__"] | components["schemas"]["BaseResponse_UserResponse_"];
                 };
             };
             /** @description Unprocessable Content */
@@ -6810,7 +6783,7 @@ export interface operations {
             };
         };
     };
-    get_user_users_users__username__get: {
+    get_user_users__username__get: {
         parameters: {
             query?: {
                 /** @description Fields to include in the response. */
@@ -6855,7 +6828,7 @@ export interface operations {
             };
         };
     };
-    update_user_full_users_users__username__put: {
+    update_user_full_users__username__put: {
         parameters: {
             query?: never;
             header?: never;
@@ -6899,7 +6872,7 @@ export interface operations {
             };
         };
     };
-    delete_user_users_users__username__delete: {
+    delete_user_users__username__delete: {
         parameters: {
             query?: {
                 permanent?: boolean;
@@ -6939,7 +6912,7 @@ export interface operations {
             };
         };
     };
-    patch_user_users_users__username__patch: {
+    patch_user_users__username__patch: {
         parameters: {
             query?: never;
             header?: never;
@@ -6983,7 +6956,7 @@ export interface operations {
             };
         };
     };
-    get_current_user_users_me_get: {
+    get_current_user_me_get: {
         parameters: {
             query?: {
                 /** @description Fields to include in the response. */

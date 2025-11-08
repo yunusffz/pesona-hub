@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="bg-white px-4 sm:px-6 lg:px-10 2xl:px-20 flex flex-col gap-6 sm:gap-8 lg:gap-10 py-8 sm:py-12 lg:py-16 xl:py-20 2xl:py-[140px]"
+    class="px-4 sm:px-6 lg:px-10 2xl:px-20 flex flex-col gap-6 sm:gap-8 lg:gap-10 py-8 sm:py-12 lg:py-16 xl:py-20 2xl:py-[140px]"
   >
     <!-- Main footer content -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">

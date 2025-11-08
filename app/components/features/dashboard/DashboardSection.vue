@@ -42,7 +42,8 @@
                     Activity Log
                   </TabsTrigger>
                 </TabsList>
-                <div>
+                <div class="flex items-center gap-2">
+                  <DateRangePicker v-model="dateRange" :number-of-months="2" />
                   <FilterSheet>
                     <SheetTrigger as-child>
                       <BaseButton variant="solid" class="px-4 py-2">
@@ -71,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed } from "vue";
+  import { computed, ref, watch } from "vue";
   import DashboardSupply from "@/components/features/dashboard/dashboard-supply/DashboardSupply.vue";
   import DashboardDemand from "@/components/features/dashboard/dashboard-demand/DashboardDemand.vue";
   import DashboardActivity from "@/components/features/dashboard/dashboard-activity/DashboardActivity.vue";
@@ -84,6 +85,7 @@
   } from "@/components/ui/tabs";
   import { SheetTrigger } from "@/components/ui/sheet";
   import { useAuth } from "@/composables/useAuth";
+  import DateRangePicker from "@/components/ui/date-range-picker/DateRangePicker.vue";
 
   const { user } = useAuth();
   const isAdmin = computed(() => user.value?.role === "ADMINISTRATOR");
@@ -91,5 +93,54 @@
     isAdmin.value
       ? "grid grid-cols-3 rounded-2xl w-[300px]"
       : "grid grid-cols-1 rounded-2xl w-[100px]"
+  );
+
+  const startDate = ref<string>("");
+  const endDate = ref<string>("");
+
+  const dateRange = ref<any>(undefined);
+
+  const formatDateOnly = (d?: Date): string => {
+    if (!d) return "";
+    const yr = d.getFullYear();
+    const mo = String(d.getMonth() + 1).padStart(2, "0");
+    const da = String(d.getDate()).padStart(2, "0");
+    return `${yr}-${mo}-${da}`;
+  };
+
+  const asJsDate = (val: any | undefined): Date | undefined => {
+    if (!val) return undefined;
+    // DateValue from @internationalized/date usually has year/month/day
+    if (
+      typeof val === "object" &&
+      "year" in val &&
+      "month" in val &&
+      "day" in val
+    ) {
+      const year = (val as any).year as number;
+      const month = (val as any).month as number;
+      const day = (val as any).day as number;
+      return new Date(year, month - 1, day);
+    }
+    if (val instanceof Date) return val;
+    return undefined;
+  };
+
+  watch(
+    dateRange,
+    (val) => {
+      let fromVal: any | undefined;
+      let toVal: any | undefined;
+      if (Array.isArray(val)) {
+        fromVal = val[0];
+        toVal = val[1];
+      } else if (val && typeof val === "object") {
+        fromVal = (val as any).from ?? (val as any).start;
+        toVal = (val as any).to ?? (val as any).end;
+      }
+      startDate.value = formatDateOnly(asJsDate(fromVal));
+      endDate.value = formatDateOnly(asJsDate(toVal));
+    },
+    { deep: true }
   );
 </script>

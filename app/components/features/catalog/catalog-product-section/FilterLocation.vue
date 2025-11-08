@@ -2,8 +2,8 @@
   <MultiSelectCombobox
     v-model="selected"
     :options="locations"
-    placeholder="Cari Lokasi..."
-    emptyText="Pilih Lokasi"
+    placeholder="Cari Wilayah..."
+    emptyText="Pilih Wilayah"
     icon="map"
     iconSize="24px"
   />
@@ -16,20 +16,44 @@
   import { useCatalogStore } from "~/stores/useCatalogStore";
 
   const catalogStore = useCatalogStore();
-  const { data, isLoading, error, refetch } = useLocations();
+  const { data, isLoading, error, refetch } = useLocations({
+    limit: 200,
+    page: 1,
+  });
 
   const locations = computed(() => {
     if (!data.value?.data || !Array.isArray(data.value.data)) return [];
 
-    return (
-      data.value.data as Array<{
+    const locationData = data.value.data as Array<{
+      district: string;
+      regency: string;
+      province: string;
+      village: string;
+      id: string | number;
+    }>;
+
+    // Group by district to get distinct districts
+    const districtMap = new Map<
+      string,
+      {
         district: string;
         regency: string;
         province: string;
-        village: string;
-        id: string | number;
-      }>
-    ).map((location) => ({
+      }
+    >();
+
+    locationData.forEach((location) => {
+      if (!districtMap.has(location.district)) {
+        districtMap.set(location.district, {
+          district: location.district,
+          regency: location.regency,
+          province: location.province,
+        });
+      }
+    });
+
+    // Convert map to array and return
+    return Array.from(districtMap.values()).map((location) => ({
       label: `${location.district} - ${location.regency} - ${location.province}`,
       value: location.district,
     }));

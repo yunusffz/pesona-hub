@@ -2,18 +2,67 @@
 
 /* CSS Custom Properties */
 :root {
-  /* Colors */
-  --color-primary: #035925;
-  --color-primary-light: #047a32;
-  --color-primary-dark: #024a1c;
-  --color-secondary: #0D0D0E;
-  --color-secondary-light: #1a1a1b;
-  --color-secondary-dark: #000000;
-  
-  /* Neutral Colors */
-  --color-white: #ffffff;
+  /* Shadcn UI Base Variables */
+  --radius: 0.625rem;
+  --background: 0 0% 100%;
+  --foreground: 0 0% 15%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 15%;
+  --primary: 139 95% 18%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 97%;
+  --secondary-foreground: 0 0% 21%;
+  --muted: 0 0% 97%;
+  --muted-foreground: 0 0% 56%;
+  --accent: 0 0% 97%;
+  --accent-foreground: 0 0% 21%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 92%;
+  --input: 0 0% 92%;
+  --ring: 0 0% 71%;
 
-  --color-green-400: #2A9B4C;
+  /* Application-specific Colors */
+  --color-background: 0 0% 98%;
+  --color-muted: 240 9% 96%;
+  --color-popover: 0 0% 100%;
+  --color-popover-foreground: 222.2 84% 4.9%;
+  --color-muted-foreground: 240 5% 46%;
+
+  /* Text Colors */
+  --color-text-secondary: 222 13% 65%;
+
+  /* Brand Colors */
+  --color-rich-black: 240 4% 5%;
+  --color-forest-green: 139 95% 18%;
+
+  /* Primary Colors */
+  --color-primary: 139 95% 18%;
+  --color-primary-light: 139 95% 25%;
+  --color-primary-dark: 139 95% 15%;
+  --color-primary-hover: 70 58% 48%;
+
+  /* Secondary Colors */
+  --color-secondary: 240 4% 5%;
+  --color-secondary-light: 240 3% 10%;
+  --color-secondary-dark: 0 0% 0%;
+
+  /* Green Scale */
+  --color-green-400: 139 57% 39%;
+
+  /* Neutral Colors */
+  --color-white: 0 0% 100%;
+  --color-neutral-100: 0 0% 96%;
+  --color-neutral-200: 0 0% 91%;
+  --color-neutral-300: 0 0% 82%;
+  --color-neutral-400: 0 0% 64%;
+  --color-neutral-500: 0 0% 64%;
+  --color-neutral-700: 0 0% 47%;
+  --color-neutral-800: 0 0% 38%;
+  --color-neutral-900: 0 0% 29%;
+  --color-neutral-1000: 0 0% 20%;
   
   /* Semantic Colors */
   --color-success: #10b981;
@@ -89,24 +138,27 @@
   --z-toast: 1080;
 }
 
-/* Dark Mode Variables */
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--color-secondary);
-    --color-foreground: var(--color-white);
-    --color-muted: var(--color-gray-800);
-    --color-muted-foreground: var(--color-gray-300);
-  }
-} */
-
-/* Light Mode Variables */
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-background: var(--color-white);
-    --color-foreground: var(--color-secondary);
-    --color-muted: var(--color-gray-100);
-    --color-muted-foreground: var(--color-gray-600);
-  }
+/* Dark Mode Support */
+.dark {
+  --background: 0 0% 15%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 15%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 15%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 21%;
+  --secondary: 0 0% 27%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 27%;
+  --muted-foreground: 0 0% 71%;
+  --accent: 0 0% 27%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 63% 40%;
+  --destructive-foreground: 0 86% 64%;
+  --border: 0 0% 27%;
+  --input: 0 0% 27%;
+  --ring: 0 0% 44%;
 }
 
 /* Base Styles */
@@ -128,8 +180,8 @@ html {
 }
 
 body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  background-color: hsl(var(--color-background));
+  color: hsl(var(--color-foreground));
   font-size: var(--text-base);
   line-height: var(--leading-normal);
   min-height: 100vh;
@@ -138,7 +190,7 @@ body {
 
 /* Focus Styles */
 *:focus {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid hsl(var(--color-primary));
   outline-offset: 2px;
 }
 
@@ -148,8 +200,8 @@ body {
 
 /* Selection Styles */
 ::selection {
-  background-color: var(--color-primary);
-  color: var(--color-white);
+  background-color: hsl(var(--color-primary));
+  color: hsl(var(--color-white));
 }
 
 /* Scrollbar Styles */
@@ -159,16 +211,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-muted);
+  background: hsl(var(--color-muted));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-gray-400);
+  background: hsl(var(--color-neutral-400));
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gray-500);
+  background: hsl(var(--color-neutral-500));
 }
 
 

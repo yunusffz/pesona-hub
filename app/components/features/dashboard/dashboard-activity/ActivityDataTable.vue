@@ -82,7 +82,7 @@
       </div>
 
       <!-- Footer with Pagination -->
-      <div class="px-6 py-4 border-t border-gray-200">
+      <div class="px-6 py-4 border-t border-gray-200 flex justify-end">
         <Pagination
           :current-page="currentPage"
           :total-pages="totalPages"

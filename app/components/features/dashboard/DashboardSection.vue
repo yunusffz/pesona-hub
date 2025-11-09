@@ -65,7 +65,10 @@
                 <DashboardDemand />
               </TabsContent>
               <TabsContent v-if="isAdmin" value="activity" class="p-4">
-                <DashboardActivity />
+                <DashboardActivity
+                  :start-date="startDate || undefined"
+                  :end-date="endDate || undefined"
+                />
               </TabsContent>
             </Tabs>
           </div>
@@ -134,8 +137,15 @@
   watch(
     dateRange,
     (val) => {
+      if (!val) {
+        startDate.value = "";
+        endDate.value = "";
+        return;
+      }
+
       let fromVal: any | undefined;
       let toVal: any | undefined;
+
       if (Array.isArray(val)) {
         fromVal = val[0];
         toVal = val[1];
@@ -143,8 +153,19 @@
         fromVal = (val as any).from ?? (val as any).start;
         toVal = (val as any).to ?? (val as any).end;
       }
-      startDate.value = formatDateOnly(asJsDate(fromVal));
-      endDate.value = formatDateOnly(asJsDate(toVal));
+
+      const startDateValue = formatDateOnly(asJsDate(fromVal));
+      const endDateValue = formatDateOnly(asJsDate(toVal));
+
+      startDate.value = startDateValue || "";
+      endDate.value = endDateValue || "";
+
+      console.log("Date Range Changed:", {
+        fromVal,
+        toVal,
+        startDate: startDate.value,
+        endDate: endDate.value,
+      });
     },
     { deep: true }
   );

@@ -32,6 +32,14 @@
   import { useActivityLogs } from "~/queries/useActivityLogs";
   import { computed, ref } from "vue";
   import { formatDateTimeIndonesian } from "~/utils/format-date";
+  import { createStrapiFilters } from "~/utils/strapi";
+
+  interface Props {
+    startDate?: string;
+    endDate?: string;
+  }
+
+  const props = defineProps<Props>();
 
   interface ActivityLog {
     id: string | number;
@@ -44,6 +52,33 @@
     [key: string]: any;
   }
 
+  // Create computed filters based on date range
+  const dateFilters = computed(() => {
+    console.log("Computing date filters with:", {
+      startDate: props.startDate,
+      endDate: props.endDate,
+    });
+
+    if (!props.startDate && !props.endDate) {
+      console.log("No filters applied");
+      return undefined;
+    }
+
+    const filter: any = {
+      created_at: {},
+    };
+
+    if (props.startDate) {
+      filter.created_at.$gte = props.startDate;
+    }
+
+    if (props.endDate) {
+      filter.created_at.$lte = props.endDate;
+    }
+
+    console.log("Date filter:", filter);
+    return filter;
+  });
   const { data, isLoading, refetch } = useActivityLogs({
     populate: ["product", "user", "product.social_forestry_business_group"],
     fields: [
@@ -55,6 +90,7 @@
       "extra_data",
     ],
     sort: "created_at:desc",
+    filters: () => dateFilters.value,
   });
 
   const logs = computed(() => {

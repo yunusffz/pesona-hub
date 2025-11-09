@@ -9,32 +9,32 @@
           <thead class="border-b border-gray-200">
             <tr>
               <th
-                class="bg-gray-50 px-6 rounded-tl-2xl py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 rounded-tl-2xl py-3 text-left text-xs font-medium text-gray-700"
               >
                 Waktu
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-700"
               >
                 Aktivitas
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-700"
               >
                 Nama Produk
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-700"
               >
                 Kontak KUPS
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-700"
               >
                 Mitra
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 rounded-tr-2xl text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 py-3 rounded-tr-2xl text-left text-xs font-medium text-gray-700"
               >
                 Kontak Mitra
               </th>
@@ -46,33 +46,33 @@
               :key="log.id"
               class="hover:bg-gray-50 transition-colors"
             >
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{
+              <td class="px-6 py-4 text-nowrap">
+                <span class="text-xs text-gray-900">{{
                   formatDateTimeIndonesian(log.created_at || log.createdAt)
                 }}</span>
               </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{
+              <td class="px-6 py-4 text-nowrap">
+                <span class="text-xs text-gray-900">{{
                   getActivity(log)
                 }}</span>
               </td>
               <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{
+                <span class="text-xs text-gray-900">{{
                   getProductName(log)
                 }}</span>
               </td>
               <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{
+                <span class="text-xs text-gray-900">{{
                   getKupsContact(log)
                 }}</span>
               </td>
               <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{
+                <span class="text-xs text-gray-900">{{
                   getMitraName(log)
                 }}</span>
               </td>
               <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{
+                <span class="text-xs text-gray-900">{{
                   getMitraContact(log)
                 }}</span>
               </td>
@@ -145,7 +145,7 @@
   const getActivity = (log: ActivityLog): string => {
     const eventType = log.event_type || log.extra_data?.event_type || "";
     const entityType = log.entity_type || log.extra_data?.entity_type || "";
-    
+
     // Map event types to Indonesian
     const eventTypeMap: Record<string, string> = {
       view: "Melihat",
@@ -165,8 +165,10 @@
       profile: "Profil",
     };
 
-    const eventText = eventTypeMap[eventType.toLowerCase()] || eventType || "Aktivitas";
-    const entityText = entityTypeMap[entityType.toLowerCase()] || entityType || "";
+    const eventText =
+      eventTypeMap[eventType.toLowerCase()] || eventType || "Aktivitas";
+    const entityText =
+      entityTypeMap[entityType.toLowerCase()] || entityType || "";
 
     return entityText ? `${eventText} ${entityText}` : eventText;
   };
@@ -230,5 +232,3 @@
     return mitraContact || "-";
   };
 </script>
-
-

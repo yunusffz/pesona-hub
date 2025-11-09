@@ -16,7 +16,11 @@
       </BaseButton>
     </div>
     <div class="mt-4">
-      <ActivityDataTable :logs="filteredLogs" :isLoading="isLoading" />
+      <ActivityDataTable
+        :logs="filteredLogs"
+        :isLoading="isLoading"
+        class="text-xs"
+      />
     </div>
   </section>
 </template>
@@ -189,7 +193,6 @@
 
     return mitraContact || "-";
   };
-
 
   // Export to Excel function
   const handleExportToExcel = async () => {

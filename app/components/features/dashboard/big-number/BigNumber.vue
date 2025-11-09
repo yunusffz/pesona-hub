@@ -9,7 +9,11 @@
         class="w-4 h-4 text-muted-foreground"
       />
     </div>
-    <div>
+    <div v-if="props.loading" class="animate-pulse">
+      <div class="h-8 bg-gray-200 rounded w-32 mb-2"></div>
+      <div class="h-3 bg-gray-200 rounded w-24" v-if="props.description"></div>
+    </div>
+    <div v-else>
       <h1 class="font-bold text-2xl text-rich-black leading-tight">
         {{ props.number }}
         <span class="text-muted-foreground font-bold" v-if="props.unit">{{
@@ -50,7 +54,10 @@
     description?: string;
     growth?: number;
     icon?: string;
+    loading?: boolean;
   }
 
-  const props = defineProps<Props>();
+  const props = withDefaults(defineProps<Props>(), {
+    loading: false,
+  });
 </script>

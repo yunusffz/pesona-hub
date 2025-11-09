@@ -2,7 +2,7 @@
   <section>
     <div class="flex items-center justify-between">
       <SearchInput
-        class="w-[290px] h-9"
+        class="w-[290px] h-12"
         placeholder="Cari..."
         :onSearch="handleSearch"
       />
@@ -165,7 +165,6 @@
   const handleExportToExcel = async () => {
     try {
       // Dynamically import xlsx library
-      // @ts-expect-error - xlsx types may not be available until package is installed
       const XLSX = await import("xlsx");
 
       // Limit to 100 products

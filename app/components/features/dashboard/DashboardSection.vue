@@ -23,7 +23,7 @@
 
         <div class="bg-white border border-[#E4E4E7] shadow-sm rounded-2xl">
           <div>
-            <Tabs default-value="supply" class="gap-0">
+            <Tabs v-model="activeTab" default-value="supply" class="gap-0">
               <div
                 class="flex items-center justify-between p-4 border-b border-[#E4E4E7]"
               >
@@ -43,7 +43,11 @@
                   </TabsTrigger>
                 </TabsList>
                 <div class="flex items-center gap-2">
-                  <DateRangePicker v-model="dateRange" :number-of-months="2" />
+                  <DateRangePicker
+                    v-if="activeTab === 'activity'"
+                    v-model="dateRange"
+                    :number-of-months="2"
+                  />
                   <FilterSheet>
                     <SheetTrigger as-child>
                       <BaseButton variant="solid" class="px-4 py-2">
@@ -95,6 +99,7 @@
       : "grid grid-cols-1 rounded-2xl w-[100px]"
   );
 
+  const activeTab = ref<string>("supply");
   const startDate = ref<string>("");
   const endDate = ref<string>("");
 

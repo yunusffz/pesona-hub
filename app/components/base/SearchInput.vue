@@ -1,7 +1,12 @@
 <template>
   <InputGroup
     v-model="searchQuery"
-    class="rounded-full border border-blur-10 focus-within:ring-0 transition-all text-md duration-200 bg-[#F9F9F933] backdrop-blur-[10px] h-[60px] w-[484px]"
+    :class="
+      cn(
+        'rounded-full border border-blur-10 focus-within:ring-0 transition-all text-md duration-200 bg-[#F9F9F933] backdrop-blur-[10px] h-[60px] w-[484px]',
+        props.class
+      )
+    "
   >
     <InputGroupInput
       :placeholder="placeholder || 'Cari Produk atau Wisata...'"

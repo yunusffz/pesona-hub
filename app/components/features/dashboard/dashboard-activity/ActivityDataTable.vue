@@ -48,7 +48,7 @@
             >
               <td class="px-6 py-4">
                 <span class="text-sm text-gray-900">{{
-                  formatDateTime(log.created_at || log.createdAt)
+                  formatDateTimeIndonesian(log.created_at || log.createdAt)
                 }}</span>
               </td>
               <td class="px-6 py-4">
@@ -101,6 +101,7 @@
   import { ref, computed } from "vue";
   import Pagination from "~/components/ui/pagination/Pagination.vue";
   import Loader from "~/components/base/Loader.vue";
+  import { formatDateTimeIndonesian } from "~/utils/format-date";
 
   interface ActivityLog {
     id: string | number;
@@ -140,22 +141,6 @@
   const startItem = computed(() => {
     return (currentPage.value - 1) * itemsPerPage.value;
   });
-
-  const formatDateTime = (dateString?: string): string => {
-    if (!dateString) return "-";
-    try {
-      const date = new Date(dateString);
-      return new Intl.DateTimeFormat("id-ID", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(date);
-    } catch (error) {
-      return "-";
-    }
-  };
 
   const getActivity = (log: ActivityLog): string => {
     const eventType = log.event_type || log.extra_data?.event_type || "";

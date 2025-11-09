@@ -27,6 +27,7 @@
   import ActivityDataTable from "./ActivityDataTable.vue";
   import { useActivityLogs } from "~/queries/useActivityLogs";
   import { computed, ref } from "vue";
+  import { formatDateTimeIndonesian } from "~/utils/format-date";
 
   interface ActivityLog {
     id: string | number;
@@ -40,12 +41,15 @@
   }
 
   const { data, isLoading, refetch } = useActivityLogs({
-    populate: [
-      "product",
-      "user",
-      "product.social_forestry_business_group",
+    populate: ["product", "user", "product.social_forestry_business_group"],
+    fields: [
+      "id",
+      "created_at",
+      "event_type",
+      "entity_type",
+      "entity_id",
+      "extra_data",
     ],
-    fields: ["id", "created_at", "event_type", "entity_type", "entity_id", "extra_data"],
     sort: "created_at:desc",
   });
 
@@ -72,14 +76,10 @@
       const query = searchQuery.value;
 
       // Search in activity description
-      const activityMatch = getActivity(log)
-        .toLowerCase()
-        .includes(query);
+      const activityMatch = getActivity(log).toLowerCase().includes(query);
 
       // Search in product name
-      const productMatch = getProductName(log)
-        .toLowerCase()
-        .includes(query);
+      const productMatch = getProductName(log).toLowerCase().includes(query);
 
       // Search in KUPS contact
       const kupsContactMatch = getKupsContact(log)
@@ -87,9 +87,7 @@
         .includes(query);
 
       // Search in partner name
-      const mitraNameMatch = getMitraName(log)
-        .toLowerCase()
-        .includes(query);
+      const mitraNameMatch = getMitraName(log).toLowerCase().includes(query);
 
       // Search in partner contact
       const mitraContactMatch = getMitraContact(log)
@@ -110,7 +108,7 @@
   const getActivity = (log: ActivityLog): string => {
     const eventType = log.event_type || log.extra_data?.event_type || "";
     const entityType = log.entity_type || log.extra_data?.entity_type || "";
-    
+
     const eventTypeMap: Record<string, string> = {
       view: "Melihat",
       click: "Mengklik",
@@ -129,8 +127,10 @@
       profile: "Profil",
     };
 
-    const eventText = eventTypeMap[eventType.toLowerCase()] || eventType || "Aktivitas";
-    const entityText = entityTypeMap[entityType.toLowerCase()] || entityType || "";
+    const eventText =
+      eventTypeMap[eventType.toLowerCase()] || eventType || "Aktivitas";
+    const entityText =
+      entityTypeMap[entityType.toLowerCase()] || entityType || "";
 
     return entityText ? `${eventText} ${entityText}` : eventText;
   };
@@ -190,27 +190,11 @@
     return mitraContact || "-";
   };
 
-  const formatDateTime = (dateString?: string): string => {
-    if (!dateString) return "-";
-    try {
-      const date = new Date(dateString);
-      return new Intl.DateTimeFormat("id-ID", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(date);
-    } catch (error) {
-      return "-";
-    }
-  };
 
   // Export to Excel function
   const handleExportToExcel = async () => {
     try {
       // Dynamically import xlsx library
-      // @ts-expect-error - xlsx types may not be available until package is installed
       const XLSX = await import("xlsx");
 
       // Limit to 100 logs
@@ -219,7 +203,7 @@
       // Prepare data for Excel
       const excelData = logsToExport.map((log) => {
         return {
-          Waktu: formatDateTime(log.created_at || log.createdAt),
+          Waktu: formatDateTimeIndonesian(log.created_at || log.createdAt),
           Aktivitas: getActivity(log),
           "Nama Produk": getProductName(log),
           "Kontak KUPS": getKupsContact(log),
@@ -258,5 +242,3 @@
     }
   };
 </script>
-
-

@@ -221,7 +221,7 @@ export function useProductActivityLogger() {
    */
   const logCustomEvent = (
     eventType: EventType,
-    product: ProductWithRelations,
+    product?: ProductWithRelations,
     options?: {
       accessType?: AccessType;
       extraData?: Record<string, unknown>;
@@ -233,7 +233,7 @@ export function useProductActivityLogger() {
     const activityLog: LogActivityRequest = {
       event_type: eventType,
       entity_type: "product",
-      entity_id: product.id || null,
+      entity_id: product?.id || null,
       entity_slug: (route.params.slug as string) || null,
       access_type: options?.accessType || "public",
       extra_data: {

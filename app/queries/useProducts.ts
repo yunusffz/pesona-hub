@@ -4,7 +4,7 @@ import type { components } from "~/types/pesona-hub-api";
 import type { UseStrapiParamsOptions } from "~/types/strapi";
 import { buildStrapiParams } from "~/utils/strapi";
 
-type ListResponse = components["schemas"]["BaseResponse_dict_str__Any__"];
+type ListResponse = components["schemas"]["ListResponse_dict_str__Any__"];
 
 export const useProducts = (options: UseStrapiParamsOptions = {}) => {
   const { $apiClient } = useNuxtApp();

@@ -1,11 +1,16 @@
 <template>
   <InputGroup
     v-model="searchQuery"
-    class="rounded-full border border-blur-10 focus-within:ring-0 transition-all duration-200 bg-[#F9F9F933] backdrop-blur-[10px] h-[60px] w-[484px]"
+    class="rounded-full border border-blur-10 focus-within:ring-0 transition-all text-md duration-200 bg-[#F9F9F933] backdrop-blur-[10px] h-[60px] w-[484px]"
   >
     <InputGroupInput
       :placeholder="placeholder || 'Cari Produk atau Wisata...'"
-      class="text-neutral-1000 placeholder:text-neutral-1000 font-medium text-md focus:outline-none"
+      :class="
+        cn(
+          'text-neutral-1000 placeholder:text-neutral-1000 font-medium !text-md focus:outline-none',
+          props.class
+        )
+      "
       @input="handleInput"
       @keydown.enter="handleSearch"
     />
@@ -25,10 +30,12 @@
     InputGroupAddon,
   } from "../ui/input-group";
   import { SearchIcon } from "lucide-vue-next";
+  import { cn } from "@/lib/utils";
 
   const props = defineProps<{
     placeholder?: string;
     onSearch?: (value: string) => void;
+    class?: string;
   }>();
 
   const searchQuery = ref("");

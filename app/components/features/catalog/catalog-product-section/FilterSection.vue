@@ -1,7 +1,10 @@
 <template>
   <div class="flex xl:flex-row flex-col gap-4 justify-start lg:justify-between">
     <div>
-      <SearchInput class="w-full md:w-[484px]" :onSearch="onSearch" />
+      <SearchInput
+        class="w-full md:w-[484px] text-md placeholder:text-md"
+        :onSearch="onSearch"
+      />
     </div>
     <div class="flex md:flex-row flex-col gap-4">
       <FilterLocation />

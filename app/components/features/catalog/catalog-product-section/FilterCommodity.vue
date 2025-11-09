@@ -16,7 +16,7 @@
   import { useCatalogStore } from "~/stores/useCatalogStore";
 
   const catalogStore = useCatalogStore();
-  const { data } = useCommodities();
+  const { data } = useCommodities({ limit: 200 });
 
   const commodities = computed(() => {
     if (!data.value?.data || !Array.isArray(data.value.data)) return [];
@@ -39,8 +39,10 @@
     set(newValues) {
       const numericValues = newValues
         .map((v) => (typeof v === "string" ? Number(v) : v))
-        .filter((v) => v !== null && v !== undefined && !isNaN(Number(v))) as number[];
-      
+        .filter(
+          (v) => v !== null && v !== undefined && !isNaN(Number(v))
+        ) as number[];
+
       (catalogStore as any).setSelectedCommodities(numericValues);
     },
   });

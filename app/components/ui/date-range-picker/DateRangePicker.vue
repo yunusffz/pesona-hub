@@ -18,7 +18,11 @@
       </Button>
     </PopoverTrigger>
     <PopoverContent class="w-auto p-0" align="start">
-      <RangeCalendar :number-of-months="numberOfMonths" />
+      <RangeCalendar
+        v-model="dateRange"
+        :number-of-months="numberOfMonths"
+        @update:model-value="handleDateChange"
+      />
     </PopoverContent>
   </Popover>
 </template>
@@ -34,11 +38,7 @@
   import { RangeCalendar } from "@/components/ui/range-calendar";
   import { cn } from "@/lib/utils";
   import type { DateValue } from "@internationalized/date";
-
-  type DateRange = {
-    start: DateValue | undefined;
-    end: DateValue | undefined;
-  };
+  import type { DateRange } from "reka-ui";
 
   interface Props {
     modelValue?: DateRange;
@@ -57,30 +57,24 @@
   const dateRange = ref<DateRange | null | undefined>(
     props.modelValue
       ? { start: props.modelValue.start, end: props.modelValue.end }
-      : null
-  );
+      : undefined
+  ) as Ref<DateRange>;
 
   // Watch for external changes to modelValue
   watch(
     () => props.modelValue,
     (newValue) => {
-      dateRange.value = newValue
-        ? { start: newValue.start, end: newValue.end }
-        : null;
+      if (newValue)
+        dateRange.value = { start: newValue.start, end: newValue.end };
     }
   );
 
-  const handleDateChange = (value: any) => {
-    dateRange.value = value as DateRange | null | undefined;
+  const handleDateChange = (value: DateRange | null | undefined) => {
+    if (value) dateRange.value = value;
     const convertedValue: DateRange | undefined = value
       ? { start: value.start, end: value.end }
       : undefined;
     emit("update:modelValue", convertedValue);
-
-    // Close popover when both dates are selected
-    if (value?.start && value?.end) {
-      isOpen.value = false;
-    }
   };
 
   const formatDate = (date: DateValue | undefined): string => {

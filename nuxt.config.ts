@@ -78,6 +78,7 @@ export default defineNuxtConfig({
             green: {
               400: "hsl(var(--color-green-400))",
             },
+            foreground: "hsl(var(--foreground))",
             neutral: {
               100: "hsl(var(--color-neutral-100))",
               200: "hsl(var(--color-neutral-200))",

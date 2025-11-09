@@ -17,16 +17,30 @@ const forwardedProps = useForwardProps(delegatedProps)
   <RangeCalendarCellTrigger
     :class="cn(
       buttonVariants({ variant: 'ghost' }),
-      'h-8 w-8 p-0 font-normal data-[selected]:opacity-100',
-      '[&[data-today]:not([data-selected])]:bg-accent [&[data-today]:not([data-selected])]:text-accent-foreground',
-      // Selection Start
-      'data-[selection-start]:bg-primary data-[selection-start]:text-primary-foreground data-[selection-start]:hover:bg-primary data-[selection-start]:hover:text-primary-foreground data-[selection-start]:focus:bg-primary data-[selection-start]:focus:text-primary-foreground',
-      // Selection End
-      'data-[selection-end]:bg-primary data-[selection-end]:text-primary-foreground data-[selection-end]:hover:bg-primary data-[selection-end]:hover:text-primary-foreground data-[selection-end]:focus:bg-primary data-[selection-end]:focus:text-primary-foreground',
+      'h-8 w-8 p-0 font-normal transition-colors',
+      // Base hover state (not selected, not disabled)
+      'hover:bg-primary/20 hover:text-primary',
+      // Today styling (when not selected)
+      '[&[data-today]:not([data-selected]):not([data-selection-start]):not([data-selection-end])]:bg-accent',
+      '[&[data-today]:not([data-selected]):not([data-selection-start]):not([data-selection-end])]:text-accent-foreground',
+      '[&[data-today]:not([data-selected]):not([data-selection-start]):not([data-selection-end])]:font-semibold',
+      // Selected range (middle dates)
+      'data-[selected]:text-primary data-[selected]:bg-transparent data-[selected]:font-medium',
+      'data-[selected]:hover:bg-primary/30',
+      // Selection Start - primary background with white text
+      'data-[selection-start]:!bg-primary data-[selection-start]:!text-white data-[selection-start]:font-semibold',
+      'data-[selection-start]:hover:!bg-primary-dark data-[selection-start]:hover:!text-white',
+      'data-[selection-start]:focus:!bg-primary data-[selection-start]:focus:!text-white',
+      // Selection End - primary background with white text
+      'data-[selection-end]:!bg-primary data-[selection-end]:!text-white data-[selection-end]:font-semibold',
+      'data-[selection-end]:hover:!bg-primary-dark data-[selection-end]:hover:!text-white',
+      'data-[selection-end]:focus:!bg-primary data-[selection-end]:focus:!text-white',
       // Outside months
-      'data-[outside-view]:text-muted-foreground data-[outside-view]:opacity-50 [&[data-outside-view][data-selected]]:text-muted-foreground [&[data-outside-view][data-selected]]:opacity-30',
-      // Disabled
-      'data-[disabled]:text-muted-foreground data-[disabled]:opacity-50',
+      'data-[outside-view]:text-muted-foreground data-[outside-view]:opacity-50',
+      '[&[data-outside-view][data-selected]]:text-muted-foreground [&[data-outside-view][data-selected]]:opacity-30',
+      // Disabled - no hover
+      'data-[disabled]:text-muted-foreground data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed',
+      'data-[disabled]:hover:bg-transparent',
       // Unavailable
       'data-[unavailable]:text-destructive-foreground data-[unavailable]:line-through',
       props.class,

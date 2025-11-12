@@ -82,7 +82,7 @@
                 </div>
               </div>
             </div>
-            <BaseButton @click="showConfirmDialog = true"
+            <BaseButton @click="handleCollaborationRequest"
               >Ajukan Kerjasama</BaseButton
             >
             <hr />
@@ -127,35 +127,34 @@
     :open="showConfirmDialog"
     @update:open="(value) => (showConfirmDialog = value)"
   >
-    <DialogContent class="max-w-md py-10 px-8 rounded-3xl">
+    <DialogContent class="max-w-md py-4 px-4 rounded-xl w-[444px]">
       <DialogHeader>
-        <div class="flex flex-col gap-4 justify-center items-center">
-          <span class="font-bold text-2xl text-neutral-1000 text-center">
-            Ajukan Kerjasama dengan KUPS
+        <div class="flex flex-col gap-2 justify-center items-center mb-4">
+          <div class="rounded-full bg-[#FEF3C6] p-3 mb-6">
+            <CircleAlert class="w-6 h-6 text-[#E17100]"></CircleAlert>
+          </div>
+          <span class="font-semibold text-[18px] text-neutral-1000 text-center">
+            Lengkapi Data Profil Terlebih Dahulu
           </span>
-          <p class="text-neutral-900 text-center">
-            Lengkapi detail singkat berikut untuk memulai kolaborasi dengan KUPS
-            terkait.Tim kami akan meninjau pengajuan Anda dan menghubungkan Anda
-            dengan pengelola KUPS secara langsung.
+          <p class="text-[#717182] text-center text-sm">
+            Untuk mengajukan kerjasama, Anda perlu melengkapi profil organisasi
+            dan informasi kebutuhan Anda terlebih dahulu.
           </p>
         </div>
       </DialogHeader>
-      <DialogFooter class="gap-2 flex">
+      <DialogFooter class="gap-2 flex !justify-center text-center items-center">
         <BaseButton
           variant="secondary"
           @click="showConfirmDialog = false"
-          class="w-full"
           size="sm"
         >
-          Batal
+          Nanti Saja
         </BaseButton>
-        <BaseButton
-          variant="primary"
-          @click="confirmQuoteRequest"
-          class="w-full"
-          size="sm"
-          >Kirim Pengajuan
-        </BaseButton>
+        <a href="/profil">
+          <BaseButton variant="primary" @click="confirmQuoteRequest" size="sm"
+            >Lengkapi Data Sekarang
+          </BaseButton>
+        </a>
       </DialogFooter>
     </DialogContent>
   </Dialog>
@@ -180,8 +179,9 @@
   } from "@/components/ui/dialog";
   import { Button } from "@/components/ui/button";
   import { useProductActivityLogger } from "~/composables/useProductActivityLogger";
+  import { canUserCollaborate } from "~/utils/user-profile";
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { logProductCollaboration } = useProductActivityLogger();
 
   interface Props {
@@ -224,9 +224,22 @@
     return props.product?.unit || "unit";
   });
 
+  const handleCollaborationRequest = () => {
+    // Check if user profile is complete
+    if (!canUserCollaborate(user.value)) {
+      // Show dialog to complete profile
+      showConfirmDialog.value = true;
+      return;
+    }
+
+    // Profile is complete, proceed with WhatsApp request
+    handleQuoteRequest();
+  };
+
   const confirmQuoteRequest = () => {
     showConfirmDialog.value = false;
-    handleQuoteRequest();
+    // Navigate to profile completion page
+    navigateTo("/profil");
   };
 
   const handleQuoteRequest = () => {

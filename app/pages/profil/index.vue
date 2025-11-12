@@ -154,6 +154,11 @@
 </template>
 
 <script setup lang="ts">
+  definePageMeta({
+    middleware: ["auth"] as any,
+    requiresAuth: true,
+  });
+
   import { ref, computed, onMounted } from "vue";
   import { ChevronLeft, ChevronRight, Check } from "lucide-vue-next";
   import Step1Identity from "@/components/features/profile/Step1Identity.vue";
@@ -217,11 +222,6 @@
 
   // Fetch fresh user data with details populated on mount
   onMounted(async () => {
-    if (!authUser.value?.username) {
-      await navigateTo("/login");
-      return;
-    }
-
     try {
       isLoadingUserData.value = true;
 

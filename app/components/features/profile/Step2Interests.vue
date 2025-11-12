@@ -41,8 +41,6 @@
         :options="commodities"
         placeholder="Cari komoditas"
         empty-text="Pilih komoditas"
-        icon="tags"
-        icon-size="24px"
         buttonClass="!py-2 !px-3 rounded-lg text-sm"
         :max="5"
       />

@@ -1,4 +1,17 @@
 <template>
+  <!-- Loading User Data Overlay -->
+  <div
+    v-if="isLoadingUserData"
+    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+  >
+    <div class="bg-white rounded-lg p-6 flex flex-col items-center gap-4">
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#035925]"
+      ></div>
+      <p class="text-sm font-medium text-gray-700">Memuat data profil...</p>
+    </div>
+  </div>
+
   <!-- Loading Overlay -->
   <div
     v-if="isSubmitting.value"
@@ -149,6 +162,7 @@
   import StepSuccess from "@/components/features/profile/StepSuccess.vue";
   import { useUser } from "~/composables/useUser";
   import { useAuth } from "~/composables/useAuth";
+  import { useApi } from "~/composables/useApi";
   import type { components } from "~/types/pesona-hub-api";
 
   type UserDetail = components["schemas"]["UserDetail"];
@@ -172,12 +186,15 @@
     targetKupsClass?: string;
   }
 
-  const { user } = useAuth();
+  const { user: authUser } = useAuth();
   const { updateProfile, isUpdating, updateError } = useUser();
+  const client = useApi();
 
   const currentStep = ref(1);
   const logoPreview = ref<string | null>(null);
   const isSubmitting = computed(() => isUpdating.value);
+  const isLoadingUserData = ref(false);
+  const user = ref<any>(null);
 
   const formData = ref<FormData>({
     logo: null,
@@ -198,11 +215,39 @@
     targetKupsClass: "",
   });
 
-  // Load existing user data on mount
-  onMounted(() => {
-    if (user.value) {
+  // Fetch fresh user data with details populated on mount
+  onMounted(async () => {
+    if (!authUser.value?.username) {
+      await navigateTo("/login");
+      return;
+    }
+
+    try {
+      isLoadingUserData.value = true;
+
+      // Fetch user data with details populated
+      const { data, error } = await client.GET("/me", {
+        params: {
+          query: {
+            "populate[0]": "details",
+          },
+        },
+      });
+
+      if (error) {
+        console.error("Failed to fetch user data:", error);
+        return;
+      }
+
+      // Extract user data from response
+      if (data && typeof data === "object" && "data" in data) {
+        user.value = (data as any).data;
+      } else {
+        user.value = data;
+      }
+
       // Map existing user data to form
-      if (user.value.details) {
+      if (user.value?.details) {
         formData.value.companyName = user.value.details.institution_name || "";
         formData.value.partnerLevel = user.value.details.stakeholder_type || "";
         formData.value.whatsappNumber = user.value.details.contact_phone || "";
@@ -224,13 +269,17 @@
       }
 
       // Map basic user data
-      if (user.value.phone && !formData.value.whatsappNumber) {
+      if (user.value?.phone && !formData.value.whatsappNumber) {
         formData.value.whatsappNumber = user.value.phone;
       }
 
-      if (user.value.thumbnail) {
+      if (user.value?.thumbnail) {
         logoPreview.value = user.value.thumbnail;
       }
+    } catch (error) {
+      console.error("Error loading user data:", error);
+    } finally {
+      isLoadingUserData.value = false;
     }
   });
 
@@ -272,47 +321,65 @@
         })
         .filter((id): id is number => id !== null);
 
-      // Map form data to UserDetail structure with all fields
-      const userDetail: UserDetail = {
-        // Fields from form
-        institution_name: formData.value.companyName || null,
-        stakeholder_type: formData.value.partnerLevel || null,
-        contact_phone: formData.value.whatsappNumber || null,
-        website: formData.value.websiteUrl || null,
-        product_service_description: formData.value.additionalInfo || null,
-        collaboration_commodity_ids:
-          commodityIds.length > 0 ? commodityIds : null,
-        collaboration_ids:
-          collaborationIds.length > 0 ? collaborationIds : null,
-
-        // Fields without form inputs - set to empty
-        legal_entity_type: null,
-        legal_number: null,
-        office_address: null,
-        province: null,
-        regency: null,
-        contact_name: null,
-        contact_position: null,
-        contact_email: null,
-        operation_scale: null,
-        main_sector: null,
-        certifications: null,
-        collaboration_impact_ids: null,
-        collaboration_location_ids: null,
-      };
-
-      // At step 3 (final step), don't upload logo again
-      // Logo is already handled in step 1 if user uploaded a new one
-      // Only use existing thumbnail if available
-      await updateProfile(user.value.username, {
-        name: formData.value.companyName || undefined,
-        phone: formData.value.whatsappNumber || undefined,
+      // Prepare user update payload - top level fields from Step1Identity
+      const userUpdatePayload: {
+        name?: string;
+        phone?: string;
+        thumbnail?: string;
+        details: UserDetail;
+      } = {
+        // Step 1 - Identity mappings
+        name: formData.value.companyName || undefined, // Nama Lembaga/Perusahaan -> name
+        phone: formData.value.whatsappNumber || undefined, // Nomor WhatsApp -> phone
         thumbnail:
           logoPreview.value && logoPreview.value.startsWith("http")
             ? logoPreview.value
-            : undefined,
-        details: userDetail,
-      });
+            : undefined, // Logo -> thumbnail
+
+        // Map form data to UserDetail structure
+        details: {
+          // Step 1 - Identity mappings to details
+          institution_name: formData.value.companyName || null, // Nama Lembaga/Perusahaan
+          stakeholder_type: formData.value.partnerLevel || null, // Jenis Mitra
+          contact_phone: formData.value.whatsappNumber || null, // Nomor WhatsApp
+          website: formData.value.websiteUrl || null, // Website/Sosial Media
+
+          // Step 2 - Interests mappings
+          collaboration_commodity_ids:
+            commodityIds.length > 0 ? commodityIds : null, // Jenis Komoditas
+
+          // Step 3 - Collaboration mappings
+          product_service_description: formData.value.additionalInfo || null, // Additional info
+          collaboration_ids:
+            collaborationIds.length > 0 ? collaborationIds : null, // Collaboration types
+
+          // Fields without form inputs - preserve existing or set to null
+          legal_entity_type: user.value?.details?.legal_entity_type || null,
+          legal_number: user.value?.details?.legal_number || null,
+          office_address: user.value?.details?.office_address || null,
+          province: user.value?.details?.province || null,
+          regency: user.value?.details?.regency || null,
+          contact_name: user.value?.details?.contact_name || null,
+          contact_position: user.value?.details?.contact_position || null,
+          contact_email: user.value?.details?.contact_email || null,
+          operation_scale: user.value?.details?.operation_scale || null,
+          main_sector: user.value?.details?.main_sector || null,
+          certifications: user.value?.details?.certifications || null,
+          collaboration_impact_ids:
+            user.value?.details?.collaboration_impact_ids || null,
+          collaboration_location_ids:
+            user.value?.details?.collaboration_location_ids || null,
+        },
+      };
+
+      // Handle logo upload if new file is provided
+      if (formData.value.logo && formData.value.logo instanceof File) {
+        // TODO: Upload logo file and get URL
+        // For now, we skip this as we don't have the upload endpoint
+        console.log("Logo file to upload:", formData.value.logo);
+      }
+
+      await updateProfile(user.value.username, userUpdatePayload);
 
       // Navigate to success page
       await navigateTo("/profil/sukses");

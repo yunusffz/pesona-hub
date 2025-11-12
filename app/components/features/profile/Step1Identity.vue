@@ -34,8 +34,13 @@
         <div>
           <label class="text-sm font-medium">Jenis Mitra</label>
           <select
-            :model-value="modelValue.partnerLevel"
-            @update:model-value="updateValue('partnerLevel', $event)"
+            :value="modelValue.partnerLevel"
+            @change="
+              updateValue(
+                'partnerLevel',
+                ($event.target as HTMLSelectElement).value
+              )
+            "
             class="border border-[#d9d9d9] rounded-lg h-9 px-3 py-2 w-full text-sm bg-white focus-within:ring-2 focus-within:ring-primary focus:outline-none"
           >
             <option value="">Pilih jenis mitra</option>

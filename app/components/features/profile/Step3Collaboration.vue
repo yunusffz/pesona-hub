@@ -21,8 +21,6 @@
         :options="collaborationTypes"
         placeholder="Pilih bentuk kerja sama..."
         empty-text="Pilih bentuk kerja sama..."
-        icon="tags"
-        icon-size="24px"
         buttonClass="!py-2 !px-3 rounded-lg text-sm"
       />
     </div>

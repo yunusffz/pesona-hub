@@ -146,8 +146,9 @@
 
   // Helper functions (same as in ActivityDataTable)
   const getActivity = (log: ActivityLog): string => {
-    const eventType = log.event_type || log.extra_data?.event_type || "";
-    const entityType = log.entity_type || log.extra_data?.entity_type || "";
+    const eventType = log.event_type || "";
+    const entityType = log.entity_type || "";
+    const action = log.extra_data?.action || "";
 
     const eventTypeMap: Record<string, string> = {
       view: "Melihat",
@@ -167,67 +168,47 @@
       profile: "Profil",
     };
 
+    const actionTypeMap: Record<string, string> = {
+      collaboration_request: "Mengajukan Penawaran",
+      whatsapp_contact: "Kontak WhatsApp",
+      phone_contact: "Kontak Telepon",
+      email_contact: "Kontak Email",
+    };
+
     const eventText =
       eventTypeMap[eventType.toLowerCase()] || eventType || "Aktivitas";
     const entityText =
       entityTypeMap[entityType.toLowerCase()] || entityType || "";
+    const actionText = action ? actionTypeMap[action] || action : "";
+
+    // Priority: action > event + entity
+    if (actionText) {
+      return actionText;
+    }
 
     return entityText ? `${eventText} ${entityText}` : eventText;
   };
 
   const getProductName = (log: ActivityLog): string => {
-    const extraData = log.extra_data || {};
-    const productName =
-      extraData.product_name ||
-      extraData.product?.name ||
-      (log as any).product?.name ||
-      "-";
-
-    return productName || "-";
+    return log.extra_data?.product_name || "-";
   };
 
   const getKupsContact = (log: ActivityLog): string => {
-    const extraData = log.extra_data || {};
-    const kupsContact =
-      extraData.kups_contact ||
-      extraData.kups?.contact ||
-      extraData.social_forestry_business_group?.contact ||
-      (log as any).social_forestry_business_group?.contact ||
-      (log as any).kups?.contact ||
-      "-";
-
-    return kupsContact || "-";
+    return log.extra_data?.kups_contact || "-";
   };
 
   const getMitraName = (log: ActivityLog): string => {
-    const extraData = log.extra_data || {};
-    const mitraName =
-      extraData.mitra_name ||
-      extraData.partner?.name ||
-      extraData.user?.name ||
-      (log as any).user?.name ||
-      (log as any).partner?.name ||
-      "-";
-
-    return mitraName || "-";
+    return log.extra_data?.user_name || "-";
   };
 
   const getMitraContact = (log: ActivityLog): string => {
-    const extraData = log.extra_data || {};
-    const mitraContact =
-      extraData.mitra_contact ||
-      extraData.partner?.contact ||
-      extraData.partner?.phone ||
-      extraData.partner?.email ||
-      extraData.user?.phone ||
-      extraData.user?.email ||
-      (log as any).user?.phone ||
-      (log as any).user?.email ||
-      (log as any).partner?.phone ||
-      (log as any).partner?.email ||
-      "-";
+    const phone = log.extra_data?.user_phone;
+    const email = log.extra_data?.user_email;
 
-    return mitraContact || "-";
+    if (phone && email) {
+      return `${phone} / ${email}`;
+    }
+    return phone || email || "-";
   };
 
   // Export to Excel function
@@ -239,15 +220,27 @@
       // Limit to 100 logs
       const logsToExport = filteredLogs.value.slice(0, 100);
 
-      // Prepare data for Excel
+      // Prepare data for Excel with all attributes split into columns
       const excelData = logsToExport.map((log) => {
         return {
           Waktu: formatDateTimeIndonesian(log.created_at || log.createdAt),
           Aktivitas: getActivity(log),
-          "Nama Produk": getProductName(log),
-          "Kontak KUPS": getKupsContact(log),
-          Mitra: getMitraName(log),
-          "Kontak Mitra": getMitraContact(log),
+          "Nama Produk": log.extra_data?.product_name || "-",
+          "Deskripsi Produk": log.extra_data?.product_description || "-",
+          "Kategori Produk": log.extra_data?.product_category || "-",
+          "Kegunaan Produk": log.extra_data?.product_usage || "-",
+          "Harga Produk": log.extra_data?.product_price || "-",
+          "Satuan Produk": log.extra_data?.product_unit || "-",
+          "Jumlah Produk": log.extra_data?.product_quantity || "-",
+          "Total Harga": log.extra_data?.total_price || "-",
+          "ID Produk": log.extra_data?.product_id || "-",
+          "Nama Komoditas": log.extra_data?.commodity_name || "-",
+          "Nama KUPS": log.extra_data?.kups_name || "-",
+          "Kelas KUPS": log.extra_data?.kups_class || "-",
+          "Kontak KUPS": log.extra_data?.kups_contact || "-",
+          "Nama Mitra": log.extra_data?.user_name || "-",
+          "Email Mitra": log.extra_data?.user_email || "-",
+          "Telepon Mitra": log.extra_data?.user_phone || "-",
         };
       });
 
@@ -256,14 +249,41 @@
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Log Aktivitas");
 
-      // Set column widths
+      // Set column widths for all columns
       const columnWidths = [
         { wch: 20 }, // Waktu
         { wch: 25 }, // Aktivitas
-        { wch: 30 }, // Nama Produk
-        { wch: 25 }, // Kontak KUPS
-        { wch: 30 }, // Mitra
-        { wch: 25 }, // Kontak Mitra
+        { wch: 35 }, // Pesan
+        { wch: 15 }, // Tipe Event
+        { wch: 15 }, // Tipe Entitas
+        { wch: 15 }, // Tipe Akses
+        { wch: 10 }, // Entity ID
+        { wch: 15 }, // Entity Slug
+        { wch: 40 }, // Nama Produk
+        { wch: 50 }, // Deskripsi Produk
+        { wch: 20 }, // Kategori Produk
+        { wch: 25 }, // Kegunaan Produk
+        { wch: 15 }, // Harga Produk
+        { wch: 12 }, // Satuan Produk
+        { wch: 15 }, // Jumlah Produk
+        { wch: 15 }, // Total Harga
+        { wch: 10 }, // ID Produk
+        { wch: 20 }, // Nama Komoditas
+        { wch: 12 }, // ID Komoditas
+        { wch: 30 }, // Nama KUPS
+        { wch: 12 }, // Kelas KUPS
+        { wch: 20 }, // Kontak KUPS
+        { wch: 10 }, // ID KUPS
+        { wch: 30 }, // Nama Mitra
+        { wch: 25 }, // Email Mitra
+        { wch: 20 }, // Telepon Mitra
+        { wch: 10 }, // ID Mitra
+        { wch: 10 }, // User ID
+        { wch: 15 }, // IP Address
+        { wch: 60 }, // User Agent
+        { wch: 10 }, // Method
+        { wch: 25 }, // Endpoint
+        { wch: 40 }, // Referer
       ];
       worksheet["!cols"] = columnWidths;
 

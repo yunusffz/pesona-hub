@@ -83,6 +83,15 @@
 
       <!-- Selected badges -->
       <div
+        class="flex justify-between text-[10.5px] mt-2 text-[#6B7280]"
+        v-if="max && selectedOptions.length"
+      >
+        <div>{{ selectedOptions.length }}/{{ max }} item dipilih</div>
+        <button type="button" class="cursor-pointer" @click="clearAll">
+          Hapus Semua
+        </button>
+      </div>
+      <div
         v-if="showBadges && selectedOptions.length"
         class="mt-2 flex flex-wrap gap-2"
       >
@@ -90,7 +99,7 @@
           v-for="opt in selectedOptions"
           :key="String(opt.value)"
           variant="secondary"
-          class="gap-1 bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-50"
+          class="items-center gap-1 bg-[#174C361A] border border-[#174C3633] text-[#174C36] text-[10.5px] font-medium rounded-[8.5px] py-[6.25px] pr-[6.25px] pl-[11.5px]"
         >
           <span class="truncate max-w-[180px]">{{ opt.label }}</span>
           <button
@@ -98,7 +107,7 @@
             class="ms-1 inline-flex items-center outline-none"
             @click="remove(opt.value)"
           >
-            <X class="h-3.5 w-3.5" />
+            <X class="h-[10.5px] w-[10.5px]" />
           </button>
         </Badge>
       </div>
@@ -212,6 +221,7 @@
   }
 
   function clearAll() {
+    console.log("tes");
     if (!internal.value.length) return;
     internal.value = [];
     emit("update:modelValue", internal.value);

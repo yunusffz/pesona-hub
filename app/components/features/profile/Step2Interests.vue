@@ -10,59 +10,6 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-sm font-medium">Jenis Komoditas</label>
-      <p class="text-xs text-[#6B7280]">
-        Cari dan pilih komoditas yang Anda butuhkan. Anda dapat memilih lebih
-        dari satu.
-      </p>
-      <MultiSelectCombobox
-        :model-value="modelValue.commodities"
-        @update:model-value="updateValue('commodities', $event)"
-        :options="commodities"
-        placeholder="Cari komoditas"
-        empty-text="Pilih komoditas"
-        icon="tags"
-        icon-size="24px"
-        buttonClass="!py-2 !px-3 rounded-lg text-sm"
-      />
-    </div>
-
-    <!-- Estimasi Kebutuhan Produksi -->
-    <div class="flex flex-col gap-2">
-      <label class="text-sm font-medium">Estimasi Kebutuhan Produksi</label>
-      <div class="grid grid-cols-2 gap-3">
-        <BaseInput
-          :value="modelValue.productionEstimate"
-          @input="
-            updateValue(
-              'productionEstimate',
-              ($event.target as HTMLInputElement).value
-            )
-          "
-          type="text"
-          placeholder="1000"
-          class="border border-[#d9d9d9] rounded-lg h-9 px-3 py-2 w-full text-sm bg-white focus-within:ring-2 focus-within:ring-primary focus:outline-none"
-        />
-        <select
-          :value="modelValue.productionUnit"
-          @change="
-            updateValue(
-              'productionUnit',
-              ($event.target as HTMLSelectElement).value
-            )
-          "
-          class="border border-[#d9d9d9] rounded-lg h-9 px-3 py-2 w-full text-sm bg-white focus-within:ring-2 focus-within:ring-primary focus:outline-none"
-        >
-          <option value="kg">kg</option>
-          <option value="ton">ton</option>
-          <option value="liter">liter</option>
-          <option value="unit">unit</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Jenis Bahan -->
-    <div class="flex flex-col gap-2">
       <label class="text-sm font-medium">Jenis Bahan</label>
       <select
         :value="modelValue.materialType"
@@ -82,6 +29,87 @@
         <option value="bahan-organik">Bahan Organik</option>
       </select>
     </div>
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-medium">Jenis Komoditas</label>
+      <p class="text-xs text-[#6B7280]">
+        Cari dan pilih komoditas yang Anda butuhkan. Anda dapat memilih lebih
+        dari satu.
+      </p>
+      <MultiSelectCombobox
+        :model-value="modelValue.commodities"
+        @update:model-value="updateValue('commodities', $event)"
+        :options="commodities"
+        placeholder="Cari komoditas"
+        empty-text="Pilih komoditas"
+        icon="tags"
+        icon-size="24px"
+        buttonClass="!py-2 !px-3 rounded-lg text-sm"
+        :max="5"
+      />
+    </div>
+
+    <div class="flex flex-col gap-4">
+      <div class="flex items-center gap-2">
+        <Package class="w-5 h-5 text-[#174C36]" />
+        <div class="font-medium">Estimasi Kebutuhan per Komoditas *</div>
+      </div>
+      <div
+        class="flex flex-col gap-4 border border-[#174C3633] rounded-xl p-4"
+        style="
+          background: linear-gradient(
+            135deg,
+            rgba(23, 76, 54, 0.05) 0%,
+            rgba(23, 76, 54, 0.1) 100%
+          );
+        "
+      >
+        <div class="font-medium text-[#174C36]">Kemenyan</div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-medium">Jumlah</label>
+            <BaseInput
+              type="text"
+              :model-value="modelValue.productionEstimate"
+              @update:model-value="updateValue('productionEstimate', $event)"
+              placeholder="0"
+              class="!h-9 !px-3 !rounded-lg !bg-white !border-[#d9d9d9]"
+            />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-medium">Satuan</label>
+            <select
+              :value="modelValue.productionUnit"
+              @change="
+                updateValue(
+                  'productionUnit',
+                  ($event.target as HTMLSelectElement).value
+                )
+              "
+              class="border border-[#d9d9d9] rounded-lg h-9 px-3 py-2 w-full text-sm bg-white focus-within:ring-2 focus-within:ring-primary focus:outline-none"
+            >
+              <option value="">Pilih satuan</option>
+              <option
+                v-for="unit in productionUnits"
+                :key="unit.value"
+                :value="unit.value"
+              >
+                {{ unit.label }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#F7FFF7] p-4 border border-[#174C3633] rounded-xl">
+        💡<span class="text-sm font-semibold">Tips:</span>
+        <p class="text-sm">
+          Satuan yang tersedia disesuaikan dengan jenis komoditas. Anda dapat
+          memilih maksimal <span class="font-bold">5 komoditas</span>. Estimasi
+          kebutuhan ini akan membantu KUPS memahami skala kerjasama yang Anda
+          inginkan.
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -89,7 +117,9 @@
   import { computed } from "vue";
   import MultiSelectCombobox from "~/components/common/multi-select-combobox/MultiSelectComboBox.vue";
   import { useCommodities } from "~/queries/useCommodities";
-  import BaseInput from "@/components/base/BaseInput.vue";
+  import BaseInput from "~/components/base/BaseInput.vue";
+  import { PRODUCTION_UNITS } from "~/consts/units";
+  import { Package } from "lucide-vue-next";
   interface FormData {
     logo: File | null;
     companyName: string;
@@ -131,6 +161,8 @@
       })
     );
   });
+
+  const productionUnits = computed(() => PRODUCTION_UNITS);
 
   function updateValue(key: keyof FormData, value: any) {
     emit("update:modelValue", { ...props.modelValue, [key]: value });

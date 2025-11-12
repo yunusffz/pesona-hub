@@ -1009,8 +1009,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get Current User */
-        get: operations["get_current_user_me_get"];
+        /** Get Me */
+        get: operations["get_me_me_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -6956,7 +6956,7 @@ export interface operations {
             };
         };
     };
-    get_current_user_me_get: {
+    get_me_me_get: {
         parameters: {
             query?: {
                 /** @description Fields to include in the response. */

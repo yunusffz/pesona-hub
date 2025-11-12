@@ -168,6 +168,7 @@
   import type { ProductWithRelations } from "~/types/product";
   import SvgIcon from "~/components/base/SvgIcon.vue";
   import { useAuth } from "~/composables/useAuth";
+  import { useApi } from "~/composables/useApi";
   import RankBadges from "~/components/base/RankBadges.vue";
   import {
     Dialog,
@@ -181,8 +182,9 @@
   import { useProductActivityLogger } from "~/composables/useProductActivityLogger";
   import { canUserCollaborate } from "~/utils/user-profile";
 
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user: authUser } = useAuth();
   const { logProductCollaboration } = useProductActivityLogger();
+  const client = useApi();
 
   interface Props {
     product?: ProductWithRelations & {
@@ -199,6 +201,7 @@
   const quantity = ref(1);
   const selectedVariant = ref<"default">("default");
   const showConfirmDialog = ref(false);
+  const userWithDetails = ref<any>(null);
 
   // Computed property for product image
   const productImage = computed(() => {
@@ -224,16 +227,43 @@
     return props.product?.unit || "unit";
   });
 
-  const handleCollaborationRequest = () => {
-    // Check if user profile is complete
-    if (!canUserCollaborate(user.value)) {
-      // Show dialog to complete profile
-      showConfirmDialog.value = true;
-      return;
-    }
+  const handleCollaborationRequest = async () => {
+    // Fetch fresh user data with details populated
+    try {
+      const { data, error } = await client.GET("/me", {
+        params: {
+          query: {
+            "populate[0]": "details",
+          },
+        },
+      });
 
-    // Profile is complete, proceed with WhatsApp request
-    handleQuoteRequest();
+      if (error) {
+        console.error("Failed to fetch user data:", error);
+        alert("Gagal memuat data profil. Silakan coba lagi.");
+        return;
+      }
+
+      // Extract user data from response
+      if (data && typeof data === "object" && "data" in data) {
+        userWithDetails.value = (data as any).data;
+      } else {
+        userWithDetails.value = data;
+      }
+
+      // Check if user profile is complete
+      if (!canUserCollaborate(userWithDetails.value)) {
+        // Show dialog to complete profile
+        showConfirmDialog.value = true;
+        return;
+      }
+
+      // Profile is complete, proceed with WhatsApp request
+      handleQuoteRequest();
+    } catch (error) {
+      console.error("Error checking user profile:", error);
+      alert("Terjadi kesalahan. Silakan coba lagi.");
+    }
   };
 
   const confirmQuoteRequest = () => {

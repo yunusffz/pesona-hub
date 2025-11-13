@@ -19,9 +19,6 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@pinia/nuxt",
   ],
-  nitro: {
-    preset: "bun",
-  },
   image: {
     provider: "ipx",
     ipx: {

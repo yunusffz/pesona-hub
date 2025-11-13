@@ -1,19 +1,19 @@
-# Build stage dengan Bun
-FROM oven/bun:1 AS builder
+# Build stage
+FROM node:20 AS builder
 
 WORKDIR /app
 
 # Copy package files
-COPY package.json bun.lockb* ./
+COPY package*.json ./
 
-# Install ALL dependencies
-RUN bun install --frozen-lockfile
+# Install dependencies
+RUN npm ci
 
 # Copy source code
 COPY . .
 
 # Build application
-RUN bun run build
+RUN npm run build
 
 # Production stage
 FROM oven/bun:1

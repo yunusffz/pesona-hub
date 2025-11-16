@@ -27,6 +27,9 @@ export default defineNuxtConfig({
       },
       maxAge: 86400, // Cache images for 24 hours
     },
+    sharp: {
+      useWasm: true,
+    },
   },
   shadcn: {
     prefix: "",

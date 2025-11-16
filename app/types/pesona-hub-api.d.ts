@@ -322,6 +322,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/commodities/priorities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Commodities Priority */
+        get: operations["get_commodities_priority_commodities_priorities_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/harvesting/province-apis": {
         parameters: {
             query?: never;
@@ -1088,6 +1105,18 @@ export interface components {
                 [key: string]: unknown;
             } | unknown[] | null;
         };
+        /** BaseResponse[Union[dict[str, Any], UserResponse]] */
+        BaseResponse_Union_dict_str__Any___UserResponse__: {
+            /** @description Response code, use from Message Code */
+            message_code: components["schemas"]["MessageCode"];
+            /**
+             * Data
+             * @description Response data, can be an array, dict, or None
+             */
+            data?: {
+                [key: string]: unknown;
+            } | components["schemas"]["UserResponse"] | unknown[] | null;
+        };
         /** BaseResponse[UserResponse] */
         BaseResponse_UserResponse_: {
             /** @description Response code, use from Message Code */
@@ -1123,6 +1152,18 @@ export interface components {
             data?: unknown[] | {
                 [key: string]: unknown;
             } | null;
+        };
+        /** BaseResponse[list[str]] */
+        BaseResponse_list_str__: {
+            /** @description Response code, use from Message Code */
+            message_code: components["schemas"]["MessageCode"];
+            /**
+             * Data
+             * @description Response data, can be an array, dict, or None
+             */
+            data?: string[] | {
+                [key: string]: unknown;
+            } | unknown[] | null;
         };
         /** BaseResponse[str] */
         BaseResponse_str_: {
@@ -1923,6 +1964,12 @@ export interface components {
              * @default ACTIVE
              */
             status: string | null;
+            /**
+             * Is Highlight
+             * @description Is highlight product
+             * @default false
+             */
+            is_highlight: boolean | null;
         };
         /** ProductResponse */
         ProductResponse: {
@@ -1962,6 +2009,8 @@ export interface components {
             } | null;
             /** Status */
             status: string;
+            /** Is Highlight */
+            is_highlight?: boolean | null;
             /**
              * Created At
              * Format: date-time
@@ -2054,6 +2103,11 @@ export interface components {
              * @description Product status
              */
             status?: string | null;
+            /**
+             * Is Highlight
+             * @description Is highlight product
+             */
+            is_highlight?: boolean | null;
         };
         /** ProvinceAPICreate */
         ProvinceAPICreate: {
@@ -2477,10 +2531,22 @@ export interface components {
              */
             collaboration_location_ids?: number[] | null;
             /**
-             * Collaboration Commodity Ids
-             * @description Collaboration commodity IDs (JSON array) from commodities table
+             * Collaboration Commodities
+             * @description Collaboration commodities (JSON dictionary with commodity id as key and quantity as value) from commodities table
              */
-            collaboration_commodity_ids?: number[] | null;
+            collaboration_commodities?: {
+                [key: string]: unknown;
+            }[] | null;
+            /**
+             * Class Group
+             * @description Class group (Platinum, Gold, Silver)
+             */
+            class_group?: string | null;
+            /**
+             * Notes
+             * @description Notes
+             */
+            notes?: string | null;
             /**
              * User Id
              * @description User ID who created or maintains this user detail data
@@ -3862,6 +3928,44 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_commodities_priority_commodities_priorities_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_list_str__"];
+                };
             };
             /** @description Unprocessable Content */
             422: {
@@ -6718,7 +6822,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_dict_str__Any__"] | components["schemas"]["BaseResponse_dict_str__Any__"] | null;
+                    "application/json": components["schemas"]["ListResponse_dict_str__Any__"] | components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["UserResponse"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -6976,7 +7080,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"];
+                    "application/json": components["schemas"]["BaseResponse_Union_dict_str__Any___UserResponse__"];
                 };
             };
             /** @description Unprocessable Content */

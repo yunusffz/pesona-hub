@@ -8,7 +8,7 @@
     </div>
     <div class="flex md:flex-row flex-col gap-4">
       <FilterLocation />
-      <FilterCommodity />
+      <FilterCommodityPriority />
     </div>
   </div>
 </template>
@@ -16,8 +16,8 @@
 <script setup lang="ts">
   import SearchInput from "~/components/base/SearchInput.vue";
   import FilterLocation from "./FilterLocation.vue";
-  import FilterCommodity from "./FilterCommodity.vue";
   import { useCatalogStore } from "~/stores/useCatalogStore";
+  import FilterCommodityPriority from "./FilterCommodityPriority.vue";
   const catalogStore = useCatalogStore();
   const onSearch = (value: string) => {
     catalogStore.setSearchQuery(value);

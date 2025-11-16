@@ -49,7 +49,7 @@
         :class="
           cn(
             'rounded-full px-5 py-2 text-sm font-medium border border-gray-300 transition-colors',
-            'data-[state=active]:bg-green-800 data-[state=active]:text-white data-[state=active]:border-green-800',
+            'data-[state=active]:bg-green-800 data-[state=active]:text-white dark:data-[state=active]:text-white data-[state=active]:border-green-800',
             'data-[state=inactive]:bg-white data-[state=inactive]:text-gray-700 hover:bg-gray-50',
             props.triggerClassName
           )

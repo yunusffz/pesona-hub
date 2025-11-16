@@ -4,8 +4,8 @@
       class="flex gap-8 text-center lg:text-left lg:gap-20 lg:flex-row flex-col-reverse"
     >
       <div class="h-full w-full max-h-[620px]">
-        <NuxtImg
-          src="/assets/images/about-hero.png"
+        <img
+          src="/assets/images/about-hero.avif"
           class="w-full object-cover object-center"
           alt="About Hero Image"
         />

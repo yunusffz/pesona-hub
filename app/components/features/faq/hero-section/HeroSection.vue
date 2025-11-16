@@ -14,8 +14,8 @@
         </div>
       </div>
       <div class="flex justify-end">
-        <NuxtImg
-          src="/assets/images/faq-hero.png"
+        <img
+          src="/assets/images/faq-hero.avif"
           alt="FAQ Hero Image"
           class="w-full h-full object-cover"
         />

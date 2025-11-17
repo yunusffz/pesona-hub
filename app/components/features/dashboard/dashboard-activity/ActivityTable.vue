@@ -54,11 +54,6 @@
 
   // Create computed filters based on date range
   const dateFilters = computed(() => {
-    console.log("Computing date filters with:", {
-      startDate: props.startDate,
-      endDate: props.endDate,
-    });
-
     if (!props.startDate && !props.endDate) {
       console.log("No filters applied");
       return undefined;
@@ -76,7 +71,6 @@
       filter.created_at.$lte = props.endDate;
     }
 
-    console.log("Date filter:", filter);
     return filter;
   });
   const { data, isLoading, refetch } = useActivityLogs({

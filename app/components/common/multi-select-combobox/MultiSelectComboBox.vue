@@ -221,7 +221,6 @@
   }
 
   function clearAll() {
-    console.log("tes");
     if (!internal.value.length) return;
     internal.value = [];
     emit("update:modelValue", internal.value);

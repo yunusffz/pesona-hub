@@ -40,8 +40,6 @@
         ? `/assets/icons/${props.folder}/${props.name}.svg`
         : `/assets/icons/${props.name}.svg`;
 
-      console.log("Loading SVG:", path);
-
       const response = await fetch(path);
       if (!response.ok) throw new Error(`Failed to load SVG: ${path}`);
 

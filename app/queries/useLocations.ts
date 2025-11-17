@@ -43,8 +43,6 @@ export const useLocations = (options: UseStrapiParamsOptions = {}) => {
       const params = buildStrapiParams(options);
       const queryString = params?.toString();
 
-      console.log("useLocations - Fetching with query string:", queryString);
-
       const { data, error } = await $apiClient.GET(
         `/locations${queryString ? `?${queryString}` : ""}`
       );

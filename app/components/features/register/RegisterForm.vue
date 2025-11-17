@@ -320,15 +320,6 @@
     updateValidity,
   } = useFormValidation(registerSchema);
 
-  // Debug watcher
-  watch(isRegistering, (newVal) => {
-    console.log("isRegistering changed:", newVal);
-  });
-
-  watch(isValid, (newVal) => {
-    console.log("isValid changed:", newVal);
-  });
-
   const form = reactive<RegisterFormData>({
     username: "",
     email: "",

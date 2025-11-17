@@ -372,13 +372,6 @@
         },
       };
 
-      // Handle logo upload if new file is provided
-      if (formData.value.logo && formData.value.logo instanceof File) {
-        // TODO: Upload logo file and get URL
-        // For now, we skip this as we don't have the upload endpoint
-        console.log("Logo file to upload:", formData.value.logo);
-      }
-
       await updateProfile(user.value.username, userUpdatePayload);
 
       // Navigate to success page
@@ -388,7 +381,6 @@
         error instanceof Error
           ? error.message
           : "Terjadi kesalahan saat menyimpan profil";
-      alert(`Error: ${errorMessage}`);
       console.error("Error updating profile:", error);
     }
   }

@@ -159,13 +159,6 @@
 
       startDate.value = startDateValue || "";
       endDate.value = endDateValue || "";
-
-      console.log("Date Range Changed:", {
-        fromVal,
-        toVal,
-        startDate: startDate.value,
-        endDate: endDate.value,
-      });
     },
     { deep: true }
   );

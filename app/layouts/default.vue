@@ -1,6 +1,7 @@
 <template>
+  <Navbar />
+
   <main class="min-h-screen flex flex-col max-w-[1536px] mx-auto">
-    <Navbar />
     <slot />
     <Footer />
   </main>

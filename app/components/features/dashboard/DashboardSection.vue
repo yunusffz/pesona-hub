@@ -1,7 +1,7 @@
 <template>
   <section>
-    <NuxtImg
-      src="/assets/images/dashboard.png"
+    <img
+      src="/assets/images/dashboard.avif"
       alt="Dashboard Hero"
       class="absolute inset-0 w-full h-full max-h-[356px] object-cover brightness-75"
     />

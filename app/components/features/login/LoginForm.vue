@@ -2,19 +2,18 @@
   <section
     class="relative grid grid-cols-1 lg:grid-cols-2 min-h-screen w-full 2xl:max-w-[1536px] 2xl:mx-auto bg-white overflow-hidden"
   >
-    <NuxtImg
-      src="/assets/images/login.png"
+    <img
+      src="/assets/images/login.avif"
       alt="Login Image"
       class="lg:hidden absolute inset-0 object-cover w-full h-full z-10"
-      loading="lazy"
     />
     <div class="relative hidden lg:block overflow-hidden">
       <!-- Gradient Overlay -->
       <div class="absolute inset-0 z-10 login-gradient-overlay"></div>
 
       <!-- Background image -->
-      <NuxtImg
-        src="/assets/images/login.png"
+      <img
+        src="/assets/images/login.avif"
         alt="Login Image"
         class="absolute inset-0 object-cover w-full h-full"
       />

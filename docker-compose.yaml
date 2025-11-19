@@ -1,6 +1,29 @@
 version: "3.8"
 
 services:
+  frontend:
+    image: ${DOCKER_REGISTRY_ADDR}/portal-data-frontend:${IMAGE_TAG:-dev-latest}
+    container_name: portal-data-frontend-dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - NUXT_PUBLIC_API_URL=${API_URL:-http://api:8000}
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - portal-data-network
+
   api:
     image: ${DOCKER_REGISTRY_ADDR}/portal-data-backend:${IMAGE_TAG:-dev-latest}
     container_name: portal-data-backend-dev

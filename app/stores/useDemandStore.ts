@@ -28,8 +28,9 @@ export const useDemandStore = defineStore("demand", () => {
     }
 
     if (selectedCommodities.value.length > 0) {
-      // Filter by collaboration_commodity_ids containing any of the selected commodities
-      detailsFilter.collaboration_commodity_ids = { $contains: selectedCommodities.value };
+      // Filter by collaboration_commodities - need to check if any object in the array contains the commodity ID as a key
+      // Using $containsi for case-insensitive JSON search, or $contains based on Strapi version
+      detailsFilter.collaboration_commodities = { $contains: selectedCommodities.value };
     }
 
     // Only add details filter if there are location or commodity filters

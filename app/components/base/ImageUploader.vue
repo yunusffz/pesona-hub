@@ -78,13 +78,29 @@
 
   const client = useApi();
   const fileInput = ref<HTMLInputElement | null>(null);
-  const preview = ref<string | null>(props.modelValue || null);
   const isDragging = ref(false);
   const loading = ref(false);
 
+  // Helper function to construct preview URL from object_name
+  const getPreviewUrl = (value: string | null): string | null => {
+    if (!value) return null;
+    // If it's already a full URL (starts with http:// or https:// or data:), use as-is
+    if (value.startsWith('http://') || value.startsWith('https://') || value.startsWith('data:')) {
+      return value;
+    }
+    // Otherwise, construct URL from object_name
+    const config = useRuntimeConfig();
+    const baseUrl = config.public.BASE_API_URL;
+    return `${baseUrl}/files/${value}`;
+  };
+
+  const preview = ref<string | null>(getPreviewUrl(props.modelValue));
+
   watch(
     () => props.modelValue,
-    (val) => (preview.value = val || null)
+    (val) => {
+      preview.value = getPreviewUrl(val);
+    }
   );
 
   const onFileSelect = (e: Event) => {
@@ -160,8 +176,11 @@
           // Emit only the object_name (not the full URL)
           emit("update:modelValue", objectName);
           emit("uploaded", objectName);
-          // Keep preview as base64 for visual display
-          // Don't update preview.value to objectName since we want to show the image
+
+          // Update preview to use the server URL
+          const config = useRuntimeConfig();
+          const baseUrl = config.public.BASE_API_URL;
+          preview.value = `${baseUrl}/files/${objectName}`;
         }
       } finally {
         loading.value = false;

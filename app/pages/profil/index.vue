@@ -170,10 +170,7 @@
   import { useApi } from "~/composables/useApi";
   import type { components } from "~/types/pesona-hub-api";
 
-  type UserDetail = components["schemas"]["UserDetail"] & {
-    // Extended field that exists in API but not in generated schema
-    collaboration_commodity_ids?: number[] | null;
-  };
+  type UserDetail = components["schemas"]["UserDetail"];
 
   interface FormData {
     thumbnail: string | null;
@@ -258,10 +255,22 @@
         formData.value.additionalInfo =
           user.value.details.product_service_description || "";
 
-        // Map commodities if available
-        if (user.value.details.collaboration_commodity_ids) {
-          formData.value.commodities =
-            user.value.details.collaboration_commodity_ids;
+        // Map commodities if available - extract IDs from collaboration_commodities object
+        if (user.value.details.collaboration_commodities) {
+          // collaboration_commodities is an array of objects with commodity id as key
+          const commodityIds: number[] = [];
+          if (Array.isArray(user.value.details.collaboration_commodities)) {
+            user.value.details.collaboration_commodities.forEach((item: any) => {
+              // Each item is an object like { "1": quantity, "2": quantity }
+              Object.keys(item).forEach(key => {
+                const id = parseInt(key, 10);
+                if (!isNaN(id) && !commodityIds.includes(id)) {
+                  commodityIds.push(id);
+                }
+              });
+            });
+          }
+          formData.value.commodities = commodityIds;
         }
 
         // Map collaborations if available
@@ -346,8 +355,12 @@
           website: formData.value.websiteUrl || null, // Website/Sosial Media
 
           // Step 2 - Interests mappings
-          collaboration_commodity_ids:
-            commodityIds.length > 0 ? commodityIds : null, // Jenis Komoditas
+          // Convert commodity IDs to collaboration_commodities format
+          // collaboration_commodities is an array of objects with commodity id as key and quantity as value
+          collaboration_commodities:
+            commodityIds.length > 0
+              ? commodityIds.map((id) => ({ [id]: 0 }))
+              : null, // Jenis Komoditas (quantity set to 0 as default)
 
           // Step 3 - Collaboration mappings
           product_service_description: formData.value.additionalInfo || null, // Additional info

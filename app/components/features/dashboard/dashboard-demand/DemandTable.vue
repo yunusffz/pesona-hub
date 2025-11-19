@@ -183,9 +183,22 @@
 
   // Helper functions for export
   const getCommodities = (partner: UserResponse): string => {
-    if (!partner.details?.collaboration_commodity_ids) return "-";
-    const ids = partner.details.collaboration_commodity_ids;
-    if (Array.isArray(ids) && ids.length > 0) {
+    if (!partner.details?.collaboration_commodities) return "-";
+
+    // Extract commodity IDs from collaboration_commodities array of objects
+    const ids: number[] = [];
+    if (Array.isArray(partner.details.collaboration_commodities)) {
+      partner.details.collaboration_commodities.forEach((item: any) => {
+        Object.keys(item).forEach(key => {
+          const id = parseInt(key, 10);
+          if (!isNaN(id) && !ids.includes(id)) {
+            ids.push(id);
+          }
+        });
+      });
+    }
+
+    if (ids.length > 0) {
       const names = ids
         .map((id: number) => commoditiesMap.value.get(id))
         .filter((name): name is string => !!name);

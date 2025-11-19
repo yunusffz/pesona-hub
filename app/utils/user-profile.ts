@@ -13,7 +13,7 @@ const REQUIRED_DETAIL_FIELDS = [
   "institution_name",
   "stakeholder_type",
   "contact_phone",
-  "collaboration_commodity_ids",
+  "collaboration_commodities",
 ] as const;
 
 interface ProfileCompletionResult {
@@ -94,7 +94,7 @@ export function getProfileCompletionMessage(
     "details.institution_name": "Nama Lembaga/Perusahaan",
     "details.stakeholder_type": "Jenis Mitra",
     "details.contact_phone": "Nomor WhatsApp",
-    "details.collaboration_commodity_ids": "Jenis Komoditas",
+    "details.collaboration_commodities": "Jenis Komoditas",
   };
 
   const missingFieldNames = result.missingFields

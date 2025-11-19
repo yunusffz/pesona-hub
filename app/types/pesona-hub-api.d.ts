@@ -1045,6 +1045,18 @@ export interface components {
          * @enum {string}
          */
         AccessType: "public" | "internal" | "private";
+        /** BaseResponse[FileCreate] */
+        BaseResponse_FileCreate_: {
+            /** @description Response code, use from Message Code */
+            message_code: components["schemas"]["MessageCode"];
+            /**
+             * Data
+             * @description Response data, can be an array, dict, or None
+             */
+            data?: components["schemas"]["FileCreate"] | {
+                [key: string]: unknown;
+            } | unknown[] | null;
+        };
         /** BaseResponse[LocationResponse] */
         BaseResponse_LocationResponse_: {
             /** @description Response code, use from Message Code */
@@ -1211,6 +1223,11 @@ export interface components {
             /** Description */
             description?: string | null;
         };
+        /**
+         * CategoryFile
+         * @enum {string}
+         */
+        CategoryFile: "DATASET" | "FILE";
         /** CertificationCreate */
         CertificationCreate: {
             /**
@@ -1554,6 +1571,49 @@ export interface components {
          * @enum {string}
          */
         EventType: "view" | "download" | "upload" | "create" | "update" | "delete" | "share" | "export" | "api_access" | "click" | "authenticate";
+        /** FileCreate */
+        FileCreate: {
+            /** Filename */
+            filename: string;
+            category: components["schemas"]["CategoryFile"];
+            /** Bucket Name */
+            bucket_name?: string | null;
+            /** Object Name */
+            object_name: string;
+            /** Content Type */
+            content_type: string;
+            /** Size */
+            size: number;
+            /** Description */
+            description?: string | null;
+            /** User Id */
+            user_id?: number | null;
+        };
+        /** FileResponse */
+        FileResponse: {
+            /** Id */
+            id: number;
+            /** Filename */
+            filename: string;
+            category: components["schemas"]["CategoryFile"];
+            /** Bucket Name */
+            bucket_name: string | null;
+            /** Object Name */
+            object_name: string;
+            /** Content Type */
+            content_type: string;
+            /** Size */
+            size: number;
+            /** Description */
+            description: string | null;
+            /** User Id */
+            user_id: number | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
         /** ListResponse[SocialForestryBusinessGroupResponse] */
         ListResponse_SocialForestryBusinessGroupResponse_: {
             /** @description Response code, use from Message Code */
@@ -5329,7 +5389,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ListResponse_dict_str__Any__"] | components["schemas"]["BaseResponse_dict_str__Any__"] | null;
+                    "application/json": components["schemas"]["ListResponse_dict_str__Any__"] | components["schemas"]["FileResponse"] | null;
                 };
             };
             /** @description Unprocessable Content */
@@ -5371,7 +5431,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_Union_dict_str__Any___NoneType__"];
+                    "application/json": components["schemas"]["BaseResponse_FileCreate_"];
                 };
             };
             /** @description Unprocessable Content */

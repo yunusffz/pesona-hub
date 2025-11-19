@@ -36,17 +36,16 @@
         dari satu.
       </p>
       <MultiSelectCombobox
-        :model-value="modelValue.commodities"
-        @update:model-value="updateValue('commodities', $event)"
+        v-model="selectedCommodities"
         :options="commodities"
-        placeholder="Cari komoditas"
-        empty-text="Pilih komoditas"
+        placeholder="Cari Komoditas..."
+        empty-text="Pilih Komoditas"
         buttonClass="!py-2 !px-3 rounded-lg text-sm"
         :max="5"
       />
     </div>
 
-    <div class="flex flex-col gap-4">
+    <!-- <div class="flex flex-col gap-4">
       <div class="flex items-center gap-2">
         <Package class="w-5 h-5 text-[#174C36]" />
         <div class="font-medium">Estimasi Kebutuhan per Komoditas *</div>
@@ -107,7 +106,7 @@
           inginkan.
         </p>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -119,7 +118,6 @@
   import { PRODUCTION_UNITS } from "~/consts/units";
   import { Package } from "lucide-vue-next";
   interface FormData {
-    logo: File | null;
     companyName: string;
     partnerLevel: string;
     whatsappNumber: string;
@@ -145,7 +143,9 @@
     "update:modelValue": [value: FormData];
   }>();
 
-  const { data } = useCommodities();
+  const { data } = useCommodities({
+    limit: 200,
+  });
 
   const commodities = computed(() => {
     if (!data.value?.data || !Array.isArray(data.value.data)) return [];
@@ -158,6 +158,22 @@
         value: (commodity as any).id as string | number,
       })
     );
+  });
+
+  // Use computed with getter/setter for better control
+  const selectedCommodities = computed<(string | number)[]>({
+    get() {
+      return props.modelValue.commodities || [];
+    },
+    set(newValues) {
+      // Convert to numbers and ensure max 5
+      const numericValues = newValues
+        .map((v) => (typeof v === "string" ? Number(v) : v))
+        .filter((v) => v !== null && v !== undefined && !isNaN(Number(v)))
+        .slice(0, 5) as number[];
+
+      updateValue("commodities", numericValues);
+    },
   });
 
   const productionUnits = computed(() => PRODUCTION_UNITS);

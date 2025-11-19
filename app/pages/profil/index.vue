@@ -170,10 +170,13 @@
   import { useApi } from "~/composables/useApi";
   import type { components } from "~/types/pesona-hub-api";
 
-  type UserDetail = components["schemas"]["UserDetail"];
+  type UserDetail = components["schemas"]["UserDetail"] & {
+    // Extended field that exists in API but not in generated schema
+    collaboration_commodity_ids?: number[] | null;
+  };
 
   interface FormData {
-    logo: File | null;
+    thumbnail: string | null;
     companyName: string;
     partnerLevel: string;
     whatsappNumber: string;
@@ -202,7 +205,7 @@
   const user = ref<any>(null);
 
   const formData = ref<FormData>({
-    logo: null,
+    thumbnail: null,
     companyName: "",
     partnerLevel: "",
     whatsappNumber: "",
@@ -274,6 +277,7 @@
       }
 
       if (user.value?.thumbnail) {
+        formData.value.thumbnail = user.value.thumbnail;
         logoPreview.value = user.value.thumbnail;
       }
     } catch (error) {
@@ -331,10 +335,7 @@
         // Step 1 - Identity mappings
         name: formData.value.companyName || undefined, // Nama Lembaga/Perusahaan -> name
         phone: formData.value.whatsappNumber || undefined, // Nomor WhatsApp -> phone
-        thumbnail:
-          logoPreview.value && logoPreview.value.startsWith("http")
-            ? logoPreview.value
-            : undefined, // Logo -> thumbnail
+        thumbnail: formData.value.thumbnail || undefined, // object_name from uploaded file
 
         // Map form data to UserDetail structure
         details: {

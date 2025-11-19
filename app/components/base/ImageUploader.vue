@@ -155,12 +155,13 @@
     if (!props.disableAutoUpload) {
       loading.value = true;
       try {
-        const fileUrl = await uploadFile(file);
-        if (fileUrl) {
-          emit("update:modelValue", fileUrl);
-          emit("uploaded", fileUrl);
-          // Update preview to use the uploaded URL if available
-          preview.value = fileUrl;
+        const objectName = await uploadFile(file);
+        if (objectName) {
+          // Emit only the object_name (not the full URL)
+          emit("update:modelValue", objectName);
+          emit("uploaded", objectName);
+          // Keep preview as base64 for visual display
+          // Don't update preview.value to objectName since we want to show the image
         }
       } finally {
         loading.value = false;

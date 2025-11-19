@@ -7,22 +7,6 @@
         :onSearch="handleSearch"
       />
       <div class="flex items-center gap-2">
-        <FilterSheet ref="filterSheetRef">
-          <template #trigger>
-            <BaseButton
-              variant="secondary"
-              class="pr-2 px-3 py-2 justify-between text-sm relative"
-            >
-              <Icon name="uil:filter" class="w-4 h-4" />
-              Filter
-              <Badge
-                v-if="activeFiltersCount > 0"
-                class="ml-1 h-4 w-4 flex items-center justify-center p-0 text-xs"
-                >{{ activeFiltersCount }}</Badge
-              >
-            </BaseButton>
-          </template>
-        </FilterSheet>
         <BaseButton
           variant="solid"
           class="pr-2 px-3 py-2 justify-between text-sm"
@@ -42,8 +26,6 @@
   import SearchInput from "~/components/base/SearchInput.vue";
   import BaseButton from "~/components/base/BaseButton.vue";
   import PartnerDataTable from "./PartnerDataTable.vue";
-  import FilterSheet from "./FilterSheet.vue";
-  import { Badge } from "~/components/ui/badge";
   import { useUsers } from "~/queries/useUsers";
   import { useDemandStore } from "~/stores/useDemandStore";
   import { useCommodities } from "~/queries/useCommodities";

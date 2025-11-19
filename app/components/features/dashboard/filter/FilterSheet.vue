@@ -15,13 +15,13 @@
       <div class="px-5 py-0">
         <div class="h-[calc(100vh-200px)] overflow-y-auto pr-1">
           <div class="flex flex-col gap-5 py-6">
-            <!-- Commodities Filter -->
+            <!-- Commodity Priority Filter -->
             <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
-            <CommodityFilterSection
-              :options="commodityOptions"
-              :selected-map="selectedCommoditiesMap"
-              :default-expanded="expandedSections.commodities"
-              @update:selected-map="selectedCommoditiesMap = $event"
+            <CommodityPriorityFilterSection
+              :options="commodityPriorityOptions"
+              :selected-map="selectedCommodityPrioritiesMap"
+              :default-expanded="expandedSections.commodityPriorities"
+              @update:selected-map="selectedCommodityPrioritiesMap = $event"
             />
 
             <!-- Regions Filter -->
@@ -35,6 +35,15 @@
               :default-expanded="expandedSections.regions"
               @update:selected-regions-map="selectedRegionsMap = $event"
               @update:selected-districts-map="selectedDistrictsMap = $event"
+            />
+
+            <!-- Price Range Filter -->
+            <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
+            <PriceRangeFilterSection
+              v-model:price-min="priceMin"
+              v-model:price-max="priceMax"
+              :default-expanded="expandedSections.priceRange"
+              @change="handlePriceChange"
             />
 
             <!-- Sort Options -->
@@ -78,15 +87,17 @@
     SheetHeader,
     SheetTitle,
   } from "~/components/ui/sheet";
+  import { Badge } from "~/components/ui/badge";
   import BaseButton from "~/components/base/BaseButton.vue";
   import { useLocations } from "~/queries/useLocations";
-  import { useCommodities } from "~/queries/useCommodities";
-  import { useDemandStore } from "~/stores/useDemandStore";
-  import CommodityFilterSection from "../dashboard-supply/CommodityFilterSection.vue";
-  import RegionFilterSection from "../dashboard-supply/RegionFilterSection.vue";
-  import SortFilterSection from "../dashboard-supply/SortFilterSection.vue";
+  import { useCommodityPriorities } from "~/queries/useCommodityPriorities";
+  import { useCatalogStore } from "~/stores/useCatalogStore";
+  import CommodityPriorityFilterSection from "./CommodityPriorityFilterSection.vue";
+  import RegionFilterSection from "./RegionFilterSection.vue";
+  import PriceRangeFilterSection from "./PriceRangeFilterSection.vue";
+  import SortFilterSection from "./SortFilterSection.vue";
 
-  const demandStore = useDemandStore();
+  const catalogStore = useCatalogStore();
 
   // Data fetching
   const {
@@ -97,38 +108,36 @@
   } = useLocations({
     enabled: true,
   });
-  const { data: commoditiesData } = useCommodities();
+  const { data: commodityPrioritiesData } = useCommodityPriorities({
+    limit: 200,
+  });
 
   // Initialize on mount
   onMounted(() => {
     refetchLocations();
 
     // Sync local state with store on mount
-    demandStore.selectedLocations.forEach((loc) => {
+    catalogStore.selectedLocations.forEach((loc) => {
       selectedRegionsMap.value[loc] = true;
     });
-    demandStore.selectedCommodities.forEach((id) => {
-      selectedCommoditiesMap.value[String(id)] = true;
+    catalogStore.selectedCommodityPriorities.forEach((priority) => {
+      selectedCommodityPrioritiesMap.value[priority] = true;
     });
   });
 
-  // Commodity options
-  const commodityOptions = computed(() => {
+  // Commodity priority options
+  const commodityPriorityOptions = computed(() => {
     if (
-      !commoditiesData.value?.data ||
-      !Array.isArray(commoditiesData.value.data)
+      !commodityPrioritiesData.value?.data ||
+      !Array.isArray(commodityPrioritiesData.value.data)
     ) {
       return [];
     }
 
-    return (commoditiesData.value.data as Array<Record<string, unknown>>).map(
-      (commodity) => ({
-        label: String(
-          (commodity as any).name ?? (commodity as any).label ?? "-"
-        ),
-        value: (commodity as any).id as string | number,
-      })
-    );
+    return (commodityPrioritiesData.value.data as string[]).map((priority) => ({
+      label: priority,
+      value: priority,
+    }));
   });
 
   // Group locations by province with districts
@@ -181,26 +190,43 @@
 
   // Expanded sections state
   const expandedSections = ref({
-    commodities: true,
+    commodityPriorities: true,
     regions: true,
+    priceRange: false,
     sort: false,
   });
 
   // Local state using maps for checkbox state
-  const selectedCommoditiesMap = ref<Record<string | number, boolean>>({});
+  const selectedCommodityPrioritiesMap = ref<Record<string, boolean>>({});
   const selectedRegionsMap = ref<Record<string, boolean>>({});
   const selectedDistrictsMap = ref<Record<string, boolean>>({});
-  const sortBy = ref<string>(demandStore.sortBy || "");
+  const priceMin = ref<number | null>(catalogStore.priceRange?.min || null);
+  const priceMax = ref<number | null>(catalogStore.priceRange?.max || null);
+  const sortBy = ref<string>((catalogStore as any).sortBy || "");
 
   watch(
-    () => demandStore.sortBy,
+    () => catalogStore.priceRange,
+    (newRange) => {
+      if (newRange) {
+        priceMin.value = newRange.min;
+        priceMax.value = newRange.max;
+      } else {
+        priceMin.value = null;
+        priceMax.value = null;
+      }
+    }
+  );
+
+  watch(
+    () => (catalogStore as any).sortBy,
     (newSort) => {
       sortBy.value = newSort || "";
     }
   );
 
-  const checkedCommoditiesCount = computed(() => {
-    return Object.values(selectedCommoditiesMap.value).filter(Boolean).length;
+  const checkedCommodityPrioritiesCount = computed(() => {
+    return Object.values(selectedCommodityPrioritiesMap.value).filter(Boolean)
+      .length;
   });
 
   const checkedRegionsCount = computed(() => {
@@ -209,27 +235,35 @@
 
   const activeFiltersCount = computed(() => {
     return (
-      checkedCommoditiesCount.value +
+      checkedCommodityPrioritiesCount.value +
       checkedRegionsCount.value +
+      (priceMin.value !== null || priceMax.value !== null ? 1 : 0) +
       (sortBy.value !== "" ? 1 : 0)
     );
   });
 
   // Handlers
+  const handlePriceChange = () => {
+    if (priceMin.value !== null || priceMax.value !== null) {
+      catalogStore.priceRange = {
+        min: priceMin.value || 0,
+        max: priceMax.value || 999999,
+      };
+    } else {
+      catalogStore.priceRange = null;
+    }
+  };
+
   const handleSortChange = () => {
-    demandStore.setSortBy(sortBy.value);
+    (catalogStore as any).setSortBy(sortBy.value);
   };
 
   const handleApplyFilters = () => {
-    const commodityIds = Object.entries(selectedCommoditiesMap.value)
+    const commodityPriorities = Object.entries(
+      selectedCommodityPrioritiesMap.value
+    )
       .filter(([_, checked]) => checked)
-      .map(([id]) => {
-        const numId = typeof id === "string" ? Number(id) : id;
-        return numId;
-      })
-      .filter(
-        (v) => v !== null && v !== undefined && !isNaN(Number(v))
-      ) as number[];
+      .map(([priority]) => priority);
 
     const checkedDistricts = Object.entries(selectedDistrictsMap.value)
       .filter(([_, checked]) => checked)
@@ -255,17 +289,29 @@
       Boolean
     );
 
-    demandStore.setSelectedLocations(allLocations);
-    demandStore.setSelectedCommodities(commodityIds);
-    demandStore.setSortBy(sortBy.value);
+    catalogStore.setSelectedLocations(allLocations);
+    catalogStore.setSelectedCommodityPriorities(commodityPriorities);
+
+    if (priceMin.value !== null || priceMax.value !== null) {
+      catalogStore.priceRange = {
+        min: priceMin.value || 0,
+        max: priceMax.value || 999999,
+      };
+    } else {
+      catalogStore.priceRange = null;
+    }
+
+    (catalogStore as any).setSortBy(sortBy.value);
   };
 
   const handleClearFilters = () => {
-    selectedCommoditiesMap.value = {};
+    selectedCommodityPrioritiesMap.value = {};
     selectedRegionsMap.value = {};
     selectedDistrictsMap.value = {};
+    priceMin.value = null;
+    priceMax.value = null;
     sortBy.value = "";
-    demandStore.clearAllFilters();
+    catalogStore.clearAllFilters();
   };
 
   defineExpose({
@@ -273,4 +319,3 @@
     handleClearFilters,
   });
 </script>
-

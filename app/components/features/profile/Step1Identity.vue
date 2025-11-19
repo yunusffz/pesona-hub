@@ -6,7 +6,7 @@
       <ImageUploader
         v-model="logoPreview"
         additional-icon="lucide:building-2"
-        @file="handleFileUpload"
+        @uploaded="handleImageUploaded"
       />
       <p class="text-xs text-[#6B7280] text-center">
         Upload logo perusahaan <br />
@@ -87,7 +87,7 @@
   import BaseInput from "@/components/base/BaseInput.vue";
 
   interface FormData {
-    logo: File | null;
+    thumbnail: string | null;
     companyName: string;
     partnerLevel: string;
     whatsappNumber: string;
@@ -132,7 +132,8 @@
     emit("update:modelValue", { ...props.modelValue, [key]: value });
   }
 
-  function handleFileUpload(file: File) {
-    emit("update:modelValue", { ...props.modelValue, logo: file });
+  function handleImageUploaded(objectName: string) {
+    // Set the object_name to thumbnail field in form data
+    emit("update:modelValue", { ...props.modelValue, thumbnail: objectName });
   }
 </script>

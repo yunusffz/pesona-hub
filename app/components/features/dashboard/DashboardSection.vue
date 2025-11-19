@@ -83,7 +83,7 @@
   import DashboardSupply from "@/components/features/dashboard/dashboard-supply/DashboardSupply.vue";
   import DashboardDemand from "@/components/features/dashboard/dashboard-demand/DashboardDemand.vue";
   import DashboardActivity from "@/components/features/dashboard/dashboard-activity/DashboardActivity.vue";
-  import FilterSheet from "@/components/features/dashboard/dashboard-supply/FilterSheet.vue";
+  import FilterSheet from "~/components/features/dashboard/filter/FilterSheet.vue";
   import {
     Tabs,
     TabsList,

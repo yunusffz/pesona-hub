@@ -26,7 +26,12 @@
               <th
                 class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
               >
-                Rantai Nilai
+                Satuan
+              </th>
+              <th
+                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
+              >
+                Jenis Bahan
               </th>
               <th
                 class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
@@ -76,8 +81,11 @@
               </td>
               <td class="px-6 py-4">
                 <span class="text-sm text-gray-900">{{
-                  getCapacity(product)
+                  product.capacity
                 }}</span>
+              </td>
+              <td class="px-6 py-4">
+                <span class="text-sm text-gray-900">{{ product.unit }}</span>
               </td>
               <td class="px-6 py-4">
                 <span class="text-sm text-gray-600">{{

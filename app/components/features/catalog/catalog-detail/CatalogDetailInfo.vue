@@ -48,7 +48,7 @@
       </div>
       <div v-if="product?.value_chain" class="flex flex-col gap-1">
         <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
-          Rantai Nilai:
+          Jenis Bahan:
         </span>
         <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
           {{ product.value_chain }}

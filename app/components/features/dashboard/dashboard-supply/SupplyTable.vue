@@ -58,7 +58,15 @@
       "social_forestry_business_group",
       "social_forestry_business_group.location",
     ],
-    fields: ["id", "name", "value_chain", "metadatas", "thumbnails"],
+    fields: [
+      "id",
+      "name",
+      "value_chain",
+      "metadatas",
+      "thumbnails",
+      "capacity",
+      "unit",
+    ],
   });
 
   // Watch for filter changes and refetch
@@ -168,15 +176,16 @@
       const XLSX = await import("xlsx");
 
       // Limit to 100 products
-      const productsToExport = filteredProducts.value.slice(0, 100);
+      const productsToExport = filteredProducts.value;
 
       // Prepare data for Excel
       const excelData = productsToExport.map((product) => {
         return {
           "Nama Brand/Produk": product.name || "-",
           Komoditas: (product as any).commodity?.name || "-",
-          "Kapasitas Penyediaan": getCapacity(product),
-          "Rantai Nilai": product.value_chain || "-",
+          "Kapasitas Penyediaan": product.capacity,
+          Satuan: product.unit || "-",
+          "": product.value_chain || "-",
           Wilayah: getRegion(product),
           "Nama KUPS": product.social_forestry_business_group?.name || "-",
         };
@@ -192,6 +201,7 @@
         { wch: 30 }, // Nama Brand/Produk
         { wch: 20 }, // Komoditas
         { wch: 20 }, // Kapasitas Penyediaan
+        { wch: 20 }, // Satuan
         { wch: 20 }, // Rantai Nilai
         { wch: 20 }, // Wilayah
         { wch: 30 }, // Nama KUPS

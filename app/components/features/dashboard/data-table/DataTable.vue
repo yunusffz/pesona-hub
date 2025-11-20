@@ -75,9 +75,7 @@
                 }}</span>
               </td>
               <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{
-                  getCapacity(product)
-                }}</span>
+                <span class="text-sm text-gray-900">-</span>
               </td>
               <td class="px-6 py-4">
                 <span class="text-sm text-gray-600">{{

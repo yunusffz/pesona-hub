@@ -57,11 +57,12 @@
 
 <script setup lang="ts">
   import CatalogCard from "~/components/common/catalog-section/CatalogCard.vue";
-  import { useProducts } from "~/queries";
+  import { mockProducts } from "~/mocks/data/products";
   import type { ProductWithRelations } from "~/types/product";
   import { useCatalogStore } from "~/stores/useCatalogStore";
   import Pagination from "~/components/ui/pagination/Pagination.vue";
   import Loader from "~/components/base/Loader.vue";
+
   // Props
   interface Props {
     search?: string;
@@ -76,64 +77,102 @@
   });
 
   const catalogStore = useCatalogStore();
+  const isLoading = ref(false);
+  const error = ref(null);
 
-  // Use products query with reactive parameters
-  const { data, isLoading, error, refetch } = useProducts({
-    get search() {
-      return catalogStore.searchQuery;
-    },
-    get page() {
-      return catalogStore.currentPage;
-    },
-    get limit() {
-      return catalogStore.itemsPerPage;
-    },
-    get filters() {
-      return catalogStore.filters;
-    },
-    fields: ["id", "name", "thumbnails", "price", "unit"],
-    populate: [
-      "social_forestry_business_group.contact",
-      "social_forestry_business_group.location",
-      "social_forestry_group",
-    ],
+  // Use offline mockup data
+  const allProducts = computed(() => {
+    return mockProducts as unknown as ProductWithRelations[];
   });
 
-  // Extract products from API response
+  // Apply filters to products
+  const filteredProducts = computed(() => {
+    let filtered = [...allProducts.value];
+
+    // Search filter
+    if (catalogStore.searchQuery.trim()) {
+      const query = catalogStore.searchQuery.toLowerCase();
+      filtered = filtered.filter((product) => {
+        const nameMatch = product.name?.toLowerCase().includes(query);
+        const descriptionMatch = product.description?.toLowerCase().includes(query);
+        return nameMatch || descriptionMatch;
+      });
+    }
+
+    // Commodity filter
+    if (catalogStore.selectedCommodities.length > 0) {
+      filtered = filtered.filter((product) =>
+        catalogStore.selectedCommodities.includes(product.commodity_id || 0)
+      );
+    }
+
+    // Location filter (district)
+    if (catalogStore.selectedLocations.length > 0) {
+      filtered = filtered.filter((product) => {
+        const district = product.social_forestry_business_group?.location?.district;
+        return district && catalogStore.selectedLocations.includes(district);
+      });
+    }
+
+    // Price range filter
+    if (catalogStore.priceRange) {
+      filtered = filtered.filter((product) => {
+        const price = product.price || 0;
+        return (
+          price >= catalogStore.priceRange!.min &&
+          price <= catalogStore.priceRange!.max
+        );
+      });
+    }
+
+    // Commodity priority filter
+    if (catalogStore.selectedCommodityPriorities.length > 0) {
+      filtered = filtered.filter((product) => {
+        const priority = product.commodity_priority;
+        return priority && catalogStore.selectedCommodityPriorities.includes(priority);
+      });
+    }
+
+    // Sorting
+    if (catalogStore.sortBy) {
+      const [field, order] = catalogStore.sortBy.split(':');
+      filtered.sort((a: any, b: any) => {
+        const aVal = a[field] || 0;
+        const bVal = b[field] || 0;
+        if (order === 'asc') {
+          return aVal > bVal ? 1 : -1;
+        } else {
+          return aVal < bVal ? 1 : -1;
+        }
+      });
+    }
+
+    return filtered;
+  });
+
+  // Paginate products
   const products = computed(() => {
-    const productsData = data.value?.data;
-    if (Array.isArray(productsData)) {
-      return productsData as unknown as ProductWithRelations[];
-    }
-    return [] as ProductWithRelations[];
+    const start = (catalogStore.currentPage - 1) * catalogStore.itemsPerPage;
+    const end = start + catalogStore.itemsPerPage;
+    return filteredProducts.value.slice(start, end);
   });
 
-  // Extract pagination metadata from API response
+  // Calculate pagination metadata
   const paginationMeta = computed(() => {
-    const meta = data.value?.meta;
-    if (meta && typeof meta === "object" && "pagination" in meta) {
-      const pagination = meta.pagination as any;
-      return {
-        totalItems: pagination.total || 0,
-        totalPages: pagination.page_count || 0,
-        currentPage: pagination.page || 1,
-        itemsPerPage: 12,
-        startItem:
-          ((pagination.page || 1) - 1) *
-            (pagination.page_size || catalogStore.itemsPerPage) +
-          1,
-      };
-    }
+    const totalItems = filteredProducts.value.length;
+    const totalPages = Math.ceil(totalItems / catalogStore.itemsPerPage);
+    const startItem = totalItems > 0
+      ? (catalogStore.currentPage - 1) * catalogStore.itemsPerPage + 1
+      : 0;
+
     return {
-      totalItems: 0,
-      totalPages: 0,
+      totalItems,
+      totalPages,
       currentPage: catalogStore.currentPage,
       itemsPerPage: catalogStore.itemsPerPage,
-      startItem: 0,
+      startItem,
     };
   });
-
-  // Pagination metadata is now accessed via paginationMeta computed property
 
   // Handle pagination events
   const handlePageChange = (page: number) => {
@@ -142,6 +181,10 @@
 
   const handleItemsPerPageChange = (items: number) => {
     catalogStore.setItemsPerPage(items);
+  };
+
+  const refetch = () => {
+    // No-op for offline mode
   };
 
   const linkText = "Lihat Detail";

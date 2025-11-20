@@ -94,38 +94,42 @@
     "update:modelValue": [value: FormData];
   }>();
 
-  // Fetch collaborations from API
-  const { data: collaborationsData, isLoading: isLoadingCollaborations } =
-    useCollaborations();
-
-  // Transform collaborations data to options format
+  // Mockup data for collaboration types
   const collaborationTypes = computed(() => {
-    const data =
-      collaborationsData.value && "data" in collaborationsData.value
-        ? collaborationsData.value.data
-        : collaborationsData.value;
-
-    if (!data) return [];
-
-    // The rest of the logic will use `data`
-    if (Array.isArray(data)) {
-      return data.map((collab: any) => ({
-        label: collab.name ?? String(collab.id ?? ""),
-        value: collab.id ?? collab.name,
-      }));
-    }
-
-    // Handle single object response
-    if (data && typeof data === "object") {
-      return [
-        {
-          label: (data as any).name ?? String((data as any).id ?? ""),
-          value: (data as any).id ?? (data as any).name,
-        },
-      ];
-    }
-
-    return [];
+    return [
+      {
+        label: "B2B (Business to Business)",
+        value: "b2b",
+      },
+      {
+        label: "B2C (Business to Consumer)",
+        value: "b2c",
+      },
+      {
+        label: "Kemitraan Strategis",
+        value: "strategic_partnership",
+      },
+      {
+        label: "Distribusi & Reseller",
+        value: "distribution_reseller",
+      },
+      {
+        label: "Investasi & Pendanaan",
+        value: "investment_funding",
+      },
+      {
+        label: "Kolaborasi Riset & Pengembangan",
+        value: "research_development",
+      },
+      {
+        label: "Lisensi & Waralaba",
+        value: "license_franchise",
+      },
+      {
+        label: "Joint Venture",
+        value: "joint_venture",
+      },
+    ];
   });
 
   function updateValue(key: keyof FormData, value: any) {

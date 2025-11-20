@@ -4,10 +4,10 @@ export default defineNuxtRouteMiddleware((to, from) => {
   // Check if route requires authentication
   const isProtected = to.meta.requiresAuth === true;
 
-  if (isProtected && !token.value) {
-    return navigateTo({
-      path: "/login",
-      query: { redirect: to.fullPath },
-    });
-  }
+  // if (isProtected && !token.value) {
+  //   return navigateTo({
+  //     path: "/login",
+  //     query: { redirect: to.fullPath },
+  //   });
+  // }
 });

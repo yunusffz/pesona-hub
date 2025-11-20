@@ -32,7 +32,7 @@
       class="relative z-20 flex items-center justify-center p-6 sm:p-8 xl:p-12 lg:bg-white overflow-y-auto"
     >
       <div
-        class="w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[440px] bg-white lg:bg-transparent rounded-2xl lg:rounded-none shadow-2xl lg:shadow-none p-6 sm:p-8 lg:p-0 lg:px-2 max-h-screen lg:py-12"
+        class="w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[440px] bg-white lg:bg-transparent rounded-2xl lg:rounded-none shadow-2xl lg:shadow-none p-6 sm:p-8 lg:p-0 lg:px-2 max-h-screen lg:py-12 pb-20"
       >
         <div class="flex flex-col gap-4 sm:gap-6 lg:gap-8">
           <!-- Header -->

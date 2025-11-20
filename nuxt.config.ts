@@ -8,6 +8,8 @@ export default defineNuxtConfig({
     public: {
       BASE_API_URL:
         process.env.NUXT_PUBLIC_BASE_API_URL || "http://localhost:5500",
+      useMocks: process.env.NUXT_PUBLIC_USE_MOCKS === "true",
+      mockDelay: Number.parseInt(process.env.NUXT_PUBLIC_MOCK_DELAY || "500"),
     },
   },
   modules: [

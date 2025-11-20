@@ -12,16 +12,23 @@
 <script setup lang="ts">
   import MultiSelectCombobox from "~/components/common/multi-select-combobox/MultiSelectComboBox.vue";
   import { computed } from "vue";
-  import { useCommodityPriorities } from "~/queries/useCommodityPriorities";
   import { useCatalogStore } from "~/stores/useCatalogStore";
 
   const catalogStore = useCatalogStore();
-  const { data } = useCommodityPriorities({ limit: 200 });
 
   const commodityPriorities = computed(() => {
-    if (!data.value?.data || !Array.isArray(data.value.data)) return [];
+    const priorities = [
+      "Madu",
+      "Rotan",
+      "Bambu",
+      "Atsiri",
+      "Kopi",
+      "Kakao",
+      "Buah-buahan",
+      "Wisata Alam"
+    ];
 
-    return (data.value.data as string[]).map((priority) => ({
+    return priorities.map((priority) => ({
       label: priority,
       value: priority,
     }));

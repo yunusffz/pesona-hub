@@ -53,10 +53,18 @@
     });
 
     // Convert map to array and return
-    return Array.from(districtMap.values()).map((location) => ({
-      label: `${location.district} - ${location.regency} - ${location.province}`,
-      value: location.district,
-    }));
+    return Array.from(districtMap.values()).map((location) => {
+      const parts = [location.district];
+      if (location.regency) {
+        parts.push(location.regency);
+      }
+      parts.push(location.province);
+
+      return {
+        label: parts.join(' - '),
+        value: location.district,
+      };
+    });
   });
 
   const selected = ref<string[]>(catalogStore.selectedLocations);

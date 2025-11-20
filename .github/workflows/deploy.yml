@@ -85,6 +85,8 @@ jobs:
               -e NUXT_PUBLIC_BASE_API_URL="$NUXT_PUBLIC_BASE_API_URL" \
               $IMAGE_URL
 
+            # Clean up old images from this project
+            docker image prune -a -f --filter "reference=ghcr.io/${{ github.repository }}:*"
 
             # Logout for security
             docker logout ghcr.io

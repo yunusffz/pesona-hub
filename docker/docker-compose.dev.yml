@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: ${DOCKER_REGISTRY:-ghcr.io/faisalcayunda/pesona-hub-digi-frontend}/frontend:${IMAGE_TAG:-dev-latest}
+    container_name: pesona-hub-digi-frontend-dev
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=development
+      - NUXT_PUBLIC_PESONA_API_URL=${NUXT_PUBLIC_PESONA_API_URL:-http://localhost:8000}
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - pesona-hub-digi-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  pesona-hub-digi-network:
+    driver: bridge
+    name: pesona-hub-digi-network-dev

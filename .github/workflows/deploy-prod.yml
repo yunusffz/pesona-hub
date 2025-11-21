@@ -80,14 +80,18 @@ jobs:
 
       - name: Create .env file
         run: |
-          cat > .env << EOF
-          # Docker
-          DOCKER_REGISTRY=${{ env.REGISTRY }}/${{ github.repository }}
-          IMAGE_TAG=prod-latest
+          echo "NUXT_PUBLIC_PESONA_API_URL=${{ secrets.NUXT_PUBLIC_PESONA_API_URL }}" > .env
+          echo "DOCKER_REGISTRY=${{ env.REGISTRY }}/${{ github.repository }}" >> .env
+          echo "IMAGE_TAG=prod-latest" >> .env 
 
-          # Frontend Environment Variables
-          NUXT_PUBLIC_PESONA_API_URL=${{ secrets.NUXT_PUBLIC_PESONA_API_URL }}
-          EOF
+          # cat > .env << EOF
+          # # Docker
+          # DOCKER_REGISTRY=${{ env.REGISTRY }}/${{ github.repository }}
+          # IMAGE_TAG=prod-latest
+
+          # # Frontend Environment Variables
+          # NUXT_PUBLIC_PESONA_API_URL=${{ secrets.NUXT_PUBLIC_PESONA_API_URL }}
+          # EOF
           export $(cat .env | xargs)
 
       - name: Copy files to server

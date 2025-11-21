@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   frontend:
-    image: ${DOCKER_REGISTRY:-ghcr.io/${{ github.repository }}}/frontend:${IMAGE_TAG:-dev-latest}
-    container_name: pesona-hub-frontend-dev
+    image: ${DOCKER_REGISTRY:-ghcr.io/yunusffz/pesona-hub}/frontend:${IMAGE_TAG:-dev-latest}
+    container_name: pesona-hub-digi-frontend-dev
     restart: unless-stopped
     environment:
       - NODE_ENV=development

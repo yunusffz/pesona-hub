@@ -25,4 +25,4 @@ services:
 networks:
   pesona-hub-digi-network:
     driver: bridge
-    name: pesona-hub-digi-network-dev
+    name: pesona-hub-digi-network

@@ -101,9 +101,9 @@
           v-if="isAuthenticated"
           :current-variant="currentVariant"
         />
-        <BaseButton v-else variant="primary">
-          <NuxtLink to="/login">Gabung Mitra</NuxtLink>
-        </BaseButton>
+        <NuxtLink v-else to="/login">
+          <BaseButton variant="primary"> Gabung Mitra </BaseButton>
+        </NuxtLink>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -271,16 +271,15 @@
                   </div>
 
                   <!-- Show Gabung Mitra button if not authenticated -->
-                  <BaseButton
-                    v-else
-                    variant="primary"
-                    class="w-full justify-center text-base py-3"
-                    @click="closeMobileMenu"
-                  >
-                    <NuxtLink to="/register" class="w-full"
-                      >Gabung Mitra</NuxtLink
+                  <NuxtLink to="/register" class="w-full" v-else>
+                    <BaseButton
+                      variant="primary"
+                      class="w-full justify-center text-base py-3"
+                      @click="closeMobileMenu"
                     >
-                  </BaseButton>
+                      Gabung Mitra
+                    </BaseButton>
+                  </NuxtLink>
                 </div>
               </div>
             </div>

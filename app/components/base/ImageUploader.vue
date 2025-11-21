@@ -85,12 +85,16 @@
   const getPreviewUrl = (value: string | null): string | null => {
     if (!value) return null;
     // If it's already a full URL (starts with http:// or https:// or data:), use as-is
-    if (value.startsWith('http://') || value.startsWith('https://') || value.startsWith('data:')) {
+    if (
+      value.startsWith("http://") ||
+      value.startsWith("https://") ||
+      value.startsWith("data:")
+    ) {
       return value;
     }
     // Otherwise, construct URL from object_name
     const config = useRuntimeConfig();
-    const baseUrl = config.public.BASE_API_URL;
+    const baseUrl = config.public.NUXT_PUBLIC_PESONA_API_URL;
     return `${baseUrl}/files/${value}`;
   };
 
@@ -179,7 +183,7 @@
 
           // Update preview to use the server URL
           const config = useRuntimeConfig();
-          const baseUrl = config.public.BASE_API_URL;
+          const baseUrl = config.public.NUXT_PUBLIC_PESONA_API_URL;
           preview.value = `${baseUrl}/files/${objectName}`;
         }
       } finally {

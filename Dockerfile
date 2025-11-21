@@ -14,9 +14,6 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Install wget for healthchecks
-RUN apk add --no-cache wget
-
 # Copy built application
 COPY --from=builder /app/.output ./.output
 
@@ -32,6 +29,8 @@ RUN addgroup -g 1001 -S nodejs && \
 RUN chown -R nuxt:nodejs /app
 
 USER nuxt
+
+EXPOSE 3000
 
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0

@@ -143,10 +143,6 @@ jobs:
             cd ~/pesona-hub-dev
             docker compose -f docker/docker-compose.dev.yml --env-file .env logs --tail=50 frontend
 
-            # Test if frontend is accessible
-            sleep 5
-            curl -f http://localhost:3000 || echo "Frontend health check failed"
-
   notify:
     name: Send Notification
     needs: [build-and-push, deploy]

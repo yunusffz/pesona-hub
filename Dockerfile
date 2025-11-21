@@ -19,7 +19,6 @@ COPY --from=builder /app/.output ./.output
 
 # Install only production dependencies
 COPY package*.json ./
-COPY nuxt.config.ts ./
 RUN npm ci --omit=dev && npm cache clean --force
 
 # Create non-root user

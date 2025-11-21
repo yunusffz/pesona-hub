@@ -119,14 +119,14 @@ jobs:
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
 
             # Pull latest images
-            docker compose -f docker/docker-compose.prod.yml .env pull
+            docker compose -f docker/docker-compose.prod.yml --env-file .env pull
 
             # Perform rolling update with zero downtime
-            docker compose -f docker/docker-compose.prod.yml up -d --no-deps --build frontend
+            docker compose -f docker/docker-compose.prod.yml --env-file .env up -d --no-deps --build frontend
 
 
             # Check service health
-            docker compose -f docker/docker-compose.prod.yml .env ps
+            docker compose -f docker/docker-compose.prod.yml --env-file .env ps
 
             # Clean up old images
             docker image prune -af --filter "until=168h"

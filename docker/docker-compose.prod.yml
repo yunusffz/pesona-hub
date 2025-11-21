@@ -5,8 +5,9 @@ services:
     image: ${DOCKER_REGISTRY:-ghcr.io/yunusffz/pesona-hub}/frontend:${IMAGE_TAG:-prod-latest}
     container_name: pesona-hub-digi-frontend-prod
     restart: unless-stopped
-    env_file:
-      - .env
+    environment:
+      - NODE_ENV=production
+      - NUXT_PUBLIC_PESONA_API_URL=${NUXT_PUBLIC_PESONA_API_URL}
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
       interval: 30s

@@ -86,6 +86,7 @@ jobs:
           # Frontend Environment Variables
           NUXT_PUBLIC_PESONA_API_URL=${{ secrets.NUXT_PUBLIC_PESONA_API_URL }}
           EOF
+          cat .env
 
       - name: Copy files to server
         uses: appleboy/scp-action@v0.1.7

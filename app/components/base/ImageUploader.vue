@@ -94,7 +94,7 @@
     }
     // Otherwise, construct URL from object_name
     const config = useRuntimeConfig();
-    const baseUrl = config.public.NUXT_PUBLIC_PESONA_API_URL;
+    const baseUrl = config.public.pesonaApiUrl;
     return `${baseUrl}/files/${value}`;
   };
 
@@ -183,7 +183,7 @@
 
           // Update preview to use the server URL
           const config = useRuntimeConfig();
-          const baseUrl = config.public.NUXT_PUBLIC_PESONA_API_URL;
+          const baseUrl = config.public.pesonaApiUrl;
           preview.value = `${baseUrl}/files/${objectName}`;
         }
       } finally {

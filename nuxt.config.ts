@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   css: ["~/assets/styles/global.css"],
   runtimeConfig: {
     public: {
-      NUXT_PUBLIC_PESONA_API_URL:
+      pesonaApiUrl:
         process.env.NUXT_PUBLIC_PESONA_API_URL || "http://localhost:5500",
     },
   },

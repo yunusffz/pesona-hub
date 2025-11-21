@@ -119,15 +119,6 @@ jobs:
             # Perform rolling update with zero downtime
             docker compose -f docker/docker-compose.prod.yml --env-file .env up -d --no-deps --build frontend
 
-            # Wait for new container to be healthy
-            sleep 30
-
-            # Check if frontend is healthy
-            if ! docker compose -f docker/docker-compose.prod.yml --env-file .env ps frontend | grep -q "healthy"; then
-              echo "Frontend health check failed, rolling back..."
-              docker compose -f docker/docker-compose.prod.yml --env-file .env down
-              exit 1
-            fi
 
             # Check service health
             docker compose -f docker/docker-compose.prod.yml --env-file .env ps

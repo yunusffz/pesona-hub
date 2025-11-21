@@ -154,6 +154,9 @@ jobs:
             # Check logs
             docker compose -f docker/docker-compose.prod.yml --env-file .env logs --tail=50 frontend
 
+            # Test if frontend is accessible
+            curl -f http://localhost:3000 || exit 1
+
   notify:
     name: Send Notification
     needs: [build-and-push, deploy]

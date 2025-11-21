@@ -160,7 +160,7 @@ jobs:
             docker compose -f docker/docker-compose.prod.yml --env-file .env logs --tail=50 frontend
 
             # Test if frontend is accessible
-            curl -f http://localhost:80 || exit 1
+            curl -f http://localhost:3000 || exit 1
 
   notify:
     name: Send Notification

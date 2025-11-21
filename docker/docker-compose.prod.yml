@@ -34,3 +34,4 @@ networks:
   pesona-hub-digi-network:
     driver: bridge
     name: pesona-hub-digi-network
+    external: true

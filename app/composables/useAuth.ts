@@ -226,6 +226,12 @@ export const useAuth = () => {
     isLoadingUser,
     userError,
 
+    // Role checks
+    isAdmin: computed(() => {
+      const currentUserValue = currentUser.value || user.value;
+      return currentUserValue?.role === "ADMINISTRATOR";
+    }),
+
     // Auth actions
     login: loginMutation.mutateAsync,
     register: registerMutation.mutateAsync,

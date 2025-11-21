@@ -94,8 +94,7 @@
   import { useAuth } from "@/composables/useAuth";
   import DateRangePicker from "@/components/ui/date-range-picker/DateRangePicker.vue";
 
-  const { user } = useAuth();
-  const isAdmin = computed(() => user.value?.role === "ADMINISTRATOR");
+  const { isAdmin } = useAuth();
   const tabsListClass = computed(() =>
     isAdmin.value
       ? "grid grid-cols-3 rounded-2xl w-[300px]"

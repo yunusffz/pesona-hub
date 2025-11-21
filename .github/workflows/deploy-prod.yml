@@ -72,9 +72,7 @@ jobs:
     name: Deploy to Production Server
     needs: [build-and-push]
     runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: https://${{ secrets.PROD_SERVER_HOST }}
+    environment: production
 
     steps:
       - name: Checkout repository
@@ -96,7 +94,6 @@ jobs:
         with:
           host: ${{ secrets.PROD_SERVER_HOST }}
           username: ${{ secrets.PROD_SERVER_USER }}
-          key: ${{ secrets.PROD_SERVER_SSH_KEY }}
           password: ${{ secrets.PROD_SERVER_PASSWORD }}
           port: ${{ secrets.PROD_SERVER_PORT || 22 }}
           source: "docker/docker-compose.prod.yml,.env"
@@ -108,7 +105,6 @@ jobs:
         with:
           host: ${{ secrets.PROD_SERVER_HOST }}
           username: ${{ secrets.PROD_SERVER_USER }}
-          key: ${{ secrets.PROD_SERVER_SSH_KEY }}
           password: ${{ secrets.PROD_SERVER_PASSWORD }}
           port: ${{ secrets.PROD_SERVER_PORT || 22 }}
           script: |
@@ -147,7 +143,6 @@ jobs:
         with:
           host: ${{ secrets.PROD_SERVER_HOST }}
           username: ${{ secrets.PROD_SERVER_USER }}
-          key: ${{ secrets.PROD_SERVER_SSH_KEY }}
           password: ${{ secrets.PROD_SERVER_PASSWORD }}
           port: ${{ secrets.PROD_SERVER_PORT || 22 }}
           script: |

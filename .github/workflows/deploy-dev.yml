@@ -84,7 +84,7 @@ jobs:
           IMAGE_TAG=dev-latest
 
           # Frontend Environment Variables
-          NUXT_PUBLIC_PESONA_API_URL=${{ secrets.DEV_PESONA_API_URL }}
+          NUXT_PUBLIC_PESONA_API_URL=${{ secrets.NUXT_PUBLIC_PESONA_API_URL }}
           EOF
 
       - name: Copy files to server

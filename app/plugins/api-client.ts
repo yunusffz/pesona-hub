@@ -3,6 +3,7 @@ import { createApiClient } from "~/utils/create-api-client";
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig();
   const baseUrl = config.public.NUXT_PUBLIC_PESONA_API_URL as string;
+  console.log(config);
 
   const { client, setAuthToken, clearAuthToken, getAuthToken } =
     createApiClient(baseUrl);

@@ -98,12 +98,12 @@
     return `${baseUrl}/files/${value}`;
   };
 
-  const preview = ref<string | null>(getPreviewUrl(props.modelValue));
+  const preview = ref<string | null>(getPreviewUrl(props.modelValue || null));
 
   watch(
     () => props.modelValue,
     (val) => {
-      preview.value = getPreviewUrl(val);
+      preview.value = getPreviewUrl(val || null);
     }
   );
 

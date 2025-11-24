@@ -10,6 +10,8 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/frontend
   NUXT_PUBLIC_PESONA_API_URL: ${{secrets.NUXT_PUBLIC_PESONA_API_URL}}
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
 jobs:
   build-and-push:
@@ -150,10 +152,23 @@ jobs:
           echo "Commit: ${{ github.sha }}"
           echo "Image: ${{ needs.build-and-push.outputs.image_tag }}"
 
+          # Send Telegram notification
+          curl -s -X POST https://api.telegram.org/bot${{ env.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id=${{ env.TELEGRAM_CHAT_ID }} \
+            -d parse_mode=HTML \
+            -d text="<b>✅ Deployment Successful</b>%0A%0A<b>Project:</b> ${{ github.repository }}%0A<b>Branch:</b> main%0A<b>Commit:</b> <code>${{ github.sha }}</code>%0A<b>Commit Message:</b> ${{ github.event.head_commit.message }}%0A<b>Author:</b> ${{ github.actor }}%0A<b>Image:</b> ${{ needs.build-and-push.outputs.image_tag }}%0A%0A<a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View Workflow</a>"
+
       - name: Send failure notification
         if: needs.deploy.result == 'failure'
         run: |
           echo "Deployment to production failed!"
           echo "Branch: main"
           echo "Commit: ${{ github.sha }}"
+
+          # Send Telegram notification
+          curl -s -X POST https://api.telegram.org/bot${{ env.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id=${{ env.TELEGRAM_CHAT_ID }} \
+            -d parse_mode=HTML \
+            -d text="<b>❌ Deployment Failed</b>%0A%0A<b>Project:</b> ${{ github.repository }}%0A<b>Branch:</b> main%0A<b>Commit:</b> <code>${{ github.sha }}</code>%0A<b>Commit Message:</b> ${{ github.event.head_commit.message }}%0A<b>Author:</b> ${{ github.actor }}%0A%0A<a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View Workflow</a>"
+
           exit 1

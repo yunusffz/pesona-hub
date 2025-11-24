@@ -152,6 +152,7 @@ jobs:
           echo "Branch: main"
           echo "Commit: ${{ github.sha }}"
           echo "Image: ${{ needs.build-and-push.outputs.image_tag }}"
+          echo "${TELEGRAM_CHAT_ID}XXXXX"
 
           # Send Telegram notification
           if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then

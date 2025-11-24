@@ -15,6 +15,7 @@ jobs:
   build-and-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
+    environment: production
     permissions:
       contents: read
       packages: write
@@ -41,7 +42,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=prod-latest
+            type=raw,value=${{ env.IMAGE_TAG }}
             type=raw,value=latest
             type=sha,prefix=prod-,format=short
             type=semver,pattern={{version}}
@@ -81,19 +82,14 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "NUXT_PUBLIC_PESONA_API_URL=${{ secrets.NUXT_PUBLIC_PESONA_API_URL }}" > .env
-          echo "DOCKER_REGISTRY=${{ env.REGISTRY }}/${{ github.repository }}" >> .env
-          echo "IMAGE_TAG=prod-latest" >> .env 
+          cat > .env << EOF
+          # Docker Configuration
+          DOCKER_REGISTRY=${{ env.REGISTRY }}/${{ github.repository }}
+          IMAGE_TAG=${{ env.IMAGE_TAG }}
 
-          # cat > .env << EOF
-          # # Docker
-          # DOCKER_REGISTRY=${{ env.REGISTRY }}/${{ github.repository }}
-          # IMAGE_TAG=prod-latest
-
-          # # Frontend Environment Variables
-          # NUXT_PUBLIC_PESONA_API_URL=${{ secrets.NUXT_PUBLIC_PESONA_API_URL }}
-          # EOF
-          export $(cat .env | xargs)
+          # Frontend Environment Variables
+          NUXT_PUBLIC_PESONA_API_URL=${{ secrets.NUXT_PUBLIC_PESONA_API_URL }}
+          EOF
 
       - name: Copy files to server
         uses: appleboy/scp-action@v0.1.7
@@ -139,6 +135,7 @@ jobs:
     name: Send Notification
     needs: [build-and-push, deploy]
     runs-on: ubuntu-latest
+    environment: production
     if: always()
 
     steps:
@@ -152,21 +149,24 @@ jobs:
           echo "Branch: main"
           echo "Commit: ${{ github.sha }}"
           echo "Image: ${{ needs.build-and-push.outputs.image_tag }}"
-          echo "${TELEGRAM_CHAT_ID}XXXXX"
 
           # Send Telegram notification
           if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
-            TEXT="✅ Deployment Successful%0A%0AProject: ${{ github.repository }}%0ABranch: main%0ACommit: ${{ github.sha }}%0AAuthor: ${{ github.actor }}%0AImage: ${{ needs.build-and-push.outputs.image_tag }}%0A%0AView: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            TEXT="✅ Deployment Successful%0A%0AProject: ${{ github.repository }}%0ABranch: main%0ACommit: ${{ github.sha }}%0AAuthor: ${{ github.actor }}%0AImage: ${{ env.IMAGE_TAG }}%0A%0AView: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
-            curl -s -o /dev/null -w "%{http_code}" -X POST \
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
               "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
               -d "chat_id=${TELEGRAM_CHAT_ID}" \
               -d "text=${TEXT}" \
-              -d "disable_web_page_preview=true"
+              -d "disable_web_page_preview=true")
 
-            echo "Telegram notification sent"
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "✅ Telegram notification sent successfully (HTTP $HTTP_CODE)"
+            else
+              echo "⚠️ Telegram notification failed (HTTP $HTTP_CODE)"
+            fi
           else
-            echo "Telegram credentials not configured, skipping notification"
+            echo "⚠️ Telegram credentials not configured, skipping notification"
           fi
 
       - name: Send failure notification
@@ -178,21 +178,24 @@ jobs:
           echo "Deployment to production failed!"
           echo "Branch: main"
           echo "Commit: ${{ github.sha }}"
-          echo "${TELEGRAM_CHAT_ID}XXXXX"
 
           # Send Telegram notification
           if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
             TEXT="❌ Deployment Failed%0A%0AProject: ${{ github.repository }}%0ABranch: main%0ACommit: ${{ github.sha }}%0AAuthor: ${{ github.actor }}%0A%0AView: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
-            curl -s -o /dev/null -w "%{http_code}" -X POST \
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
               "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
               -d "chat_id=${TELEGRAM_CHAT_ID}" \
               -d "text=${TEXT}" \
-              -d "disable_web_page_preview=true"
+              -d "disable_web_page_preview=true")
 
-            echo "Telegram notification sent"
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "✅ Telegram notification sent successfully (HTTP $HTTP_CODE)"
+            else
+              echo "⚠️ Telegram notification failed (HTTP $HTTP_CODE)"
+            fi
           else
-            echo "Telegram credentials not configured, skipping notification"
+            echo "⚠️ Telegram credentials not configured, skipping notification"
           fi
 
           exit 1

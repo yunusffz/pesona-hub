@@ -144,6 +144,9 @@ jobs:
     steps:
       - name: Send success notification
         if: needs.deploy.result == 'success'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           echo "Deployment to production successful!"
           echo "Branch: main"
@@ -151,12 +154,12 @@ jobs:
           echo "Image: ${{ needs.build-and-push.outputs.image_tag }}"
 
           # Send Telegram notification
-          if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] && [ -n "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
+          if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
             TEXT="✅ Deployment Successful%0A%0AProject: ${{ github.repository }}%0ABranch: main%0ACommit: ${{ github.sha }}%0AAuthor: ${{ github.actor }}%0AImage: ${{ needs.build-and-push.outputs.image_tag }}%0A%0AView: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
             curl -s -o /dev/null -w "%{http_code}" -X POST \
-              "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-              -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+              "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+              -d "chat_id=${TELEGRAM_CHAT_ID}" \
               -d "text=${TEXT}" \
               -d "disable_web_page_preview=true"
 
@@ -167,18 +170,22 @@ jobs:
 
       - name: Send failure notification
         if: needs.deploy.result == 'failure'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           echo "Deployment to production failed!"
           echo "Branch: main"
           echo "Commit: ${{ github.sha }}"
+          echo "${TELEGRAM_CHAT_ID}XXXXX"
 
           # Send Telegram notification
-          if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] && [ -n "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
+          if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
             TEXT="❌ Deployment Failed%0A%0AProject: ${{ github.repository }}%0ABranch: main%0ACommit: ${{ github.sha }}%0AAuthor: ${{ github.actor }}%0A%0AView: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
             curl -s -o /dev/null -w "%{http_code}" -X POST \
-              "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-              -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+              "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+              -d "chat_id=${TELEGRAM_CHAT_ID}" \
               -d "text=${TEXT}" \
               -d "disable_web_page_preview=true"
 

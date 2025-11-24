@@ -153,7 +153,7 @@ jobs:
           echo "Image: ${{ needs.build-and-push.outputs.image_tag }}"
 
           # Send Telegram notification
-          if [ -n "${{env.TELEGRAM_CHAT_ID}}" ] && [ -n "${{env.TELEGRAM_CHAT_ID}}" ]; then
+          if [ -n "${{env.TELEGRAM_BOT_TOKEN}}" ] && [ -n "${{env.TELEGRAM_CHAT_ID}}" ]; then
             TEXT="✅ Deployment Successful%0A%0AProject: ${{ github.repository }}%0ABranch: main%0ACommit: ${{ github.sha }}%0AAuthor: ${{ github.actor }}%0AImage: ${{ needs.build-and-push.outputs.image_tag }}%0A%0AView: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
             curl -s -o /dev/null -w "%{http_code}" -X POST \
@@ -175,12 +175,12 @@ jobs:
           echo "Commit: ${{ github.sha }}"
 
           # Send Telegram notification
-          if [ -n "${{env.TELEGRAM_BOT_TOKEN}}" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
+          if [ -n "${{env.TELEGRAM_BOT_TOKEN}}" ] && [ -n "${{env.TELEGRAM_CHAT_ID}}" ]; then
             TEXT="❌ Deployment Failed%0A%0AProject: ${{ github.repository }}%0ABranch: main%0ACommit: ${{ github.sha }}%0AAuthor: ${{ github.actor }}%0A%0AView: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
             curl -s -o /dev/null -w "%{http_code}" -X POST \
               "https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage" \
-              -d "chat_id=${TELEGRAM_CHAT_ID}" \
+              -d "chat_id=${{env.TELEGRAM_CHAT_ID}}" \
               -d "text=${TEXT}" \
               -d "disable_web_page_preview=true"
 

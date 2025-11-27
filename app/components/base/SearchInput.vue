@@ -12,18 +12,15 @@
       :placeholder="placeholder || 'Cari Produk atau Wisata...'"
       :class="
         cn(
-          'text-neutral-1000 placeholder:text-neutral-1000 font-medium !text-md focus:outline-none',
+          'text-neutral-1000 placeholder:text-neutral-1000 font-medium !text-md focus:outline-none text-base',
           props.class
         )
       "
       @input="handleInput"
       @keydown.enter="handleSearch"
     />
-    <InputGroupAddon
-      class="pl-5 py-[18px] cursor-pointer"
-      @click="handleSearch"
-    >
-      <SearchIcon />
+    <InputGroupAddon class="pl-5 cursor-pointer" @click="handleSearch">
+      <SearchIcon :size="iconSize" :style="{ height: `${iconSize}px`, width: `${iconSize}px` }" />
     </InputGroupAddon>
   </InputGroup>
 </template>
@@ -37,11 +34,26 @@
   import { SearchIcon } from "lucide-vue-next";
   import { cn } from "@/lib/utils";
 
-  const props = defineProps<{
-    placeholder?: string;
-    onSearch?: (value: string) => void;
-    class?: string;
-  }>();
+  const props = withDefaults(
+    defineProps<{
+      placeholder?: string;
+      onSearch?: (value: string) => void;
+      class?: string;
+      size?: "sm" | "md" | "lg";
+    }>(),
+    {
+      size: "md",
+    }
+  );
+
+  // Icon size mapping based on text size
+  const iconSizeMap = {
+    sm: 16,
+    md: 20,
+    lg: 24,
+  };
+
+  const iconSize = computed(() => iconSizeMap[props.size]);
 
   const searchQuery = ref("");
   let searchTimeout: NodeJS.Timeout | null = null;

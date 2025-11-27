@@ -1,11 +1,16 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
+export interface LocationFilter {
+  value: string;
+  type: "province" | "regency" | "district";
+}
+
 export const useCatalogStore = defineStore("catalog", () => {
   // Filter state
   const searchQuery = ref("");
   const selectedRegions = ref<string[]>([]);
-  const selectedLocations = ref<string[]>([]);
+  const selectedLocations = ref<LocationFilter[]>([]);
   const selectedCommodities = ref<number[]>([]);
   const selectedCommodityPriorities = ref<string[]>([]);
   const priceRange = ref<{ min: number; max: number } | null>(null);
@@ -20,11 +25,27 @@ export const useCatalogStore = defineStore("catalog", () => {
     const filterObj: any = {};
 
     if (selectedLocations.value.length > 0) {
-      filterObj.social_forestry_business_group = {
-        location: {
-          district: { $in: selectedLocations.value },
-        },
-      };
+      const locationFilter: any = {};
+
+      const provinces = selectedLocations.value.filter(loc => loc.type === 'province').map(loc => loc.value);
+      const regencies = selectedLocations.value.filter(loc => loc.type === 'regency').map(loc => loc.value);
+      const districts = selectedLocations.value.filter(loc => loc.type === 'district').map(loc => loc.value);
+
+      if (provinces.length > 0) {
+        locationFilter.province = { $in: provinces };
+      }
+      if (regencies.length > 0) {
+        locationFilter.regency = { $in: regencies };
+      }
+      if (districts.length > 0) {
+        locationFilter.district = { $in: districts };
+      }
+
+      if (Object.keys(locationFilter).length > 0) {
+        filterObj.social_forestry_business_group = {
+          location: locationFilter,
+        };
+      }
     }
 
     if (priceRange.value) {
@@ -57,8 +78,8 @@ export const useCatalogStore = defineStore("catalog", () => {
     currentPage.value = 1; // Reset to first page
   };
 
-  const setSelectedLocations = (locations: string[]) => {
-    selectedLocations.value = locations;
+  const setSelectedLocations = (locations: LocationFilter[]) => {
+    selectedLocations.value = [...locations];
     currentPage.value = 1;
   };
 

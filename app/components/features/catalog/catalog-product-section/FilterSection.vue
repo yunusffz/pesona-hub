@@ -2,7 +2,8 @@
   <div class="flex xl:flex-row flex-col gap-4 justify-start lg:justify-between">
     <div>
       <SearchInput
-        class="w-full md:w-[484px] text-md placeholder:text-md"
+        class="w-full md:w-[484px] text-md placeholder:text-base"
+        size="md"
         :onSearch="onSearch"
       />
     </div>
@@ -22,14 +23,4 @@
   const onSearch = (value: string) => {
     catalogStore.setSearchQuery(value);
   };
-  const selectedLocation = ref<string[]>([]);
-
-  // Sync with store
-  watch(
-    () => catalogStore.selectedLocations,
-    (newLocations) => {
-      selectedLocation.value = newLocations;
-    },
-    { immediate: true }
-  );
 </script>

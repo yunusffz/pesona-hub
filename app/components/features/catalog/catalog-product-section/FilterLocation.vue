@@ -131,7 +131,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed, watch, onMounted } from "vue";
+  import { ref, computed, onMounted } from "vue";
   import { useLocations } from "~/queries/useLocations";
   import {
     useCatalogStore,
@@ -278,21 +278,17 @@
         }
       }
     }
+
+    // Update store immediately
+    catalogStore.setSelectedLocations([...selected.value]);
   };
 
   // Remove selection
   const removeSelection = (index: number) => {
     selected.value.splice(index, 1);
+    // Update store immediately
+    catalogStore.setSelectedLocations([...selected.value]);
   };
-
-  // Watch for changes in selected locations and update store
-  watch(
-    selected,
-    (newLocations) => {
-      catalogStore.setSelectedLocations(newLocations);
-    },
-    { deep: true }
-  );
 
   defineExpose({
     selected,

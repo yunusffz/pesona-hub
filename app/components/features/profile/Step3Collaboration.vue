@@ -29,17 +29,6 @@
 
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium text-neutral-900"
-        >Kelas KUPS Target</label
-      >
-      <BaseSelect
-        :model-value="modelValue.targetKupsClass"
-        @update:model-value="updateValue('targetKupsClass', $event)"
-        :options="targetKupsClasses"
-        placeholder="Pilih kelas KUPS target"
-      />
-    </div>
-    <div class="flex flex-col gap-2">
-      <label class="text-sm font-medium text-neutral-900"
         >Catatan Tambahan (opsional)</label
       >
       <textarea

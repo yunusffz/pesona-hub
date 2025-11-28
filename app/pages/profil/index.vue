@@ -255,22 +255,18 @@
         formData.value.additionalInfo =
           user.value.details.product_service_description || "";
 
-        // Map commodities if available - extract IDs from collaboration_commodities object
+        // Map commodities if available - collaboration_commodities is now a simple array of IDs
         if (user.value.details.collaboration_commodities) {
-          // collaboration_commodities is an array of objects with commodity id as key
-          const commodityIds: number[] = [];
           if (Array.isArray(user.value.details.collaboration_commodities)) {
-            user.value.details.collaboration_commodities.forEach((item: any) => {
-              // Each item is an object like { "1": quantity, "2": quantity }
-              Object.keys(item).forEach(key => {
-                const id = parseInt(key, 10);
-                if (!isNaN(id) && !commodityIds.includes(id)) {
-                  commodityIds.push(id);
-                }
-              });
-            });
+            // Handle simple array format: [1, 2, 3, 4, 22]
+            formData.value.commodities = user.value.details.collaboration_commodities
+              .map((id: any) => {
+                // Support both number and string IDs
+                const numId = typeof id === "string" ? parseInt(id, 10) : id;
+                return isNaN(numId) ? null : numId;
+              })
+              .filter((id: any): id is number => id !== null);
           }
-          formData.value.commodities = commodityIds;
         }
 
         // Map collaborations if available
@@ -355,12 +351,9 @@
           website: formData.value.websiteUrl || null, // Website/Sosial Media
 
           // Step 2 - Interests mappings
-          // Convert commodity IDs to collaboration_commodities format
-          // collaboration_commodities is an array of objects with commodity id as key and quantity as value
+          // collaboration_commodities is an array of commodity IDs
           collaboration_commodities:
-            commodityIds.length > 0
-              ? commodityIds.map((id) => ({ [id]: 0 }))
-              : null, // Jenis Komoditas (quantity set to 0 as default)
+            commodityIds.length > 0 ? commodityIds : null, // Jenis Komoditas
 
           // Step 3 - Collaboration mappings
           product_service_description: formData.value.additionalInfo || null, // Additional info

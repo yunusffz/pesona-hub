@@ -1,5 +1,5 @@
 <template>
-  <DropdownMenu>
+  <DropdownMenu :modal="false">
     <!-- Trigger Button -->
     <DropdownMenuTrigger as-child>
       <BaseButton

@@ -6,7 +6,7 @@
           :disabled="disabled"
           variant="outline"
           :class="[
-            'w-full items-center gap-2.5 justify-between font-normal rounded-full !h-auto !py-[18px] !px-5 border border-neutral-200 text-md text-neutral-800',
+            'w-full items-center gap-2.5 justify-between font-medium rounded-lg h-9 px-3 border border-[#d9d9d9] shadow-none text-sm text-[#6B7280]',
             buttonClass,
             disabled ? 'opacity-70 cursor-not-allowed' : '',
           ]"
@@ -19,7 +19,7 @@
           <span class="flex-1 block truncate text-left leading-none">
             {{ buttonLabel }}
           </span>
-          <ChevronDown class="ms-2 !h-6 !w-6 shrink-0" />
+          <ChevronsUpDown class="ms-2 !h-4 !w-4 shrink-0 text-neutral-500" />
         </Button>
       </PopoverTrigger>
 
@@ -117,7 +117,7 @@
 
 <script setup lang="ts">
   import { computed, ref, watch, onMounted } from "vue";
-  import { Check, X, ChevronDown } from "lucide-vue-next";
+  import { Check, X, ChevronsUpDown } from "lucide-vue-next";
   import SvgIcon from "~/components/base/SvgIcon.vue";
 
   // shadcn-vue components (generated into your project by shadcn-vue)
@@ -238,6 +238,6 @@
       const one = props.options.find((o) => o.value === internal.value[0]);
       return one?.label ?? props.emptyText;
     }
-    return `${count} selected`;
+    return `${count} item dipilih`;
   });
 </script>

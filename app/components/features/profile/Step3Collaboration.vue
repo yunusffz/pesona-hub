@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-4">
     <div>
-      <label class="text-sm font-medium"
+      <label class="text-sm text-neutral-900"
         >Bentuk Kerja Sama yang Diharapkan</label
       >
       <p class="text-xs text-[#6B7280]">
@@ -10,7 +10,9 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-sm font-medium">Bentuk Kerja Sama</label>
+      <label class="text-sm font-medium text-neutral-900"
+        >Bentuk Kerja Sama</label
+      >
       <p class="text-xs text-[#6B7280]">
         Pilih bentuk kolaborasi yang sesuai dengan kebutuhan Anda. Bisa lebih
         dari satu.
@@ -25,27 +27,21 @@
       />
     </div>
 
-    <div>
-      <label class="text-sm font-medium">Kelas KUPS Target</label>
-      <select
-        :value="modelValue.targetKupsClass"
-        @change="
-          updateValue(
-            'targetKupsClass',
-            ($event.target as HTMLSelectElement).value
-          )
-        "
-        class="border border-[#d9d9d9] rounded-lg h-9 px-3 py-2 w-full text-sm bg-white focus-within:ring-2 focus-within:ring-primary focus:outline-none"
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-medium text-neutral-900"
+        >Kelas KUPS Target</label
       >
-        <option value="">Pilih kelas KUPS target</option>
-        <option value="bronze">Bronze</option>
-        <option value="silver">Silver</option>
-        <option value="gold">Gold</option>
-        <option value="platinum">Platinum</option>
-      </select>
+      <BaseSelect
+        :model-value="modelValue.targetKupsClass"
+        @update:model-value="updateValue('targetKupsClass', $event)"
+        :options="targetKupsClasses"
+        placeholder="Pilih kelas KUPS target"
+      />
     </div>
-    <div>
-      <label class="text-sm font-medium">Catatan Tambahan (opsional)</label>
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-medium text-neutral-900"
+        >Catatan Tambahan (opsional)</label
+      >
       <textarea
         :value="modelValue.additionalInfo"
         @change="
@@ -66,6 +62,7 @@
   import { computed } from "vue";
   import { useCollaborations } from "~/queries/useCollaborations";
   import MultiSelectCombobox from "~/components/common/multi-select-combobox/MultiSelectComboBox.vue";
+  import BaseSelect from "~/components/base/BaseSelect.vue";
 
   interface FormData {
     companyName: string;
@@ -127,6 +124,13 @@
 
     return [];
   });
+
+  const targetKupsClasses = [
+    { label: "Bronze", value: "bronze" },
+    { label: "Silver", value: "silver" },
+    { label: "Gold", value: "gold" },
+    { label: "Platinum", value: "platinum" },
+  ];
 
   function updateValue(key: keyof FormData, value: any) {
     emit("update:modelValue", { ...props.modelValue, [key]: value });

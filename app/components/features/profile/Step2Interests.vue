@@ -1,14 +1,16 @@
 <template>
   <div class="flex flex-col gap-4">
     <div>
-      <label class="text-sm">Jenis Komoditas dan Kebutuhan Produksi</label>
+      <label class="text-sm text-neutral-900"
+        >Jenis Komoditas dan Kebutuhan Produksi</label
+      >
       <p class="text-xs text-[#6B7280]">
         Pilih komoditas dan estimasi kebutuhan Anda.
       </p>
     </div>
 
     <div class="flex flex-col gap-2">
-      <label class="text-sm font-medium">Jenis Bahan</label>
+      <label class="text-sm font-medium text-neutral-900">Jenis Bahan</label>
       <BaseSelect
         :model-value="modelValue.materialType"
         @update:model-value="updateValue('materialType', $event)"
@@ -17,7 +19,9 @@
       />
     </div>
     <div class="flex flex-col gap-2">
-      <label class="text-sm font-medium">Jenis Komoditas</label>
+      <label class="text-sm font-medium text-neutral-900"
+        >Jenis Komoditas</label
+      >
       <p class="text-xs text-[#6B7280]">
         Cari dan pilih komoditas yang Anda butuhkan. Anda dapat memilih lebih
         dari satu.

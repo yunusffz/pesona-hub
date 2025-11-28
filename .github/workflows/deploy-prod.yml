@@ -9,6 +9,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/frontend
+  IMAGE_TAG: prod-${{ github.sha }}
   NUXT_PUBLIC_PESONA_API_URL: ${{secrets.NUXT_PUBLIC_PESONA_API_URL}}
 
 jobs:
@@ -45,8 +46,6 @@ jobs:
             type=raw,value=${{ env.IMAGE_TAG }}
             type=raw,value=latest
             type=sha,prefix=prod-,format=short
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -115,11 +114,11 @@ jobs:
             # Login to GitHub Container Registry
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
 
-            # Pull latest images
+            # Pull latest images with specific tag
             docker compose -f docker/docker-compose.prod.yml --env-file .env pull
 
-            # Perform rolling update with zero downtime
-            docker compose -f docker/docker-compose.prod.yml --env-file .env up -d --no-deps --build frontend
+            # Perform rolling update with zero downtime (force recreate to ensure new image is used)
+            docker compose -f docker/docker-compose.prod.yml --env-file .env up -d --force-recreate --pull always frontend
 
 
             # Check service health

@@ -2,7 +2,8 @@
   <div class="flex flex-col gap-4">
     <div>
       <label class="text-sm text-neutral-900"
-        >Bentuk Kerja Sama yang Diharapkan</label
+        >Bentuk Kerja Sama yang Diharapkan
+        <span class="text-red-500">*</span></label
       >
       <p class="text-xs text-[#6B7280]">
         Pilih peran dan bentuk kolaborasi yang sesuai dengan kebutuhan Anda.

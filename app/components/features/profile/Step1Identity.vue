@@ -19,7 +19,7 @@
     <div class="w-full flex flex-col gap-4">
       <!-- Nama Lembaga -->
       <div>
-        <label class="text-sm font-medium">Nama Lembaga / Perusahaan</label>
+        <label class="text-sm font-medium">Nama Lembaga / Perusahaan <span class="text-red-500">*</span></label>
         <BaseInput
           :model-value="modelValue.companyName"
           @update:model-value="updateValue('companyName', $event)"
@@ -32,7 +32,7 @@
       <!-- Level Mitra dan WhatsApp -->
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="text-sm font-medium">Jenis Mitra</label>
+          <label class="text-sm font-medium">Jenis Mitra <span class="text-red-500">*</span></label>
           <BaseSelect
             :model-value="modelValue.partnerLevel"
             @update:model-value="updateValue('partnerLevel', $event)"
@@ -51,7 +51,7 @@
         </div>
 
         <div>
-          <label class="text-sm font-medium">Nomor WhatsApp</label>
+          <label class="text-sm font-medium">Nomor WhatsApp <span class="text-red-500">*</span></label>
           <BaseInput
             :model-value="modelValue.whatsappNumber"
             @update:model-value="updateValue('whatsappNumber', $event)"

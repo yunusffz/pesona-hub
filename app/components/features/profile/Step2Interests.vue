@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium text-neutral-900"
-        >Jenis Komoditas</label
+        >Jenis Komoditas <span class="text-red-500">*</span></label
       >
       <p class="text-xs text-[#6B7280]">
         Cari dan pilih komoditas yang Anda butuhkan. Anda dapat memilih lebih
@@ -17,7 +17,6 @@
         :max="5"
       />
     </div>
-
   </div>
 </template>
 

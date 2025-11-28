@@ -12,7 +12,7 @@
       >
         <ProductSection />
         <TourSection />
-        <IntegratedSection />
+        <IntegratedSection v-if="setting_feature.integratedSection" />
       </div>
     </section>
   </section>
@@ -25,4 +25,5 @@
   import ProductSection from "~/components/features/landing/product-section/ProductSection.vue";
   import TourSection from "~/components/features/landing/tour-section/TourSection.vue";
   import IntegratedSection from "~/components/features/landing/integrated-section/IntegratedSection.vue";
+  import setting_feature from "~/utils/setting-feature";
 </script>

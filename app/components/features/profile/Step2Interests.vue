@@ -36,7 +36,10 @@
       />
     </div>
 
-    <div class="flex flex-col gap-4" v-if="showEstimation">
+    <div
+      class="flex flex-col gap-4"
+      v-if="setting_feature.profile.showEstimation"
+    >
       <div class="flex items-center gap-2">
         <Package class="w-5 h-5 text-[#174C36]" />
         <div class="font-medium">Estimasi Kebutuhan per Komoditas *</div>
@@ -109,8 +112,7 @@
   import BaseSelect from "~/components/base/BaseSelect.vue";
   import { PRODUCTION_UNITS } from "~/consts/units";
   import { Package } from "lucide-vue-next";
-
-  const showEstimation = false;
+  import setting_feature from "~/utils/setting-feature";
 
   interface FormData {
     companyName: string;

@@ -173,22 +173,17 @@
   type UserDetail = components["schemas"]["UserDetail"];
 
   interface FormData {
+    // Step 1 - Identity
     thumbnail: string | null;
     companyName: string;
     partnerLevel: string;
     whatsappNumber: string;
     websiteUrl: string;
-    interests: string[];
-    focusArea: string;
-    expertise: string;
-    collaborationType: string[];
-    availability: string;
-    additionalInfo: string;
+    // Step 2 - Interests
     commodities: (string | number)[];
-    productionEstimate: string;
-    productionUnit: string;
-    materialType: string;
-    targetKupsClass?: string;
+    // Step 3 - Collaboration
+    collaborationType: string[];
+    additionalInfo: string;
   }
 
   const { user: authUser } = useAuth();
@@ -202,22 +197,17 @@
   const user = ref<any>(null);
 
   const formData = ref<FormData>({
+    // Step 1 - Identity
     thumbnail: null,
     companyName: "",
     partnerLevel: "",
     whatsappNumber: "",
     websiteUrl: "",
-    interests: [],
-    focusArea: "",
-    expertise: "",
-    collaborationType: [],
-    availability: "",
-    additionalInfo: "",
+    // Step 2 - Interests
     commodities: [],
-    productionEstimate: "",
-    productionUnit: "kg",
-    materialType: "",
-    targetKupsClass: "",
+    // Step 3 - Collaboration
+    collaborationType: [],
+    additionalInfo: "",
   });
 
   // Fetch fresh user data with details populated on mount
@@ -259,13 +249,14 @@
         if (user.value.details.collaboration_commodities) {
           if (Array.isArray(user.value.details.collaboration_commodities)) {
             // Handle simple array format: [1, 2, 3, 4, 22]
-            formData.value.commodities = user.value.details.collaboration_commodities
-              .map((id: any) => {
-                // Support both number and string IDs
-                const numId = typeof id === "string" ? parseInt(id, 10) : id;
-                return isNaN(numId) ? null : numId;
-              })
-              .filter((id: any): id is number => id !== null);
+            formData.value.commodities =
+              user.value.details.collaboration_commodities
+                .map((id: any) => {
+                  // Support both number and string IDs
+                  const numId = typeof id === "string" ? parseInt(id, 10) : id;
+                  return isNaN(numId) ? null : numId;
+                })
+                .filter((id: any): id is number => id !== null);
           }
         }
 
@@ -313,7 +304,8 @@
     }
 
     try {
-      // Convert commodities to numbers array
+      // Convert commodities to simple array of numbers
+      // API expects: [5, 1, 3] (simple array of commodity IDs)
       const commodityIds: number[] = formData.value.commodities
         .map((c) => {
           if (typeof c === "number") return c;
@@ -342,7 +334,7 @@
         phone: formData.value.whatsappNumber || undefined, // Nomor WhatsApp -> phone
         thumbnail: formData.value.thumbnail || undefined, // object_name from uploaded file
 
-        // Map form data to UserDetail structure
+        // Map form data to UserDetail structure - only fields that exist in step forms
         details: {
           // Step 1 - Identity mappings to details
           institution_name: formData.value.companyName || null, // Nama Lembaga/Perusahaan
@@ -351,31 +343,13 @@
           website: formData.value.websiteUrl || null, // Website/Sosial Media
 
           // Step 2 - Interests mappings
-          // collaboration_commodities is an array of commodity IDs
           collaboration_commodities:
-            commodityIds.length > 0 ? commodityIds : null, // Jenis Komoditas
+            (commodityIds.length > 0 ? commodityIds : null) as any, // Jenis Komoditas (as simple array: [5, 1, 3])
 
           // Step 3 - Collaboration mappings
-          product_service_description: formData.value.additionalInfo || null, // Additional info
+          product_service_description: formData.value.additionalInfo || null, // Catatan Tambahan
           collaboration_ids:
-            collaborationIds.length > 0 ? collaborationIds : null, // Collaboration types
-
-          // Fields without form inputs - preserve existing or set to null
-          legal_entity_type: user.value?.details?.legal_entity_type || null,
-          legal_number: user.value?.details?.legal_number || null,
-          office_address: user.value?.details?.office_address || null,
-          province: user.value?.details?.province || null,
-          regency: user.value?.details?.regency || null,
-          contact_name: user.value?.details?.contact_name || null,
-          contact_position: user.value?.details?.contact_position || null,
-          contact_email: user.value?.details?.contact_email || null,
-          operation_scale: user.value?.details?.operation_scale || null,
-          main_sector: user.value?.details?.main_sector || null,
-          certifications: user.value?.details?.certifications || null,
-          collaboration_impact_ids:
-            user.value?.details?.collaboration_impact_ids || null,
-          collaboration_location_ids:
-            user.value?.details?.collaboration_location_ids || null,
+            collaborationIds.length > 0 ? collaborationIds : null, // Bentuk Kerja Sama
         },
       };
 

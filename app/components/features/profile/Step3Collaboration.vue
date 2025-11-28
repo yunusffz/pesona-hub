@@ -54,21 +54,17 @@
   import BaseSelect from "~/components/base/BaseSelect.vue";
 
   interface FormData {
+    // Step 1 - Identity
+    thumbnail: string | null;
     companyName: string;
     partnerLevel: string;
     whatsappNumber: string;
     websiteUrl: string;
-    interests: string[];
-    focusArea: string;
-    expertise: string;
-    collaborationType: string[];
-    availability: string;
-    additionalInfo: string;
+    // Step 2 - Interests
     commodities: (string | number)[];
-    productionEstimate: string;
-    productionUnit: string;
-    materialType: string;
-    targetKupsClass?: string;
+    // Step 3 - Collaboration
+    collaborationType: string[];
+    additionalInfo: string;
   }
 
   interface Props {

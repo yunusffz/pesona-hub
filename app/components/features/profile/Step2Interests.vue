@@ -1,9 +1,7 @@
 <template>
   <div class="flex flex-col gap-4">
     <div>
-      <label class="text-sm font-medium"
-        >Jenis Komoditas dan Kebutuhan Produksi</label
-      >
+      <label class="text-sm">Jenis Komoditas dan Kebutuhan Produksi</label>
       <p class="text-xs text-[#6B7280]">
         Pilih komoditas dan estimasi kebutuhan Anda.
       </p>
@@ -11,23 +9,12 @@
 
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium">Jenis Bahan</label>
-      <select
-        :value="modelValue.materialType"
-        @change="
-          updateValue(
-            'materialType',
-            ($event.target as HTMLSelectElement).value
-          )
-        "
-        class="border border-[#d9d9d9] rounded-lg h-9 px-3 py-2 w-full text-sm bg-white focus-within:ring-2 focus-within:ring-primary focus:outline-none"
-      >
-        <option value="">Pilih jenis bahan</option>
-        <option value="bahan-mentah">Bahan Mentah</option>
-        <option value="bahan-setengah-jadi">Bahan Setengah Jadi</option>
-        <option value="bahan-jadi">Bahan Jadi</option>
-        <option value="bahan-kimia">Bahan Kimia</option>
-        <option value="bahan-organik">Bahan Organik</option>
-      </select>
+      <BaseSelect
+        :model-value="modelValue.materialType"
+        @update:model-value="updateValue('materialType', $event)"
+        :options="materialTypes"
+        placeholder="Pilih jenis bahan"
+      />
     </div>
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium">Jenis Komoditas</label>
@@ -115,6 +102,7 @@
   import MultiSelectCombobox from "~/components/common/multi-select-combobox/MultiSelectComboBox.vue";
   import { useCommodities } from "~/queries/useCommodities";
   import BaseInput from "~/components/base/BaseInput.vue";
+  import BaseSelect from "~/components/base/BaseSelect.vue";
   import { PRODUCTION_UNITS } from "~/consts/units";
   import { Package } from "lucide-vue-next";
   interface FormData {
@@ -177,6 +165,14 @@
   });
 
   const productionUnits = computed(() => PRODUCTION_UNITS);
+
+  const materialTypes = [
+    { label: "Bahan Mentah", value: "bahan-mentah" },
+    { label: "Bahan Setengah Jadi", value: "bahan-setengah-jadi" },
+    { label: "Bahan Jadi", value: "bahan-jadi" },
+    { label: "Bahan Kimia", value: "bahan-kimia" },
+    { label: "Bahan Organik", value: "bahan-organik" },
+  ];
 
   function updateValue(key: keyof FormData, value: any) {
     emit("update:modelValue", { ...props.modelValue, [key]: value });

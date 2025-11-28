@@ -110,24 +110,19 @@ jobs:
           script: |
             cd ~/pesona-hub-prod
 
-            # Login to GitHub Container Registry
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
 
             # Pull latest images
             docker compose -f docker/docker-compose.prod.yml --env-file .env pull
 
-            # Perform rolling update with zero downtime
-            docker compose -f docker/docker-compose.prod.yml --env-file .env up -d --no-deps --build frontend
-
+            # Recreate container with new image (NO LOCAL BUILD)
+            docker compose -f docker/docker-compose.prod.yml --env-file .env up -d --no-deps --pull always --force-recreate frontend
 
             # Check service health
             docker compose -f docker/docker-compose.prod.yml --env-file .env ps
 
-            # Clean up old images
+            # Clean up unused images
             docker image prune -af --filter "until=168h"
-
-            # Logout
-            docker logout ${{ env.REGISTRY }}
 
   notify:
     name: Send Notification

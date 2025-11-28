@@ -4,12 +4,18 @@
       :class="
         cn(
           'h-9 text-sm relative [&_svg:not(.custom-icon)]:hidden border border-[#d9d9d9] shadow-none rounded-lg text-[#6B7280] font-medium',
+          backgroundColor,
           props.class
         )
       "
     >
       <SelectValue :placeholder="placeholder" />
+      <ChevronDown
+        v-if="iconType === 'chevron-down'"
+        class="custom-icon absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 pointer-events-none"
+      />
       <ChevronsUpDown
+        v-else
         class="custom-icon absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 pointer-events-none"
       />
     </SelectTrigger>
@@ -29,7 +35,7 @@
   import type { HTMLAttributes } from "vue";
   import { useVModel } from "@vueuse/core";
   import { cn } from "@/lib/utils";
-  import { ChevronsUpDown } from "lucide-vue-next";
+  import { ChevronsUpDown, ChevronDown } from "lucide-vue-next";
   import type { AcceptableValue } from "reka-ui";
   import {
     Select,
@@ -49,10 +55,14 @@
     options: SelectOption[];
     placeholder?: string;
     class?: HTMLAttributes["class"];
+    iconType?: "chevron-down" | "chevrons-up-down";
+    backgroundColor?: string;
   }
 
   const props = withDefaults(defineProps<Props>(), {
     placeholder: "Select an option",
+    iconType: "chevrons-up-down",
+    backgroundColor: "",
   });
 
   const emits = defineEmits<{

@@ -19,7 +19,7 @@
     <div v-else>
       <h1 class="text-6xl font-bold text-gray-800 mb-4">Oops!</h1>
       <p class="text-lg text-gray-600 mb-8">
-        {{ error.message || "Terjadi kesalahan tidak terduga." }}
+        {{ "Terjadi kesalahan tidak terduga." }}
       </p>
       <NuxtLink
         to="/"

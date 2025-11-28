@@ -33,23 +33,21 @@
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="text-sm font-medium">Jenis Mitra</label>
-          <select
-            :value="modelValue.partnerLevel"
-            @change="
-              updateValue(
-                'partnerLevel',
-                ($event.target as HTMLSelectElement).value
-              )
-            "
-            class="border border-[#d9d9d9] rounded-lg h-9 px-3 py-2 w-full text-sm bg-white focus-within:ring-2 focus-within:ring-primary focus:outline-none"
-          >
-            <option value="">Pilih jenis mitra</option>
-            <option value="perusahaan">Perusahaan</option>
-            <option value="koperasi">Koperasi</option>
-            <option value="individu">Individu</option>
-            <option value="pemerintah">Pemerintah</option>
-            <option value="lsm">LSM</option>
-          </select>
+          <BaseSelect
+            :model-value="modelValue.partnerLevel"
+            @update:model-value="updateValue('partnerLevel', $event)"
+            :options="[
+              { label: 'Perusahaan', value: 'perusahaan' },
+              { label: 'Koperasi', value: 'koperasi' },
+              { label: 'Individu', value: 'individu' },
+              { label: 'Pemerintah', value: 'pemerintah' },
+              { label: 'LSM', value: 'lsm' }
+            ]"
+            placeholder="Pilih jenis mitra"
+            icon-type="chevron-down"
+            background-color="bg-white"
+            class="w-full"
+          />
         </div>
 
         <div>
@@ -85,6 +83,7 @@
   import ImageUploader from "@/components/base/ImageUploader.vue";
   import { ref, watch } from "vue";
   import BaseInput from "@/components/base/BaseInput.vue";
+  import BaseSelect from "@/components/base/BaseSelect.vue";
 
   interface FormData {
     thumbnail: string | null;

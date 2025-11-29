@@ -18,7 +18,7 @@
     </DropdownMenuTrigger>
 
     <!-- Dropdown Content -->
-    <DropdownMenuContent class="dropdown-content" align="start">
+    <DropdownMenuContent class="dropdown-content rounded-xl" align="start">
       <div v-if="isLoading" class="loading-state">
         <span>Memuat wilayah...</span>
       </div>
@@ -36,16 +36,13 @@
             @click="toggleSelection(province.name, 'province')"
           >
             <Icon
-              :name="
-                expandedProvinces.includes(province.name)
-                  ? 'uil:angle-down'
-                  : 'uil:angle-right'
-              "
+              v-if="isSelected(province.name, 'province')"
+              name="uil:check"
               size="16px"
-              class="expand-icon"
-              @click.stop="toggleExpand('province', province.name)"
+              class="check-icon"
             />
             <span class="location-name">{{ province.name }}</span>
+            <span class="item-count">({{ province.regencies.length }})</span>
           </div>
 
           <!-- Regency Level -->
@@ -61,23 +58,16 @@
               <div
                 class="location-item"
                 :class="{ selected: isSelected(regency.name, 'regency') }"
-                @click="toggleSelection(regency.name, 'regency')"
+                @click="toggleSelection(regency.name, 'regency', province.name)"
               >
                 <Icon
-                  :name="
-                    expandedRegencies.includes(
-                      `${province.name}-${regency.name}`
-                    )
-                      ? 'uil:angle-down'
-                      : 'uil:angle-right'
-                  "
+                  v-if="isSelected(regency.name, 'regency')"
+                  name="uil:check"
                   size="16px"
-                  class="expand-icon"
-                  @click.stop="
-                    toggleExpand('regency', `${province.name}-${regency.name}`)
-                  "
+                  class="check-icon"
                 />
                 <span class="location-name">{{ regency.name }}</span>
+                <span class="item-count">({{ regency.districts.length }})</span>
               </div>
 
               <!-- District Level -->
@@ -97,6 +87,12 @@
                     :class="{ selected: isSelected(district, 'district') }"
                     @click="toggleSelection(district, 'district')"
                   >
+                    <Icon
+                      v-if="isSelected(district, 'district')"
+                      name="uil:check"
+                      size="16px"
+                      class="check-icon"
+                    />
                     <span class="location-name">{{ district }}</span>
                   </div>
                 </div>
@@ -107,7 +103,7 @@
       </div>
 
       <!-- Selected Items Display -->
-      <div v-if="selected.length > 0" class="selected-items w-[400px]">
+      <div v-if="selected.length > 0" class="selected-items w-[400px] p-3">
         <DropdownMenuSeparator class="my-2" />
         <div class="selected-header">Terpilih ({{ selected.length }})</div>
         <div class="selected-chips">
@@ -249,7 +245,11 @@
   };
 
   // Toggle selection
-  const toggleSelection = (value: string, type: LocationFilter["type"]) => {
+  const toggleSelection = (
+    value: string,
+    type: LocationFilter["type"],
+    provinceName?: string
+  ) => {
     const index = selected.value.findIndex(
       (item) => item.value === value && item.type === type
     );
@@ -257,6 +257,29 @@
     if (index > -1) {
       // Remove if already selected
       selected.value.splice(index, 1);
+
+      // Collapse children when deselecting parent
+      if (type === "province") {
+        const provinceIndex = expandedProvinces.value.indexOf(value);
+        if (provinceIndex > -1) {
+          expandedProvinces.value.splice(provinceIndex, 1);
+        }
+      } else if (type === "regency") {
+        // Find the province for this regency to build the key
+        const provinceForRegency =
+          provinceName ||
+          hierarchicalData.value.find((p) =>
+            p.regencies.some((r) => r.name === value)
+          )?.name;
+
+        if (provinceForRegency) {
+          const key = `${provinceForRegency}-${value}`;
+          const regencyIndex = expandedRegencies.value.indexOf(key);
+          if (regencyIndex > -1) {
+            expandedRegencies.value.splice(regencyIndex, 1);
+          }
+        }
+      }
     } else {
       // Add selection
       selected.value.push({ value, type });
@@ -266,14 +289,16 @@
         expandedProvinces.value.push(value);
       } else if (type === "regency") {
         // Find the province for this regency to build the key
-        for (const province of hierarchicalData.value) {
-          const regency = province.regencies.find((r) => r.name === value);
-          if (regency) {
-            const key = `${province.name}-${value}`;
-            if (!expandedRegencies.value.includes(key)) {
-              expandedRegencies.value.push(key);
-            }
-            break;
+        const provinceForRegency =
+          provinceName ||
+          hierarchicalData.value.find((p) =>
+            p.regencies.some((r) => r.name === value)
+          )?.name;
+
+        if (provinceForRegency) {
+          const key = `${provinceForRegency}-${value}`;
+          if (!expandedRegencies.value.includes(key)) {
+            expandedRegencies.value.push(key);
           }
         }
       }
@@ -332,7 +357,7 @@
   }
 
   .dropdown-content {
-    width: 500px;
+    width: 600px;
     max-height: 500px;
     overflow: hidden;
     display: flex;
@@ -346,7 +371,6 @@
     padding: 2rem;
     text-align: center;
     color: #6b7280;
-    font-size: 0.875rem;
   }
 
   .location-tree {
@@ -375,34 +399,61 @@
   }
 
   .location-item.selected {
-    background-color: #dbeafe;
-    color: #1e40af;
+    background-color: #effcef;
+    color: #035925;
     font-weight: 500;
   }
 
   .location-item.selected .location-name {
-    color: #1e40af;
+    color: #035925;
+    font-weight: 600;
   }
 
-  .expand-icon {
+  .check-icon {
     flex-shrink: 0;
-    color: #6b7280;
-    transition: transform 0.2s ease;
-    padding: 0.25rem;
-    margin: -0.25rem;
+    color: #035925;
   }
 
   .location-name {
     flex: 1;
-    font-size: 0.9rem;
-    color: #374151;
+    font-size: 12px;
+    color: #0a0a0a;
     user-select: none;
     line-height: 1.4;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .item-count {
+    color: #0a0a0a;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: auto;
+    margin-right: 0.875rem;
+    flex-shrink: 0;
+  }
+
+  .location-item.selected .item-count {
+    color: #035925;
+    font-weight: 600;
   }
 
   .location-children {
     padding-left: 1.5rem;
     margin-top: 0.25rem;
+    position: relative;
+  }
+
+  .location-children::before {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #e2e8f0;
   }
 
   .province-level .location-item {
@@ -416,10 +467,6 @@
   .district-level .location-item {
     font-size: 0.813rem;
     padding-left: 0.5rem;
-  }
-
-  .district-level .location-name {
-    padding-left: 1.5rem;
   }
 
   .selected-items {
@@ -445,14 +492,14 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.375rem 0.75rem;
-    background-color: #eff6ff;
-    border: 1px solid #bfdbfe;
+    background-color: #effcef;
+    border: 1px solid #b0d3b0;
     border-radius: 6px;
     font-size: 0.813rem;
   }
 
   .chip-label {
-    color: #1e40af;
+    color: #035925;
     font-weight: 500;
   }
 

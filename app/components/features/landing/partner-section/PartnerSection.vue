@@ -1,5 +1,5 @@
 <template>
-  <section class="py-16 flex flex-col gap-20 justify-center">
+  <section class="py-16 flex flex-col gap-20 justify-center bg-white">
     <div class="gap-6 flex flex-col justify-center text-center">
       <div class="text-center flex justify-center">
         <IconBadge label="Partner Kami" icon="plant" variant="white" />

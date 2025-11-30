@@ -122,43 +122,12 @@
     </div>
   </section>
 
-  <!-- Confirmation Dialog -->
-  <Dialog
-    :open="showConfirmDialog"
-    @update:open="(value) => (showConfirmDialog = value)"
-  >
-    <DialogContent class="max-w-md py-4 px-4 rounded-xl w-full md:w-[444px]">
-      <DialogHeader>
-        <div class="flex flex-col gap-2 justify-center items-center mb-4">
-          <div class="rounded-full bg-[#FEF3C6] p-3 mb-6">
-            <CircleAlert class="w-6 h-6 text-[#E17100]"></CircleAlert>
-          </div>
-          <span class="font-semibold text-base md:text-[18px] text-neutral-1000 text-center">
-            Lengkapi Data Profil Terlebih Dahulu
-          </span>
-          <p class="text-[#717182] text-center text-xs md:text-sm">
-            Untuk mengajukan kerjasama, Anda perlu melengkapi profil organisasi
-            dan informasi kebutuhan Anda terlebih dahulu.
-          </p>
-        </div>
-      </DialogHeader>
-      <DialogFooter class="gap-2 flex flex-col sm:flex-row !justify-center text-center items-center">
-        <BaseButton
-          variant="secondary"
-          @click="showConfirmDialog = false"
-          size="sm"
-          class="w-full sm:w-auto"
-        >
-          Nanti Saja
-        </BaseButton>
-        <a href="/profil" class="w-full sm:w-auto">
-          <BaseButton variant="primary" @click="confirmQuoteRequest" size="sm" class="w-full"
-            >Lengkapi Data Sekarang
-          </BaseButton>
-        </a>
-      </DialogFooter>
-    </DialogContent>
-  </Dialog>
+  <!-- Profile Complete Dialog -->
+  <ProfileCompleteDialog
+    v-model:open="showConfirmDialog"
+    description="Untuk mengajukan kerjasama, Anda perlu melengkapi profil organisasi dan informasi kebutuhan Anda terlebih dahulu."
+    @confirm="confirmQuoteRequest"
+  />
 </template>
 
 <script setup lang="ts">
@@ -171,17 +140,9 @@
   import { useAuth } from "~/composables/useAuth";
   import { useApi } from "~/composables/useApi";
   import RankBadges from "~/components/base/RankBadges.vue";
-  import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-  } from "@/components/ui/dialog";
-  import { Button } from "@/components/ui/button";
   import { useProductActivityLogger } from "~/composables/useProductActivityLogger";
   import { canUserCollaborate } from "~/utils/user-profile";
+  import ProfileCompleteDialog from "~/components/common/ProfileCompleteDialog.vue";
 
   const { isAuthenticated, user: authUser } = useAuth();
   const { logProductCollaboration } = useProductActivityLogger();

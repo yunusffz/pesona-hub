@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
   import SearchInput from "~/components/base/SearchInput.vue";
-  import FilterLocation from "./FilterLocation.vue";
+  import FilterLocation from "./filter-location/FilterLocation.vue";
   import { useCatalogStore } from "~/stores/useCatalogStore";
   import FilterCommodityPriority from "./FilterCommodityPriority.vue";
   const catalogStore = useCatalogStore();

@@ -14,7 +14,7 @@
       :loading="statistics.isLoadingKups.value"
     />
     <BigNumber
-      :number="'11'"
+      :number="formatStatNumber(statistics.provincesCount.value)"
       title="Jumlah Provinsi"
       description="Jumlah provinsi yang terintegrasi."
       icon="uil:map-marker-alt"

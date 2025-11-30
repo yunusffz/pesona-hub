@@ -26,17 +26,7 @@
               <th
                 class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
               >
-                Lokasi Target
-              </th>
-              <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
-              >
                 Kontak Mitra
-              </th>
-              <th
-                class="bg-gray-50 px-6 py-3 rounded-tr-2xl text-left text-sm font-medium text-gray-700"
-              >
-                Nomor WA Mitra
               </th>
             </tr>
           </thead>
@@ -72,30 +62,9 @@
                 }}</span>
               </td>
               <td class="px-6 py-4">
-                <span class="text-sm text-gray-600">{{
-                  getLocation(partner)
-                }}</span>
-              </td>
-              <td class="px-6 py-4">
                 <span class="text-sm text-gray-900">{{
                   getContact(partner)
                 }}</span>
-              </td>
-              <td class="px-6 py-4">
-                <a
-                  v-if="getWhatsAppNumber(partner)"
-                  :href="`https://wa.me/${getWhatsAppNumber(partner)?.replace(
-                    /[^0-9]/g,
-                    ''
-                  )}`"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-sm text-green-600 hover:text-green-700 hover:underline flex items-center gap-1"
-                >
-                  <Icon name="uil:whatsapp" class="w-4 h-4" />
-                  {{ getWhatsAppNumber(partner) }}
-                </a>
-                <span v-else class="text-sm text-gray-500">-</span>
               </td>
             </tr>
           </tbody>
@@ -253,13 +222,10 @@
     // Extract commodity IDs from collaboration_commodities array of objects
     const ids: number[] = [];
     if (Array.isArray(partner.details.collaboration_commodities)) {
-      partner.details.collaboration_commodities.forEach((item: any) => {
-        Object.keys(item).forEach(key => {
-          const id = parseInt(key, 10);
-          if (!isNaN(id) && !ids.includes(id)) {
-            ids.push(id);
-          }
-        });
+      partner.details.collaboration_commodities.forEach((id: any) => {
+        if (!isNaN(id) && !ids.includes(id)) {
+          ids.push(id);
+        }
       });
     }
 

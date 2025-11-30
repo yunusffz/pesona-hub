@@ -94,7 +94,7 @@
     if (Array.isArray(data)) {
       return data.map((collab: any) => ({
         label: collab.name ?? String(collab.id ?? ""),
-        value: collab.id ?? collab.name,
+        value: String(collab.id ?? collab.name),
       }));
     }
 
@@ -103,7 +103,7 @@
       return [
         {
           label: (data as any).name ?? String((data as any).id ?? ""),
-          value: (data as any).id ?? (data as any).name,
+          value: String((data as any).id ?? (data as any).name),
         },
       ];
     }

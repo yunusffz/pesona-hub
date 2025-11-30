@@ -20,7 +20,7 @@
           <SvgIcon :name="commodityIcon" preserveOriginalColors size="36px" />
         </div>
         <span class="font-medium text-sm text-neutral-900 truncate">
-          {{ commodity.commodity_name }}
+          {{ commodity.commodity }}
         </span>
       </div>
 
@@ -56,7 +56,9 @@
       <div v-if="isExpanded" class="overflow-hidden">
         <div class="bg-[#F7FFF7] px-4 py-3 ml-6 mr-4 mb-2">
           <!-- Header Row for Details -->
-          <div class="grid grid-cols-3 gap-4 pb-2 border-b border-[#E4E4E7] mb-2">
+          <div
+            class="grid grid-cols-3 gap-4 pb-2 border-b border-[#E4E4E7] mb-2"
+          >
             <div class="text-xs font-semibold text-neutral-600 text-center">
               Kapasitas
             </div>
@@ -77,7 +79,7 @@
             <div class="text-sm text-neutral-900 text-center font-medium">
               {{ formatNumber(detail.capacity) }}
             </div>
-            <div class="text-sm text-neutral-600 text-center">
+            <div class="text-sm text-neutral-600 text-center truncate">
               {{ detail.unit }}
             </div>
             <div class="text-sm text-neutral-900 text-center">
@@ -109,7 +111,7 @@
   const isExpanded = ref(false);
 
   const commodityIcon = computed(() =>
-    getCommodityIcon(props.commodity.commodity_name)
+    getCommodityIcon(props.commodity.commodity)
   );
 
   const formattedUnits = computed(() => {

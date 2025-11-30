@@ -72,10 +72,7 @@
   import SelectedLocationChips from "./SelectedLocationChips.vue";
 
   const catalogStore = useCatalogStore();
-  const { data, isLoading } = useLocations({
-    limit: 1000,
-    page: 1,
-  });
+  const { data, isLoading } = useLocations();
 
   const searchQuery = ref<string>("");
   const expandedProvinces = ref<string[]>([]);

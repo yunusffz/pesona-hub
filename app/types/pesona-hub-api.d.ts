@@ -1447,34 +1447,20 @@ export interface components {
         /** CommodityDetailedPriorityResponse */
         CommodityDetailedPriorityResponse: {
             /**
-             * Commodity Id
-             * @description Commodity ID
-             * @example 1
-             * @example 2
-             * @example 3
-             */
-            commodity_id: number;
-            /**
-             * Commodity Name
+             * Commodity
              * @description Commodity name
-             * @example Madu
-             * @example Rotan
-             * @example Bambu
-             */
-            commodity_name: string;
-            /**
-             * Commodity Priority
-             * @description Commodity priority category
              * @example Madu
              * @example Rotan
              * @example Bambu
              * @example Kakao
              * @example Kopi
+             * @example Minyak Atsiri
+             * @example Wisata
              */
-            commodity_priority: string;
+            commodity: string;
             /**
              * Total Products
-             * @description Total number of products for this commodity
+             * @description Total number of products for all commodities in this priority
              * @example 3
              * @example 5
              * @example 3
@@ -1482,7 +1468,7 @@ export interface components {
             total_products: number;
             /**
              * Units
-             * @description List of unique units for this commodity
+             * @description List of unique units for all commodities in this priority
              * @example [
              *       "kg",
              *       "liter",
@@ -1497,7 +1483,7 @@ export interface components {
             units: string[];
             /**
              * Total Sfbg
-             * @description Total number of distinct Social Forestry Business Groups (SFBG) for this commodity
+             * @description Total number of distinct Social Forestry Business Groups (SFBG) for all commodities in this priority
              * @example 86
              * @example 82
              * @example 77

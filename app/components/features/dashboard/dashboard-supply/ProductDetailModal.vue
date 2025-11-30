@@ -71,7 +71,7 @@
           <div v-else-if="commodities.length > 0">
             <CommodityRow
               v-for="commodity in commodities"
-              :key="commodity.commodity_id"
+              :key="commodity.commodity"
               :commodity="commodity"
             />
           </div>

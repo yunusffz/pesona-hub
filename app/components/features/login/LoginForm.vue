@@ -63,7 +63,7 @@
                 for="username"
                 class="text-sm lg:text-base font-medium text-left"
               >
-                Username/Email
+                Username
               </label>
               <Input
                 id="username"
@@ -71,7 +71,7 @@
                 type="text"
                 required
                 autocomplete="username"
-                placeholder="Masukkan Username/Email Anda"
+                placeholder="Masukkan Username Anda"
                 :class="[
                   'h-[55px] placeholder:text-sm lg:placeholder:text-base placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary',
                   getFieldError('username') ? 'border-red-500' : '',

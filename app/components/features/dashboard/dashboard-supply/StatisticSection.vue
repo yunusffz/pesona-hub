@@ -5,6 +5,8 @@
       title="Jumlah Produk/Wisata"
       icon="uil:weight"
       :loading="statistics.isLoadingProducts.value"
+      clickable
+      @click="openProductDetailModal"
     />
     <BigNumber
       :number="formatStatNumber(statistics.kupsCount.value)"
@@ -25,9 +27,15 @@
       :loading="economicStats.isLoading.value"
     />
   </div>
+
+  <ProductDetailModal
+    v-model:open="isProductDetailModalOpen"
+    :total-count="formatStatNumber(statistics.productsCount.value)"
+  />
 </template>
 <script setup lang="ts">
   import BigNumber from "../big-number/BigNumber.vue";
+  import ProductDetailModal from "./ProductDetailModal.vue";
   import {
     useStatistics,
     useEconomicStatistics,
@@ -36,4 +44,10 @@
 
   const statistics = useStatistics();
   const economicStats = useEconomicStatistics();
+
+  const isProductDetailModalOpen = ref(false);
+
+  const openProductDetailModal = () => {
+    isProductDetailModalOpen.value = true;
+  };
 </script>

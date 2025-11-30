@@ -1182,17 +1182,15 @@ export interface components {
                 [key: string]: unknown;
             } | null;
         };
-        /** BaseResponse[list[dict[str, Any]]] */
-        BaseResponse_list_dict_str__Any___: {
+        /** BaseResponse[list[CommodityDetailedPriorityResponse]] */
+        BaseResponse_list_CommodityDetailedPriorityResponse__: {
             /** @description Response code, use from Message Code */
             message_code: components["schemas"]["MessageCode"];
             /**
              * Data
              * @description Response data, can be an array, dict, or None
              */
-            data?: {
-                [key: string]: unknown;
-            }[] | {
+            data?: components["schemas"]["CommodityDetailedPriorityResponse"][] | {
                 [key: string]: unknown;
             } | unknown[] | null;
         };
@@ -1445,6 +1443,98 @@ export interface components {
              * @example Forestry
              */
             category?: string | null;
+        };
+        /** CommodityDetailedPriorityResponse */
+        CommodityDetailedPriorityResponse: {
+            /**
+             * Commodity Id
+             * @description Commodity ID
+             * @example 1
+             * @example 2
+             * @example 3
+             */
+            commodity_id: number;
+            /**
+             * Commodity Name
+             * @description Commodity name
+             * @example Madu
+             * @example Rotan
+             * @example Bambu
+             */
+            commodity_name: string;
+            /**
+             * Commodity Priority
+             * @description Commodity priority category
+             * @example Madu
+             * @example Rotan
+             * @example Bambu
+             * @example Kakao
+             * @example Kopi
+             */
+            commodity_priority: string;
+            /**
+             * Total Products
+             * @description Total number of products for this commodity
+             * @example 3
+             * @example 5
+             * @example 3
+             */
+            total_products: number;
+            /**
+             * Units
+             * @description List of unique units for this commodity
+             * @example [
+             *       "kg",
+             *       "liter",
+             *       "botol"
+             *     ]
+             * @example [
+             *       "kg",
+             *       "batang",
+             *       "unit"
+             *     ]
+             */
+            units: string[];
+            /**
+             * Total Sfbg
+             * @description Total number of distinct Social Forestry Business Groups (SFBG) for this commodity
+             * @example 86
+             * @example 82
+             * @example 77
+             */
+            total_sfbg: number;
+            /**
+             * Unit Details
+             * @description Detailed breakdown of capacity and SFBG count per unit, sorted by capacity (descending)
+             */
+            unit_details?: components["schemas"]["CommodityUnitDetail"][];
+        };
+        /** CommodityUnitDetail */
+        CommodityUnitDetail: {
+            /**
+             * Unit
+             * @description Product unit
+             * @example kg
+             * @example liter
+             * @example botol
+             */
+            unit: string;
+            /**
+             * Capacity
+             * @description Total capacity for this unit
+             * @example 9200
+             * @example 620
+             * @example 280
+             */
+            capacity: number;
+            /**
+             * Sfbg Count
+             * @description Number of distinct Social Forestry Business Groups (SFBG) for this unit
+             * @example 16
+             * @example 40
+             * @example 30
+             */
+            sfbg_count: number;
         };
         /** CommodityUpdate */
         CommodityUpdate: {
@@ -4096,7 +4186,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseResponse_list_dict_str__Any___"];
+                    "application/json": components["schemas"]["BaseResponse_list_CommodityDetailedPriorityResponse__"];
                 };
             };
             /** @description Unprocessable Content */

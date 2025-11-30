@@ -1,6 +1,8 @@
 <template>
   <section
     class="p-6 bg-white rounded-2xl border border-[#E4E4E7] flex flex-col gap-3"
+    :class="{ 'cursor-pointer hover:shadow-md transition-shadow': clickable }"
+    @click="handleClick"
   >
     <div class="flex items-start justify-between">
       <div class="font-medium text-sm text-neutral-1000">{{ props.title }}</div>
@@ -55,9 +57,21 @@
     growth?: number;
     icon?: string;
     loading?: boolean;
+    clickable?: boolean;
   }
 
   const props = withDefaults(defineProps<Props>(), {
     loading: false,
+    clickable: false,
   });
+
+  const emit = defineEmits<{
+    click: [];
+  }>();
+
+  const handleClick = () => {
+    if (props.clickable) {
+      emit("click");
+    }
+  };
 </script>

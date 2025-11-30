@@ -4,7 +4,7 @@
     class="flex items-center gap-2 py-1 px-3 border border-[#E8E8E840]"
   >
     <NuxtImg
-      :src="`/assets/images/${props.rank}.png`"
+      :src="`/assets/images/${props.rank.toLowerCase()}.png`"
       alt="Rank Badge"
       class="w-5 h-5"
     />

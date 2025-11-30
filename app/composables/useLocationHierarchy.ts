@@ -28,6 +28,11 @@ export function useLocationHierarchy(
 
     // Build hierarchy
     locationData.forEach((location) => {
+      // Skip if any location field is empty or null
+      if (!location.province || !location.regency || !location.district) {
+        return;
+      }
+
       if (!provinceMap.has(location.province)) {
         provinceMap.set(location.province, new Map());
       }

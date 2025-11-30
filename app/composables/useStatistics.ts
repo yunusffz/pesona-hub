@@ -40,10 +40,6 @@ export function useStatistics() {
     error: locationsError,
   } = useLocations({
     fields: ["province"],
-    pagination: {
-      page: 1,
-      page_size: 1000, // Get enough to count unique provinces
-    },
   });
 
   // Extract KUPS count from pagination metadata
@@ -80,7 +76,8 @@ export function useStatistics() {
 
   // Overall loading state
   const isLoading = computed(
-    () => isLoadingKups.value || isLoadingProducts.value || isLoadingLocations.value
+    () =>
+      isLoadingKups.value || isLoadingProducts.value || isLoadingLocations.value
   );
 
   return {

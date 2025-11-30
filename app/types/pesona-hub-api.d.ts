@@ -339,6 +339,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/commodities/priorities/detailed": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Detailed Commodities Priority */
+        get: operations["get_detailed_commodities_priority_commodities_priorities_detailed_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/harvesting/province-apis": {
         parameters: {
             query?: never;
@@ -1164,6 +1181,20 @@ export interface components {
             data?: unknown[] | {
                 [key: string]: unknown;
             } | null;
+        };
+        /** BaseResponse[list[dict[str, Any]]] */
+        BaseResponse_list_dict_str__Any___: {
+            /** @description Response code, use from Message Code */
+            message_code: components["schemas"]["MessageCode"];
+            /**
+             * Data
+             * @description Response data, can be an array, dict, or None
+             */
+            data?: {
+                [key: string]: unknown;
+            }[] | {
+                [key: string]: unknown;
+            } | unknown[] | null;
         };
         /** BaseResponse[list[str]] */
         BaseResponse_list_str__: {
@@ -4025,6 +4056,47 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BaseResponse_list_str__"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_detailed_commodities_priority_commodities_priorities_detailed_get: {
+        parameters: {
+            query?: {
+                /** @description Maximum number of top commodities to return */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_list_dict_str__Any___"];
                 };
             };
             /** @description Unprocessable Content */

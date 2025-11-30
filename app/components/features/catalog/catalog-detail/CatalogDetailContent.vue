@@ -1,15 +1,15 @@
 <template>
-  <section class="flex gap-[60px]">
-    <div class="rounded-3xl flex-1">
+  <section class="flex flex-col lg:flex-row gap-6 lg:gap-[60px]">
+    <div class="rounded-3xl flex-1 w-full lg:w-auto">
       <NuxtImg
         :src="productImage"
         :alt="product?.name || 'Product Image'"
-        class="w-full h-full object-cover rounded-3xl max-h-[579px]"
+        class="w-full h-full object-cover rounded-3xl max-h-[400px] lg:max-h-[579px]"
       />
     </div>
-    <div class="flex flex-col gap-6 w-[468px] h-[648px] overflow-y-auto">
+    <div class="flex flex-col gap-6 w-full lg:w-[468px] lg:h-[648px] lg:overflow-y-auto">
       <div class="flex flex-col gap-4">
-        <h1 class="text-[40px] font-medium leading-[48px]">
+        <h1 class="text-2xl md:text-3xl lg:text-[40px] font-medium leading-tight lg:leading-[48px]">
           {{ product?.name || "Nama Produk" }}
         </h1>
         <div class="flex items-center gap-2">
@@ -32,15 +32,15 @@
       <div class="relative min-h-[500px]">
         <div v-if="isAuthenticated" class="flex flex-col gap-4">
           <div class="flex items-end gap-1">
-            <span class="font-semibold text-2xl">
+            <span class="font-semibold text-xl md:text-2xl">
               {{ formatRupiah(productPrice) }}
             </span>
-            <span class="font-semibold text-lg text-neutral-700"
+            <span class="font-semibold text-base md:text-lg text-neutral-700"
               >/{{ props.product?.unit }}</span
             >
           </div>
           <div class="flex flex-col gap-4">
-            <div class="font-semibold text-[18px] text-neutral-900">
+            <div class="font-semibold text-base md:text-[18px] text-neutral-900">
               Tambah ke Keranjang
             </div>
             <QuantityCounter
@@ -50,10 +50,10 @@
             <div
               class="flex items-center justify-between bg-[#F3F3F3] px-3 py-4 rounded-xl"
             >
-              <span class="font-medium text-[18px] text-neutral-900"
+              <span class="font-medium text-base md:text-[18px] text-neutral-900"
                 >Total</span
               >
-              <span class="font-bold text-2xl">{{
+              <span class="font-bold text-xl md:text-2xl">{{
                 formatRupiah(quantity * productPrice)
               }}</span>
             </div>
@@ -97,11 +97,11 @@
             class="absolute bottom-0 left-0 top-20 w-full h-[400px] object-cover blur-2xl overflow-hidden"
           />
           <div
-            class="absolute bottom-0 left-0 w-full h-full flex items-center justify-center"
+            class="absolute bottom-0 left-0 w-full h-full flex items-center justify-center px-4"
           >
-            <div class="flex flex-col items-center justify-center w-[350px]">
-              <div class="h-[130px] w-[150px]">
-                <SvgIcon name="lock" preserveOriginalColors size="150px" />
+            <div class="flex flex-col items-center justify-center w-full max-w-[350px]">
+              <div class="h-[100px] w-[120px] md:h-[130px] md:w-[150px]">
+                <SvgIcon name="lock" preserveOriginalColors size="150px" class="w-full h-full" />
               </div>
               <p
                 class="text-sm font-medium text-neutral-700 text-center leading-6"
@@ -111,7 +111,7 @@
                 ini.
               </p>
               <NuxtLink to="/login">
-                <BaseButton variant="primary" class="mt-12">
+                <BaseButton variant="primary" class="mt-8 md:mt-12 w-full md:w-auto">
                   Login Sekarang
                 </BaseButton>
               </NuxtLink>
@@ -127,31 +127,32 @@
     :open="showConfirmDialog"
     @update:open="(value) => (showConfirmDialog = value)"
   >
-    <DialogContent class="max-w-md py-4 px-4 rounded-xl w-[444px]">
+    <DialogContent class="max-w-md py-4 px-4 rounded-xl w-full md:w-[444px]">
       <DialogHeader>
         <div class="flex flex-col gap-2 justify-center items-center mb-4">
           <div class="rounded-full bg-[#FEF3C6] p-3 mb-6">
             <CircleAlert class="w-6 h-6 text-[#E17100]"></CircleAlert>
           </div>
-          <span class="font-semibold text-[18px] text-neutral-1000 text-center">
+          <span class="font-semibold text-base md:text-[18px] text-neutral-1000 text-center">
             Lengkapi Data Profil Terlebih Dahulu
           </span>
-          <p class="text-[#717182] text-center text-sm">
+          <p class="text-[#717182] text-center text-xs md:text-sm">
             Untuk mengajukan kerjasama, Anda perlu melengkapi profil organisasi
             dan informasi kebutuhan Anda terlebih dahulu.
           </p>
         </div>
       </DialogHeader>
-      <DialogFooter class="gap-2 flex !justify-center text-center items-center">
+      <DialogFooter class="gap-2 flex flex-col sm:flex-row !justify-center text-center items-center">
         <BaseButton
           variant="secondary"
           @click="showConfirmDialog = false"
           size="sm"
+          class="w-full sm:w-auto"
         >
           Nanti Saja
         </BaseButton>
-        <a href="/profil">
-          <BaseButton variant="primary" @click="confirmQuoteRequest" size="sm"
+        <a href="/profil" class="w-full sm:w-auto">
+          <BaseButton variant="primary" @click="confirmQuoteRequest" size="sm" class="w-full"
             >Lengkapi Data Sekarang
           </BaseButton>
         </a>

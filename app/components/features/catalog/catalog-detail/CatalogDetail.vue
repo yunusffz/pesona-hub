@@ -62,12 +62,11 @@
       <CatalogDetailContent :product="product" />
     </template>
 
-    <!-- No Product Found -->
     <div v-else class="text-center py-20">
       <h2 class="text-2xl font-semibold text-gray-600 mb-4">
-        Product Not Found
+        Produk Tidak Ditemukan
       </h2>
-      <p class="text-gray-500">The requested product could not be found.</p>
+      <p class="text-gray-500">Data produk tidak ditemukan.</p>
     </div>
   </section>
 </template>

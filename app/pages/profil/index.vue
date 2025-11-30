@@ -330,7 +330,6 @@
         details: UserDetail;
       } = {
         // Step 1 - Identity mappings
-        name: formData.value.companyName || undefined, // Nama Lembaga/Perusahaan -> name
         phone: formData.value.whatsappNumber || undefined, // Nomor WhatsApp -> phone
         thumbnail: formData.value.thumbnail || undefined, // object_name from uploaded file
 
@@ -343,8 +342,9 @@
           website: formData.value.websiteUrl || null, // Website/Sosial Media
 
           // Step 2 - Interests mappings
-          collaboration_commodities:
-            (commodityIds.length > 0 ? commodityIds : null) as any, // Jenis Komoditas (as simple array: [5, 1, 3])
+          collaboration_commodities: (commodityIds.length > 0
+            ? commodityIds
+            : null) as any, // Jenis Komoditas (as simple array: [5, 1, 3])
 
           // Step 3 - Collaboration mappings
           product_service_description: formData.value.additionalInfo || null, // Catatan Tambahan

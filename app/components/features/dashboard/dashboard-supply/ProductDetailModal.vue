@@ -28,28 +28,22 @@
         </div>
 
         <!-- Commodities Table -->
-        <div class="border border-[#E4E4E7] rounded-lg overflow-hidden">
+        <div class="font-medium rounded-lg overflow-hidden text-[#1E1E1E]">
           <!-- Table Header -->
-          <div
-            class="bg-[#F4F4F5] px-4 py-3 flex items-center border-b border-[#E4E4E7]"
-          >
+          <div class="py-3 flex items-center border-b border-[#E4E4E7]">
             <div class="w-6"></div>
-            <div class="flex-1 text-xs font-semibold text-neutral-600">
+            <div class="flex-1 text-sm font-semibold text-[#1E1E1E]">
               Komoditas
             </div>
             <div
-              class="w-24 text-center text-xs font-semibold text-neutral-600"
+              class="flex-1 text-center text-sm font-semibold text-[#1E1E1E]"
             >
               Kapasitas
             </div>
-            <div
-              class="w-32 text-center text-xs font-semibold text-neutral-600"
-            >
+            <div class="w-32 text-center text-sm font-semibold text-[#1E1E1E]">
               Satuan
             </div>
-            <div
-              class="w-24 text-center text-xs font-semibold text-neutral-600"
-            >
+            <div class="w-24 text-center text-sm font-semibold text-[#1E1E1E]">
               Jumlah KUPS
             </div>
           </div>

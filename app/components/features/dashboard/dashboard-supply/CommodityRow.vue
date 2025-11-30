@@ -2,7 +2,7 @@
   <div class="border-b border-[#E4E4E7] last:border-b-0">
     <!-- Main Row -->
     <div
-      class="flex items-center px-4 py-3 cursor-pointer hover:bg-gray-50 transition-colors"
+      class="flex items-center py-3 cursor-pointer hover:bg-gray-50 transition-colors"
       @click="toggleExpanded"
     >
       <!-- Expand Icon -->
@@ -19,28 +19,28 @@
         <div class="w-9 h-9 flex-shrink-0">
           <SvgIcon :name="commodityIcon" preserveOriginalColors size="36px" />
         </div>
-        <span class="font-medium text-sm text-neutral-900 truncate">
+        <span class="font-medium text-sm text-[#1E1E1E] truncate">
           {{ commodity.commodity }}
         </span>
       </div>
 
       <!-- Products Count -->
-      <div class="w-24 text-center">
-        <span class="text-sm text-neutral-900">
+      <div class="w-32 text-center">
+        <span class="text-sm font-semibold text-[#1E1E1E]">
           {{ commodity.total_products }} Produk
         </span>
       </div>
 
       <!-- Units -->
       <div class="w-32 text-center truncate text-ellipsis overflow-hidden">
-        <span class="text-sm text-neutral-600">
+        <span class="text-sm text-[#6A7282]">
           {{ formattedUnits }}
         </span>
       </div>
 
       <!-- KUPS Count -->
       <div class="w-24 text-center">
-        <span class="text-sm text-neutral-900">
+        <span class="text-sm text-[#1E1E1E]">
           {{ commodity.total_sfbg }} KUPS
         </span>
       </div>
@@ -54,35 +54,31 @@
       @leave="onLeave"
     >
       <div v-if="isExpanded" class="overflow-hidden">
-        <div class="bg-[#F7FFF7] px-4 py-3 ml-6 mr-4 mb-2">
-          <!-- Header Row for Details -->
+        <div class="bg-[#F7FFF7] relative">
+          <!-- Continuous vertical line for all items -->
           <div
-            class="grid grid-cols-3 gap-4 pb-2 border-b border-[#E4E4E7] mb-2"
-          >
-            <div class="text-xs font-semibold text-neutral-600 text-center">
-              Kapasitas
-            </div>
-            <div class="text-xs font-semibold text-neutral-600 text-center">
-              Satuan
-            </div>
-            <div class="text-xs font-semibold text-neutral-600 text-center">
-              Jumlah KUPS
-            </div>
-          </div>
+            v-if="commodity.unit_details && commodity.unit_details.length > 0"
+            class="absolute left-[42px] w-[2px] bg-[#D1D5DB]"
+            :style="{
+              top: '0px',
+              height: `${commodity.unit_details.length * 60}px`,
+            }"
+          ></div>
 
           <!-- Detail Rows -->
           <div
             v-for="(detail, index) in commodity.unit_details"
             :key="index"
-            class="grid grid-cols-3 gap-4 py-2 border-b border-[#E4E4E7] last:border-b-0"
+            class="flex items-center relative py-3"
           >
-            <div class="text-sm text-neutral-900 text-center font-medium">
+            <div class="flex-1"></div>
+            <div class="w-24 text-sm text-[#1E1E1E] font-semibold">
               {{ formatNumber(detail.capacity) }}
             </div>
-            <div class="text-sm text-neutral-600 text-center truncate">
+            <div class="w-32 text-center text-sm text-[#6A7282] truncate">
               {{ detail.unit }}
             </div>
-            <div class="text-sm text-neutral-900 text-center">
+            <div class="w-24 text-center text-sm text-[#1E1E1E]">
               {{ detail.sfbg_count }} KUPS
             </div>
           </div>

@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
   import { computed } from "vue";
-  import MultiSelectCombobox from "~/components/common/multi-select-combobox/MultiSelectComboBox.vue";
+  import MultiSelectCombobox from "~/components/common/multi-select-combobox/MultiSelectComboBoxVirtual.vue";
   import { useCommodities } from "~/queries/useCommodities";
 
   interface FormData {
@@ -48,20 +48,21 @@
     "update:modelValue": [value: FormData];
   }>();
 
-  const { data } = useCommodities({
-    limit: 200,
-  });
+  const { data } = useCommodities();
 
   const commodities = computed(() => {
     if (!data.value?.data || !Array.isArray(data.value.data)) return [];
 
+    // Optimize by mapping once and caching the result
     return (data.value.data as Array<Record<string, unknown>>).map(
-      (commodity) => ({
-        label: String(
-          (commodity as any).name ?? (commodity as any).label ?? "-"
-        ),
-        value: (commodity as any).id as string | number,
-      })
+      (commodity) => {
+        const name = (commodity as any).name ?? (commodity as any).label;
+        const id = (commodity as any).id;
+        return {
+          label: name || "-",
+          value: id,
+        };
+      }
     );
   });
 

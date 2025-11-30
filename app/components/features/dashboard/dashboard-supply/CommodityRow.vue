@@ -32,7 +32,7 @@
       </div>
 
       <!-- Units -->
-      <div class="w-32 text-center">
+      <div class="w-32 text-center truncate text-ellipsis overflow-hidden">
         <span class="text-sm text-neutral-600">
           {{ formattedUnits }}
         </span>
@@ -115,7 +115,7 @@
   );
 
   const formattedUnits = computed(() => {
-    return props.commodity.units.join(",");
+    return props.commodity.units.join(", ");
   });
 
   const toggleExpanded = () => {

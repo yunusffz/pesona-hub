@@ -38,21 +38,21 @@
             />
 
             <!-- Price Range Filter -->
-            <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
+            <!-- <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
             <PriceRangeFilterSection
               v-model:price-min="priceMin"
               v-model:price-max="priceMax"
               :default-expanded="expandedSections.priceRange"
               @change="handlePriceChange"
-            />
+            /> -->
 
             <!-- Sort Options -->
-            <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
+            <!-- <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
             <SortFilterSection
               v-model:sort-by="sortBy"
               :default-expanded="expandedSections.sort"
               @change="handleSortChange"
-            />
+            /> -->
 
             <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
           </div>

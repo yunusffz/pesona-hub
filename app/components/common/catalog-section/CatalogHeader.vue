@@ -18,11 +18,13 @@
           {{ props.description }}
         </p>
       </div>
-      <BaseButton
-        class="whitespace-nowrap w-full lg:w-auto"
-        v-if="props.linkText"
-        >{{ props.linkText }}</BaseButton
-      >
+      <NuxtLink to="/katalog">
+        <BaseButton
+          class="whitespace-nowrap w-full lg:w-auto"
+          v-if="props.linkText"
+          >{{ props.linkText }}</BaseButton
+        >
+      </NuxtLink>
     </div>
   </section>
 </template>

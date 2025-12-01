@@ -26,15 +26,12 @@
 
             <!-- Regions Filter -->
             <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
-            <RegionFilterSection
-              :grouped-regions="groupedRegions"
-              :selected-regions-map="selectedRegionsMap"
-              :selected-districts-map="selectedDistrictsMap"
+            <LocationFilterSection
+              v-model="selectedLocations"
+              :locations-data="locationsData"
               :is-loading="isLoadingLocations"
               :error="locationsError"
               :default-expanded="expandedSections.regions"
-              @update:selected-regions-map="selectedRegionsMap = $event"
-              @update:selected-districts-map="selectedDistrictsMap = $event"
             />
 
             <!-- Price Range Filter -->
@@ -93,9 +90,10 @@
   import { useCommodityPriorities } from "~/queries/useCommodityPriorities";
   import { useCatalogStore } from "~/stores/useCatalogStore";
   import CommodityPriorityFilterSection from "./CommodityPriorityFilterSection.vue";
-  import RegionFilterSection from "./RegionFilterSection.vue";
+  import LocationFilterSection from "./LocationFilterSection.vue";
   import PriceRangeFilterSection from "./PriceRangeFilterSection.vue";
   import SortFilterSection from "./SortFilterSection.vue";
+  import type { LocationFilter } from "~/stores/useCatalogStore";
 
   const catalogStore = useCatalogStore();
 
@@ -117,9 +115,7 @@
     refetchLocations();
 
     // Sync local state with store on mount
-    catalogStore.selectedLocations.forEach((loc) => {
-      selectedRegionsMap.value[loc] = true;
-    });
+    selectedLocations.value = [...catalogStore.selectedLocations];
     catalogStore.selectedCommodityPriorities.forEach((priority) => {
       selectedCommodityPrioritiesMap.value[priority] = true;
     });
@@ -140,53 +136,6 @@
     }));
   });
 
-  // Group locations by province with districts
-  const groupedRegions = computed(() => {
-    if (
-      !locationsData.value?.data ||
-      !Array.isArray(locationsData.value.data)
-    ) {
-      console.warn("FilterSheet - No locations data or not an array");
-      return [];
-    }
-
-    type LocationData = Record<string, unknown>;
-    type GroupedRegion = {
-      province: string;
-      districts: Array<{ label: string; value: string }>;
-    };
-
-    const locations = locationsData.value.data as Array<LocationData>;
-
-    const grouped: Record<string, GroupedRegion> = {};
-
-    locations.forEach((location) => {
-      const province = (location.province as string) || "Lainnya";
-      const district = (location.district as string) || "";
-      const regency = (location.regency as string) || "";
-
-      if (!grouped[province]) {
-        grouped[province] = { province, districts: [] };
-      }
-
-      if (district) {
-        const districtLabel = regency ? `${district} - ${regency}` : district;
-        const existingDistrict = grouped[province].districts.find(
-          (d) => d.value === district
-        );
-        if (!existingDistrict) {
-          grouped[province].districts.push({
-            label: districtLabel,
-            value: district,
-          });
-        }
-      }
-    });
-
-    const result = Object.values(grouped);
-
-    return result;
-  });
 
   // Expanded sections state
   const expandedSections = ref({
@@ -198,8 +147,7 @@
 
   // Local state using maps for checkbox state
   const selectedCommodityPrioritiesMap = ref<Record<string, boolean>>({});
-  const selectedRegionsMap = ref<Record<string, boolean>>({});
-  const selectedDistrictsMap = ref<Record<string, boolean>>({});
+  const selectedLocations = ref<LocationFilter[]>([]);
   const priceMin = ref<number | null>(catalogStore.priceRange?.min || null);
   const priceMax = ref<number | null>(catalogStore.priceRange?.max || null);
   const sortBy = ref<string>((catalogStore as any).sortBy || "");
@@ -229,14 +177,14 @@
       .length;
   });
 
-  const checkedRegionsCount = computed(() => {
-    return Object.values(selectedRegionsMap.value).filter(Boolean).length;
+  const checkedLocationsCount = computed(() => {
+    return selectedLocations.value.length;
   });
 
   const activeFiltersCount = computed(() => {
     return (
       checkedCommodityPrioritiesCount.value +
-      checkedRegionsCount.value +
+      checkedLocationsCount.value +
       (priceMin.value !== null || priceMax.value !== null ? 1 : 0) +
       (sortBy.value !== "" ? 1 : 0)
     );
@@ -265,31 +213,8 @@
       .filter(([_, checked]) => checked)
       .map(([priority]) => priority);
 
-    const checkedDistricts = Object.entries(selectedDistrictsMap.value)
-      .filter(([_, checked]) => checked)
-      .map(([district]) => district);
-
-    const checkedRegions = Object.entries(selectedRegionsMap.value)
-      .filter(([province, checked]) => {
-        if (!checked) return false;
-        const region = groupedRegions.value.find(
-          (r) => r.province === province
-        );
-        if (region) {
-          const hasCheckedDistricts = region.districts.some(
-            (d) => selectedDistrictsMap.value[d.value]
-          );
-          return !hasCheckedDistricts;
-        }
-        return true;
-      })
-      .map(([province]) => province);
-
-    const allLocations = [...checkedDistricts, ...checkedRegions].filter(
-      Boolean
-    );
-
-    catalogStore.setSelectedLocations(allLocations);
+    // Use LocationFilter objects directly
+    catalogStore.setSelectedLocations(selectedLocations.value);
     catalogStore.setSelectedCommodityPriorities(commodityPriorities);
 
     if (priceMin.value !== null || priceMax.value !== null) {
@@ -306,8 +231,7 @@
 
   const handleClearFilters = () => {
     selectedCommodityPrioritiesMap.value = {};
-    selectedRegionsMap.value = {};
-    selectedDistrictsMap.value = {};
+    selectedLocations.value = [];
     priceMin.value = null;
     priceMax.value = null;
     sortBy.value = "";

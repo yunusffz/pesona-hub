@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-2xl border border-neutral-200">
+  <div class="rounded-2xl border border-neutral-200 flex flex-col h-full">
     <div class="relative">
       <Badge class="absolute top-3 right-6" variant="white-transparent">{{
         props.product.product_usage || "Produk"
@@ -16,7 +16,7 @@
         />
       </div>
     </div>
-    <div class="flex flex-col px-5 py-4 gap-3">
+    <div class="flex flex-col flex-1 px-5 py-4 gap-3">
       <div
         class="flex items-start justify-between 2xl:gap-3 gap-6 2xl:flex-row flex-col"
       >
@@ -24,15 +24,18 @@
           class="flex flex-col gap-3 2xl:flex-1 min-w-0 truncate w-full 2xl:w-auto"
         >
           <h1 class="font-semibold text-[20px] truncate">
-            {{ props.product.name }}
+            {{ toTitleCase(props.product.name || "") }}
           </h1>
           <p class="truncate">
             {{ props.product.description }}
           </p>
         </div>
-        <BaseBadge variant="grey" size="xs">{{
-          props.product.product_usage
-        }}</BaseBadge>
+        <BaseBadge
+          variant="grey"
+          size="xs"
+          v-if="props.product.product_usage"
+          >{{ props.product.product_usage }}</BaseBadge
+        >
       </div>
       <div class="text-neutral-700 text-xs flex flex-col gap-1">
         <div>KPS : {{ props.product.social_forestry_group?.name }}</div>
@@ -43,7 +46,7 @@
       <div>
         <BaseBadge variant="grey" size="xs">{{ props.product.unit }}</BaseBadge>
       </div>
-      <div class="py-2 flex 2xl:flex-row flex-col gap-4">
+      <div class="py-2 mt-auto flex 2xl:flex-row flex-col gap-4">
         <div class="flex flex-col gap-1 flex-1">
           <div v-if="isAuthenticated" class="text-lg font-bold">
             {{
@@ -55,7 +58,7 @@
             Login untuk melihat harga & kontak supplier
           </div>
         </div>
-        <div>
+        <div class="">
           <a
             :href="'/katalog/' + props.product.id"
             class="border inline-flex items-center justify-center w-full 2xl:w-auto border-neutral-200 rounded-full px-5 py-[10px] text-md bg-white text-neutral-800 font-medium"
@@ -74,6 +77,8 @@
   import { formatRupiah } from "~/utils/format-number";
   import type { ProductWithRelations } from "~/types/product";
   import RankBadges from "~/components/base/RankBadges.vue";
+
+  const { toTitleCase } = useTitleCase();
 
   const props = defineProps<{
     product: Partial<ProductWithRelations>;

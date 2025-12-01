@@ -48,7 +48,7 @@
                     v-model="dateRange"
                     :number-of-months="2"
                   />
-                  <FilterSheet>
+                  <FilterSheet v-if="activeTab !== 'demand'">
                     <SheetTrigger as-child>
                       <BaseButton variant="solid" class="px-4 py-2">
                         <Icon name="uil:filter" class="w-4 h-4" />

@@ -16,7 +16,9 @@
         </p>
 
         <div class="mt-[42px]">
-          <BaseButton>Kontak Kami</BaseButton>
+          <NuxtLink to="mailto:pupspskl.klhk@gmail.com" target="_blank">
+            <BaseButton>Kontak Kami</BaseButton>
+          </NuxtLink>
         </div>
       </div>
     </div>

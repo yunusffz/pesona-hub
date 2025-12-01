@@ -1,8 +1,11 @@
-const setting_feature = {
+const settingFeature = {
   integratedSection: false,
   profile: {
     showEstimation: false,
   },
+  instagramUrl: "https://www.instagram.com/usahahutansosial/",
+  youtubeUrl: "",
+  facebookUrl: "",
 };
 
-export default setting_feature;
+export default settingFeature;

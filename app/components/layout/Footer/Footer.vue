@@ -62,9 +62,27 @@
 
     <!-- Social media icons -->
     <div class="flex flex-wrap justify-center lg:justify-start gap-1 sm:gap-2">
-      <IconBadge label="Instagram" icon="instagram" />
-      <IconBadge label="Youtube" icon="youtube" />
-      <IconBadge label="Facebook" icon="facebook" />
+      <NuxtLink
+        v-if="settingFeature.instagramUrl"
+        :to="settingFeature.instagramUrl"
+        target="_blank"
+      >
+        <IconBadge label="Instagram" icon="instagram" />
+      </NuxtLink>
+      <NuxtLink
+        v-if="settingFeature.youtubeUrl"
+        :to="settingFeature.youtubeUrl"
+        target="_blank"
+      >
+        <IconBadge label="Youtube" icon="youtube" />
+      </NuxtLink>
+      <NuxtLink
+        v-if="settingFeature.facebookUrl"
+        :to="settingFeature.facebookUrl"
+        target="_blank"
+      >
+        <IconBadge label="Facebook" icon="facebook" />
+      </NuxtLink>
     </div>
 
     <!-- Copyright -->
@@ -76,6 +94,6 @@
   </footer>
 </template>
 <script setup lang="ts">
-  import SvgIcon from "~/components/base/SvgIcon.vue";
   import IconBadge from "~/components/base/IconBadge.vue";
+  import settingFeature from "~/utils/setting-feature";
 </script>

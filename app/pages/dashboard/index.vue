@@ -12,7 +12,6 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from "vue";
-  import { useAuth } from "~/composables/useAuth";
   import { useApi } from "~/composables/useApi";
   import { canUserCollaborate } from "~/utils/user-profile";
   import DashboardSection from "@/components/features/dashboard/DashboardSection.vue";

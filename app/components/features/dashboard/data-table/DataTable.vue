@@ -194,6 +194,8 @@
   const failedImages = ref<Map<string | number, boolean>>(new Map());
 
   // Helper function to get image source (thumbnail or placeholder)
+  const config = useRuntimeConfig();
+
   const getImageSrc = (product: ProductWithRelations): string => {
     // If image already failed, use placeholder immediately
     if (failedImages.value.get(product.id)) {
@@ -207,22 +209,10 @@
       product.thumbnails.length > 0
     ) {
       const thumbnail = product.thumbnails[0];
-      let imageUrl = "";
 
-      if (typeof thumbnail === "string" && thumbnail.trim() !== "") {
-        imageUrl = thumbnail.trim();
-      } else if (
-        typeof thumbnail === "object" &&
-        thumbnail !== null &&
-        "url" in thumbnail &&
-        thumbnail.url
-      ) {
-        imageUrl = (thumbnail as { url: string }).url.trim();
-      }
-
-      // If we have a valid image URL, return it
-      if (imageUrl) {
-        return imageUrl;
+      if (thumbnail && typeof thumbnail === "string" && thumbnail.trim() !== "") {
+        // Construct full URL: NUXT_PUBLIC_PESONA_API_URL/files/thumbnail
+        return `${config.public.pesonaApiUrl}/files/${thumbnail.trim()}`;
       }
     }
 

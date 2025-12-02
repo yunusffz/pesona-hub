@@ -37,6 +37,7 @@
             :key="`logo-${index}`"
             :src="partner.src"
             :alt="partner.alt"
+            :style="{ width: partner.size }"
             class="marquee-item h-24 object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
           />
         </div>
@@ -47,6 +48,7 @@
             :key="`logo-duplicate-${index}`"
             :src="partner.src"
             :alt="partner.alt"
+            :style="{ width: partner.size }"
             class="marquee-item h-24 object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
           />
         </div>
@@ -61,16 +63,19 @@
   // Partner logos array - add or remove logos here
   const partnerLogos = ref([
     {
-      src: "/assets/images/logo-jabar.png",
-      alt: "Logo Jawa Barat",
+      src: "/assets/images/logo-wri.png",
+      alt: "Logo WRI Indonesia",
+      size: "300px",
     },
     {
-      src: "/assets/images/logo-jatim.png",
-      alt: "Logo Jawa Timur",
+      src: "/assets/images/logo-icraf.png",
+      alt: "Logo ICRAF",
+      size: "100px",
     },
     {
-      src: "/assets/images/logo-sumbar.png",
-      alt: "Logo Sumatera Barat",
+      src: "/assets/images/logo-cifor.jpg",
+      alt: "Logo CIFOR",
+      size: "100px",
     },
   ]);
 

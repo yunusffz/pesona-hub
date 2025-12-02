@@ -9,7 +9,7 @@
   </div>
 </template>
 <script setup lang="ts">
-  import BigNumber from "../big-number/BigNumber.vue";
+  import BigNumber from "../dashboard-supply/statistic-section/BigNumber.vue";
   import { computed } from "vue";
   import { useUsers } from "~/queries/useUsers";
 

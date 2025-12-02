@@ -43,6 +43,12 @@ export default defineNuxtConfig({
         weights: [400, 500, 600, 700],
         styles: ["normal"],
       },
+      {
+        name: "Inter",
+        provider: "google",
+        weights: [400, 500, 600, 700],
+        styles: ["normal"],
+      },
     ],
   },
   icon: {
@@ -54,6 +60,10 @@ export default defineNuxtConfig({
     config: {
       theme: {
         extend: {
+          fontFamily: {
+            inter: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+            instrument: ["Instrument Sans", "system-ui", "-apple-system", "sans-serif"],
+          },
           colors: {
             background: "hsl(var(--color-background))",
             muted: "hsl(var(--color-muted))",

@@ -49,6 +49,8 @@
   </section>
 </template>
 <script setup lang="ts">
+  import type { Component } from "vue";
+
   interface Props {
     number: string;
     title: string;
@@ -58,6 +60,7 @@
     icon?: string;
     loading?: boolean;
     clickable?: boolean;
+    additionalDiv?: Component;
   }
 
   const props = withDefaults(defineProps<Props>(), {

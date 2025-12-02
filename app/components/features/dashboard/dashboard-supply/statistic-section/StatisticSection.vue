@@ -1,6 +1,6 @@
 <template>
   <div class="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
-    <BigNumber
+    <ProductBigNumber
       :number="formatStatNumber(statistics.productsCount.value)"
       title="Jumlah Produk/Wisata"
       icon="uil:weight"
@@ -34,7 +34,8 @@
   />
 </template>
 <script setup lang="ts">
-  import BigNumber from "../big-number/BigNumber.vue";
+  import BigNumber from "./BigNumber.vue";
+  import ProductBigNumber from "./ProductBigNumber.vue";
   import ProductDetailModal from "./ProductDetailModal.vue";
   import {
     useStatistics,

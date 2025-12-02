@@ -68,9 +68,10 @@ export const useAuth = () => {
       if (error) {
         // Check if error is 401 (unauthorized)
         const status = (error as any)?.status || (error as any)?.statusCode;
-        const messageCode = (error as any)?.code || (error as any)?.message_code;
+        const messageCode =
+          (error as any)?.code || (error as any)?.message_code;
 
-        if (status === 401 || messageCode === "USER_NOT_AUTHENTICATED") {
+        if (messageCode === "USER_NOT_AUTHENTICATED") {
           // Logout user if unauthorized
           await logout();
           // Return null to prevent query from retrying

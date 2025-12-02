@@ -68,12 +68,12 @@
       size: "300px",
     },
     {
-      src: "/assets/images/logo-icraf.png",
+      src: "/assets/images/logo-icraf.avif",
       alt: "Logo ICRAF",
       size: "100px",
     },
     {
-      src: "/assets/images/logo-cifor.jpg",
+      src: "/assets/images/logo-cifor.avif",
       alt: "Logo CIFOR",
       size: "100px",
     },

@@ -30,8 +30,6 @@
   // Fetch locations with province, regency, and district fields
   const { data: locationsData } = useLocations();
 
-  console.log(locationsData.value);
-
   // Fetch users with role 'PARTNER'
   const { data: usersData } = useUsers({
     filters: {

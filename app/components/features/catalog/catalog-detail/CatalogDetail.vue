@@ -1,3 +1,32 @@
+<template>
+  <section class="mt-10 2xl:px-20 lg:px-10 flex flex-col gap-10 mb-[60px] px-4">
+    <!-- Loading State -->
+    <div v-if="isLoading" class="flex justify-center items-center py-20">
+      <Loader />
+    </div>
+
+    <!-- Error State -->
+    <div v-else-if="error" class="text-center py-20">
+      <h2 class="text-2xl font-semibold text-neutral-900 mb-4">
+        Data Produk Tidak Ditemukan
+      </h2>
+      <p class="text-gray-600">{{ error.message }}</p>
+    </div>
+
+    <!-- Product Content -->
+    <template v-else-if="product">
+      <CatalogDetailHeader :product="product" />
+      <CatalogDetailContent :product="product" />
+    </template>
+
+    <div v-else class="text-center py-20">
+      <h2 class="text-2xl font-semibold text-gray-600 mb-4">
+        Produk Tidak Ditemukan
+      </h2>
+      <p class="text-gray-500">Data produk tidak ditemukan.</p>
+    </div>
+  </section>
+</template>
 <script setup lang="ts">
   import CatalogDetailHeader from "./CatalogDetailHeader.vue";
   import CatalogDetailContent from "./CatalogDetailContent.vue";
@@ -40,33 +69,3 @@
   provide("isLoading", isLoading);
   provide("error", error);
 </script>
-
-<template>
-  <section class="mt-10 2xl:px-20 lg:px-10 flex flex-col gap-10 mb-[60px] px-4">
-    <!-- Loading State -->
-    <div v-if="isLoading" class="flex justify-center items-center py-20">
-      <Loader />
-    </div>
-
-    <!-- Error State -->
-    <div v-else-if="error" class="text-center py-20">
-      <h2 class="text-2xl font-semibold text-neutral-900 mb-4">
-        Data Produk Tidak Ditemukan
-      </h2>
-      <p class="text-gray-600">{{ error.message }}</p>
-    </div>
-
-    <!-- Product Content -->
-    <template v-else-if="product">
-      <CatalogDetailHeader :product="product" />
-      <CatalogDetailContent :product="product" />
-    </template>
-
-    <div v-else class="text-center py-20">
-      <h2 class="text-2xl font-semibold text-gray-600 mb-4">
-        Produk Tidak Ditemukan
-      </h2>
-      <p class="text-gray-500">Data produk tidak ditemukan.</p>
-    </div>
-  </section>
-</template>

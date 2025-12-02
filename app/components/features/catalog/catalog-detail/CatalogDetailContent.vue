@@ -1,15 +1,13 @@
 <template>
   <section class="flex flex-col lg:flex-row gap-6 lg:gap-[60px]">
-    <div class="rounded-3xl flex-1 w-full lg:w-auto">
-      <NuxtImg
-        :src="productImage"
-        :alt="product?.name || 'Product Image'"
-        class="w-full h-full object-cover rounded-3xl max-h-[400px] lg:max-h-[579px]"
-      />
-    </div>
-    <div class="flex flex-col gap-6 w-full lg:w-[468px] lg:h-[648px] lg:overflow-y-auto">
+    <ProductImageGallery :images="productImages" />
+    <div
+      class="flex flex-col gap-6 w-full lg:w-[468px] lg:h-[648px] lg:overflow-y-auto"
+    >
       <div class="flex flex-col gap-4">
-        <h1 class="text-2xl md:text-3xl lg:text-[40px] font-medium leading-tight lg:leading-[48px]">
+        <h1
+          class="text-2xl md:text-3xl lg:text-[40px] font-medium leading-tight lg:leading-[48px]"
+        >
           {{ product?.name || "Nama Produk" }}
         </h1>
         <div class="flex items-center gap-2">
@@ -40,7 +38,9 @@
             >
           </div>
           <div class="flex flex-col gap-4">
-            <div class="font-semibold text-base md:text-[18px] text-neutral-900">
+            <div
+              class="font-semibold text-base md:text-[18px] text-neutral-900"
+            >
               Tambah ke Keranjang
             </div>
             <QuantityCounter
@@ -50,7 +50,8 @@
             <div
               class="flex items-center justify-between bg-[#F3F3F3] px-3 py-4 rounded-xl"
             >
-              <span class="font-medium text-base md:text-[18px] text-neutral-900"
+              <span
+                class="font-medium text-base md:text-[18px] text-neutral-900"
                 >Total</span
               >
               <span class="font-bold text-xl md:text-2xl">{{
@@ -99,9 +100,16 @@
           <div
             class="absolute bottom-0 left-0 w-full h-full flex items-center justify-center px-4"
           >
-            <div class="flex flex-col items-center justify-center w-full max-w-[350px]">
+            <div
+              class="flex flex-col items-center justify-center w-full max-w-[350px]"
+            >
               <div class="h-[100px] w-[120px] md:h-[130px] md:w-[150px]">
-                <SvgIcon name="lock" preserveOriginalColors size="150px" class="w-full h-full" />
+                <SvgIcon
+                  name="lock"
+                  preserveOriginalColors
+                  size="150px"
+                  class="w-full h-full"
+                />
               </div>
               <p
                 class="text-sm font-medium text-neutral-700 text-center leading-6"
@@ -111,7 +119,10 @@
                 ini.
               </p>
               <NuxtLink to="/login">
-                <BaseButton variant="primary" class="mt-8 md:mt-12 w-full md:w-auto">
+                <BaseButton
+                  variant="primary"
+                  class="mt-8 md:mt-12 w-full md:w-auto"
+                >
                   Login Sekarang
                 </BaseButton>
               </NuxtLink>
@@ -143,6 +154,7 @@
   import { useProductActivityLogger } from "~/composables/useProductActivityLogger";
   import { canUserCollaborate } from "~/utils/user-profile";
   import ProfileCompleteDialog from "~/components/common/ProfileCompleteDialog.vue";
+  import ProductImageGallery from "./ProductImageGallery.vue";
 
   const { isAuthenticated, user: authUser } = useAuth();
   const { logProductCollaboration } = useProductActivityLogger();
@@ -165,18 +177,35 @@
   const showConfirmDialog = ref(false);
   const userWithDetails = ref<any>(null);
 
-  // Computed property for product image
-  const productImage = computed(() => {
+  // Computed property for product images
+  const productImages = computed(() => {
     if (
       props.product?.thumbnails &&
       Array.isArray(props.product.thumbnails) &&
       props.product.thumbnails.length > 0
     ) {
-      // Assuming thumbnails is an array of image objects with url property
-      const firstImage = props.product.thumbnails[0] as any;
-      return firstImage?.url || "/assets/images/product-1.png";
+      // Map thumbnails to image objects with url property
+      return props.product.thumbnails.map((thumbnail: any, index: number) => ({
+        url: thumbnail?.url || "/assets/images/product-1.png",
+        alt: `${props.product?.name || "Product"} - Image ${index + 1}`,
+      }));
     }
-    return "/assets/images/product-1.png";
+
+    // Return multiple mock images if no thumbnails available (for testing)
+    return [
+      {
+        url: "/assets/images/product-1.png",
+        alt: `${props.product?.name || "Product"} - Image 1`,
+      },
+      {
+        url: "/assets/images/product-2.png",
+        alt: `${props.product?.name || "Product"} - Image 2`,
+      },
+      {
+        url: "/assets/images/product-3.png",
+        alt: `${props.product?.name || "Product"} - Image 3`,
+      },
+    ];
   });
 
   // Computed property for product price

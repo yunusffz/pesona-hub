@@ -36,6 +36,11 @@
       "product_usage",
       "thumbnails",
     ],
+    filters: {
+      product_category: {
+        $eq: "JASLING",
+      },
+    },
   });
 
   const products = computed(() => {

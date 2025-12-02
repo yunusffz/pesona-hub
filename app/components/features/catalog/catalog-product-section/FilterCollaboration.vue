@@ -3,34 +3,34 @@
     <DropdownMenuTrigger as-child class="rounded-full">
       <FilterDropdownTrigger
         :selected-count="selectedItems.length"
-        placeholder="Pilih Komoditas"
-        selected-text="prioritas dipilih"
-        icon="uil:building"
+        placeholder="Pilih Kolaborasi"
+        selected-text="kolaborasi dipilih"
+        icon="uil:users-alt"
       />
     </DropdownMenuTrigger>
 
     <DropdownMenuContent class="dropdown-content rounded-xl" align="start">
       <div v-if="isLoading" class="loading-state">
-        <span>Memuat prioritas komoditas...</span>
+        <span>Memuat kolaborasi...</span>
       </div>
 
       <div v-else class="pt-1">
         <FilterDropdownSearch
           v-model="searchQuery"
-          placeholder="Cari komoditas..."
+          placeholder="Cari kolaborasi..."
         />
         <hr class="mx-1" />
 
         <div class="item-list">
           <FilterDropdownItem
-            v-for="priority in filteredPriorities"
-            :key="priority.value"
-            :label="priority.label"
-            :is-selected="isSelected(priority.value)"
-            @toggle="toggleSelection(priority.value, priority.label)"
+            v-for="collaboration in filteredCollaborations"
+            :key="collaboration.value"
+            :label="collaboration.label"
+            :is-selected="isSelected(collaboration.value)"
+            @toggle="toggleSelection(collaboration.value, collaboration.label)"
           />
-          <div v-if="filteredPriorities.length === 0" class="empty-state">
-            Tidak ada prioritas komoditas ditemukan
+          <div v-if="filteredCollaborations.length === 0" class="empty-state">
+            Tidak ada kolaborasi ditemukan
           </div>
         </div>
       </div>
@@ -45,52 +45,59 @@
 
 <script setup lang="ts">
   import { ref, computed, onMounted, watch } from "vue";
-  import { useCommodityPriorities } from "~/queries/useCommodityPriorities";
+  import { useCollaborations } from "~/queries/useCollaborations";
   import { useCatalogStore } from "~/stores/useCatalogStore";
   import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
   } from "~/components/ui/dropdown-menu";
-  import FilterDropdownTrigger from "../common/FilterDropdownTrigger.vue";
-  import FilterDropdownSearch from "../common/FilterDropdownSearch.vue";
-  import FilterDropdownItem from "../common/FilterDropdownItem.vue";
-  import FilterDropdownSelectedChips from "../common/FilterDropdownSelectedChips.vue";
+  import FilterDropdownTrigger from "./common/FilterDropdownTrigger.vue";
+  import FilterDropdownSearch from "./common/FilterDropdownSearch.vue";
+  import FilterDropdownItem from "./common/FilterDropdownItem.vue";
+  import FilterDropdownSelectedChips from "./common/FilterDropdownSelectedChips.vue";
+  import type { components } from "~/types/pesona-hub-api";
 
-  interface PriorityItem {
+  interface CollaborationItem {
     label: string;
-    value: string;
+    value: number;
   }
 
+  type CollaborationResponse = components["schemas"]["CollaborationResponse"];
+
   const catalogStore = useCatalogStore();
-  const { data, isLoading } = useCommodityPriorities({ limit: 200 });
+  const { data, isLoading } = useCollaborations({ limit: 200 });
 
   const searchQuery = ref<string>("");
-  const selectedItems = ref<PriorityItem[]>([]);
+  const selectedItems = ref<CollaborationItem[]>([]);
 
-  const priorities = computed(() => {
-    if (!data.value?.data || !Array.isArray(data.value.data)) return [];
+  const collaborations = computed(() => {
+    if (!data.value) return [];
 
-    return (data.value.data as string[]).map((priority) => ({
-      label: priority,
-      value: priority,
-    }));
+    const responseData = data.value as any;
+
+    return (responseData.data as CollaborationResponse[])
+      .filter((collab: any) => collab.status === "active")
+      .map((collab) => ({
+        label: collab.name,
+        value: collab.id,
+      }));
   });
 
-  const filteredPriorities = computed(() => {
-    if (!searchQuery.value) return priorities.value;
+  const filteredCollaborations = computed(() => {
+    if (!searchQuery.value) return collaborations.value;
 
     const query = searchQuery.value.toLowerCase();
-    return priorities.value.filter((priority) =>
-      priority.label.toLowerCase().includes(query)
+    return collaborations.value.filter((collab) =>
+      collab.label.toLowerCase().includes(query)
     );
   });
 
-  const isSelected = (value: string) => {
+  const isSelected = (value: number) => {
     return selectedItems.value.some((item) => item.value === value);
   };
 
-  const toggleSelection = (value: string, label: string) => {
+  const toggleSelection = (value: number, label: string) => {
     const index = selectedItems.value.findIndex((item) => item.value === value);
 
     if (index > -1) {
@@ -109,13 +116,13 @@
 
   const updateStore = () => {
     const values = selectedItems.value.map((item) => item.value);
-    catalogStore.setSelectedCommodityPriorities(values);
+    catalogStore.setSelectedCollaborations(values);
   };
 
   onMounted(() => {
-    const storedValues = catalogStore.selectedCommodityPriorities || [];
-    selectedItems.value = priorities.value.filter((p) =>
-      storedValues.includes(p.value)
+    const storedValues = catalogStore.selectedCollaborations || [];
+    selectedItems.value = collaborations.value.filter((c) =>
+      storedValues.includes(c.value)
     );
   });
 
@@ -123,10 +130,10 @@
   watch(
     () => data.value,
     () => {
-      if (priorities.value.length > 0) {
-        const storedValues = catalogStore.selectedCommodityPriorities || [];
-        selectedItems.value = priorities.value.filter((p) =>
-          storedValues.includes(p.value)
+      if (collaborations.value.length > 0) {
+        const storedValues = catalogStore.selectedCollaborations || [];
+        selectedItems.value = collaborations.value.filter((c) =>
+          storedValues.includes(c.value)
         );
       }
     }

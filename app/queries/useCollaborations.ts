@@ -20,7 +20,7 @@ export const useCollaborations = (options: UseStrapiParamsOptions = {}) => {
 
   return useQuery({
     queryKey: ["collaborations", options],
-    queryFn: async (): Promise<ListResponse> => {
+    queryFn: async (): Promise<BaseResponse> => {
       const params = buildStrapiParams(options);
       const queryString = params.toString();
 
@@ -55,7 +55,9 @@ export const useCollaboration = (
       const queryString = params.toString();
 
       const { data, error } = await $apiClient.GET(
-        `/collaborations/{collaboration_id}${queryString ? `?${queryString}` : ""}`,
+        `/collaborations/{collaboration_id}${
+          queryString ? `?${queryString}` : ""
+        }`,
         {
           params: {
             path: {
@@ -76,4 +78,3 @@ export const useCollaboration = (
     gcTime: 10 * 60 * 1000,
   });
 };
-

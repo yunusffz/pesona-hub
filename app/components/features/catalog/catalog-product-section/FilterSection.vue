@@ -7,9 +7,10 @@
         :onSearch="onSearch"
       />
     </div>
-    <div class="flex md:flex-row flex-col gap-4">
+    <div class="flex md:flex-row flex-col gap-4 max-w-[650px]">
       <FilterLocation />
       <FilterCommodityPriority />
+      <FilterCollaboration />
     </div>
   </div>
 </template>
@@ -19,6 +20,7 @@
   import FilterLocation from "./filter-location/FilterLocation.vue";
   import { useCatalogStore } from "~/stores/useCatalogStore";
   import FilterCommodityPriority from "./FilterCommodityPriority.vue";
+  import FilterCollaboration from "./FilterCollaboration.vue";
   const catalogStore = useCatalogStore();
   const onSearch = (value: string) => {
     catalogStore.setSearchQuery(value);

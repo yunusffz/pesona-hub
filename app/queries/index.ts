@@ -7,4 +7,8 @@ export {
   useSocialForestryBusinessGroup,
 } from "./useSocialForestryBusinessGroups";
 export { useActivityLogs, useLogActivity } from "./useActivityLogs";
-export { useCommodityPriority } from "./useCommodityPriorities";
+export {
+  useCommodityPriorities,
+  useCommodityPriority,
+  useCommoditiesPriorityDetailed,
+} from "./useCommodityPriorities";

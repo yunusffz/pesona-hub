@@ -6,7 +6,7 @@
     >
       <span class="flex-1 text-left">Pilih Prioritas Komoditas</span>
       <span class="text-[#717182]">
-        ({{ checkedCount }}/{{ options.length }})
+        ({{ selectedCount }}/{{ options.length }})
       </span>
       <Icon
         :name="isExpanded ? 'uil:angle-up' : 'uil:angle-down'"
@@ -15,19 +15,30 @@
     </button>
 
     <div v-if="isExpanded" class="flex flex-col gap-2.5">
+      <div v-if="isLoading" class="text-xs text-[#717182]">
+        Memuat data prioritas komoditas...
+      </div>
+      <div v-else-if="error" class="text-xs text-red-500">
+        Error memuat prioritas komoditas: {{ error.message }}
+      </div>
       <div
-        v-for="priority in options"
-        :key="priority.value"
-        class="flex items-center gap-1.5 cursor-pointer"
-        @click="togglePriority(priority.value)"
+        v-else-if="options.length === 0"
+        class="text-xs text-[#717182]"
       >
-        <Checkbox :checked="selectedMap[String(priority.value)] || false" />
-        <span class="flex-1 text-xs text-neutral-950">
-          {{ priority.label }}
-        </span>
-        <span class="text-xs text-[#717182]"
-          >({{ getPriorityCount(priority.value) }})</span
-        >
+        Tidak ada data prioritas komoditas
+      </div>
+
+      <div v-else class="flex flex-col gap-2">
+        <div class="max-h-[300px] overflow-y-auto pr-1">
+          <CommodityPriorityItem
+            v-for="priority in options"
+            :key="priority.value"
+            :label="priority.label"
+            :is-selected="isSelected(priority.value)"
+            :count="priority.count"
+            @toggle="toggleSelection(priority.value)"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -35,46 +46,55 @@
 
 <script setup lang="ts">
   import { computed, ref, watch } from "vue";
-  import { Checkbox } from "~/components/ui/checkbox";
+  import CommodityPriorityItem from "./CommodityPriorityItem.vue";
 
   interface PriorityOption {
     label: string;
     value: string;
+    count?: number;
   }
 
   interface Props {
     options: PriorityOption[];
-    selectedMap: Record<string, boolean>;
+    modelValue: string[];
     defaultExpanded?: boolean;
+    isLoading?: boolean;
+    error?: Error | null;
   }
 
   interface Emits {
-    (e: "update:selectedMap", value: Record<string, boolean>): void;
+    (e: "update:modelValue", value: string[]): void;
   }
 
   const props = withDefaults(defineProps<Props>(), {
     defaultExpanded: true,
+    isLoading: false,
+    error: null,
   });
 
   const emit = defineEmits<Emits>();
 
   const isExpanded = ref(props.defaultExpanded);
 
-  const checkedCount = computed(() => {
-    return Object.values(props.selectedMap).filter(Boolean).length;
+  const selectedCount = computed(() => {
+    return props.modelValue.length;
   });
 
-  const getPriorityCount = (value: string) => {
-    return 0;
+  const isSelected = (value: string): boolean => {
+    return props.modelValue.includes(value);
   };
 
-  const togglePriority = (value: string) => {
-    const key = String(value);
-    const newMap = {
-      ...props.selectedMap,
-      [key]: !props.selectedMap[key],
-    };
-    emit("update:selectedMap", newMap);
+  const toggleSelection = (value: string) => {
+    const index = props.modelValue.indexOf(value);
+    const newSelection = [...props.modelValue];
+
+    if (index > -1) {
+      newSelection.splice(index, 1);
+    } else {
+      newSelection.push(value);
+    }
+
+    emit("update:modelValue", newSelection);
   };
 
   watch(

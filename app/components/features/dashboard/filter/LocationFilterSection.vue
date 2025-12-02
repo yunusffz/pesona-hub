@@ -6,7 +6,7 @@
     >
       <span class="flex-1 text-left">Pilih Wilayah</span>
       <span class="text-[#717182]">
-        ({{ selectedCount }})
+        ({{ selectedCount }}/{{ totalLocationCount }})
       </span>
       <Icon
         :name="isExpanded ? 'uil:angle-up' : 'uil:angle-down'"
@@ -131,6 +131,18 @@
     );
 
   const selectedCount = computed(() => selected.value.length);
+
+  const totalLocationCount = computed(() => {
+    let total = 0;
+    hierarchicalData.value.forEach((province) => {
+      total += 1; // Count province
+      province.regencies.forEach((regency) => {
+        total += 1; // Count regency
+        total += regency.districts.length; // Count districts
+      });
+    });
+    return total;
+  });
 
   // Watch for changes in modelValue to sync internal state
   watch(

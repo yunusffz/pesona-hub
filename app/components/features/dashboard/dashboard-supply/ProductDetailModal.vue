@@ -87,7 +87,7 @@
 <script setup lang="ts">
   import { Box } from "lucide-vue-next";
   import CommodityRow from "./CommodityRow.vue";
-  import { useCommoditiesPriority } from "~/composables/useCommoditiesPriority";
+  import { useCommoditiesPriorityDetailed } from "~/queries/useCommodityPriorities";
 
   import {
     Dialog,
@@ -109,5 +109,5 @@
 
   const isOpen = defineModel<boolean>("open", { default: false });
 
-  const { commodities, isLoading, error } = useCommoditiesPriority();
+  const { commodities, isLoading, error } = useCommoditiesPriorityDetailed();
 </script>

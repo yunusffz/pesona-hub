@@ -225,7 +225,12 @@
                       <Avatar
                         class="text-neutral-1000 flex items-center justify-center bg-neutral-100"
                       >
-                        {{ userInitials }}
+                        <AvatarImage
+                          v-if="user?.thumbnail"
+                          :src="avatarUrl || ''"
+                          :alt="user?.name || 'User'"
+                        />
+                        <AvatarFallback>{{ userInitials }}</AvatarFallback>
                       </Avatar>
                       <div class="flex-1">
                         <div class="font-medium text-neutral-900">
@@ -295,6 +300,7 @@
   import { computed, ref, watch, onUnmounted, Teleport } from "vue";
   import SvgIcon from "~/components/base/SvgIcon.vue";
   import UserProfileDropdown from "./UserProfileDropdown.vue";
+  import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
   import { useAuth } from "~/composables/useAuth";
 
   interface Props {
@@ -311,9 +317,16 @@
 
   // Authentication
   const { user, isAuthenticated, logout } = useAuth();
+  const config = useRuntimeConfig();
 
   // Mobile menu state
   const isMobileMenuOpen = ref(false);
+
+  // Avatar URL
+  const avatarUrl = computed(() => {
+    if (!user.value?.thumbnail) return null;
+    return `${config.public.pesonaApiUrl}/files/${user.value.thumbnail}`;
+  });
 
   // User initials for avatar
   const userInitials = computed(() => {

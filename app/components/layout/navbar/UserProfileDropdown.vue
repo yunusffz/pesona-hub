@@ -14,7 +14,12 @@
         <Avatar
           class="text-neutral-1000 flex items-center justify-center bg-neutral-100"
         >
-          {{ userInitials }}
+          <AvatarImage
+            v-if="user?.thumbnail"
+            :src="avatarUrl || ''"
+            :alt="user?.name || 'User'"
+          />
+          <AvatarFallback>{{ userInitials }}</AvatarFallback>
         </Avatar>
         <div class="flex justify-start text-left flex-col">
           <span class="font-medium leading-6">{{ user?.name || "User" }}</span>
@@ -69,6 +74,7 @@
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "~/components/ui/dropdown-menu";
+  import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
   import { useAuth } from "~/composables/useAuth";
 
   interface Props {
@@ -81,6 +87,13 @@
 
   // Authentication
   const { user, logout } = useAuth();
+  const config = useRuntimeConfig();
+
+  // Avatar URL
+  const avatarUrl = computed(() => {
+    if (!user.value?.thumbnail) return null;
+    return `${config.public.pesonaApiUrl}/files/${user.value.thumbnail}`;
+  });
 
   // User initials for avatar
   const userInitials = computed(() => {

@@ -13,17 +13,18 @@
           delay: 5000,
           disableOnInteraction: false,
         }"
-        :loop="images.length > 1"
+        :loop="safeImages.length > 1"
         @swiper="setMainSwiper"
       >
-        <SwiperSlide v-for="(image, index) in images" :key="index">
+        <SwiperSlide v-for="(image, index) in safeImages" :key="index">
           <div
             class="w-full h-[400px] lg:h-[579px] rounded-3xl overflow-hidden"
           >
-            <NuxtImg
+            <img
               :src="image.url"
               :alt="image.alt || `Product Image ${index + 1}`"
               class="w-full h-full object-cover"
+              @error="handleImageError"
             />
           </div>
         </SwiperSlide>
@@ -40,7 +41,7 @@
         @swiper="setThumbsSwiper"
       >
         <SwiperSlide
-          v-for="(image, index) in images"
+          v-for="(image, index) in safeImages"
           :key="index"
           class="cursor-pointer"
           @click="goToSlide(index)"
@@ -52,6 +53,7 @@
               :src="image.url"
               :alt="image.alt || `Thumbnail ${index + 1}`"
               class="w-full h-full object-cover"
+              @error="handleImageError"
             />
             <!-- Overlay for active thumbnail -->
             <div
@@ -88,10 +90,19 @@
   }
 
   const props = defineProps<Props>();
+  const { getImageUrlWithFallback, getRandomFallbackImage } = useSafeImage();
 
   const thumbsSwiper = ref<any>(null);
   const mainSwiper = ref<any>(null);
   const activeIndex = ref(0);
+
+  // Create safe image URLs with fallback handling
+  const safeImages = computed(() => {
+    return props.images.map((image) => ({
+      url: getImageUrlWithFallback(image.url),
+      alt: image.alt,
+    }));
+  });
 
   const setThumbsSwiper = (swiper: any) => {
     thumbsSwiper.value = swiper;
@@ -114,6 +125,15 @@
   const goToSlide = (index: number) => {
     if (mainSwiper.value) {
       mainSwiper.value.slideTo(index);
+    }
+  };
+
+  // Handle image load errors - replace with random fallback
+  const handleImageError = (event: Event) => {
+    const img = event.target as HTMLImageElement;
+    if (img && !img.dataset.fallbackApplied) {
+      img.dataset.fallbackApplied = "true";
+      img.src = getRandomFallbackImage();
     }
   };
 </script>

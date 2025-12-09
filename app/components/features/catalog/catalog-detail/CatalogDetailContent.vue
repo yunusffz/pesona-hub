@@ -186,7 +186,7 @@
     ) {
       // Map thumbnails to image objects with url property
       return props.product.thumbnails.map((thumbnail: any, index: number) => ({
-        url: thumbnail?.url || "/assets/images/product-1.png",
+        url: thumbnail || "/assets/images/product-1.png",
         alt: `${props.product?.name || "Product"} - Image ${index + 1}`,
       }));
     }

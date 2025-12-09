@@ -38,12 +38,12 @@
         >
       </div>
       <div class="text-neutral-700 text-xs flex flex-col gap-1">
-        <div>KPS : {{ props.product.social_forestry_group?.name }}</div>
-        <div>
+        <div v-if="props.product.social_forestry_group">KPS : {{ props.product.social_forestry_group?.name }}</div>
+        <div v-if="props.product.social_forestry_business_group">
           KUPS : {{ props.product.social_forestry_business_group?.name }}
         </div>
       </div>
-      <div>
+      <div v-if="props.product.unit">
         <BaseBadge variant="grey" size="xs">{{ props.product.unit }}</BaseBadge>
       </div>
       <div class="py-2 mt-auto flex 2xl:flex-row flex-col gap-4">

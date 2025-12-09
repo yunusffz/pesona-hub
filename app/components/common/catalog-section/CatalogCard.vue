@@ -38,17 +38,21 @@
         >
       </div>
       <div class="text-neutral-700 text-xs flex flex-col gap-1">
-        <div v-if="props.product.social_forestry_group">KPS : {{ props.product.social_forestry_group?.name }}</div>
+        <div v-if="props.product.social_forestry_group">
+          KPS : {{ props.product.social_forestry_group?.name }}
+        </div>
         <div v-if="props.product.social_forestry_business_group">
           KUPS : {{ props.product.social_forestry_business_group?.name }}
         </div>
       </div>
-     
+
       <div class="py-2 mt-auto">
         <div v-if="props.product.unit" class="py-2">
-            <BaseBadge variant="grey" size="xs">{{ props.product.unit }}</BaseBadge>
-          </div>
-        <div class=" flex 2xl:flex-row flex-col gap-4 items-center">
+          <BaseBadge variant="grey" size="xs">{{
+            props.product.unit
+          }}</BaseBadge>
+        </div>
+        <div class="flex 2xl:flex-row flex-col gap-4 items-center">
           <div class="flex flex-col gap-1 flex-1">
             <div v-if="isAuthenticated" class="text-lg font-bold">
               {{
@@ -56,37 +60,40 @@
               }}
             </div>
             <div v-else class="text-lg font-bold">Rp xxx.xxx</div>
-            <div v-if="!isAuthenticated" class="text-neutral-500 text-xs italic">
+            <div
+              v-if="!isAuthenticated"
+              class="text-neutral-500 text-xs italic"
+            >
               Login untuk melihat harga & kontak supplier
             </div>
           </div>
-        <div class="">
-          <a
-            :href="'/katalog/' + props.product.id"
-            class="border inline-flex items-center justify-center w-full 2xl:w-auto border-neutral-200 rounded-full px-5 py-[10px] text-md bg-white text-neutral-800 font-medium"
-          >
-            {{ props.linkText }}
-          </a>
+          <div class="">
+            <a
+              :href="'/katalog/' + props.product.id"
+              class="border inline-flex items-center justify-center w-full 2xl:w-auto border-neutral-200 rounded-full px-5 py-[10px] text-md bg-white text-neutral-800 font-medium"
+            >
+              {{ props.linkText }}
+            </a>
+          </div>
         </div>
       </div>
-        </div>
-      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import Badge from "~/components/ui/badge/Badge.vue";
-  import BaseBadge from "~/components/base/BaseBadge.vue";
-  import { formatRupiah } from "~/utils/format-number";
-  import type { ProductWithRelations } from "~/types/product";
-  import RankBadges from "~/components/base/RankBadges.vue";
+import Badge from "~/components/ui/badge/Badge.vue";
+import BaseBadge from "~/components/base/BaseBadge.vue";
+import { formatRupiah } from "~/utils/format-number";
+import type { ProductWithRelations } from "~/types/product";
+import RankBadges from "~/components/base/RankBadges.vue";
 
-  const { toTitleCase } = useTitleCase();
+const { toTitleCase } = useTitleCase();
 
-  const props = defineProps<{
-    product: Partial<ProductWithRelations>;
-    linkText: string;
-  }>();
+const props = defineProps<{
+  product: Partial<ProductWithRelations>;
+  linkText: string;
+}>();
 
-  const { isAuthenticated } = useAuth();
+const { isAuthenticated } = useAuth();
 </script>

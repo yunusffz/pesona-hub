@@ -10,6 +10,17 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
   },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "tailwindCSS.includeLanguages": {
     "vue": "html",
     "vue-html": "html",
@@ -17,5 +28,4 @@
     "typescript": "typescript"
   },
   "tailwindCSS.experimental.configFile": "./tailwind.config.ts"
-
 }

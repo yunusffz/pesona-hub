@@ -3,7 +3,7 @@
     class="grid grid-cols-1 lg:grid-cols-3 gap-[74px] px-4 2xl:px-20 lg:px-10 py-20 sm:py-[120px] lg:py-0"
   >
     <StatisticContent
-      number="500+"
+      :number="productsDisplay"
       title="Produk kehutanan sosial terdaftar"
       description="Madu, kopi, kayu, dan kerajinan dari berbagai KUPS di seluruh Indonesia."
     />
@@ -26,6 +26,10 @@
   import { useLocations } from "~/queries/useLocations";
   import { useUsers } from "~/queries/useUsers";
   import { useLocationHierarchy } from "~/composables/useLocationHierarchy";
+  import { useStatistics } from "~/composables/useStatistics";
+
+  // Fetch statistics (including product count)
+  const { productsCount } = useStatistics();
 
   // Fetch locations with province, regency, and district fields
   const { data: locationsData } = useLocations();
@@ -59,6 +63,11 @@
   });
 
   // Format display strings
+  const productsDisplay = computed(() => {
+    const count = productsCount.value;
+    return count > 0 ? `${count}+` : "-";
+  });
+
   const provinceDisplay = computed(() => {
     const count = provinceCount.value;
     return count > 0 ? `${count}+` : "-";

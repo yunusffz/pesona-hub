@@ -17,7 +17,7 @@
 <script setup lang="ts">
   import Badge from "~/components/ui/badge/Badge.vue";
   const props = defineProps<{
-    rank: "silver" | "gold" | "platinum";
+    rank: "silver" | "gold" | "platinum" | "blue";
   }>();
   const { toTitleCase } = useTitleCase();
 </script>

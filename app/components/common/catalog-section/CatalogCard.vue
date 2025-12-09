@@ -43,21 +43,23 @@
           KUPS : {{ props.product.social_forestry_business_group?.name }}
         </div>
       </div>
-      <div v-if="props.product.unit">
-        <BaseBadge variant="grey" size="xs">{{ props.product.unit }}</BaseBadge>
-      </div>
-      <div class="py-2 mt-auto flex 2xl:flex-row flex-col gap-4">
-        <div class="flex flex-col gap-1 flex-1">
-          <div v-if="isAuthenticated" class="text-lg font-bold">
-            {{
-              formatRupiah(Number(props.product.price) ?? 0) ?? "Rp. xxx.xxx"
-            }}
+     
+      <div class="py-2 mt-auto">
+        <div v-if="props.product.unit" class="py-2">
+            <BaseBadge variant="grey" size="xs">{{ props.product.unit }}</BaseBadge>
           </div>
-          <div v-else class="text-lg font-bold">Rp xxx.xxx</div>
-          <div v-if="!isAuthenticated" class="text-neutral-500 text-xs italic">
-            Login untuk melihat harga & kontak supplier
+        <div class=" flex 2xl:flex-row flex-col gap-4 items-center">
+          <div class="flex flex-col gap-1 flex-1">
+            <div v-if="isAuthenticated" class="text-lg font-bold">
+              {{
+                formatRupiah(Number(props.product.price) ?? 0) ?? "Rp. xxx.xxx"
+              }}
+            </div>
+            <div v-else class="text-lg font-bold">Rp xxx.xxx</div>
+            <div v-if="!isAuthenticated" class="text-neutral-500 text-xs italic">
+              Login untuk melihat harga & kontak supplier
+            </div>
           </div>
-        </div>
         <div class="">
           <a
             :href="'/katalog/' + props.product.id"
@@ -67,7 +69,8 @@
           </a>
         </div>
       </div>
-    </div>
+        </div>
+      </div>
   </div>
 </template>
 

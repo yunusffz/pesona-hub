@@ -44,7 +44,7 @@
     error,
   } = useProduct(productId, {
     populate: ["social_forestry_business_group.contact"],
-    fields: ["name", "description", "price", "unit", "product_usage"],
+    fields: ["name", "description", "price", "unit", "product_usage", "thumbnails"],
   });
 
   // Extract product data from API response

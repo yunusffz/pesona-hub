@@ -5,9 +5,10 @@
         props.product.product_usage || "Produk"
       }}</Badge>
       <NuxtImg
-        :src="'/assets/images/product-2.png'"
+        :src="imageSource"
         alt="Product Image"
         class="w-full h-[308px] object-cover rounded-t-2xl"
+        @error="handleImageError"
       />
       <div class="absolute bottom-3 right-6">
         <RankBadges
@@ -93,7 +94,15 @@ const { toTitleCase } = useTitleCase();
 const props = defineProps<{
   product: Partial<ProductWithRelations>;
   linkText: string;
+  imageUrl?: string;
 }>();
 
 const { isAuthenticated } = useAuth();
+
+const dummyImage = "/assets/images/product-2.png";
+const imageSource = ref(props.imageUrl || dummyImage);
+
+const handleImageError = () => {
+  imageSource.value = dummyImage;
+};
 </script>

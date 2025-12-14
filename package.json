@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "generate:api": "dotenv -- cross-env-shell \"openapi-typescript $NUXT_PUBLIC_PESONA_API_URL/openapi.json -o app/types/pesona-hub-api.d.ts\"",
+    "generate:api": "node scripts/generate-api.mjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{js,ts,vue,css,md,json}\""

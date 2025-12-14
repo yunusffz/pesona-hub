@@ -19,7 +19,7 @@
   import SearchInput from "~/components/base/SearchInput.vue";
   import FilterLocation from "./filter-location/FilterLocation.vue";
   import { useCatalogStore } from "~/stores/useCatalogStore";
-  import FilterCommodityPriority from "./FilterCommodityPriority.vue";
+  import FilterCommodityPriority from "./filter-commodity-priority/FilterCommodityPriority.vue";
   import FilterCollaboration from "./FilterCollaboration.vue";
   const catalogStore = useCatalogStore();
   const onSearch = (value: string) => {

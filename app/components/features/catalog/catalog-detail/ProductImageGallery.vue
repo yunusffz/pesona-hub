@@ -53,7 +53,7 @@
               :src="image.url"
               :alt="image.alt || `Thumbnail ${index + 1}`"
               class="w-full h-full object-cover"
-              @error="handleImageError"
+              @error="handleImageError || ''"
             />
             <!-- Overlay for active thumbnail -->
             <div
@@ -71,107 +71,107 @@
 </template>
 
 <script setup lang="ts">
-  import { Swiper, SwiperSlide } from "swiper/vue";
-  import {
-    Thumbs as SwiperThumbs,
-    Autoplay as SwiperAutoplay,
-  } from "swiper/modules";
-  import "swiper/css";
-  import "swiper/css/thumbs";
-  import "swiper/css/autoplay";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import {
+  Thumbs as SwiperThumbs,
+  Autoplay as SwiperAutoplay,
+} from "swiper/modules";
+import "swiper/css";
+import "swiper/css/thumbs";
+import "swiper/css/autoplay";
 
-  interface ProductImage {
-    url: string;
-    alt?: string;
-  }
+interface ProductImage {
+  url: string;
+  alt?: string;
+}
 
-  interface Props {
-    images: ProductImage[];
-  }
+interface Props {
+  images: ProductImage[];
+}
 
-  const props = defineProps<Props>();
-  const { getImageUrlWithFallback, getRandomFallbackImage } = useSafeImage();
+const props = defineProps<Props>();
+const { getImageUrlWithFallback, getRandomFallbackImage } = useSafeImage();
 
-  const thumbsSwiper = ref<any>(null);
-  const mainSwiper = ref<any>(null);
-  const activeIndex = ref(0);
+const thumbsSwiper = ref<any>(null);
+const mainSwiper = ref<any>(null);
+const activeIndex = ref(0);
 
-  // Create safe image URLs with fallback handling
-  const safeImages = computed(() => {
-    return props.images.map((image) => ({
-      url: getImageUrlWithFallback(image.url),
-      alt: image.alt,
-    }));
+// Create safe image URLs with fallback handling
+const safeImages = computed(() => {
+  return props.images.map((image) => ({
+    url: getImageUrlWithFallback(image.url),
+    alt: image.alt,
+  }));
+});
+
+const setThumbsSwiper = (swiper: any) => {
+  thumbsSwiper.value = swiper;
+};
+
+const setMainSwiper = (swiper: any) => {
+  mainSwiper.value = swiper;
+  // Update active index when slide changes
+  swiper.on("slideChange", () => {
+    const realIndex = swiper.realIndex;
+    activeIndex.value = realIndex;
+
+    // Update thumbnail swiper to show active thumbnail
+    if (thumbsSwiper.value) {
+      thumbsSwiper.value.slideTo(realIndex);
+    }
   });
+};
 
-  const setThumbsSwiper = (swiper: any) => {
-    thumbsSwiper.value = swiper;
-  };
+const goToSlide = (index: number) => {
+  if (mainSwiper.value) {
+    mainSwiper.value.slideTo(index);
+  }
+};
 
-  const setMainSwiper = (swiper: any) => {
-    mainSwiper.value = swiper;
-    // Update active index when slide changes
-    swiper.on("slideChange", () => {
-      const realIndex = swiper.realIndex;
-      activeIndex.value = realIndex;
-
-      // Update thumbnail swiper to show active thumbnail
-      if (thumbsSwiper.value) {
-        thumbsSwiper.value.slideTo(realIndex);
-      }
-    });
-  };
-
-  const goToSlide = (index: number) => {
-    if (mainSwiper.value) {
-      mainSwiper.value.slideTo(index);
-    }
-  };
-
-  // Handle image load errors - replace with random fallback
-  const handleImageError = (event: Event) => {
-    const img = event.target as HTMLImageElement;
-    if (img && !img.dataset.fallbackApplied) {
-      img.dataset.fallbackApplied = "true";
-      img.src = getRandomFallbackImage();
-    }
-  };
+// Handle image load errors - replace with random fallback
+const handleImageError = (event: Event) => {
+  const img = event.target as HTMLImageElement;
+  if (img && !img.dataset.fallbackApplied) {
+    img.dataset.fallbackApplied = "true";
+    img.src = getRandomFallbackImage() || "";
+  }
+};
 </script>
 
 <style scoped>
-  /* Main swiper - full width slides */
-  .main-swiper-container :deep(.swiper) {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
+/* Main swiper - full width slides */
+.main-swiper-container :deep(.swiper) {
+  width: 100% !important;
+  max-width: 100% !important;
+}
 
-  .main-swiper-container :deep(.swiper-wrapper) {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
+.main-swiper-container :deep(.swiper-wrapper) {
+  width: 100% !important;
+  max-width: 100% !important;
+}
 
-  .main-swiper-container :deep(.swiper-slide) {
-    width: 100% !important;
-    max-width: 100% !important;
-    flex-shrink: 0;
-  }
+.main-swiper-container :deep(.swiper-slide) {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex-shrink: 0;
+}
 
-  /* Thumbnail swiper - auto width for multiple slides */
-  .thumbs-swiper-container :deep(.swiper) {
-    width: 100% !important;
-  }
+/* Thumbnail swiper - auto width for multiple slides */
+.thumbs-swiper-container :deep(.swiper) {
+  width: 100% !important;
+}
 
-  .thumbs-swiper-container :deep(.swiper-wrapper) {
-    width: 100% !important;
-  }
+.thumbs-swiper-container :deep(.swiper-wrapper) {
+  width: 100% !important;
+}
 
-  .thumbs-swiper-container :deep(.swiper-slide) {
-    width: auto !important;
-    flex-shrink: 0;
-  }
+.thumbs-swiper-container :deep(.swiper-slide) {
+  width: auto !important;
+  flex-shrink: 0;
+}
 
-  /* Customize swiper-slide-thumb-active if needed */
-  :deep(.swiper-slide-thumb-active) {
-    opacity: 1;
-  }
+/* Customize swiper-slide-thumb-active if needed */
+:deep(.swiper-slide-thumb-active) {
+  opacity: 1;
+}
 </style>

@@ -13,7 +13,11 @@ export const useSafeImage = () => {
    */
   const getRandomFallbackImage = (): string => {
     const randomIndex = Math.floor(Math.random() * FALLBACK_IMAGES.length);
-    return FALLBACK_IMAGES[randomIndex];
+    const image = FALLBACK_IMAGES[randomIndex];
+    if (!image) {
+      return FALLBACK_IMAGES[0]!;
+    }
+    return image;
   };
 
   /**

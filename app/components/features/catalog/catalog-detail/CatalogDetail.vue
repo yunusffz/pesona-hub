@@ -28,44 +28,44 @@
   </section>
 </template>
 <script setup lang="ts">
-  import CatalogDetailHeader from "./CatalogDetailHeader.vue";
-  import CatalogDetailContent from "./CatalogDetailContent.vue";
-  import { useProduct } from "~/queries";
-  import type { ProductWithRelations } from "~/types/product";
-  import Loader from "~/components/base/Loader.vue";
-  // Get product ID from route params
-  const route = useRoute();
-  const productId = route.params.slug as string;
+import CatalogDetailHeader from "./CatalogDetailHeader.vue";
+import CatalogDetailContent from "./CatalogDetailContent.vue";
+import { useProduct } from "~/queries";
+import type { ExtendedProduct, ProductWithRelations } from "~/types/product";
+import Loader from "~/components/base/Loader.vue";
+// Get product ID from route params
+const route = useRoute();
+const productId = route.params.slug as string;
 
-  // Fetch product detail with populated relations
-  const {
-    data: productData,
-    isLoading,
-    error,
-  } = useProduct(productId, {
-    populate: ["social_forestry_business_group.contact"],
-    fields: ["name", "description", "price", "unit", "product_usage", "thumbnails"],
-  });
+// Fetch product detail with populated relations
+const {
+  data: productData,
+  isLoading,
+  error,
+} = useProduct(productId, {
+  populate: ["social_forestry_business_group.contact"],
+  fields: [
+    "name",
+    "description",
+    "price",
+    "unit",
+    "product_usage",
+    "thumbnails",
+  ],
+});
 
-  // Extract product data from API response
-  const product = computed<
-    | (ProductWithRelations & {
-        social_forestry_business_group?: {
-          contact?: { chief_contact: string };
-        };
-      })
-    | null
-  >(() => {
-    if (!productData.value?.data) return null;
-    return productData.value.data as ProductWithRelations & {
-      social_forestry_business_group?: {
-        contact?: { chief_contact: string };
-      };
+// Extract product data from API response
+const product = computed<ExtendedProduct | null>(() => {
+  if (!productData.value?.data) return null;
+  return productData.value.data as ExtendedProduct & {
+    social_forestry_business_group?: {
+      contact?: { chief_contact: string };
     };
-  });
+  };
+});
 
-  // Provide product data to child components
-  provide("product", product);
-  provide("isLoading", isLoading);
-  provide("error", error);
+// Provide product data to child components
+provide("product", product);
+provide("isLoading", isLoading);
+provide("error", error);
 </script>

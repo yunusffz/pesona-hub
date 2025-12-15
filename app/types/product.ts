@@ -9,17 +9,36 @@ type Commodity = {
   category?: string | null;
 };
 
-type SocialForestryBusinessGroupWithRelations = components["schemas"]["SocialForestryBusinessGroupResponse"] & {
-  contact?: {
-    chief_contact: string;
+type SocialForestryBusinessGroupWithRelations =
+  components["schemas"]["SocialForestryBusinessGroupResponse"] & {
+    contact?: {
+      chief_contact: string;
+    };
+    location?: components["schemas"]["LocationResponse"] | null;
   };
-  location?: components["schemas"]["LocationResponse"] | null;
-};
 
 type ProductWithRelations = ProductResponse & {
   commodity?: Commodity | null;
-  social_forestry_group?: components["schemas"]["SocialForestryGroupResponse"] | null;
+  social_forestry_group?:
+    | components["schemas"]["SocialForestryGroupResponse"]
+    | null;
   social_forestry_business_group?: SocialForestryBusinessGroupWithRelations | null;
 };
 
-export type { ProductWithRelations };
+type ExtendedProduct = ProductWithRelations & {
+  social_forestry_business_group?: {
+    contact?: {
+      chief_contact: string;
+    };
+    location?: {
+      province: string;
+    };
+    name?: string;
+    class_group?: string;
+  };
+  social_forestry_group?: {
+    name?: string;
+  };
+};
+
+export type { ProductWithRelations, ExtendedProduct };

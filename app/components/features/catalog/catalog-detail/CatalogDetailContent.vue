@@ -147,7 +147,7 @@ import QuantityCounter from "~/components/base/QuantityCounter.vue";
 import CatalogDetailInfo from "./CatalogDetailInfo.vue";
 import BaseButton from "~/components/base/BaseButton.vue";
 import { formatRupiah } from "~/utils/format-number";
-import type { ProductWithRelations } from "~/types/product";
+import type { ExtendedProduct } from "~/types/product";
 import SvgIcon from "~/components/base/SvgIcon.vue";
 import { useAuth } from "~/composables/useAuth";
 import { useApi } from "~/composables/useApi";
@@ -163,20 +163,7 @@ const client = useApi();
 const { toTitleCase } = useTitleCase();
 
 interface Props {
-  product?: ProductWithRelations & {
-    social_forestry_business_group?: {
-      contact?: {
-        chief_contact: string;
-      };
-      location?: {
-        province: string;
-      };
-      name?: string;
-    };
-    social_forestry_group?: {
-      name?: string;
-    };
-  };
+  product?: ExtendedProduct;
 }
 
 const props = defineProps<Props>();

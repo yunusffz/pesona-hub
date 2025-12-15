@@ -122,18 +122,6 @@ const { toTitleCase } = useTitleCase();
       </div>
 
       <div
-        v-if="product?.social_forestry_business_group?.class_group"
-        class="flex flex-col gap-1"
-      >
-        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
-          Kelas KUPS:
-        </span>
-        <span class="text-md font-semibold text-neutral-900">
-          {{ toTitleCase(product.social_forestry_business_group.class_group) }}
-        </span>
-      </div>
-
-      <div
         v-if="product?.social_forestry_group?.name"
         class="flex flex-col gap-1"
       >

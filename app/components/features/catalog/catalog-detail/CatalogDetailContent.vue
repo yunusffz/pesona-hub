@@ -170,6 +170,10 @@ interface Props {
       location?: {
         province: string;
       };
+      name?: string;
+    };
+    social_forestry_group?: {
+      name?: string;
     };
   };
 }

@@ -9,11 +9,16 @@ interface Props {
       location?: {
         province: string;
       };
+      name?: string;
+    };
+    social_forestry_group?: {
+      name?: string;
     };
   };
 }
 
 const props = defineProps<Props>();
+const { toTitleCase } = useTitleCase();
 </script>
 
 <template>
@@ -25,41 +30,118 @@ const props = defineProps<Props>();
       <div class="flex-1 border-t border-neutral-200"></div>
     </div>
     <div class="flex flex-col gap-8 mt-12">
-      <div
-        class="flex flex-col gap-1"
-        v-if="product?.social_forestry_business_group?.location"
-      >
+      <div v-if="product?.name" class="flex flex-col gap-1">
         <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
-          Wilayah:
+          Nama Produk:
         </span>
-        <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
-          {{
-            product?.social_forestry_business_group?.location?.province || "N/A"
-          }}
+        <span class="text-md font-semibold text-neutral-900">
+          {{ toTitleCase(product.name) }}
         </span>
       </div>
-      <div class="flex flex-col gap-1">
+
+      <div v-if="product?.commodity?.name" class="flex flex-col gap-1">
         <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
           Komoditas:
         </span>
-        <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
-          {{ product?.name || "N/A" }}
+        <span class="text-md font-semibold text-neutral-900">
+          {{ toTitleCase(product.commodity.name) }}
         </span>
       </div>
+
+      <div v-if="product?.product_category" class="flex flex-col gap-1">
+        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
+          Kategori Produk:
+        </span>
+        <span class="text-md font-semibold text-neutral-900">
+          {{ toTitleCase(product.product_category) }}
+        </span>
+      </div>
+
       <div v-if="product?.product_usage" class="flex flex-col gap-1">
         <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
           Penggunaan:
         </span>
-        <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
-          {{ product.product_usage }}
+        <span class="text-md font-semibold text-neutral-900">
+          {{ toTitleCase(product.product_usage) }}
         </span>
       </div>
+
       <div v-if="product?.value_chain" class="flex flex-col gap-1">
         <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
           Jenis Bahan:
         </span>
-        <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
-          {{ product.value_chain }}
+        <span class="text-md font-semibold text-neutral-900">
+          {{ toTitleCase(product.value_chain) }}
+        </span>
+      </div>
+
+      <div v-if="product?.capacity" class="flex flex-col gap-1">
+        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
+          Kapasitas:
+        </span>
+        <span class="text-md font-semibold text-neutral-900">
+          {{ product.capacity }} {{ product?.unit || "" }}
+        </span>
+      </div>
+
+      <div v-if="product?.unit" class="flex flex-col gap-1">
+        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
+          Satuan:
+        </span>
+        <span class="text-md font-semibold text-neutral-900">
+          {{ product.unit }}
+        </span>
+      </div>
+
+      <div
+        v-if="product?.social_forestry_business_group?.location?.province"
+        class="flex flex-col gap-1"
+      >
+        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
+          Wilayah:
+        </span>
+        <span class="text-md font-semibold text-neutral-900">
+          {{
+            toTitleCase(
+              product.social_forestry_business_group.location.province
+            )
+          }}
+        </span>
+      </div>
+
+      <div
+        v-if="product?.social_forestry_business_group?.name"
+        class="flex flex-col gap-1"
+      >
+        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
+          KUPS:
+        </span>
+        <span class="text-md font-semibold text-neutral-900">
+          {{ toTitleCase(product.social_forestry_business_group.name) }}
+        </span>
+      </div>
+
+      <div
+        v-if="product?.social_forestry_business_group?.class_group"
+        class="flex flex-col gap-1"
+      >
+        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
+          Kelas KUPS:
+        </span>
+        <span class="text-md font-semibold text-neutral-900">
+          {{ toTitleCase(product.social_forestry_business_group.class_group) }}
+        </span>
+      </div>
+
+      <div
+        v-if="product?.social_forestry_group?.name"
+        class="flex flex-col gap-1"
+      >
+        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
+          KPS:
+        </span>
+        <span class="text-md font-semibold text-neutral-900">
+          {{ toTitleCase(product.social_forestry_group.name) }}
         </span>
       </div>
     </div>

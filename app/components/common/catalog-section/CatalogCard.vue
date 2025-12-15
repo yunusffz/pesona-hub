@@ -1,16 +1,23 @@
 <template>
   <div class="rounded-2xl border border-neutral-200 flex flex-col h-full">
     <div class="relative">
-      <Badge class="absolute top-3 right-6" variant="white-transparent">{{
+      <Badge class="absolute top-3 right-6 z-10" variant="white-transparent">{{
         props.product.product_usage || "Produk"
       }}</Badge>
+      <!-- Image Skeleton -->
+      <div
+        v-if="isImageLoading"
+        class="absolute inset-0 w-full h-[308px] bg-neutral-200 rounded-t-2xl animate-pulse"
+      ></div>
       <NuxtImg
         :src="imageSource"
         alt="Product Image"
         class="w-full h-[308px] object-cover rounded-t-2xl"
+        :class="{ 'opacity-0': isImageLoading }"
+        @load="handleImageLoad"
         @error="handleImageError"
       />
-      <div class="absolute bottom-3 right-6">
+      <div class="absolute bottom-3 right-6 z-10">
         <RankBadges
           v-if="props.product.social_forestry_business_group?.class_group"
           :rank="props.product.social_forestry_business_group?.class_group as 'silver' | 'gold' | 'platinum'"
@@ -101,8 +108,23 @@ const { isAuthenticated } = useAuth();
 
 const dummyImage = "/assets/images/product-2.png";
 const imageSource = ref(props.imageUrl || dummyImage);
+const isImageLoading = ref(true);
+
+const handleImageLoad = () => {
+  isImageLoading.value = false;
+};
 
 const handleImageError = () => {
   imageSource.value = dummyImage;
+  isImageLoading.value = false;
 };
+
+// Reset loading state when image source changes
+watch(
+  () => props.imageUrl,
+  () => {
+    isImageLoading.value = true;
+    imageSource.value = props.imageUrl || dummyImage;
+  }
+);
 </script>

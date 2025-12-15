@@ -1,8 +1,11 @@
 <template>
   <div>
     <!-- Loading State -->
-    <div v-if="isLoading" class="flex justify-center items-center py-12">
-      <Loader />
+    <div
+      v-if="isLoading"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+    >
+      <CatalogCardSkeleton v-for="i in 6" :key="i" />
     </div>
 
     <!-- Error State -->
@@ -61,11 +64,11 @@
 
 <script setup lang="ts">
 import CatalogCard from "~/components/common/catalog-section/CatalogCard.vue";
+import CatalogCardSkeleton from "~/components/common/catalog-section/CatalogCardSkeleton.vue";
 import { useProducts } from "~/queries";
 import type { ProductWithRelations } from "~/types/product";
 import { useCatalogStore } from "~/stores/useCatalogStore";
 import Pagination from "~/components/ui/pagination/Pagination.vue";
-import Loader from "~/components/base/Loader.vue";
 // Props
 interface Props {
   search?: string;
@@ -96,6 +99,7 @@ const { data, isLoading, error, refetch } = useProducts({
     return catalogStore.filters;
   },
   fields: ["id", "name", "thumbnails", "price", "unit", "description"],
+  sort: "thumbnails:desc",
   populate: [
     "social_forestry_business_group.contact",
     "social_forestry_business_group.location",

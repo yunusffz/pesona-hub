@@ -14,6 +14,7 @@
           <Badge
             variant="grey"
             class="text-xs font-medium py-1.5 px-3 border border-neutral-200"
+            v-if="product?.product_usage"
           >
             {{ product?.product_usage || "Kategori" }}
           </Badge>
@@ -142,149 +143,152 @@
 </template>
 
 <script setup lang="ts">
-  import QuantityCounter from "~/components/base/QuantityCounter.vue";
-  import CatalogDetailInfo from "./CatalogDetailInfo.vue";
-  import BaseButton from "~/components/base/BaseButton.vue";
-  import { formatRupiah } from "~/utils/format-number";
-  import type { ProductWithRelations } from "~/types/product";
-  import SvgIcon from "~/components/base/SvgIcon.vue";
-  import { useAuth } from "~/composables/useAuth";
-  import { useApi } from "~/composables/useApi";
-  import RankBadges from "~/components/base/RankBadges.vue";
-  import { useProductActivityLogger } from "~/composables/useProductActivityLogger";
-  import { canUserCollaborate } from "~/utils/user-profile";
-  import ProfileCompleteDialog from "~/components/common/ProfileCompleteDialog.vue";
-  import ProductImageGallery from "./ProductImageGallery.vue";
+import QuantityCounter from "~/components/base/QuantityCounter.vue";
+import CatalogDetailInfo from "./CatalogDetailInfo.vue";
+import BaseButton from "~/components/base/BaseButton.vue";
+import { formatRupiah } from "~/utils/format-number";
+import type { ProductWithRelations } from "~/types/product";
+import SvgIcon from "~/components/base/SvgIcon.vue";
+import { useAuth } from "~/composables/useAuth";
+import { useApi } from "~/composables/useApi";
+import RankBadges from "~/components/base/RankBadges.vue";
+import { useProductActivityLogger } from "~/composables/useProductActivityLogger";
+import { canUserCollaborate } from "~/utils/user-profile";
+import ProfileCompleteDialog from "~/components/common/ProfileCompleteDialog.vue";
+import ProductImageGallery from "./ProductImageGallery.vue";
 
-  const { isAuthenticated, user: authUser } = useAuth();
-  const { logProductCollaboration } = useProductActivityLogger();
-  const client = useApi();
+const { isAuthenticated, user: authUser } = useAuth();
+const { logProductCollaboration } = useProductActivityLogger();
+const client = useApi();
 
-  interface Props {
-    product?: ProductWithRelations & {
-      social_forestry_business_group?: {
-        contact?: {
-          chief_contact: string;
-        };
+interface Props {
+  product?: ProductWithRelations & {
+    social_forestry_business_group?: {
+      contact?: {
+        chief_contact: string;
+      };
+      location?: {
+        province: string;
       };
     };
+  };
+}
+
+const props = defineProps<Props>();
+
+const quantity = ref(1);
+const selectedVariant = ref<"default">("default");
+const showConfirmDialog = ref(false);
+const userWithDetails = ref<any>(null);
+
+// Computed property for product images
+const productImages = computed(() => {
+  if (
+    props.product?.thumbnails &&
+    Array.isArray(props.product.thumbnails) &&
+    props.product.thumbnails.length > 0
+  ) {
+    // Map thumbnails to image objects with url property
+    return props.product.thumbnails.map((thumbnail: any, index: number) => ({
+      url: thumbnail || "/assets/images/product-1.png",
+      alt: `${props.product?.name || "Product"} - Image ${index + 1}`,
+    }));
   }
 
-  const props = defineProps<Props>();
+  // Return multiple mock images if no thumbnails available (for testing)
+  return [
+    {
+      url: "/assets/images/product-1.png",
+      alt: `${props.product?.name || "Product"} - Image 1`,
+    },
+    {
+      url: "/assets/images/product-2.png",
+      alt: `${props.product?.name || "Product"} - Image 2`,
+    },
+    {
+      url: "/assets/images/product-3.png",
+      alt: `${props.product?.name || "Product"} - Image 3`,
+    },
+  ];
+});
 
-  const quantity = ref(1);
-  const selectedVariant = ref<"default">("default");
-  const showConfirmDialog = ref(false);
-  const userWithDetails = ref<any>(null);
+// Computed property for product price
+const productPrice = computed(() => {
+  return props.product?.price || 0;
+});
 
-  // Computed property for product images
-  const productImages = computed(() => {
-    if (
-      props.product?.thumbnails &&
-      Array.isArray(props.product.thumbnails) &&
-      props.product.thumbnails.length > 0
-    ) {
-      // Map thumbnails to image objects with url property
-      return props.product.thumbnails.map((thumbnail: any, index: number) => ({
-        url: thumbnail || "/assets/images/product-1.png",
-        alt: `${props.product?.name || "Product"} - Image ${index + 1}`,
-      }));
-    }
+// Computed property for product unit
+const productUnit = computed(() => {
+  return props.product?.unit || "unit";
+});
 
-    // Return multiple mock images if no thumbnails available (for testing)
-    return [
-      {
-        url: "/assets/images/product-1.png",
-        alt: `${props.product?.name || "Product"} - Image 1`,
-      },
-      {
-        url: "/assets/images/product-2.png",
-        alt: `${props.product?.name || "Product"} - Image 2`,
-      },
-      {
-        url: "/assets/images/product-3.png",
-        alt: `${props.product?.name || "Product"} - Image 3`,
-      },
-    ];
-  });
-
-  // Computed property for product price
-  const productPrice = computed(() => {
-    return props.product?.price || 0;
-  });
-
-  // Computed property for product unit
-  const productUnit = computed(() => {
-    return props.product?.unit || "unit";
-  });
-
-  const handleCollaborationRequest = async () => {
-    // Fetch fresh user data with details populated
-    try {
-      const { data, error } = await client.GET("/me", {
-        params: {
-          query: {
-            "populate[0]": "details",
-          },
+const handleCollaborationRequest = async () => {
+  // Fetch fresh user data with details populated
+  try {
+    const { data, error } = await client.GET("/me", {
+      params: {
+        query: {
+          "populate[0]": "details",
         },
-      });
-
-      if (error) {
-        console.error("Failed to fetch user data:", error);
-        alert("Gagal memuat data profil. Silakan coba lagi.");
-        return;
-      }
-
-      // Extract user data from response
-      if (data && typeof data === "object" && "data" in data) {
-        userWithDetails.value = (data as any).data;
-      } else {
-        userWithDetails.value = data;
-      }
-
-      // Check if user profile is complete
-      if (!canUserCollaborate(userWithDetails.value)) {
-        // Show dialog to complete profile
-        showConfirmDialog.value = true;
-        return;
-      }
-
-      // Profile is complete, proceed with WhatsApp request
-      handleQuoteRequest();
-    } catch (error) {
-      console.error("Error checking user profile:", error);
-      alert("Terjadi kesalahan. Silakan coba lagi.");
-    }
-  };
-
-  const confirmQuoteRequest = () => {
-    showConfirmDialog.value = false;
-    // Navigate to profile completion page
-    navigateTo("/profil");
-  };
-
-  const handleQuoteRequest = () => {
-    if (!props.product) return;
-
-    const productName = props.product.name || "Produk";
-    const unitPrice = productPrice.value;
-    const totalPrice = quantity.value * unitPrice;
-
-    // Log collaboration request using the new composable
-    logProductCollaboration(props.product, quantity.value, {
-      accessType: "public",
-      message: "WhatsApp collaboration request",
+      },
     });
 
-    // Format price with thousand separators
-    const formattedPrice = new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(totalPrice);
+    if (error) {
+      console.error("Failed to fetch user data:", error);
+      alert("Gagal memuat data profil. Silakan coba lagi.");
+      return;
+    }
 
-    const message = `Halo, saya tertarik dengan produk:
+    // Extract user data from response
+    if (data && typeof data === "object" && "data" in data) {
+      userWithDetails.value = (data as any).data;
+    } else {
+      userWithDetails.value = data;
+    }
+
+    // Check if user profile is complete
+    if (!canUserCollaborate(userWithDetails.value)) {
+      // Show dialog to complete profile
+      showConfirmDialog.value = true;
+      return;
+    }
+
+    // Profile is complete, proceed with WhatsApp request
+    handleQuoteRequest();
+  } catch (error) {
+    console.error("Error checking user profile:", error);
+    alert("Terjadi kesalahan. Silakan coba lagi.");
+  }
+};
+
+const confirmQuoteRequest = () => {
+  showConfirmDialog.value = false;
+  // Navigate to profile completion page
+  navigateTo("/profil");
+};
+
+const handleQuoteRequest = () => {
+  if (!props.product) return;
+
+  const productName = props.product.name || "Produk";
+  const unitPrice = productPrice.value;
+  const totalPrice = quantity.value * unitPrice;
+
+  // Log collaboration request using the new composable
+  logProductCollaboration(props.product, quantity.value, {
+    accessType: "public",
+    message: "WhatsApp collaboration request",
+  });
+
+  // Format price with thousand separators
+  const formattedPrice = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(totalPrice);
+
+  const message = `Halo, saya tertarik dengan produk:
 
   • *${productName}*
   • Varian: ${productName}
@@ -293,13 +297,13 @@
 
   Mohon informasi lebih lanjut mengenai produk ini. Terima kasih!`;
 
-    // WhatsApp number (dummy number for demo)
-    const whatsappNumber =
-      props.product?.social_forestry_business_group?.contact?.chief_contact;
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+  // WhatsApp number (dummy number for demo)
+  const whatsappNumber =
+    props.product?.social_forestry_business_group?.contact?.chief_contact;
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-    // Open WhatsApp in new tab
-    window.open(whatsappUrl, "_blank");
-  };
+  // Open WhatsApp in new tab
+  window.open(whatsappUrl, "_blank");
+};
 </script>

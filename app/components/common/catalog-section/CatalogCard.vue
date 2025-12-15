@@ -46,11 +46,20 @@
         >
       </div>
       <div class="text-neutral-700 text-xs flex flex-col gap-1 mt-2">
-        <div v-if="props.product.social_forestry_group">
-          KPS : {{ props.product.social_forestry_group?.name }}
+        <div
+          v-if="
+            props.product.social_forestry_business_group?.location?.province
+          "
+        >
+          Wilayah :
+          {{
+            toTitleCase(
+              props.product.social_forestry_business_group?.location?.province
+            )
+          }}
         </div>
         <div v-if="props.product.social_forestry_business_group">
-          KUPS : {{ props.product.social_forestry_business_group?.name }}
+          Komoditas : {{ props.product.commodity?.name }}
         </div>
       </div>
 
@@ -99,7 +108,21 @@ import RankBadges from "~/components/base/RankBadges.vue";
 const { toTitleCase } = useTitleCase();
 
 const props = defineProps<{
-  product: Partial<ProductWithRelations>;
+  product: ProductWithRelations & {
+    social_forestry_business_group?: {
+      contact?: {
+        chief_contact: string;
+      };
+      location?: {
+        province: string;
+      };
+      name?: string;
+      class_group?: string;
+    };
+    social_forestry_group?: {
+      name?: string;
+    };
+  };
   linkText: string;
   imageUrl?: string;
 }>();

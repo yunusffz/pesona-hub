@@ -69,6 +69,24 @@ import { useProducts } from "~/queries";
 import type { ProductWithRelations } from "~/types/product";
 import { useCatalogStore } from "~/stores/useCatalogStore";
 import Pagination from "~/components/ui/pagination/Pagination.vue";
+
+// Extended product type with populated relations
+type ExtendedProduct = ProductWithRelations & {
+  social_forestry_business_group?: {
+    contact?: {
+      chief_contact: string;
+    };
+    location?: {
+      province: string;
+    };
+    name?: string;
+    class_group?: string;
+  };
+  social_forestry_group?: {
+    name?: string;
+  };
+};
+
 // Props
 interface Props {
   search?: string;
@@ -101,6 +119,7 @@ const { data, isLoading, error, refetch } = useProducts({
   fields: ["id", "name", "thumbnails", "price", "unit", "description"],
   sort: "thumbnails:desc",
   populate: [
+    "commodity",
     "social_forestry_business_group.contact",
     "social_forestry_business_group.location",
     "social_forestry_group",
@@ -111,9 +130,9 @@ const { data, isLoading, error, refetch } = useProducts({
 const products = computed(() => {
   const productsData = data.value?.data;
   if (Array.isArray(productsData)) {
-    return productsData as unknown as ProductWithRelations[];
+    return productsData as unknown as ExtendedProduct[];
   }
-  return [] as ProductWithRelations[];
+  return [] as ExtendedProduct[];
 });
 
 // Extract pagination metadata from API response

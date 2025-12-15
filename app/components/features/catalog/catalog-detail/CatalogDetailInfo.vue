@@ -1,16 +1,19 @@
 <script setup lang="ts">
-  import type { ProductWithRelations } from "~/types/product";
-  interface Props {
-    product?: ProductWithRelations & {
-      social_forestry_business_group?: {
-        contact?: {
-          chief_contact: string;
-        };
+import type { ProductWithRelations } from "~/types/product";
+interface Props {
+  product?: ProductWithRelations & {
+    social_forestry_business_group?: {
+      contact?: {
+        chief_contact: string;
+      };
+      location?: {
+        province: string;
       };
     };
-  }
+  };
+}
 
-  const props = defineProps<Props>();
+const props = defineProps<Props>();
 </script>
 
 <template>
@@ -22,12 +25,17 @@
       <div class="flex-1 border-t border-neutral-200"></div>
     </div>
     <div class="flex flex-col gap-8 mt-12">
-      <div class="flex flex-col gap-1">
+      <div
+        class="flex flex-col gap-1"
+        v-if="product?.social_forestry_business_group?.location"
+      >
         <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
           Wilayah:
         </span>
         <span class="text-md font-semibold text-neutral-900 whitespace-nowrap">
-          {{ product?.social_forestry_business_group?.name || "N/A" }}
+          {{
+            product?.social_forestry_business_group?.location?.province || "N/A"
+          }}
         </span>
       </div>
       <div class="flex flex-col gap-1">

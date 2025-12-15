@@ -95,7 +95,7 @@ const { data, isLoading, error, refetch } = useProducts({
   get filters() {
     return catalogStore.filters;
   },
-  fields: ["id", "name", "thumbnails", "price", "unit"],
+  fields: ["id", "name", "thumbnails", "price", "unit", "description"],
   populate: [
     "social_forestry_business_group.contact",
     "social_forestry_business_group.location",

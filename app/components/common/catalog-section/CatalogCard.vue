@@ -22,12 +22,12 @@
         class="flex items-start justify-between 2xl:gap-3 gap-6 2xl:flex-row flex-col"
       >
         <div
-          class="flex flex-col gap-3 2xl:flex-1 min-w-0 truncate w-full 2xl:w-auto"
+          class="flex flex-col gap-3 2xl:flex-1 min-w-0 line-clamp-2 w-full 2xl:w-auto"
         >
           <h1 class="font-semibold text-[20px] truncate">
             {{ toTitleCase(props.product.name || "") }}
           </h1>
-          <p class="truncate">
+          <p class="line-clamp-2">
             {{ props.product.description }}
           </p>
         </div>
@@ -38,7 +38,7 @@
           >{{ props.product.product_usage }}</BaseBadge
         >
       </div>
-      <div class="text-neutral-700 text-xs flex flex-col gap-1">
+      <div class="text-neutral-700 text-xs flex flex-col gap-1 mt-2">
         <div v-if="props.product.social_forestry_group">
           KPS : {{ props.product.social_forestry_group?.name }}
         </div>

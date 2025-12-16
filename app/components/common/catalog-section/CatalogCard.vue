@@ -58,7 +58,7 @@
             )
           }}
         </div>
-        <div v-if="props.product.social_forestry_business_group">
+        <div v-if="props.product.commodity?.name">
           Komoditas : {{ props.product.commodity?.name }}
         </div>
       </div>

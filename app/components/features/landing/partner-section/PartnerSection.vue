@@ -57,88 +57,103 @@
   </section>
 </template>
 <script setup lang="ts">
-  import { ref, onMounted, onUnmounted } from "vue";
-  import IconBadge from "~/components/base/IconBadge.vue";
+import { ref, onMounted, onUnmounted } from "vue";
+import IconBadge from "~/components/base/IconBadge.vue";
 
-  // Partner logos array - add or remove logos here
-  const partnerLogos = ref([
-    {
-      src: "/assets/images/logo-wri.png",
-      alt: "Logo WRI Indonesia",
-      size: "300px",
-    },
-    {
-      src: "/assets/images/logo-icraf.avif",
-      alt: "Logo ICRAF",
-      size: "100px",
-    },
-    {
-      src: "/assets/images/logo-cifor.avif",
-      alt: "Logo CIFOR",
-      size: "100px",
-    },
-  ]);
+// Partner logos array - add or remove logos here
+const partnerLogos = ref([
+  {
+    src: "/assets/images/logo-kemhut.jpeg",
+    alt: "Logo Kementerian Kehutanan Republik Indonesia",
+    size: "100px",
+  },
+  {
+    src: "/assets/images/logo-wri.png",
+    alt: "Logo WRI Indonesia",
+    size: "300px",
+  },
+  {
+    src: "/assets/images/logo-icraf.avif",
+    alt: "Logo ICRAF",
+    size: "100px",
+  },
+  {
+    src: "/assets/images/logo-cifor.avif",
+    alt: "Logo CIFOR",
+    size: "100px",
+  },
+  {
+    src: "/assets/images/logo-kawal-borneo.png",
+    alt: "Logo Kawal Borneo",
+    size: "100px",
+  },
+  {
+    src: "/assets/images/logo-warsi.jpeg",
+    alt: "Logo WARSI",
+    size: "100px",
+  },
+]);
 
-  const containerRef = ref<HTMLElement | null>(null);
-  const contentRef = ref<HTMLElement | null>(null);
-  const shouldMarquee = ref(false);
+const containerRef = ref<HTMLElement | null>(null);
+const contentRef = ref<HTMLElement | null>(null);
+const shouldMarquee = ref(false);
 
-  const checkOverflow = () => {
-    if (containerRef.value && contentRef.value) {
-      const containerWidth = containerRef.value.offsetWidth;
-      const contentWidth = contentRef.value.scrollWidth;
-      shouldMarquee.value = contentWidth > containerWidth;
-    }
-  };
+const checkOverflow = () => {
+  if (containerRef.value && contentRef.value) {
+    const containerWidth = containerRef.value.offsetWidth;
+    const contentWidth = contentRef.value.scrollWidth;
+    shouldMarquee.value = contentWidth > containerWidth;
+  }
+};
 
-  onMounted(() => {
-    checkOverflow();
-    window.addEventListener("resize", checkOverflow);
-  });
+onMounted(() => {
+  checkOverflow();
+  window.addEventListener("resize", checkOverflow);
+});
 
-  onUnmounted(() => {
-    window.removeEventListener("resize", checkOverflow);
-  });
+onUnmounted(() => {
+  window.removeEventListener("resize", checkOverflow);
+});
 </script>
 
 <style scoped>
-  .marquee-wrapper {
-    display: flex;
-    width: fit-content;
-    animation: scroll 20s linear infinite;
-  }
+.marquee-wrapper {
+  display: flex;
+  width: fit-content;
+  animation: scroll 20s linear infinite;
+}
 
-  .marquee-wrapper:hover {
-    animation-play-state: paused;
-  }
+.marquee-wrapper:hover {
+  animation-play-state: paused;
+}
 
-  .static-wrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
+.static-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
 
-  .marquee-content {
-    display: flex;
-    gap: 2rem;
-    flex-shrink: 0;
-  }
+.marquee-content {
+  display: flex;
+  gap: 2rem;
+  flex-shrink: 0;
+}
 
-  .marquee-wrapper .marquee-content {
-    padding-right: 2rem;
-  }
+.marquee-wrapper .marquee-content {
+  padding-right: 2rem;
+}
 
-  .marquee-item {
-    flex-shrink: 0;
-    display: inline-block;
-  }
+.marquee-item {
+  flex-shrink: 0;
+  display: inline-block;
+}
 
-  @keyframes scroll {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
   }
+  100% {
+    transform: translateX(-50%);
+  }
+}
 </style>

@@ -4,19 +4,11 @@
     v-if="!props.isLoading"
   >
     <CatalogCard
-      :product="props.products[0]"
-      v-if="props.products[0]"
+      v-for="product in props.products"
+      :key="product.id"
+      :product="product"
       :linkText="props.linkText"
-    />
-    <CatalogCard
-      :product="props.products[1]"
-      v-if="props.products[1]"
-      :linkText="props.linkText"
-    />
-    <CatalogCard
-      :product="props.products[2]"
-      v-if="props.products[2]"
-      :linkText="props.linkText"
+      :imageUrl="(product.thumbnails?.[0] as string) ?? ''"
     />
   </div>
   <div v-if="props.isLoading" class="flex justify-center items-center py-12">

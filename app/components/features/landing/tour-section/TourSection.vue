@@ -37,7 +37,13 @@ const { data, isLoading } = useProducts({
     product_category: {
       $eq: "JASLING",
     },
+    social_forestry_business_group: {
+      class_group: {
+        $eq: "PLATINUM",
+      },
+    },
   },
+  sort: "thumbnails:desc",
 });
 
 const products = computed(() => {

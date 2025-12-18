@@ -47,7 +47,7 @@
           @click="goToSlide(index)"
         >
           <div
-            class="relative rounded-xl overflow-hidden h-[80px] lg:h-[100px]"
+            class="relative rounded-xl overflow-hidden h-[80px] lg:h-[100px] w-[150px]"
           >
             <NuxtImg
               :src="image.url"

@@ -48,6 +48,7 @@ const { data, isLoading } = useProducts({
     "price",
     "unit",
     "product_usage",
+    "product_category",
     "thumbnails",
   ],
   filters: {
@@ -55,6 +56,9 @@ const { data, isLoading } = useProducts({
       class_group: {
         $eq: "PLATINUM",
       },
+    },
+    product_category: {
+      $ne: "JASLING",
     },
   },
   sort: "thumbnails:desc",

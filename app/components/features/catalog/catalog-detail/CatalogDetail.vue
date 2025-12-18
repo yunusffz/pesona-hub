@@ -51,6 +51,7 @@ const {
     "unit",
     "product_usage",
     "thumbnails",
+    "sources",
   ],
 });
 

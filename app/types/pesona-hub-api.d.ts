@@ -2132,6 +2132,11 @@ export interface components {
              */
             status: string | null;
             /**
+             * Sources
+             * @description Sources
+             */
+            sources?: string | null;
+            /**
              * Is Highlight
              * @description Is highlight product
              * @default false
@@ -2178,6 +2183,8 @@ export interface components {
             status: string;
             /** Is Highlight */
             is_highlight?: boolean | null;
+            /** Sources */
+            sources?: string | null;
             /**
              * Created At
              * Format: date-time
@@ -2275,6 +2282,11 @@ export interface components {
              * @description Is highlight product
              */
             is_highlight?: boolean | null;
+            /**
+             * Sources
+             * @description Sources
+             */
+            sources?: string | null;
         };
         /** ProvinceAPICreate */
         ProvinceAPICreate: {

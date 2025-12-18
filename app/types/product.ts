@@ -23,6 +23,7 @@ type ProductWithRelations = ProductResponse & {
     | components["schemas"]["SocialForestryGroupResponse"]
     | null;
   social_forestry_business_group?: SocialForestryBusinessGroupWithRelations | null;
+  sources?: string;
 };
 
 type ExtendedProduct = ProductWithRelations & {

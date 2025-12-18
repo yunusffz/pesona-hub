@@ -29,16 +29,7 @@ const { toTitleCase } = useTitleCase();
       </span>
       <div class="flex-1 border-t border-neutral-200"></div>
     </div>
-    <div class="flex flex-col gap-8 mt-12">
-      <div v-if="product?.name" class="flex flex-col gap-1">
-        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
-          Nama Produk:
-        </span>
-        <span class="text-md font-semibold text-neutral-900">
-          {{ toTitleCase(product.name) }}
-        </span>
-      </div>
-
+    <div class="flex flex-col gap-8 mt-8">
       <div v-if="product?.commodity?.name" class="flex flex-col gap-1">
         <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
           Komoditas:
@@ -90,6 +81,15 @@ const { toTitleCase } = useTitleCase();
         </span>
         <span class="text-md font-semibold text-neutral-900">
           {{ product.unit }}
+        </span>
+      </div>
+
+      <div v-if="product?.sources" class="flex flex-col gap-1">
+        <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
+          Mitra Fasilitator:
+        </span>
+        <span class="text-md font-semibold text-neutral-900">
+          {{ product.sources }}
         </span>
       </div>
 

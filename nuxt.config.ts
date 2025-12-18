@@ -1,6 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 export default defineNuxtConfig({
+  typescript: {
+    tsConfig: {
+      exclude: ["node_modules", ".nuxt", ".output", "dist", "coverage"],
+    },
+  },
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   css: ["~/assets/styles/global.css"],
@@ -62,7 +67,12 @@ export default defineNuxtConfig({
         extend: {
           fontFamily: {
             inter: ["Inter", "system-ui", "-apple-system", "sans-serif"],
-            instrument: ["Instrument Sans", "system-ui", "-apple-system", "sans-serif"],
+            instrument: [
+              "Instrument Sans",
+              "system-ui",
+              "-apple-system",
+              "sans-serif",
+            ],
           },
           colors: {
             background: "hsl(var(--color-background))",

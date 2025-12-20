@@ -116,7 +116,15 @@ const { data, isLoading, error, refetch } = useProducts({
   get filters() {
     return catalogStore.filters;
   },
-  fields: ["id", "name", "thumbnails", "price", "unit", "description"],
+  fields: [
+    "id",
+    "name",
+    "thumbnails",
+    "price",
+    "unit",
+    "description",
+    "collaboration_ids",
+  ],
   sort: "thumbnails:desc",
   populate: [
     "commodity",

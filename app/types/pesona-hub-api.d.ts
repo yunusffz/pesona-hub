@@ -2117,6 +2117,13 @@ export interface components {
              */
             commodity_id?: number | null;
             /**
+             * Collaboration Ids
+             * @description Collaboration IDs
+             */
+            collaboration_ids?: {
+                [key: string]: unknown;
+            }[] | number[] | null;
+            /**
              * Metadatas
              * @description metadatas data as JSON
              */
@@ -2132,10 +2139,10 @@ export interface components {
              */
             status: string | null;
             /**
-             * Sources
+             * Source
              * @description Sources
              */
-            sources?: string | null;
+            source?: string | null;
             /**
              * Is Highlight
              * @description Is highlight product
@@ -2173,6 +2180,10 @@ export interface components {
             social_forestry_business_group_id?: number | null;
             /** Commodity Id */
             commodity_id?: number | null;
+            /** Collaboration Ids */
+            collaboration_ids?: {
+                [key: string]: unknown;
+            }[] | number[] | null;
             /** Metadatas */
             metadatas?: {
                 [key: string]: unknown;
@@ -2183,8 +2194,8 @@ export interface components {
             status: string;
             /** Is Highlight */
             is_highlight?: boolean | null;
-            /** Sources */
-            sources?: string | null;
+            /** Source */
+            source?: string | null;
             /**
              * Created At
              * Format: date-time
@@ -2264,6 +2275,13 @@ export interface components {
              */
             commodity_id?: number | null;
             /**
+             * Collaboration Ids
+             * @description Collaboration IDs
+             */
+            collaboration_ids?: {
+                [key: string]: unknown;
+            }[] | number[] | null;
+            /**
              * Metadatas
              * @description metadatas data as JSON
              */
@@ -2283,10 +2301,10 @@ export interface components {
              */
             is_highlight?: boolean | null;
             /**
-             * Sources
+             * Source
              * @description Sources
              */
-            sources?: string | null;
+            source?: string | null;
         };
         /** ProvinceAPICreate */
         ProvinceAPICreate: {
@@ -2453,11 +2471,6 @@ export interface components {
              */
             location_id?: number | null;
             /**
-             * Collaboration Id
-             * @description Collaboration ID
-             */
-            collaboration_id?: number | null;
-            /**
              * Contact Id
              * @description Contact ID
              */
@@ -2475,8 +2488,6 @@ export interface components {
             class_group: string | null;
             /** Location Id */
             location_id?: number | null;
-            /** Collaboration Id */
-            collaboration_id?: number | null;
             /** Contact Id */
             contact_id?: number | null;
             /** Status */
@@ -2511,11 +2522,6 @@ export interface components {
              * @description Location ID
              */
             location_id?: number | null;
-            /**
-             * Collaboration Id
-             * @description Collaboration ID
-             */
-            collaboration_id?: number | null;
             /**
              * Status
              * @description Group status

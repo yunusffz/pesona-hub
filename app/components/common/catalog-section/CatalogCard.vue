@@ -84,7 +84,7 @@
               Login untuk melihat harga & kontak supplier
             </div>
           </div>
-          <div class="">
+          <div class="w-full 2xl:w-auto">
             <a
               :href="'/katalog/' + props.product.id"
               class="border inline-flex items-center justify-center w-full 2xl:w-auto border-neutral-200 rounded-full px-5 py-[10px] text-md bg-white text-neutral-800 font-medium"

@@ -3,8 +3,28 @@
 export default defineNuxtConfig({
   typescript: {
     typeCheck: true,
+    strict: true,
     tsConfig: {
-      exclude: ["node_modules", ".nuxt", ".output", "dist", "coverage"],
+      compilerOptions: {
+        skipLibCheck: true,
+      },
+      exclude: [
+        "node_modules",
+        ".nuxt",
+        ".output",
+        "dist",
+        "coverage",
+        ".git",
+        ".github",
+        ".cursor",
+        ".claude",
+        "docker",
+        "docs",
+        "**/node_modules/**",
+        "**/.nuxt/**",
+        "**/.output/**",
+        "**/dist/**",
+      ],
     },
   },
   compatibilityDate: "2025-07-15",

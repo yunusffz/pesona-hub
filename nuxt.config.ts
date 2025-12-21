@@ -2,6 +2,7 @@
 
 export default defineNuxtConfig({
   typescript: {
+    typeCheck: true,
     tsConfig: {
       exclude: ["node_modules", ".nuxt", ".output", "dist", "coverage"],
     },

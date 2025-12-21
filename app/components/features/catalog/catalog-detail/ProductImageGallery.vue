@@ -2,7 +2,7 @@
   <div class="flex-1 w-full lg:w-auto max-w-full overflow-hidden">
     <!-- Main Image Swiper -->
     <div
-      class="relative rounded-3xl overflow-hidden mb-3 main-swiper-container"
+      class="relative rounded-3xl overflow-hidden mb-3 main-swiper-container border border-grey-100"
     >
       <Swiper
         :modules="[SwiperThumbs, SwiperAutoplay]"
@@ -18,12 +18,16 @@
       >
         <SwiperSlide v-for="(image, index) in safeImages" :key="index">
           <div
-            class="w-full h-[400px] lg:h-[579px] rounded-3xl overflow-hidden"
+            class="relative w-full h-[400px] lg:h-[579px] rounded-3xl overflow-hidden"
           >
             <img
               :src="image.url"
               :alt="image.alt || `Product Image ${index + 1}`"
-              class="w-full h-full object-cover"
+              :class="[
+                'absolute inset-0 w-full h-full object-center',
+                imageFitMode[index] || 'object-cover'
+              ]"
+              @load="handleImageLoad($event, index)"
               @error="handleImageError"
             />
           </div>
@@ -95,6 +99,7 @@ const { getImageUrlWithFallback, getRandomFallbackImage } = useSafeImage();
 const thumbsSwiper = ref<any>(null);
 const mainSwiper = ref<any>(null);
 const activeIndex = ref(0);
+const imageFitMode = ref<Record<number, string>>({});
 
 // Create safe image URLs with fallback handling
 const safeImages = computed(() => {
@@ -125,6 +130,17 @@ const setMainSwiper = (swiper: any) => {
 const goToSlide = (index: number) => {
   if (mainSwiper.value) {
     mainSwiper.value.slideTo(index);
+  }
+};
+
+// Detect image aspect ratio and set appropriate object-fit
+const handleImageLoad = (event: Event, index: number) => {
+  const img = event.target as HTMLImageElement;
+  if (img) {
+    const aspectRatio = img.naturalWidth / img.naturalHeight;
+    // Use contain for portrait/tall images (aspect ratio < 1)
+    // Use cover for landscape/square images (aspect ratio >= 1)
+    imageFitMode.value[index] = aspectRatio < 1 ? 'object-contain' : 'object-cover';
   }
 };
 

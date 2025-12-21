@@ -25,7 +25,7 @@
               :alt="image.alt || `Product Image ${index + 1}`"
               :class="[
                 'absolute inset-0 w-full h-full object-center',
-                imageFitMode[index] || 'object-cover'
+                imageFitMode[index] || 'object-cover',
               ]"
               @load="handleImageLoad($event, index)"
               @error="handleImageError"
@@ -51,7 +51,7 @@
           @click="goToSlide(index)"
         >
           <div
-            class="relative rounded-xl overflow-hidden h-[80px] lg:h-[100px] w-[150px]"
+            class="relative rounded-xl overflow-hidden h-[80px] lg:h-[100px] w-[150px] border border-gray-200"
           >
             <NuxtImg
               :src="image.url"
@@ -140,7 +140,8 @@ const handleImageLoad = (event: Event, index: number) => {
     const aspectRatio = img.naturalWidth / img.naturalHeight;
     // Use contain for portrait/tall images (aspect ratio < 1)
     // Use cover for landscape/square images (aspect ratio >= 1)
-    imageFitMode.value[index] = aspectRatio < 1 ? 'object-contain' : 'object-cover';
+    imageFitMode.value[index] =
+      aspectRatio < 1 ? "object-contain" : "object-cover";
   }
 };
 

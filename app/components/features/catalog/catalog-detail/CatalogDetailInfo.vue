@@ -84,12 +84,12 @@ const { toTitleCase } = useTitleCase();
         </span>
       </div>
 
-      <div v-if="product?.sources" class="flex flex-col gap-1">
+      <div v-if="product?.source" class="flex flex-col gap-1">
         <span class="text-md font-semibold text-neutral-700 whitespace-nowrap">
           Mitra Fasilitator:
         </span>
         <span class="text-md font-semibold text-neutral-900">
-          {{ product.sources }}
+          {{ product.source }}
         </span>
       </div>
 

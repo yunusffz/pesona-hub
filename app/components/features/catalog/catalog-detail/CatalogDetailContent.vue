@@ -291,7 +291,7 @@ const handleQuoteRequest = () => {
 
   // WhatsApp number (dummy number for demo)
   const whatsappNumber =
-    props.product?.social_forestry_business_group?.contact?.chief_contact;
+    props.product?.social_forestry_business_group?.contact?.mentor_contact;
   const encodedMessage = encodeURIComponent(message);
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 

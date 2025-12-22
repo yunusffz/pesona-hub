@@ -13,6 +13,7 @@ type SocialForestryBusinessGroupWithRelations =
   components["schemas"]["SocialForestryBusinessGroupResponse"] & {
     contact?: {
       chief_contact: string;
+      mentor_contact: string;
     };
     location?: components["schemas"]["LocationResponse"] | null;
   };

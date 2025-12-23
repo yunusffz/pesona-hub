@@ -58,7 +58,7 @@ const { data, isLoading } = useProducts({
       },
     },
     product_category: {
-      $ne: "JASLING",
+      $eq: "PRODUK",
     },
   },
   sort: "thumbnails:desc",

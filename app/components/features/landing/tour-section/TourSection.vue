@@ -35,7 +35,7 @@ const { data, isLoading } = useProducts({
   ],
   filters: {
     product_category: {
-      $eq: "JASLING",
+      $eq: "EKOWISATA",
     },
     social_forestry_business_group: {
       class_group: {

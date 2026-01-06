@@ -1,7 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { resolve } from "node:path";
 
 export default defineNuxtConfig({
   srcDir: "app",
+  alias: {
+    "@": resolve(__dirname, "app"),
+    "~": resolve(__dirname, "app"),
+  },
   typescript: {
     typeCheck: true,
     tsConfig: {

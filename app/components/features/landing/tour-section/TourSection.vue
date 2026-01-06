@@ -31,7 +31,7 @@ const { data, isLoading } = useProducts({
     "price",
     "unit",
     "product_usage",
-    "thumbnails",
+    "thumbnails", 
   ],
   filters: {
     product_category: {

@@ -1,30 +1,40 @@
+# =====================
 # Build stage
+# =====================
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+# Copy lock file dulu agar cache optimal
+COPY package.json package-lock.json ./
 
+# Install dependency sesuai lock
+RUN npm ci
+
+# Copy source code
 COPY . .
+
+# Build Nuxt
 RUN npm run build
 
 
+# =====================
 # Runtime stage
+# =====================
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy built output
+# Copy build output
 COPY --from=builder /app/.output ./.output
 
-# Copy node_modules & package.json from builder
+# Copy production deps
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nuxt -u 1001
+# Non-root user (security best practice)
+RUN addgroup -g 1001 -S nodejs \
+ && adduser -S nuxt -u 1001
 
 RUN chown -R nuxt:nodejs /app
 USER nuxt

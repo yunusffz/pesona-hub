@@ -5,18 +5,20 @@ FROM node:20.19.6-alpine AS builder
 
 WORKDIR /app
 
-# Copy lock file dulu agar cache optimal
+# Copy package files
 COPY package.json package-lock.json ./
 
-# Install dependency sesuai lock
+# Install dependencies
 RUN npm ci
 
-# Copy source code
+# Copy all source files
 COPY . .
+
+# Generate Nuxt TypeScript config (PENTING!)
+RUN npm run prepare || npx nuxt prepare
 
 # Build Nuxt
 RUN npm run build
-
 
 # =====================
 # Runtime stage
@@ -27,22 +29,19 @@ WORKDIR /app
 
 # Copy build output
 COPY --from=builder /app/.output ./.output
-
-# Copy production deps
-COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-# Non-root user (security best practice)
+# Non-root user
 RUN addgroup -g 1001 -S nodejs \
- && adduser -S nuxt -u 1001
+ && adduser -S nuxt -u 1001 \
+ && chown -R nuxt:nodejs /app
 
-RUN chown -R nuxt:nodejs /app
 USER nuxt
 
 EXPOSE 3000
 
-ENV NODE_ENV=production
-ENV HOST=0.0.0.0
-ENV PORT=3000
+ENV NODE_ENV=production \
+    HOST=0.0.0.0 \
+    PORT=3000
 
 CMD ["node", ".output/server/index.mjs"]

@@ -3,7 +3,6 @@
 export default defineNuxtConfig({
   typescript: {
     typeCheck: true,
-    strict: true,
     tsConfig: {
       compilerOptions: {
         skipLibCheck: true,

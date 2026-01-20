@@ -28,8 +28,8 @@ export function useLocationHierarchy(
 
     // Build hierarchy
     locationData.forEach((location) => {
-      // Skip if any location field is empty or null
-      if (!location.province || !location.regency || !location.district) {
+      // Skip if province is empty or null (province is required)
+      if (!location.province) {
         return;
       }
 
@@ -37,12 +37,18 @@ export function useLocationHierarchy(
         provinceMap.set(location.province, new Map());
       }
 
-      const regencyMap = provinceMap.get(location.province)!;
-      if (!regencyMap.has(location.regency)) {
-        regencyMap.set(location.regency, new Set());
-      }
+      // Only add regency if it exists
+      if (location.regency) {
+        const regencyMap = provinceMap.get(location.province)!;
+        if (!regencyMap.has(location.regency)) {
+          regencyMap.set(location.regency, new Set());
+        }
 
-      regencyMap.get(location.regency)!.add(location.district);
+        // Only add district if it exists
+        if (location.district) {
+          regencyMap.get(location.regency)!.add(location.district);
+        }
+      }
     });
 
     // Convert to array structure

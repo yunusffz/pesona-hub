@@ -3,6 +3,12 @@ import type { components } from "~/types/pesona-hub-api";
 type UserUpdate = components["schemas"]["UserUpdate"];
 type UserDetail = components["schemas"]["UserDetail"];
 
+export const ROLE_MAP: Record<string, string> = {
+  MINISTRY: "Kementerian",
+  ADMINISTRATOR: "Administrator",
+  PARTNER: "Mitra",
+};
+
 /**
  * Required fields for a complete user profile
  * These fields must be filled before allowing collaboration requests

@@ -41,8 +41,8 @@
                 ? 'border-b-2 border-white'
                 : 'border-b-2 border-primary-600'
               : currentVariant === 'transparent'
-              ? 'hover:border-b-2 hover:border-white/50'
-              : 'hover:border-b-2 hover:border-primary-600/50',
+                ? 'hover:border-b-2 hover:border-white/50'
+                : 'hover:border-b-2 hover:border-primary-600/50',
           ]"
         >
           Beranda
@@ -56,8 +56,8 @@
                 ? 'border-b-2 border-white'
                 : 'border-b-2 border-primary-600'
               : currentVariant === 'transparent'
-              ? 'hover:border-b-2 hover:border-white/50'
-              : 'hover:border-b-2 hover:border-primary-600/50',
+                ? 'hover:border-b-2 hover:border-white/50'
+                : 'hover:border-b-2 hover:border-primary-600/50',
           ]"
         >
           Tentang Kami
@@ -71,8 +71,8 @@
                 ? 'border-b-2 border-white'
                 : 'border-b-2 border-primary-600'
               : currentVariant === 'transparent'
-              ? 'hover:border-b-2 hover:border-white/50'
-              : 'hover:border-b-2 hover:border-primary-600/50',
+                ? 'hover:border-b-2 hover:border-white/50'
+                : 'hover:border-b-2 hover:border-primary-600/50',
           ]"
         >
           Katalog
@@ -86,8 +86,8 @@
                 ? 'border-b-2 border-white'
                 : 'border-b-2 border-primary-600'
               : currentVariant === 'transparent'
-              ? 'hover:border-b-2 hover:border-white/50'
-              : 'hover:border-b-2 hover:border-primary-600/50',
+                ? 'hover:border-b-2 hover:border-white/50'
+                : 'hover:border-b-2 hover:border-primary-600/50',
           ]"
         >
           FAQ
@@ -296,164 +296,164 @@
 </template>
 
 <script setup lang="ts">
-  import { useRoute } from "vue-router";
-  import { computed, ref, watch, onUnmounted, Teleport } from "vue";
-  import SvgIcon from "~/components/base/SvgIcon.vue";
-  import UserProfileDropdown from "./UserProfileDropdown.vue";
-  import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
-  import { useAuth } from "~/composables/useAuth";
+import { useRoute } from "vue-router";
+import { computed, ref, watch, onUnmounted, Teleport } from "vue";
+import SvgIcon from "~/components/base/SvgIcon.vue";
+import UserProfileDropdown from "./UserProfileDropdown.vue";
+import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
+import { useAuth } from "~/composables/useAuth";
 
-  interface Props {
-    variant?: "light" | "transparent";
-    ctaText?: string;
+interface Props {
+  variant?: "light" | "transparent";
+  ctaText?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  variant: "light",
+  ctaText: "Gabung Mitra",
+});
+
+const route = useRoute();
+
+// Authentication
+const { user, isAuthenticated, logout } = useAuth();
+const config = useRuntimeConfig();
+
+// Mobile menu state
+const isMobileMenuOpen = ref(false);
+
+// Avatar URL
+const avatarUrl = computed(() => {
+  if (!user.value?.thumbnail) return null;
+  return `${config.public.pesonaApiUrl}/files/${user.value.thumbnail}`;
+});
+
+// User initials for avatar
+const userInitials = computed(() => {
+  if (!user.value?.name) return "U";
+  const names = user.value.name.split(" ");
+  if (names.length >= 2) {
+    return `${names[0][0]}${names[1][0]}`.toUpperCase();
   }
+  return names[0][0].toUpperCase();
+});
 
-  const props = withDefaults(defineProps<Props>(), {
-    variant: "light",
-    ctaText: "Gabung Mitra",
-  });
+// Close mobile menu method
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false;
+};
 
-  const route = useRoute();
+// Mobile menu action handlers
+const handleProfileClick = () => {
+  closeMobileMenu();
+  navigateTo("/profil");
+};
 
-  // Authentication
-  const { user, isAuthenticated, logout } = useAuth();
-  const config = useRuntimeConfig();
+const handleDashboardClick = () => {
+  closeMobileMenu();
+  navigateTo("/dashboard");
+};
 
-  // Mobile menu state
-  const isMobileMenuOpen = ref(false);
+const handleLogoutClick = async () => {
+  closeMobileMenu();
+  await logout();
+};
 
-  // Avatar URL
-  const avatarUrl = computed(() => {
-    if (!user.value?.thumbnail) return null;
-    return `${config.public.pesonaApiUrl}/files/${user.value.thumbnail}`;
-  });
-
-  // User initials for avatar
-  const userInitials = computed(() => {
-    if (!user.value?.name) return "U";
-    const names = user.value.name.split(" ");
-    if (names.length >= 2) {
-      return `${names[0][0]}${names[1][0]}`.toUpperCase();
-    }
-    return names[0][0].toUpperCase();
-  });
-
-  // Close mobile menu method
-  const closeMobileMenu = () => {
-    isMobileMenuOpen.value = false;
-  };
-
-  // Mobile menu action handlers
-  const handleProfileClick = () => {
-    closeMobileMenu();
-    navigateTo("/profil");
-  };
-
-  const handleDashboardClick = () => {
-    closeMobileMenu();
-    navigateTo("/dashboard");
-  };
-
-  const handleLogoutClick = async () => {
-    closeMobileMenu();
-    await logout();
-  };
-
-  // Prevent body scroll when mobile menu is open
-  watch(isMobileMenuOpen, (isOpen) => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.left = "0";
-      document.body.style.right = "0";
-      document.body.style.width = "100%";
-      document.body.style.overflow = "hidden";
-      document.body.dataset.scrollY = scrollY.toString();
-    } else {
-      document.body.style.overflow = "";
-      // Kembalikan posisi scroll setelah drawer ditutup
-      const scrollY = parseInt(document.body.dataset.scrollY || "0", 10);
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      document.body.style.width = "";
-      document.body.style.overflow = "";
-      window.scrollTo(0, scrollY);
-      delete document.body.dataset.scrollY;
-    }
-  });
-
-  // Cleanup on unmount
-  onUnmounted(() => {
+// Prevent body scroll when mobile menu is open
+watch(isMobileMenuOpen, (isOpen) => {
+  if (isOpen) {
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+    document.body.dataset.scrollY = scrollY.toString();
+  } else {
     document.body.style.overflow = "";
-  });
+    // Kembalikan posisi scroll setelah drawer ditutup
+    const scrollY = parseInt(document.body.dataset.scrollY || "0", 10);
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+    document.body.style.overflow = "";
+    window.scrollTo(0, scrollY);
+    delete document.body.dataset.scrollY;
+  }
+});
 
-  // Determine current variant dynamically based on route
-  const currentVariant = computed(() => {
-    const path = route.path;
+// Cleanup on unmount
+onUnmounted(() => {
+  document.body.style.overflow = "";
+});
 
-    // Check for exact homepage match first
-    if (path === "/") return "transparent";
-    if (path === "/katalog") return "transparent";
-    if (path === "/dashboard") return "transparent";
+// Determine current variant dynamically based on route
+const currentVariant = computed(() => {
+  const path = route.path;
 
-    // Check for katalog detail pages (e.g., /katalog/some-slug)
-    if (path.startsWith("/katalog/") && path !== "/katalog/") return "light";
-    if (path.startsWith("/tentang")) return "light";
-    if (path.startsWith("/faq")) return "light";
-    if (path.startsWith("/gabung")) return "light";
+  // Check for exact homepage match first
+  if (path === "/") return "transparent";
+  if (path === "/katalog") return "transparent";
+  if (path === "/dashboard") return "transparent";
 
-    // Fallback to prop
-    return props.variant;
-  });
+  // Check for katalog detail pages (e.g., /katalog/some-slug)
+  if (path.startsWith("/katalog/") && path !== "/katalog/") return "light";
+  if (path.startsWith("/tentang")) return "light";
+  if (path.startsWith("/faq")) return "light";
+  if (path.startsWith("/gabung")) return "light";
 
-  // Position class based on variant
-  const positionClass = computed(() => {
-    return currentVariant.value === "light" ? "relative" : "absolute";
-  });
+  // Fallback to prop
+  return props.variant;
+});
 
-  // Header background and text color classes
-  const headerClasses = computed(() => {
-    switch (currentVariant.value) {
-      case "transparent":
-        return "text-white bg-transparent";
-      case "light":
-      default:
-        return "text-neutral-900 bg-white ";
-    }
-  });
+// Position class based on variant
+const positionClass = computed(() => {
+  return currentVariant.value === "light" ? "relative" : "absolute";
+});
 
-  // Navigation text color classes
-  const navClasses = computed(() => {
-    switch (currentVariant.value) {
-      case "transparent":
-        return "text-white";
-      case "light":
-      default:
-        return "text-neutral-900";
-    }
-  });
+// Header background and text color classes
+const headerClasses = computed(() => {
+  switch (currentVariant.value) {
+    case "transparent":
+      return "text-white bg-transparent";
+    case "light":
+    default:
+      return "text-neutral-900 bg-white ";
+  }
+});
 
-  // CTA button classes
-  const ctaClasses = computed(() => {
-    return "bg-primary text-white hover:bg-primary/90";
-  });
+// Navigation text color classes
+const navClasses = computed(() => {
+  switch (currentVariant.value) {
+    case "transparent":
+      return "text-white";
+    case "light":
+    default:
+      return "text-neutral-900";
+  }
+});
 
-  // Active navigation logic
-  const isActiveRoute = (path: string) => {
-    const currentPath = route.path;
+// CTA button classes
+const ctaClasses = computed(() => {
+  return "bg-primary text-white hover:bg-primary/90";
+});
 
-    // For exact matches
-    if (path === "/" && currentPath === "/") return true;
-    if (path === "/katalog" && currentPath === "/katalog") return true;
+// Active navigation logic
+const isActiveRoute = (path: string) => {
+  const currentPath = route.path;
 
-    // For nested routes (e.g., /katalog/some-slug should be active when on /katalog)
-    if (path === "/katalog" && currentPath.startsWith("/katalog/")) return true;
-    if (path === "/tentang" && currentPath.startsWith("/tentang")) return true;
-    if (path === "/faq" && currentPath.startsWith("/faq")) return true;
+  // For exact matches
+  if (path === "/" && currentPath === "/") return true;
+  if (path === "/katalog" && currentPath === "/katalog") return true;
 
-    return false;
-  };
+  // For nested routes (e.g., /katalog/some-slug should be active when on /katalog)
+  if (path === "/katalog" && currentPath.startsWith("/katalog/")) return true;
+  if (path === "/tentang" && currentPath.startsWith("/tentang")) return true;
+  if (path === "/faq" && currentPath.startsWith("/faq")) return true;
+
+  return false;
+};
 </script>

@@ -3,17 +3,7 @@
     <Sidebar />
 
     <div class="flex flex-col flex-1 min-w-0">
-    <!-- Topbar -->
-    <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-      <h2 class="font-semibold text-neutral-800">Dashboard</h2>
-      <div class="flex items-center gap-3">
-        <span class="text-sm text-neutral-500">Selamat datang, Admin</span>
-        <BaseButton variant="outline" size="sm" @click="handleLogout">
-          <LogOut class="h-4 w-4 mr-1" />
-          Keluar
-        </BaseButton>
-      </div>
-    </header>
+      <CmsHeader />
 
     <!-- Content -->
     <main class="max-w-5xl mx-auto w-full px-6 py-10 flex flex-col gap-8">
@@ -73,17 +63,9 @@
 </template>
 
 <script setup lang="ts">
-import { FileText, Image, Users, LogOut } from "lucide-vue-next";
-import BaseButton from "~/components/base/BaseButton.vue";
+import { FileText, Image, Users } from "lucide-vue-next";
 import Sidebar from "~/components/features/cms/sidebar/Sidebar.vue";
-import { useAuth } from "~/composables/useAuth";
-
-const { logout } = useAuth();
-
-const handleLogout = async () => {
-  await logout();
-  await navigateTo("/cms/login");
-};
+import CmsHeader from "~/components/features/cms/header/Header.vue";
 
 const stats = [
   { label: "Total Artikel", value: 24, icon: FileText },

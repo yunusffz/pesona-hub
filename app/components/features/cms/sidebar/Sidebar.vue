@@ -23,7 +23,10 @@
         @click="collapsed = !collapsed"
       >
         <ChevronLeft
-          :class="['h-5 w-5 text-[#4A4A4A] transition-transform duration-300', collapsed ? 'rotate-180' : '']"
+          :class="[
+            'h-5 w-5 text-[#4A4A4A] transition-transform duration-300',
+            collapsed ? 'rotate-180' : '',
+          ]"
         />
       </button>
     </div>
@@ -47,7 +50,12 @@
         <!-- Icon -->
         <component
           :is="item.icon"
-          :class="['h-5 w-5 shrink-0', item.active ? 'text-[#035925]' : 'text-[#4A4A4A] group-hover:text-[#035925]']"
+          :class="[
+            'h-5 w-5 shrink-0',
+            item.active
+              ? 'text-[#035925]'
+              : 'text-[#4A4A4A] group-hover:text-[#035925]',
+          ]"
         />
 
         <!-- Label (hidden when collapsed) -->
@@ -56,12 +64,17 @@
             <span
               :class="[
                 'text-sm leading-5 tracking-tight truncate',
-                item.active ? 'font-semibold text-[#035925]' : 'font-medium text-[#4A4A4A] group-hover:text-[#035925]',
+                item.active
+                  ? 'font-semibold text-[#035925]'
+                  : 'font-medium text-[#4A4A4A] group-hover:text-[#035925]',
               ]"
             >
               {{ item.label }}
             </span>
-            <span v-if="item.subtitle" class="text-xs text-[#4A4A4A] leading-4 truncate">
+            <span
+              v-if="item.subtitle"
+              class="text-xs text-[#4A4A4A] leading-4 truncate"
+            >
               {{ item.subtitle }}
             </span>
           </div>
@@ -80,7 +93,14 @@
 </template>
 
 <script setup lang="ts">
-import { Package, Star, Handshake, Info, HelpCircle, ChevronLeft } from "lucide-vue-next";
+import {
+  Package,
+  Star,
+  Handshake,
+  Info,
+  HelpCircle,
+  ChevronLeft,
+} from "lucide-vue-next";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -99,8 +119,8 @@ const navItems = computed(() => [
     label: "Highlight Produk",
     subtitle: "Atur produk unggulan",
     icon: Star,
-    to: "/cms/highlight",
-    active: route.path.startsWith("/cms/highlight"),
+    to: "/cms/highlight-product",
+    active: route.path.startsWith("/cms/highlight-product"),
     soon: false,
   },
   {

@@ -99,7 +99,7 @@ const userRole = computed(
 
 const breadcrumbMap: Record<string, { title: string; subtitle: string }> = {
   "/cms": { title: "Data Produk", subtitle: "Kelola data produk & wisata" },
-  "/cms/highlight": {
+  "/cms/highlight-product": {
     title: "Highlight Produk",
     subtitle: "Atur produk unggulan di halaman utama",
   },

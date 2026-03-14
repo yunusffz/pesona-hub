@@ -8,11 +8,11 @@
 
       <!-- Form Body -->
       <div class="flex flex-col gap-6 pt-2">
-
         <!-- Image Upload -->
         <div class="flex flex-col gap-3">
           <label class="text-sm font-medium text-[#1e1e1e]">
-            Gambar Produk * <span class="text-[#6a7282] font-normal">(Max 5 gambar)</span>
+            Gambar Produk *
+            <span class="text-[#6a7282] font-normal">(Max 5 gambar)</span>
           </label>
           <div class="flex items-center gap-2 flex-wrap">
             <ImageUploader
@@ -38,7 +38,9 @@
             />
           </div>
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-medium text-[#1e1e1e]">Kelas KUPS *</label>
+            <label class="text-sm font-medium text-[#1e1e1e]"
+              >Kelas KUPS *</label
+            >
             <BaseSelect
               v-model="form.kelasKups"
               placeholder="Pilih kelas"
@@ -52,7 +54,9 @@
 
         <!-- Nama Produk -->
         <div class="flex flex-col gap-2">
-          <label class="text-sm font-medium text-[#1e1e1e]">Nama Produk *</label>
+          <label class="text-sm font-medium text-[#1e1e1e]"
+            >Nama Produk *</label
+          >
           <Input
             v-model="form.namaProduk"
             placeholder="Contoh: Pupuk Cair Organik KUPS Agroforestri Danau Raya"
@@ -62,7 +66,9 @@
 
         <!-- Deskripsi Produk -->
         <div class="flex flex-col gap-2">
-          <label class="text-sm font-medium text-[#1e1e1e]">Deskripsi Produk *</label>
+          <label class="text-sm font-medium text-[#1e1e1e]"
+            >Deskripsi Produk *</label
+          >
           <textarea
             v-model="form.deskripsi"
             placeholder="Masukkan deskripsi produk yang menarik..."
@@ -74,7 +80,9 @@
         <!-- Komoditas, Wilayah, Nama KUPS -->
         <div class="flex gap-4">
           <div class="flex flex-col gap-2 w-[143px] shrink-0">
-            <label class="text-sm font-medium text-[#1e1e1e]">Komoditas *</label>
+            <label class="text-sm font-medium text-[#1e1e1e]"
+              >Komoditas *</label
+            >
             <Input
               v-model="form.komoditas"
               placeholder="Kayu"
@@ -90,7 +98,9 @@
             />
           </div>
           <div class="flex flex-col gap-2 flex-1">
-            <label class="text-sm font-medium text-[#1e1e1e]">Nama KUPS *</label>
+            <label class="text-sm font-medium text-[#1e1e1e]"
+              >Nama KUPS *</label
+            >
             <Input
               v-model="form.namaKups"
               placeholder="Contoh: KUPS Danau Raya"
@@ -132,7 +142,9 @@
       </div>
 
       <!-- Footer -->
-      <div class="flex items-center justify-end gap-3 pt-1 border-t border-[#e5e7eb]">
+      <div
+        class="flex items-center justify-end gap-3 pt-1 border-t border-[#e5e7eb]"
+      >
         <BaseButton
           variant="secondary"
           class="h-9 px-4 rounded-2xl text-sm border border-[#e7efea] text-[#1e1e1e]"
@@ -185,6 +197,7 @@ const kategoriOptions = [
 ];
 
 const kelasKupsOptions = [
+  { label: "Blue", value: "BLUE" },
   { label: "Silver", value: "SILVER" },
   { label: "Gold", value: "GOLD" },
   { label: "Platinum", value: "PLATINUM" },
@@ -198,15 +211,16 @@ const satuanOptions = [
   { label: "Sachet", value: "sachet" },
 ];
 
-const isFormValid = computed(() =>
-  !!form.value.kategori &&
-  !!form.value.kelasKups &&
-  !!form.value.namaProduk &&
-  !!form.value.deskripsi &&
-  !!form.value.komoditas &&
-  !!form.value.wilayah &&
-  !!form.value.namaKups &&
-  !!form.value.harga
+const isFormValid = computed(
+  () =>
+    !!form.value.kategori &&
+    !!form.value.kelasKups &&
+    !!form.value.namaProduk &&
+    !!form.value.deskripsi &&
+    !!form.value.komoditas &&
+    !!form.value.wilayah &&
+    !!form.value.namaKups &&
+    !!form.value.harga
 );
 
 const handleSubmit = () => {

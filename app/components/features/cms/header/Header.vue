@@ -4,7 +4,7 @@
   >
     <!-- Breadcrumb -->
     <div class="flex flex-col gap-0.5">
-      <h1 class="text-xl font-bold text-neutral-800 leading-5">
+      <h1 class="text-xl font-bold text-[#101828] leading-5">
         {{ breadcrumb.title }}
       </h1>
       <p class="text-sm text-[#6A7282] leading-4">
@@ -15,7 +15,9 @@
     <!-- Right -->
     <DropdownMenu v-model:open="open">
       <DropdownMenuTrigger as-child>
-        <button class="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-gray-50 transition-colors outline-none">
+        <button
+          class="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-gray-50 transition-colors outline-none"
+        >
           <Avatar class="flex items-center justify-center bg-neutral-100">
             <AvatarImage
               v-if="user?.thumbnail"
@@ -33,7 +35,10 @@
             </div>
           </div>
           <ChevronDown
-            :class="['h-4 w-4 text-neutral-400 transition-transform duration-200', open ? 'rotate-180' : '']"
+            :class="[
+              'h-4 w-4 text-neutral-400 transition-transform duration-200',
+              open ? 'rotate-180' : '',
+            ]"
           />
         </button>
       </DropdownMenuTrigger>
@@ -88,7 +93,9 @@ const userInitials = computed(() => {
     .join("");
 });
 
-const userRole = computed(() => ROLE_MAP[user.value?.role ?? ""] ?? user.value?.role ?? "");
+const userRole = computed(
+  () => ROLE_MAP[user.value?.role ?? ""] ?? user.value?.role ?? ""
+);
 
 const breadcrumbMap: Record<string, { title: string; subtitle: string }> = {
   "/cms": { title: "Data Produk", subtitle: "Kelola data produk & wisata" },

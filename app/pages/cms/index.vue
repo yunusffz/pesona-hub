@@ -1,10 +1,10 @@
 <template>
-  <Dashboard />
+  <Product />
 </template>
 <script setup lang="ts">
-import Dashboard from "~/components/features/cms/dashboard/Dashboard.vue";
+import Product from "~/components/features/cms/product/Product.vue";
 definePageMeta({
-  layout: false,
+  layout: "cms",
   middleware: "auth",
   requiresAuth: true,
 });

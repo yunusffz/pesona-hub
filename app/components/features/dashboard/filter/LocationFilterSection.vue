@@ -38,7 +38,7 @@
         />
 
         <!-- Location tree -->
-        <div class="max-h-[300px] overflow-y-auto pr-1">
+        <div class="pr-1">
           <LocationTreeItem
             v-for="province in filteredHierarchicalData"
             :key="province.name"
@@ -78,89 +78,89 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch, computed } from "vue";
-  import type { LocationFilter } from "~/stores/useCatalogStore";
-  import { useLocationHierarchy } from "~/composables/useLocationHierarchy";
-  import { useLocationSearch } from "~/composables/useLocationSearch";
-  import { useLocationSelection } from "~/composables/useLocationSelection";
-  import LocationTreeItem from "../../catalog/catalog-product-section/filter-location/LocationTreeItem.vue";
+import { ref, watch, computed } from "vue";
+import type { LocationFilter } from "~/stores/useCatalogStore";
+import { useLocationHierarchy } from "~/composables/useLocationHierarchy";
+import { useLocationSearch } from "~/composables/useLocationSearch";
+import { useLocationSelection } from "~/composables/useLocationSelection";
+import LocationTreeItem from "../../catalog/catalog-product-section/filter-location/LocationTreeItem.vue";
 
-  interface Props {
-    locationsData: any;
-    isLoading?: boolean;
-    error?: Error | null;
-    defaultExpanded?: boolean;
-    modelValue: LocationFilter[];
-  }
+interface Props {
+  locationsData: any;
+  isLoading?: boolean;
+  error?: Error | null;
+  defaultExpanded?: boolean;
+  modelValue: LocationFilter[];
+}
 
-  interface Emits {
-    (e: "update:modelValue", value: LocationFilter[]): void;
-  }
+interface Emits {
+  (e: "update:modelValue", value: LocationFilter[]): void;
+}
 
-  const props = withDefaults(defineProps<Props>(), {
-    isLoading: false,
-    error: null,
-    defaultExpanded: true,
-  });
+const props = withDefaults(defineProps<Props>(), {
+  isLoading: false,
+  error: null,
+  defaultExpanded: true,
+});
 
-  const emit = defineEmits<Emits>();
+const emit = defineEmits<Emits>();
 
-  const isExpanded = ref(props.defaultExpanded);
-  const searchQuery = ref<string>("");
-  const expandedProvinces = ref<string[]>([]);
-  const expandedRegencies = ref<string[]>([]);
+const isExpanded = ref(props.defaultExpanded);
+const searchQuery = ref<string>("");
+const expandedProvinces = ref<string[]>([]);
+const expandedRegencies = ref<string[]>([]);
 
-  // Use the same composables as catalog FilterLocation
-  const { hierarchicalData } = useLocationHierarchy(
-    computed(() => props.locationsData)
-  );
+// Use the same composables as catalog FilterLocation
+const { hierarchicalData } = useLocationHierarchy(
+  computed(() => props.locationsData)
+);
 
-  const { filteredHierarchicalData } = useLocationSearch(
+const { filteredHierarchicalData } = useLocationSearch(
+  hierarchicalData,
+  searchQuery,
+  expandedProvinces,
+  expandedRegencies
+);
+
+const { selected, isSelected, toggleSelection, removeSelection } =
+  useLocationSelection(
     hierarchicalData,
-    searchQuery,
     expandedProvinces,
-    expandedRegencies
+    expandedRegencies,
+    (selections) => emit("update:modelValue", selections)
   );
 
-  const { selected, isSelected, toggleSelection, removeSelection } =
-    useLocationSelection(
-      hierarchicalData,
-      expandedProvinces,
-      expandedRegencies,
-      (selections) => emit("update:modelValue", selections)
-    );
+const selectedCount = computed(() => selected.value.length);
 
-  const selectedCount = computed(() => selected.value.length);
-
-  const totalLocationCount = computed(() => {
-    let total = 0;
-    hierarchicalData.value.forEach((province) => {
-      total += 1; // Count province
-      province.regencies.forEach((regency) => {
-        total += 1; // Count regency
-        total += regency.districts.length; // Count districts
-      });
+const totalLocationCount = computed(() => {
+  let total = 0;
+  hierarchicalData.value.forEach((province) => {
+    total += 1; // Count province
+    province.regencies.forEach((regency) => {
+      total += 1; // Count regency
+      total += regency.districts.length; // Count districts
     });
-    return total;
   });
+  return total;
+});
 
-  // Watch for changes in modelValue to sync internal state
-  watch(
-    () => props.modelValue,
-    (newValue) => {
-      selected.value = [...newValue];
-    },
-    { immediate: true }
-  );
+// Watch for changes in modelValue to sync internal state
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    selected.value = [...newValue];
+  },
+  { immediate: true }
+);
 
-  watch(
-    () => props.defaultExpanded,
-    (newValue) => {
-      isExpanded.value = newValue;
-    }
-  );
+watch(
+  () => props.defaultExpanded,
+  (newValue) => {
+    isExpanded.value = newValue;
+  }
+);
 </script>
 
 <style scoped>
-  /* Reuse similar styles to maintain consistency */
+/* Reuse similar styles to maintain consistency */
 </style>

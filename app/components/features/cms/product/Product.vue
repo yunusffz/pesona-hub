@@ -8,106 +8,193 @@
         </p>
       </div>
       <BaseButton class="py-2 px-4 text-sm">
-        <Plus class="w-5" /> Tambah Produk</BaseButton
-      >
+        <Plus class="w-5" /> Tambah Produk
+      </BaseButton>
     </div>
 
     <Tabs v-model="activeTab" default-value="produk" class="gap-0">
       <div class="flex items-center justify-between p-4 border border-gray-100 rounded-xl">
         <TabsList class="grid grid-cols-2 rounded-2xl w-[200px]">
-          <TabsTrigger value="produk" class="rounded-xl"> Produk </TabsTrigger>
-          <TabsTrigger value="ekowisata" class="rounded-xl"> Ekowisata </TabsTrigger>
+          <TabsTrigger value="produk" class="rounded-xl">Produk</TabsTrigger>
+          <TabsTrigger value="ekowisata" class="rounded-xl">Ekowisata</TabsTrigger>
         </TabsList>
       </div>
 
       <TabsContent value="produk" class="mt-4">
-        <div v-if="isLoading" class="py-8 text-center text-gray-400">Memuat data...</div>
-        <div v-else-if="products.length === 0" class="py-8 text-center text-gray-400">Tidak ada data produk.</div>
-        <table v-else class="w-full text-sm border border-gray-100 rounded-xl overflow-hidden">
-          <thead class="bg-gray-50 text-[#6A7282]">
-            <tr>
-              <th class="px-4 py-3 text-left font-medium">Nama Produk</th>
-              <th class="px-4 py-3 text-left font-medium">Kategori</th>
-              <th class="px-4 py-3 text-left font-medium">Harga</th>
-              <th class="px-4 py-3 text-left font-medium">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="product in products"
-              :key="product.id"
-              class="border-t border-gray-100 hover:bg-gray-50"
-            >
-              <td class="px-4 py-3 font-medium text-[#101828]">{{ product.name }}</td>
-              <td class="px-4 py-3 text-[#6A7282]">{{ product.product_category ?? '-' }}</td>
-              <td class="px-4 py-3 text-[#6A7282]">{{ product.price != null ? `Rp ${product.price.toLocaleString('id-ID')}` : '-' }}</td>
-              <td class="px-4 py-3">
-                <span
-                  class="px-2 py-1 rounded-full text-xs font-medium"
-                  :class="product.status === 'PUBLISHED' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
-                >
-                  {{ product.status }}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <section>
+          <div class="flex items-center justify-between">
+            <SearchInput
+              class="w-[290px] h-12"
+              placeholder="Cari..."
+              :onSearch="handleSearch"
+            />
+            <div class="flex items-center gap-2">
+              <FilterSheet>
+                <SheetTrigger as-child>
+                  <BaseButton variant="solid" class="px-4 py-2">
+                    <Icon name="uil:filter" class="w-4 h-4" />
+                    Filter
+                  </BaseButton>
+                </SheetTrigger>
+              </FilterSheet>
+              <BaseButton
+                variant="solid"
+                class="pr-2 px-3 py-2 justify-between text-sm"
+                @click="handleExportToExcel"
+              >
+                <Icon name="uil:file-export" class="w-4 h-4" />
+                Export
+              </BaseButton>
+            </div>
+          </div>
+          <div class="mt-4">
+            <DataTable :products="filteredProducts" :isLoading="isLoading" />
+          </div>
+        </section>
       </TabsContent>
 
       <TabsContent value="ekowisata" class="mt-4">
-        <div v-if="isLoading" class="py-8 text-center text-gray-400">Memuat data...</div>
-        <div v-else-if="products.length === 0" class="py-8 text-center text-gray-400">Tidak ada data ekowisata.</div>
-        <table v-else class="w-full text-sm border border-gray-100 rounded-xl overflow-hidden">
-          <thead class="bg-gray-50 text-[#6A7282]">
-            <tr>
-              <th class="px-4 py-3 text-left font-medium">Nama Wisata</th>
-              <th class="px-4 py-3 text-left font-medium">Kategori</th>
-              <th class="px-4 py-3 text-left font-medium">Harga</th>
-              <th class="px-4 py-3 text-left font-medium">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="product in products"
-              :key="product.id"
-              class="border-t border-gray-100 hover:bg-gray-50"
-            >
-              <td class="px-4 py-3 font-medium text-[#101828]">{{ product.name }}</td>
-              <td class="px-4 py-3 text-[#6A7282]">{{ product.product_category ?? '-' }}</td>
-              <td class="px-4 py-3 text-[#6A7282]">{{ product.price != null ? `Rp ${product.price.toLocaleString('id-ID')}` : '-' }}</td>
-              <td class="px-4 py-3">
-                <span
-                  class="px-2 py-1 rounded-full text-xs font-medium"
-                  :class="product.status === 'PUBLISHED' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
-                >
-                  {{ product.status }}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <section>
+          <div class="flex items-center justify-between">
+            <SearchInput
+              class="w-[290px] h-12"
+              placeholder="Cari..."
+              :onSearch="handleSearch"
+            />
+            <div class="flex items-center gap-2">
+              <FilterSheet>
+                <SheetTrigger as-child>
+                  <BaseButton variant="solid" class="px-4 py-2">
+                    <Icon name="uil:filter" class="w-4 h-4" />
+                    Filter
+                  </BaseButton>
+                </SheetTrigger>
+              </FilterSheet>
+              <BaseButton
+                variant="solid"
+                class="pr-2 px-3 py-2 justify-between text-sm"
+                @click="handleExportToExcel"
+              >
+                <Icon name="uil:file-export" class="w-4 h-4" />
+                Export
+              </BaseButton>
+            </div>
+          </div>
+          <div class="mt-4">
+            <DataTable :products="filteredProducts" :isLoading="isLoading" />
+          </div>
+        </section>
       </TabsContent>
     </Tabs>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { Plus } from "lucide-vue-next";
 import BaseButton from "~/components/base/BaseButton.vue";
+import SearchInput from "~/components/base/SearchInput.vue";
+import DataTable from "~/components/features/dashboard/data-table/DataTable.vue";
+import FilterSheet from "~/components/features/dashboard/filter/FilterSheet.vue";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
+import { SheetTrigger } from "~/components/ui/sheet";
 import { useProducts } from "~/queries/useProducts";
+import { useCatalogStore } from "~/stores/useCatalogStore";
+import type { ProductWithRelations } from "~/types/product";
 
 const activeTab = ref<"produk" | "ekowisata">("produk");
+const searchQuery = ref("");
 
-const { data, isLoading } = useProducts({
-  filters: () => ({
-    product_category: { $eq: activeTab.value === "produk" ? "PRODUK" : "EKOWISATA" },
-  }),
+const catalogStore = useCatalogStore();
+
+const filtersComputed = computed(() => catalogStore.filters);
+const sortComputed = computed(() => (catalogStore as any).sortBy || undefined);
+
+const { data, isLoading, refetch } = useProducts({
+  get filters() {
+    return {
+      ...filtersComputed.value,
+      product_category: {
+        $eq: activeTab.value === "produk" ? "PRODUK" : "EKOWISATA",
+      },
+    };
+  },
+  get sort() {
+    return sortComputed.value;
+  },
+  populate: [
+    "commodity",
+    "social_forestry_business_group",
+    "social_forestry_business_group.location",
+  ],
+  fields: ["id", "name", "value_chain", "metadatas", "thumbnails", "capacity", "unit", "status"],
+});
+
+watch(
+  [filtersComputed, sortComputed, activeTab],
+  () => {
+    refetch();
+  },
+  { deep: true, flush: "post" }
+);
+
+watch(activeTab, () => {
+  searchQuery.value = "";
 });
 
 const products = computed(() => {
   const list = (data.value as any)?.data;
-  return Array.isArray(list) ? list : [];
+  return Array.isArray(list) ? (list as unknown as ProductWithRelations[]) : [];
 });
+
+const handleSearch = (value: string) => {
+  searchQuery.value = value.toLowerCase().trim();
+};
+
+const filteredProducts = computed(() => {
+  if (!searchQuery.value) return products.value;
+
+  const query = searchQuery.value;
+  return products.value.filter((product) => {
+    const nameMatch = product.name?.toLowerCase().includes(query);
+    const commodityMatch = (product as any).commodity?.name?.toLowerCase().includes(query);
+    const valueChainMatch = product.value_chain?.toLowerCase().includes(query);
+    const businessGroup = product.social_forestry_business_group as any;
+    const regionMatch = businessGroup?.location?.province?.toLowerCase().includes(query);
+    const kupsMatch = businessGroup?.name?.toLowerCase().includes(query);
+    return nameMatch || commodityMatch || valueChainMatch || regionMatch || kupsMatch;
+  });
+});
+
+const handleExportToExcel = async () => {
+  try {
+    const XLSX = await import("xlsx");
+    const excelData = filteredProducts.value.map((product) => {
+      const businessGroup = product.social_forestry_business_group as any;
+      return {
+        "Nama Brand/Produk": product.name || "-",
+        Komoditas: (product as any).commodity?.name || "-",
+        "Kapasitas Penyediaan": product.capacity,
+        Satuan: product.unit || "-",
+        "Jenis Bahan": product.value_chain || "-",
+        Wilayah: businessGroup?.location?.province || "-",
+        "Nama KUPS": businessGroup?.name || "-",
+      };
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    const sheetLabel = activeTab.value === "produk" ? "Produk" : "Ekowisata";
+    XLSX.utils.book_append_sheet(workbook, worksheet, sheetLabel);
+    worksheet["!cols"] = [
+      { wch: 30 }, { wch: 20 }, { wch: 20 },
+      { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 30 },
+    ];
+
+    const timestamp = new Date().toISOString().split("T")[0];
+    XLSX.writeFile(workbook, `Data_${sheetLabel}_${timestamp}.xlsx`);
+  } catch (error) {
+    console.error("Error exporting to Excel:", error);
+  }
+};
 </script>

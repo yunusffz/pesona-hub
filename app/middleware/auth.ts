@@ -6,7 +6,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   if (isProtected && !token.value) {
     return navigateTo({
-      path: "/login",
+      path: "/cms/login",
       query: { redirect: to.fullPath },
     });
   }

@@ -1,5 +1,5 @@
 <template>
-  <section class="min-h-screen bg-gray-50 flex">
+  <section class="min-h-screen bg-gray-50 flex items-stretch pb-18">
     <Sidebar />
     <div class="flex flex-col flex-1 min-w-0">
       <CmsHeader />

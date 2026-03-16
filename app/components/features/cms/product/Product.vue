@@ -1,5 +1,12 @@
 <template>
   <div class="flex flex-col gap-8">
+    <!-- Edit Modal -->
+    <Dialog v-model:open="showEditModal">
+      <DialogContent class="p-0 border-none shadow-none bg-transparent max-w-fit [&>button:last-child]:hidden">
+        <EditProduct :product="selectedProduct" @cancel="showEditModal = false" @submit="showEditModal = false" />
+      </DialogContent>
+    </Dialog>
+
     <div class="flex justify-between">
       <div class="flex flex-col gap-1">
         <h1 class="font-bold text-xl text-[#101828]">Data Produk & Wisata</h1>
@@ -12,15 +19,35 @@
       </BaseButton>
     </div>
 
-    <Tabs v-model="activeTab" default-value="produk" class="gap-0">
-      <div class="flex items-center justify-between p-4 border border-gray-100 rounded-xl">
+    <Tabs
+      v-model="activeTab"
+      default-value="produk"
+      class="gap-0 bg-white rounded-xl"
+    >
+      <div
+        class="flex items-center justify-between p-4 border border-[#E4E4E7] rounded-t-xl"
+      >
         <TabsList class="grid grid-cols-2 rounded-2xl w-[200px]">
           <TabsTrigger value="produk" class="rounded-xl">Produk</TabsTrigger>
-          <TabsTrigger value="ekowisata" class="rounded-xl">Ekowisata</TabsTrigger>
+          <TabsTrigger value="ekowisata" class="rounded-xl"
+            >Ekowisata</TabsTrigger
+          >
         </TabsList>
+
+        <FilterSheet>
+          <SheetTrigger as-child>
+            <BaseButton variant="solid" class="px-4 py-2">
+              <Icon name="uil:filter" class="w-4 h-4" />
+              Filter
+            </BaseButton>
+          </SheetTrigger>
+        </FilterSheet>
       </div>
 
-      <TabsContent value="produk" class="mt-4">
+      <TabsContent
+        value="produk"
+        class="p-8 border border-[#E4E4E7] rounded-b-xl border-t-0"
+      >
         <section>
           <div class="flex items-center justify-between">
             <SearchInput
@@ -29,14 +56,6 @@
               :onSearch="handleSearch"
             />
             <div class="flex items-center gap-2">
-              <FilterSheet>
-                <SheetTrigger as-child>
-                  <BaseButton variant="solid" class="px-4 py-2">
-                    <Icon name="uil:filter" class="w-4 h-4" />
-                    Filter
-                  </BaseButton>
-                </SheetTrigger>
-              </FilterSheet>
               <BaseButton
                 variant="solid"
                 class="pr-2 px-3 py-2 justify-between text-sm"
@@ -48,12 +67,15 @@
             </div>
           </div>
           <div class="mt-4">
-            <DataTable :products="filteredProducts" :isLoading="isLoading" />
+            <CmsDataTable :products="filteredProducts" :isLoading="isLoading" @edit="openEditModal" />
           </div>
         </section>
       </TabsContent>
 
-      <TabsContent value="ekowisata" class="mt-4">
+      <TabsContent
+        value="ekowisata"
+        class="p-8 border border-[#E4E4E7] rounded-b-xl border-t-0"
+      >
         <section>
           <div class="flex items-center justify-between">
             <SearchInput
@@ -62,14 +84,6 @@
               :onSearch="handleSearch"
             />
             <div class="flex items-center gap-2">
-              <FilterSheet>
-                <SheetTrigger as-child>
-                  <BaseButton variant="solid" class="px-4 py-2">
-                    <Icon name="uil:filter" class="w-4 h-4" />
-                    Filter
-                  </BaseButton>
-                </SheetTrigger>
-              </FilterSheet>
               <BaseButton
                 variant="solid"
                 class="pr-2 px-3 py-2 justify-between text-sm"
@@ -81,7 +95,7 @@
             </div>
           </div>
           <div class="mt-4">
-            <DataTable :products="filteredProducts" :isLoading="isLoading" />
+            <CmsDataTable :products="filteredProducts" :isLoading="isLoading" @edit="openEditModal" />
           </div>
         </section>
       </TabsContent>
@@ -94,16 +108,25 @@ import { ref, computed, watch } from "vue";
 import { Plus } from "lucide-vue-next";
 import BaseButton from "~/components/base/BaseButton.vue";
 import SearchInput from "~/components/base/SearchInput.vue";
-import DataTable from "~/components/features/dashboard/data-table/DataTable.vue";
+import CmsDataTable from "~/components/features/cms/product/DataTable.vue";
+import EditProduct from "~/components/features/cms/product/EditProduct.vue";
 import FilterSheet from "~/components/features/dashboard/filter/FilterSheet.vue";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
 import { SheetTrigger } from "~/components/ui/sheet";
+import { Dialog, DialogContent } from "~/components/ui/dialog";
 import { useProducts } from "~/queries/useProducts";
 import { useCatalogStore } from "~/stores/useCatalogStore";
 import type { ProductWithRelations } from "~/types/product";
 
 const activeTab = ref<"produk" | "ekowisata">("produk");
 const searchQuery = ref("");
+const showEditModal = ref(false);
+const selectedProduct = ref<ProductWithRelations | null>(null);
+
+const openEditModal = (product: ProductWithRelations) => {
+  selectedProduct.value = product;
+  showEditModal.value = true;
+};
 
 const catalogStore = useCatalogStore();
 
@@ -127,7 +150,20 @@ const { data, isLoading, refetch } = useProducts({
     "social_forestry_business_group",
     "social_forestry_business_group.location",
   ],
-  fields: ["id", "name", "value_chain", "metadatas", "thumbnails", "capacity", "unit", "status"],
+  fields: [
+    "id",
+    "name",
+    "product_category",
+    "description",
+    "product_usage",
+    "price",
+    "value_chain",
+    "metadatas",
+    "thumbnails",
+    "capacity",
+    "unit",
+    "status",
+  ],
 });
 
 watch(
@@ -157,12 +193,18 @@ const filteredProducts = computed(() => {
   const query = searchQuery.value;
   return products.value.filter((product) => {
     const nameMatch = product.name?.toLowerCase().includes(query);
-    const commodityMatch = (product as any).commodity?.name?.toLowerCase().includes(query);
+    const commodityMatch = (product as any).commodity?.name
+      ?.toLowerCase()
+      .includes(query);
     const valueChainMatch = product.value_chain?.toLowerCase().includes(query);
     const businessGroup = product.social_forestry_business_group as any;
-    const regionMatch = businessGroup?.location?.province?.toLowerCase().includes(query);
+    const regionMatch = businessGroup?.location?.province
+      ?.toLowerCase()
+      .includes(query);
     const kupsMatch = businessGroup?.name?.toLowerCase().includes(query);
-    return nameMatch || commodityMatch || valueChainMatch || regionMatch || kupsMatch;
+    return (
+      nameMatch || commodityMatch || valueChainMatch || regionMatch || kupsMatch
+    );
   });
 });
 
@@ -187,8 +229,13 @@ const handleExportToExcel = async () => {
     const sheetLabel = activeTab.value === "produk" ? "Produk" : "Ekowisata";
     XLSX.utils.book_append_sheet(workbook, worksheet, sheetLabel);
     worksheet["!cols"] = [
-      { wch: 30 }, { wch: 20 }, { wch: 20 },
-      { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 30 },
+      { wch: 30 },
+      { wch: 20 },
+      { wch: 20 },
+      { wch: 20 },
+      { wch: 20 },
+      { wch: 20 },
+      { wch: 30 },
     ];
 
     const timestamp = new Date().toISOString().split("T")[0];

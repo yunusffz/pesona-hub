@@ -43,7 +43,7 @@
               >
                 Nama KUPS
               </th>
-              <!-- <th class="bg-gray-50 px-6 py-3 rounded-tr-2xl"></th> -->
+              <th class="bg-gray-50 px-6 py-3 rounded-tr-2xl w-12"></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
@@ -102,11 +102,14 @@
                   product.social_forestry_business_group?.name || "-"
                 }}</span>
               </td>
-              <!-- <td class="px-6 py-4">
-                <button class="text-gray-400 hover:text-gray-600">
+              <td class="px-6 py-4">
+                <button
+                  class="text-gray-400 hover:text-gray-600"
+                  @click="emit('edit', product)"
+                >
                   <Icon name="uil:ellipsis-v" class="w-5 h-5" />
                 </button>
-              </td> -->
+              </td>
             </tr>
           </tbody>
         </table>
@@ -144,6 +147,10 @@ const props = withDefaults(defineProps<Props>(), {
   isLoading: false,
 });
 
+const emit = defineEmits<{
+  edit: [product: ProductWithRelations];
+}>();
+
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
 
@@ -162,109 +169,55 @@ const startItem = computed(() => {
   return (currentPage.value - 1) * itemsPerPage.value;
 });
 
-// Array of 5 random placeholder images for products
 const placeholderImages = [
   "/assets/images/product-1.png",
   "/assets/images/product-2.png",
   "/assets/images/product-3.png",
 ];
 
-// Helper function to get random placeholder image based on product ID
 const getRandomPlaceholderImage = (
   productId: string | number | undefined
 ): string => {
   if (productId === undefined) {
-    // Use a random index if no ID is provided
     const randomIndex = Math.floor(Math.random() * placeholderImages.length);
-    const selectedImage = placeholderImages[randomIndex];
-    return (
-      selectedImage ?? placeholderImages[0] ?? "/assets/images/product-1.png"
-    );
+    return placeholderImages[randomIndex] ?? placeholderImages[0] ?? "/assets/images/product-1.png";
   }
   const id =
     typeof productId === "string" ? parseInt(productId) || 0 : productId;
-  const index = id % placeholderImages.length;
-  const selectedImage = placeholderImages[index];
-  return (
-    selectedImage ?? placeholderImages[0] ?? "/assets/images/product-1.png"
-  );
+  return placeholderImages[id % placeholderImages.length] ?? placeholderImages[0] ?? "/assets/images/product-1.png";
 };
 
-// Map to store failed image URLs for each product
 const failedImages = ref<Map<string | number, boolean>>(new Map());
-
-// Helper function to get image source (thumbnail or placeholder)
 const config = useRuntimeConfig();
 
 const getImageSrc = (product: ProductWithRelations): string => {
-  // If image already failed, use placeholder immediately
   if (failedImages.value.get(product.id)) {
     return getRandomPlaceholderImage(product.id);
   }
-
-  // Try to get thumbnail first
   if (
     product.thumbnails &&
     Array.isArray(product.thumbnails) &&
     product.thumbnails.length > 0
   ) {
     const thumbnail = product.thumbnails[0];
-
     if (thumbnail && typeof thumbnail === "string" && thumbnail.trim() !== "") {
-      // Construct full URL: NUXT_PUBLIC_PESONA_API_URL/files/thumbnail
       return `${config.public.pesonaApiUrl}/files/${thumbnail.trim()}`;
     }
   }
-
-  // Return random placeholder image if no thumbnail exists
   return getRandomPlaceholderImage(product.id);
 };
 
-// Handle image load error
 const handleImageError = (
   event: Event,
   product: ProductWithRelations
 ): void => {
   const img = event.target as HTMLImageElement;
-  // Mark this product's image as failed
   failedImages.value.set(product.id, true);
-  // Set fallback placeholder image
   img.src = getRandomPlaceholderImage(product.id);
 };
 
-// Helper function to get capacity from metadatas
-const getCapacity = (product: ProductWithRelations): string => {
-  if (!product.metadatas) return "-";
-
-  // Handle array format
-  if (Array.isArray(product.metadatas)) {
-    const capacityMeta = product.metadatas.find(
-      (meta: any) => meta?.capacity || meta?.supply_capacity || meta?.kapasitas
-    );
-    if (capacityMeta) {
-      const capacity =
-        capacityMeta.capacity ||
-        capacityMeta.supply_capacity ||
-        capacityMeta.kapasitas;
-      if (capacity) return String(capacity);
-    }
-  }
-
-  // Handle object format
-  if (typeof product.metadatas === "object" && product.metadatas !== null) {
-    const meta = product.metadatas as Record<string, unknown>;
-    const capacity = meta.capacity || meta.supply_capacity || meta.kapasitas;
-    if (capacity) return String(capacity);
-  }
-
-  return "-";
-};
-
-// Helper function to get region (province)
 const getRegion = (product: ProductWithRelations): string => {
   const businessGroup = product.social_forestry_business_group as any;
-  const location = businessGroup?.location;
-  const province = location?.province;
-  return province || "-";
+  return businessGroup?.location?.province || "-";
 };
 </script>

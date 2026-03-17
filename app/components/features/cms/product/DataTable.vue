@@ -5,45 +5,45 @@
     </div>
     <div v-else class="rounded-2xl border border-gray-200">
       <div class="overflow-x-auto">
-        <table class="w-full">
+        <table class="w-full table-fixed">
           <thead class="border-b border-gray-200">
             <tr>
               <th
-                class="bg-gray-50 px-6 rounded-tl-2xl py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 rounded-tl-2xl py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[220px]"
               >
                 Nama Brand/Produk
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[130px]"
               >
                 Komoditas
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[150px]"
               >
                 Kapasitas Penyediaan
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[90px]"
               >
                 Satuan
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[130px]"
               >
                 Jenis Bahan
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[140px]"
               >
                 Wilayah
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700"
+                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[160px]"
               >
                 Nama KUPS
               </th>
-              <th class="bg-gray-50 px-6 py-3 rounded-tr-2xl w-12"></th>
+              <th class="bg-gray-50 px-6 py-3 rounded-tr-2xl w-10"></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
@@ -52,8 +52,8 @@
               :key="product.id"
               class="hover:bg-gray-50 transition-colors"
             >
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-3">
+              <td class="px-6 py-4 overflow-hidden">
+                <div class="flex items-center gap-3 min-w-0">
                   <div
                     class="w-10 h-10 rounded-md overflow-hidden flex-shrink-0 bg-gray-100"
                   >
@@ -64,20 +64,28 @@
                       @error="handleImageError($event, product)"
                     />
                   </div>
-                  <div class="flex flex-col gap-1">
-                    <span class="text-sm font-medium text-gray-900">{{
-                      product.name
-                    }}</span>
-                    <span v-if="product.status" class="text-xs text-gray-500">
+                  <div class="flex flex-col gap-1 min-w-0">
+                    <span
+                      class="text-sm font-medium text-gray-900 truncate"
+                      :title="product.name"
+                      >{{ product.name }}</span
+                    >
+                    <span
+                      v-if="product.status"
+                      class="text-xs text-gray-500 truncate"
+                      :title="product.status"
+                    >
                       {{ product.status }}
                     </span>
                   </div>
                 </div>
               </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-600">{{
-                  (product as any).commodity?.name || "-"
-                }}</span>
+              <td class="px-6 py-4 overflow-hidden">
+                <span
+                  class="text-sm text-gray-600 truncate block"
+                  :title="(product as any).commodity?.name"
+                  >{{ (product as any).commodity?.name || "-" }}</span
+                >
               </td>
               <td class="px-6 py-4">
                 <span class="text-sm text-gray-900">{{
@@ -87,20 +95,28 @@
               <td class="px-6 py-4">
                 <span class="text-sm text-gray-900">{{ product.unit }}</span>
               </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-600">{{
-                  product.value_chain || "-"
-                }}</span>
+              <td class="px-6 py-4 overflow-hidden">
+                <span
+                  class="text-sm text-gray-600 truncate block"
+                  :title="product.value_chain ?? ''"
+                  >{{ product.value_chain || "-" }}</span
+                >
               </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-600">{{
-                  getRegion(product)
-                }}</span>
+              <td class="px-6 py-4 overflow-hidden">
+                <span
+                  class="text-sm text-gray-600 truncate block"
+                  :title="getRegion(product)"
+                  >{{ getRegion(product) }}</span
+                >
               </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{
-                  product.social_forestry_business_group?.name || "-"
-                }}</span>
+              <td class="px-6 py-4 overflow-hidden">
+                <span
+                  class="text-sm text-gray-900 truncate block"
+                  :title="product.social_forestry_business_group?.name"
+                  >{{
+                    product.social_forestry_business_group?.name || "-"
+                  }}</span
+                >
               </td>
               <td class="px-6 py-4">
                 <button
@@ -180,11 +196,19 @@ const getRandomPlaceholderImage = (
 ): string => {
   if (productId === undefined) {
     const randomIndex = Math.floor(Math.random() * placeholderImages.length);
-    return placeholderImages[randomIndex] ?? placeholderImages[0] ?? "/assets/images/product-1.png";
+    return (
+      placeholderImages[randomIndex] ??
+      placeholderImages[0] ??
+      "/assets/images/product-1.png"
+    );
   }
   const id =
     typeof productId === "string" ? parseInt(productId) || 0 : productId;
-  return placeholderImages[id % placeholderImages.length] ?? placeholderImages[0] ?? "/assets/images/product-1.png";
+  return (
+    placeholderImages[id % placeholderImages.length] ??
+    placeholderImages[0] ??
+    "/assets/images/product-1.png"
+  );
 };
 
 const failedImages = ref<Map<string | number, boolean>>(new Map());

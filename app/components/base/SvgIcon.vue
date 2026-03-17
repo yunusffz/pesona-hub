@@ -7,6 +7,11 @@
   />
 </template>
 
+<script lang="ts">
+  const svgCache = new Map<string, string>();
+  const svgFetching = new Map<string, Promise<string>>();
+</script>
+
 <script setup lang="ts">
   import { onMounted, ref, watch } from "vue";
 
@@ -40,10 +45,23 @@
         ? `/assets/icons/${props.folder}/${props.name}.svg`
         : `/assets/icons/${props.name}.svg`;
 
-      const response = await fetch(path);
-      if (!response.ok) throw new Error(`Failed to load SVG: ${path}`);
+      if (svgCache.has(path)) {
+        svgContent.value = svgCache.get(path)!;
+        loading.value = false;
+        return;
+      }
 
-      let svg = await response.text();
+      if (!svgFetching.has(path)) {
+        svgFetching.set(
+          path,
+          fetch(path).then((r) => {
+            if (!r.ok) throw new Error(`Failed to load SVG: ${path}`);
+            return r.text();
+          })
+        );
+      }
+
+      let svg = await svgFetching.get(path)!;
       svg = svg.replace(/<\?xml[^?]*\?>/g, "");
 
       const parser = new DOMParser();
@@ -89,6 +107,7 @@
 
         // ✅ Assign cleaned SVG
         svgContent.value = svgElement.outerHTML;
+        svgCache.set(path, svgContent.value);
       }
     } catch (e) {
       console.error("Error loading SVG:", e);

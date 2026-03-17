@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-white rounded-2xl border border-[#e7efea] shadow-lg w-[560px] max-h-[90vh] overflow-hidden">
+  <div
+    class="bg-white rounded-2xl border border-[#e7efea] shadow-lg w-[560px] max-h-[90vh] overflow-hidden"
+  >
     <div class="flex flex-col gap-5 p-6 overflow-y-auto max-h-[90vh]">
       <!-- Header -->
       <div class="flex items-center justify-between">
@@ -28,7 +30,7 @@
               v-for="i in 5"
               :key="i"
               v-model="images[i - 1]"
-              label="Upload"
+              label="Upload Gambar"
             />
           </div>
         </div>
@@ -157,7 +159,7 @@
           :disabled="!isFormValid || isPending"
           @click="handleSubmit"
         >
-          {{ isPending ? 'Menyimpan...' : 'Simpan' }}
+          {{ isPending ? "Menyimpan..." : "Simpan" }}
         </BaseButton>
       </div>
     </div>

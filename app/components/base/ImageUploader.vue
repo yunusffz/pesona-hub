@@ -1,9 +1,11 @@
 <template>
+  <div class="flex flex-col gap-1">
   <label
-    class="relative flex flex-col items-center justify-center w-[112px] h-[112px] rounded-[14px] border-2 border-[#e7efea] cursor-pointer overflow-hidden transition hover:bg-gray-50"
+    class="relative flex flex-col items-center justify-center w-[138px] h-[138px] rounded-[14px] border-2 cursor-pointer overflow-hidden transition hover:bg-gray-50 bg-[#F9FAFB]"
+    :class="validationError ? 'border-red-400' : 'border-[#D1D5DC]'"
     @dragover.prevent="isDragging = true"
     @dragleave.prevent="isDragging = false"
-    @drop.prevent="handleDrop"
+    @drop.prevent="(e) => handleDrop(e, props.disableAutoUpload)"
   >
     <!-- File Input -->
     <input
@@ -19,13 +21,13 @@
       v-if="preview"
       :src="preview"
       alt="preview"
-      class="w-full h-full object-cover rounded-[14px]"
+      class="w-full h-full object-cover rounded-xl"
     />
 
     <!-- Placeholder -->
     <div
       v-else
-      class="flex flex-col items-center justify-center text-gray-500 text-sm select-none"
+      class="flex flex-col p-3.5 gap-1 items-center justify-center text-gray-500 text-sm select-none"
       :class="{ 'opacity-70': isDragging }"
     >
       <Icon
@@ -33,8 +35,14 @@
         :name="additionalIcon"
         class="w-7 h-7 mb-1 text-[#6B7280]"
       />
-      <Upload class="w-4 h-4 mb-1 text-primary" />
-      <span>{{ label }}</span>
+      <BaseSvgIcon
+        name="image-placeholder"
+        :size="'48px'"
+        :preserve-original-colors="true"
+      />
+
+      <span class="text-sm font-medium text-[#364153]">{{ label }}</span>
+      <span class="text-xs w-[110px] text-center">{{ hint }}</span>
     </div>
 
     <!-- Overlay saat drag -->
@@ -51,147 +59,62 @@
       <Loader2 class="w-5 h-5 animate-spin text-[#035925]" />
     </div>
   </label>
+
+  <!-- Validation error -->
+  <p v-if="validationError" class="text-xs text-red-500 w-[138px] text-center">
+    {{ validationError }}
+  </p>
+  </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, watch } from "vue";
-  import { Upload, Loader2 } from "lucide-vue-next";
-  import { useApi } from "~/composables/useApi";
-  import { mapErrorMessage } from "~/utils/error-mapper";
+import { computed, ref } from "vue";
+import { Loader2 } from "lucide-vue-next";
+import { useImageUpload } from "~/composables/useImageUpload";
 
-  interface Props {
-    /** optional preview from parent (URL or base64) */
-    modelValue?: string | null;
-    /** label placeholder text */
-    label?: string;
-    additionalIcon?: string;
-    /** disable auto-upload, just emit file */
-    disableAutoUpload?: boolean;
-  }
-  const props = defineProps<Props>();
-  const emit = defineEmits<{
-    "update:modelValue": [value: string | null];
-    file: [file: File];
-    uploaded: [fileUrl: string];
-    error: [error: string];
-  }>();
+interface Props {
+  modelValue?: string | null;
+  label?: string;
+  additionalIcon?: string;
+  disableAutoUpload?: boolean;
+  /** accepted file types, e.g. ['PNG', 'JPG'] */
+  accept?: string[];
+  /** max file size in MB */
+  maxSizeMb?: number;
+}
+const props = withDefaults(defineProps<Props>(), {
+  accept: () => ["PNG", "JPG"],
+  maxSizeMb: 10,
+});
 
-  const client = useApi();
-  const fileInput = ref<HTMLInputElement | null>(null);
-  const isDragging = ref(false);
-  const loading = ref(false);
+const hint = computed(() => {
+  const types = props.accept.join(", ");
+  return `${types} (Max ${props.maxSizeMb}MB)`;
+});
+const emit = defineEmits<{
+  "update:modelValue": [value: string | null];
+  file: [file: File];
+  uploaded: [fileUrl: string];
+  error: [error: string];
+}>();
 
-  // Helper function to construct preview URL from object_name
-  const getPreviewUrl = (value: string | null): string | null => {
-    if (!value) return null;
-    // If it's already a full URL (starts with http:// or https:// or data:), use as-is
-    if (
-      value.startsWith("http://") ||
-      value.startsWith("https://") ||
-      value.startsWith("data:")
-    ) {
-      return value;
+const validationError = ref<string | null>(null);
+let errorTimer: ReturnType<typeof setTimeout>;
+
+const emitWithValidation = new Proxy(emit, {
+  apply(target, _, args) {
+    if (args[0] === "error") {
+      validationError.value = args[1];
+      clearTimeout(errorTimer);
+      errorTimer = setTimeout(() => (validationError.value = null), 3000);
     }
-    // Otherwise, construct URL from object_name
-    const config = useRuntimeConfig();
-    const baseUrl = config.public.pesonaApiUrl;
-    return `${baseUrl}/files/${value}`;
-  };
+    return Reflect.apply(target as any, _, args);
+  },
+}) as typeof emit;
 
-  const preview = ref<string | null>(getPreviewUrl(props.modelValue || null));
-
-  watch(
-    () => props.modelValue,
-    (val) => {
-      preview.value = getPreviewUrl(val || null);
-    }
-  );
-
-  const onFileSelect = (e: Event) => {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (file) handleFile(file);
-  };
-
-  const handleDrop = (e: DragEvent) => {
-    isDragging.value = false;
-    const file = e.dataTransfer?.files?.[0];
-    if (file) handleFile(file);
-  };
-
-  const uploadFile = async (file: File): Promise<string | null> => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const { data, error } = await client.POST("/files", {
-        body: formData,
-      });
-
-      if (error) {
-        const mappedError = mapErrorMessage(error);
-        emit("error", mappedError);
-        return null;
-      }
-
-      // Extract file URL from response
-      if (data && typeof data === "object" && "data" in data) {
-        const fileData = data.data as any;
-        if (fileData?.object_name) {
-          return fileData.object_name;
-        }
-        if (fileData?.id) {
-          return String(fileData.id);
-        }
-        // Try to find object_name or id in nested structure
-        if (typeof fileData === "object") {
-          const objName = fileData.object_name || fileData.id;
-          if (objName) {
-            return String(objName);
-          }
-        }
-      }
-
-      emit("error", "Failed to get file URL from response");
-      return null;
-    } catch (err: any) {
-      const errorMessage =
-        err?.message || mapErrorMessage(err) || "Failed to upload file";
-      emit("error", errorMessage);
-      return null;
-    }
-  };
-
-  const handleFile = async (file: File) => {
-    // Show preview immediately
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      preview.value = reader.result as string;
-    };
-    reader.readAsDataURL(file);
-
-    emit("file", file);
-
-    // Upload if auto-upload is enabled (default: true)
-    if (!props.disableAutoUpload) {
-      loading.value = true;
-      try {
-        const objectName = await uploadFile(file);
-        if (objectName) {
-          // Emit only the object_name (not the full URL)
-          emit("update:modelValue", objectName);
-          emit("uploaded", objectName);
-
-          // Update preview to use the server URL
-          const config = useRuntimeConfig();
-          const baseUrl = config.public.pesonaApiUrl;
-          preview.value = `${baseUrl}/files/${objectName}`;
-        }
-      } finally {
-        loading.value = false;
-      }
-    } else {
-      // If auto-upload is disabled, just emit base64 preview
-      emit("update:modelValue", preview.value);
-    }
-  };
+const { preview, isDragging, loading, onFileSelect, handleDrop } =
+  useImageUpload(() => props.modelValue, emitWithValidation, {
+    accept: props.accept,
+    maxSizeMb: props.maxSizeMb,
+  });
 </script>

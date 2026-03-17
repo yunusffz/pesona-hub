@@ -19,7 +19,9 @@
     <div class="w-full flex flex-col gap-4">
       <!-- Nama Lembaga -->
       <div>
-        <label class="text-sm font-medium">Nama Lembaga / Perusahaan <span class="text-red-500">*</span></label>
+        <label class="text-sm font-medium"
+          >Nama Lembaga / Perusahaan <span class="text-red-500">*</span></label
+        >
         <BaseInput
           :model-value="modelValue.companyName"
           @update:model-value="updateValue('companyName', $event)"
@@ -32,7 +34,9 @@
       <!-- Level Mitra dan WhatsApp -->
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="text-sm font-medium">Jenis Mitra <span class="text-red-500">*</span></label>
+          <label class="text-sm font-medium"
+            >Jenis Mitra <span class="text-red-500">*</span></label
+          >
           <BaseSelect
             :model-value="modelValue.partnerLevel"
             @update:model-value="updateValue('partnerLevel', $event)"
@@ -41,7 +45,7 @@
               { label: 'Koperasi', value: 'koperasi' },
               { label: 'Individu', value: 'individu' },
               { label: 'Pemerintah', value: 'pemerintah' },
-              { label: 'LSM', value: 'lsm' }
+              { label: 'LSM', value: 'lsm' },
             ]"
             placeholder="Pilih jenis mitra"
             icon-type="chevron-down"
@@ -51,7 +55,9 @@
         </div>
 
         <div>
-          <label class="text-sm font-medium">Nomor WhatsApp <span class="text-red-500">*</span></label>
+          <label class="text-sm font-medium"
+            >Nomor WhatsApp <span class="text-red-500">*</span></label
+          >
           <BaseInput
             :model-value="modelValue.whatsappNumber"
             @update:model-value="updateValue('whatsappNumber', $event)"
@@ -80,55 +86,55 @@
 </template>
 
 <script setup lang="ts">
-  import ImageUploader from "@/components/base/ImageUploader.vue";
-  import { ref, watch } from "vue";
-  import BaseInput from "@/components/base/BaseInput.vue";
-  import BaseSelect from "@/components/base/BaseSelect.vue";
+import ImageUploader from "@/components/base/ImageUploaderSimple.vue";
+import { ref, watch } from "vue";
+import BaseInput from "@/components/base/BaseInput.vue";
+import BaseSelect from "@/components/base/BaseSelect.vue";
 
-  interface FormData {
-    // Step 1 - Identity
-    thumbnail: string | null;
-    companyName: string;
-    partnerLevel: string;
-    whatsappNumber: string;
-    websiteUrl: string;
-    // Step 2 - Interests
-    commodities: (string | number)[];
-    // Step 3 - Collaboration
-    collaborationType: string[];
-    additionalInfo: string;
+interface FormData {
+  // Step 1 - Identity
+  thumbnail: string | null;
+  companyName: string;
+  partnerLevel: string;
+  whatsappNumber: string;
+  websiteUrl: string;
+  // Step 2 - Interests
+  commodities: (string | number)[];
+  // Step 3 - Collaboration
+  collaborationType: string[];
+  additionalInfo: string;
+}
+
+interface Props {
+  modelValue: FormData;
+  logoPreview?: string | null;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<{
+  "update:modelValue": [value: FormData];
+  "update:logoPreview": [value: string | null];
+}>();
+
+const logoPreview = ref<string | null>(props.logoPreview || null);
+
+watch(
+  () => props.logoPreview,
+  (val) => {
+    logoPreview.value = val || null;
   }
+);
 
-  interface Props {
-    modelValue: FormData;
-    logoPreview?: string | null;
-  }
+watch(logoPreview, (val) => {
+  emit("update:logoPreview", val);
+});
 
-  const props = defineProps<Props>();
-  const emit = defineEmits<{
-    "update:modelValue": [value: FormData];
-    "update:logoPreview": [value: string | null];
-  }>();
+function updateValue(key: keyof FormData, value: any) {
+  emit("update:modelValue", { ...props.modelValue, [key]: value });
+}
 
-  const logoPreview = ref<string | null>(props.logoPreview || null);
-
-  watch(
-    () => props.logoPreview,
-    (val) => {
-      logoPreview.value = val || null;
-    }
-  );
-
-  watch(logoPreview, (val) => {
-    emit("update:logoPreview", val);
-  });
-
-  function updateValue(key: keyof FormData, value: any) {
-    emit("update:modelValue", { ...props.modelValue, [key]: value });
-  }
-
-  function handleImageUploaded(objectName: string) {
-    // Set the object_name to thumbnail field in form data
-    emit("update:modelValue", { ...props.modelValue, thumbnail: objectName });
-  }
+function handleImageUploaded(objectName: string) {
+  // Set the object_name to thumbnail field in form data
+  emit("update:modelValue", { ...props.modelValue, thumbnail: objectName });
+}
 </script>

@@ -2,6 +2,9 @@
   <aside
     :class="[
       'bg-white flex flex-col border-b border-r border-gray-200 rounded-br-3xl shrink-0 transition-all duration-300 self-stretch mb-6',
+      // Mobile: fixed overlay, toggled by mobileOpen
+      'fixed inset-y-0 left-0 z-30 lg:relative lg:z-auto lg:translate-x-0',
+      mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
       collapsed ? 'w-[68px]' : 'w-[255px]',
     ]"
   >
@@ -20,7 +23,7 @@
       />
       <button
         class="bg-[#fafafa] rounded-[10px] p-2 hover:bg-gray-100 transition-colors shrink-0"
-        @click="collapsed = !collapsed"
+        @click="toggleCollapsed"
       >
         <ChevronLeft
           :class="[
@@ -46,6 +49,7 @@
             ? 'bg-gradient-to-r from-[#e6f1d6] to-white'
             : 'hover:bg-gradient-to-r hover:from-[#e6f1d6] hover:to-white',
         ]"
+        @click="emit('close')"
       >
         <!-- Icon -->
         <component
@@ -103,8 +107,20 @@ import {
 } from "lucide-vue-next";
 import { useRoute } from "vue-router";
 
+const props = defineProps<{
+  mobileOpen: boolean;
+}>();
+
+const emit = defineEmits<{
+  close: [];
+}>();
+
 const route = useRoute();
 const collapsed = ref(false);
+
+function toggleCollapsed() {
+  collapsed.value = !collapsed.value;
+}
 
 const navItems = computed(() => [
   {

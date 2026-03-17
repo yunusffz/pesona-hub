@@ -1,15 +1,24 @@
 <template>
   <header
-    class="bg-white border-b border-gray-200 px-6 h-[73px] flex items-center justify-between shrink-0"
+    class="bg-white border-b border-gray-200 px-4 lg:px-6 h-[73px] flex items-center justify-between shrink-0"
   >
-    <!-- Breadcrumb -->
-    <div class="flex flex-col gap-0.5">
-      <h1 class="text-xl font-bold text-[#101828] leading-5">
-        {{ breadcrumb.title }}
-      </h1>
-      <p class="text-sm text-[#6A7282] leading-4">
-        {{ breadcrumb.subtitle }}
-      </p>
+    <!-- Left: hamburger (mobile) + breadcrumb -->
+    <div class="flex items-center gap-3 min-w-0">
+      <button
+        class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors shrink-0"
+        @click="emit('toggle-sidebar')"
+      >
+        <Menu class="h-5 w-5 text-[#4A4A4A]" />
+      </button>
+
+      <div class="flex flex-col gap-0.5 min-w-0">
+        <h1 class="text-lg lg:text-xl font-bold text-[#101828] leading-5 truncate">
+          {{ breadcrumb.title }}
+        </h1>
+        <p class="text-xs lg:text-sm text-[#6A7282] leading-4 truncate hidden sm:block">
+          {{ breadcrumb.subtitle }}
+        </p>
+      </div>
     </div>
 
     <!-- Right -->
@@ -26,7 +35,7 @@
             />
             <AvatarFallback>{{ userInitials }}</AvatarFallback>
           </Avatar>
-          <div class="text-left">
+          <div class="text-left hidden sm:block">
             <div class="font-medium text-neutral-900 text-sm">
               {{ user?.name || "User" }}
             </div>
@@ -57,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { ChevronDown, LogOut } from "lucide-vue-next";
+import { ChevronDown, LogOut, Menu } from "lucide-vue-next";
 import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
 import {
   DropdownMenu,
@@ -67,6 +76,8 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { useAuth } from "~/composables/useAuth";
 import { ROLE_MAP } from "~/utils/user-profile";
+
+const emit = defineEmits<{ 'toggle-sidebar': [] }>();
 
 const route = useRoute();
 const config = useRuntimeConfig();

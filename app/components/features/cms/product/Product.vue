@@ -7,14 +7,14 @@
       </DialogContent>
     </Dialog>
 
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div class="flex flex-col gap-1">
         <h1 class="font-bold text-xl text-[#101828]">Data Produk & Wisata</h1>
         <p class="text-[#6A7282] text-sm">
           Kelola katalog produk dan paket wisata KUPS
         </p>
       </div>
-      <BaseButton class="py-2 px-4 text-sm">
+      <BaseButton class="py-2 px-4 text-sm w-full sm:w-auto">
         <Plus class="w-5" /> Tambah Produk
       </BaseButton>
     </div>
@@ -46,19 +46,19 @@
 
       <TabsContent
         value="produk"
-        class="p-8 border border-[#E4E4E7] rounded-b-xl border-t-0"
+        class="p-4 lg:p-8 border border-[#E4E4E7] rounded-b-xl border-t-0"
       >
         <section>
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <SearchInput
-              class="w-[290px] h-12"
+              class="w-full sm:w-[290px] h-12"
               placeholder="Cari..."
               :onSearch="handleSearch"
             />
             <div class="flex items-center gap-2">
               <BaseButton
                 variant="solid"
-                class="pr-2 px-3 py-2 justify-between text-sm"
+                class="px-3 py-2 text-sm w-full sm:w-auto"
                 @click="handleExportToExcel"
               >
                 <Icon name="uil:file-export" class="w-4 h-4" />
@@ -74,19 +74,19 @@
 
       <TabsContent
         value="ekowisata"
-        class="p-8 border border-[#E4E4E7] rounded-b-xl border-t-0"
+        class="p-4 lg:p-8 border border-[#E4E4E7] rounded-b-xl border-t-0"
       >
         <section>
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <SearchInput
-              class="w-[290px] h-12"
+              class="w-full sm:w-[290px] h-12"
               placeholder="Cari..."
               :onSearch="handleSearch"
             />
             <div class="flex items-center gap-2">
               <BaseButton
                 variant="solid"
-                class="pr-2 px-3 py-2 justify-between text-sm"
+                class="px-3 py-2 text-sm w-full sm:w-auto"
                 @click="handleExportToExcel"
               >
                 <Icon name="uil:file-export" class="w-4 h-4" />

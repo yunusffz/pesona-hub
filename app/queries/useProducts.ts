@@ -98,6 +98,22 @@ export const useProduct = (
   });
 };
 
+export const usePostProduct = () => {
+  const { $apiClient } = useNuxtApp();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (body: components["schemas"]["ProductCreate"]) => {
+      const { data, error } = await $apiClient.POST("/products", { body });
+      if (error) throw new Error(`Failed to create product: ${error}`);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+};
+
 export const usePatchProduct = () => {
   const { $apiClient } = useNuxtApp();
   const queryClient = useQueryClient();

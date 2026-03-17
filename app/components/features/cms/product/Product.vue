@@ -1,20 +1,44 @@
 <template>
   <div class="flex flex-col gap-8">
-    <!-- Edit Modal -->
-    <Dialog v-model:open="showEditModal">
-      <DialogContent class="p-0 border-none shadow-none bg-transparent max-w-fit [&>button:last-child]:hidden">
-        <EditProduct :product="selectedProduct" @cancel="showEditModal = false" @submit="showEditModal = false" />
+    <!-- Add Modal -->
+    <Dialog v-model:open="showAddModal">
+      <DialogContent
+        class="p-0 border-none shadow-none bg-transparent max-w-fit [&>button:last-child]:hidden"
+      >
+        <EditProduct
+          @cancel="showAddModal = false"
+          @submit="showAddModal = false"
+        />
       </DialogContent>
     </Dialog>
 
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <!-- Edit Modal -->
+    <Dialog v-model:open="showEditModal">
+      <DialogContent
+        class="p-0 border-none shadow-none bg-transparent max-w-fit [&>button:last-child]:hidden"
+      >
+        <EditProduct
+          :product="selectedProduct"
+          @cancel="showEditModal = false"
+          @submit="showEditModal = false"
+        />
+      </DialogContent>
+    </Dialog>
+
+    <div
+      class="flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+    >
       <div class="flex flex-col gap-1">
         <h1 class="font-bold text-xl text-[#101828]">Data Produk & Wisata</h1>
         <p class="text-[#6A7282] text-sm">
           Kelola katalog produk dan paket wisata KUPS
         </p>
       </div>
-      <BaseButton class="py-2 px-4 text-sm w-full sm:w-auto">
+      <BaseButton
+        v-if="appConfig.cms.product.canCreate"
+        class="py-2 px-4 text-sm w-full sm:w-auto"
+        @click="showAddModal = true"
+      >
         <Plus class="w-5" /> Tambah Produk
       </BaseButton>
     </div>
@@ -49,7 +73,9 @@
         class="p-4 lg:p-8 border border-[#E4E4E7] rounded-b-xl border-t-0"
       >
         <section>
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+          >
             <SearchInput
               class="w-full sm:w-[290px] h-12"
               placeholder="Cari..."
@@ -67,7 +93,11 @@
             </div>
           </div>
           <div class="mt-4">
-            <CmsDataTable :products="filteredProducts" :isLoading="isLoading" @edit="openEditModal" />
+            <CmsDataTable
+              :products="filteredProducts"
+              :isLoading="isLoading"
+              @edit="openEditModal"
+            />
           </div>
         </section>
       </TabsContent>
@@ -77,7 +107,9 @@
         class="p-4 lg:p-8 border border-[#E4E4E7] rounded-b-xl border-t-0"
       >
         <section>
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+          >
             <SearchInput
               class="w-full sm:w-[290px] h-12"
               placeholder="Cari..."
@@ -95,7 +127,11 @@
             </div>
           </div>
           <div class="mt-4">
-            <CmsDataTable :products="filteredProducts" :isLoading="isLoading" @edit="openEditModal" />
+            <CmsDataTable
+              :products="filteredProducts"
+              :isLoading="isLoading"
+              @edit="openEditModal"
+            />
           </div>
         </section>
       </TabsContent>
@@ -118,8 +154,11 @@ import { useProducts } from "~/queries/useProducts";
 import { useCatalogStore } from "~/stores/useCatalogStore";
 import type { ProductWithRelations } from "~/types/product";
 
+const appConfig = useAppConfig();
+
 const activeTab = ref<"produk" | "ekowisata">("produk");
 const searchQuery = ref("");
+const showAddModal = ref(false);
 const showEditModal = ref(false);
 const selectedProduct = ref<ProductWithRelations | null>(null);
 

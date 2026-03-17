@@ -1,24 +1,24 @@
 # =====================
 # Build stage
 # =====================
-FROM node:20.19.6-alpine AS builder
+FROM oven/bun:1-alpine AS builder
 
 WORKDIR /app
 
 # Copy package files
-COPY package.json package-lock.json ./
+COPY package.json bun.lockb ./
 
 # Install dependencies
-RUN npm ci
+RUN bun install --frozen-lockfile
 
 # Copy all source files
 COPY . .
 
-# Generate Nuxt TypeScript config (PENTING!)
-RUN npm run prepare || npx nuxt prepare
+# Generate Nuxt TypeScript config
+RUN bun run postinstall
 
 # Build Nuxt
-RUN npm run build
+RUN bun run build
 
 # =====================
 # Runtime stage

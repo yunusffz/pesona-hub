@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/vue-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/vue-query";
 import { computed, toValue } from "vue";
 import type { components } from "~/types/pesona-hub-api";
 import type { UseStrapiParamsOptions } from "~/types/strapi";
@@ -95,5 +95,33 @@ export const useProduct = (
     enabled: !!productId && enabled,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
+  });
+};
+
+export const usePatchProduct = () => {
+  const { $apiClient } = useNuxtApp();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      body,
+    }: {
+      id: number;
+      body: components["schemas"]["ProductUpdate"];
+    }) => {
+      const { data, error } = await $apiClient.PATCH(
+        "/products/{product_id}",
+        {
+          params: { path: { product_id: id } },
+          body,
+        }
+      );
+      if (error) throw new Error(`Failed to patch product: ${error}`);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
   });
 };

@@ -154,10 +154,10 @@
         </BaseButton>
         <BaseButton
           class="h-9 px-4 rounded-2xl text-sm bg-[#035925] hover:bg-[#024c20] text-white"
-          :disabled="!isFormValid"
+          :disabled="!isFormValid || isPending"
           @click="handleSubmit"
         >
-          Simpan
+          {{ isPending ? 'Menyimpan...' : 'Simpan' }}
         </BaseButton>
       </div>
     </div>
@@ -175,6 +175,7 @@ import { X } from "lucide-vue-next";
 import type { ProductWithRelations } from "~/types/product";
 import { useCommodities } from "~/queries/useCommodities";
 import { useSocialForestryBusinessGroups } from "~/queries/useSocialForestryBusinessGroups";
+import { usePatchProduct } from "~/queries/useProducts";
 
 const props = defineProps<{
   product?: ProductWithRelations | null;
@@ -269,8 +270,26 @@ const isFormValid = computed(
     !!form.value.harga
 );
 
-const handleSubmit = () => {
-  if (!isFormValid.value) return;
+const { mutateAsync: patchProduct, isPending } = usePatchProduct();
+
+const handleSubmit = async () => {
+  if (!isFormValid.value || !props.product?.id) return;
+
+  await patchProduct({
+    id: props.product.id,
+    body: {
+      name: form.value.namaProduk,
+      description: form.value.deskripsi,
+      product_category: form.value.kategori,
+      product_usage: form.value.varian || null,
+      price: form.value.harga ? Number(form.value.harga) : null,
+      unit: form.value.satuan || null,
+      commodity_id: Number(form.value.commodityId),
+      social_forestry_business_group_id: Number(form.value.sfbgId),
+      thumbnails: images.value.filter(Boolean) as string[],
+    },
+  });
+
   emit("submit", form.value);
 };
 </script>

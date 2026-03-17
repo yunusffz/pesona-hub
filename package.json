@@ -55,11 +55,9 @@
     "typescript": "^5.9.3",
     "vue-tsc": "^3.1.1"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "@parcel/watcher",
-      "esbuild"
-    ]
-  }
+  "trustedDependencies": [
+    "sharp",
+    "@parcel/watcher",
+    "esbuild"
+  ]
 }

@@ -21,23 +21,8 @@ import CatalogCard from "./CatalogCard.vue";
 import type { ProductWithRelations } from "~/types/product";
 import Loader from "~/components/base/Loader.vue";
 
-type ExtendedProduct = ProductWithRelations & {
-  social_forestry_business_group?: {
-    contact?: {
-      chief_contact: string;
-    };
-    location?: {
-      province: string;
-    };
-    name?: string;
-    class_group?: string;
-  };
-  social_forestry_group?: {
-    name?: string;
-  };
-};
 const props = defineProps<{
-  products: ExtendedProduct[];
+  products: ProductWithRelations[];
   linkText: string;
   isLoading: boolean;
 }>();

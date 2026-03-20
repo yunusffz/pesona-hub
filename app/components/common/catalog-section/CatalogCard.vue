@@ -108,21 +108,7 @@ import RankBadges from "~/components/base/RankBadges.vue";
 const { toTitleCase } = useTitleCase();
 
 const props = defineProps<{
-  product: ProductWithRelations & {
-    social_forestry_business_group?: {
-      contact?: {
-        chief_contact: string;
-      };
-      location?: {
-        province: string;
-      };
-      name?: string;
-      class_group?: string;
-    };
-    social_forestry_group?: {
-      name?: string;
-    };
-  };
+  product: ProductWithRelations;
   linkText: string;
   imageUrl?: string;
 }>();

@@ -18,58 +18,18 @@
 <script setup lang="ts">
 import CatalogContent from "~/components/common/catalog-section/CatalogContent.vue";
 import CatalogHeader from "~/components/common/catalog-section/CatalogHeader.vue";
-import { useProducts } from "~/queries";
+import { useHighlights } from "~/queries/useHighlights";
 import type { ProductWithRelations } from "~/types/product";
 
-type ExtendedProduct = ProductWithRelations & {
-  social_forestry_business_group?: {
-    contact?: {
-      chief_contact: string;
-    };
-    location?: {
-      province: string;
-    };
-    name?: string;
-    class_group?: string;
-  };
-  social_forestry_group?: {
-    name?: string;
-  };
-};
+const { data: highlightsData, isLoading } = useHighlights();
 
-const { data, isLoading } = useProducts({
-  page: 1,
-  limit: 3,
-  populate: ["social_forestry_business_group.contact", "social_forestry_group"],
-  fields: [
-    "id",
-    "name",
-    "description",
-    "price",
-    "unit",
-    "product_usage",
-    "product_category",
-    "thumbnails",
-  ],
-  filters: {
-    social_forestry_business_group: {
-      class_group: {
-        $eq: "PLATINUM",
-      },
-    },
-    product_category: {
-      $eq: "PRODUK",
-    },
-  },
-  sort: "thumbnails:desc",
-});
-
-const products = computed(() => {
-  const productsData = data.value?.data;
-  if (Array.isArray(productsData)) {
-    return productsData as unknown as ExtendedProduct[];
-  }
-  return [] as ExtendedProduct[];
+const products = computed((): ProductWithRelations[] => {
+  if (!highlightsData.value) return [];
+  return highlightsData.value
+    .filter((h) => (h.product as any)?.product_category === "PRODUK")
+    .sort((a, b) => a.order - b.order)
+    .map((h) => h.product as ProductWithRelations)
+    .filter(Boolean);
 });
 
 const title = "Produk Premium Perhutanan Sosial";

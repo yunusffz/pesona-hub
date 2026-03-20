@@ -59,11 +59,11 @@
               >Tidak ada produk ditemukan</span
             >
           </div>
-          <div v-else class="flex flex-col divide-y divide-gray-100">
+          <div v-else class="flex flex-col gap-2">
             <div
               v-for="product in displayedProducts"
               :key="product.id"
-              class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-2xl cursor-pointer transition-colors border border-[#E8E8E8]"
+              class="group flex items-center gap-3 p-3 hover:bg-[#E8F2D9] rounded-2xl cursor-pointer transition-colors border border-[#E8E8E8] hover:border-[#035925]"
               @click="handleSelect(product)"
             >
               <div
@@ -113,11 +113,15 @@
                   </div>
                 </div>
               </div>
-              <span
-                v-if="product.status"
-                class="text-xs text-gray-400 flex-shrink-0"
-                >{{ product.status }}</span
+              <div
+                class="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
               >
+                <div
+                  class="bg-primary w-8 h-8 rounded-xl flex items-center justify-center"
+                >
+                  <Plus class="h-4 w-4 text-white" />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -146,7 +150,7 @@
 
 <script setup lang="ts">
 import { ref, watch, watchEffect, onUnmounted } from "vue";
-import { Search, ArrowDown, MapPin } from "lucide-vue-next";
+import { Search, ArrowDown, MapPin, Plus } from "lucide-vue-next";
 import { formatRupiah } from "~/utils/format-number";
 import BaseButton from "~/components/base/BaseButton.vue";
 import {

@@ -110,7 +110,7 @@ export const useAuth = () => {
       });
 
       if (error) {
-        throw new Error("Invalid username or password");
+        throw new Error("Username atau password salah");
       }
 
       return data as TokenResponse;

@@ -11,7 +11,7 @@
         >
       </DialogHeader>
 
-      <div class="px-6 py-4">
+      <div class="px-6 py-4 relative">
         <div class="relative">
           <Search
             class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#717182] pointer-events-none"
@@ -22,9 +22,27 @@
             class="w-full rounded-xl pl-9 border-[#E8E8E8] bg-[#F7F7F7] placeholder:text-[#717182] focus-visible:ring-0"
           />
         </div>
+        <Transition
+          enter-active-class="transition duration-200 ease-out"
+          enter-from-class="opacity-0 translate-y-1"
+          enter-to-class="opacity-100 translate-y-0"
+          leave-active-class="transition duration-150 ease-in"
+          leave-from-class="opacity-100 translate-y-0"
+          leave-to-class="opacity-0 translate-y-1"
+        >
+          <button
+            v-if="hasMore && displayedProducts.length > 0"
+            class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full z-10 mt-2 flex items-start gap-1.5 border border-[#EBEFEB] bg-white px-3 py-1.5 text-xs shadow-sm text-primary font-medium rounded-2xl cursor-pointer hover:bg-gray-50 transition-colors"
+            @click="sentinel?.scrollIntoView({ behavior: 'smooth' })"
+          >
+            <ArrowDown class="h-3 w-3" />
+            Scroll untuk melihat lebih banyak
+          </button>
+        </Transition>
       </div>
 
-      <div class="flex-1 overflow-y-auto px-6 py-4">
+      <div class="flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-border scrollbar-track-transparent">
+        <div class="px-6 py-4">
         <div
           v-if="isLoading && displayedProducts.length === 0"
           class="flex justify-center py-10"
@@ -82,6 +100,7 @@
             >Memuat...</span
           >
         </div>
+        </div>
       </div>
 
       <DialogFooter class="px-6 py-4 border-t border-gray-100">
@@ -98,7 +117,7 @@
 
 <script setup lang="ts">
 import { ref, watch, watchEffect, onUnmounted } from "vue";
-import { Search } from "lucide-vue-next";
+import { Search, ArrowDown } from "lucide-vue-next";
 import BaseButton from "~/components/base/BaseButton.vue";
 import {
   Dialog,
@@ -109,8 +128,8 @@ import {
   DialogFooter,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
-import { buildStrapiParams } from "~/utils/strapi";
 import type { ProductWithRelations } from "~/types/product";
+import { useProductSearch } from "~/composables/useProductSearch";
 
 const props = defineProps<{
   category: "PRODUK" | "EKOWISATA";
@@ -120,89 +139,18 @@ const emit = defineEmits<{
   select: [product: ProductWithRelations];
 }>();
 
-const { $apiClient } = useNuxtApp();
-
 const open = defineModel<boolean>("open", { default: false });
-const search = ref("");
-const page = ref(1);
-const displayedProducts = ref<ProductWithRelations[]>([]);
-const hasMore = ref(true);
-const isLoading = ref(false);
 const sentinel = ref<HTMLElement | null>(null);
 let observer: IntersectionObserver | null = null;
 
-const fetchPage = async (currentPage: number) => {
-  if (isLoading.value) return;
-  isLoading.value = true;
-  try {
-    const params = buildStrapiParams({
-      filters: {
-        product_category: { $eq: props.category },
-        ...(search.value ? { name: { $containsi: search.value } } : {}),
-      },
-      populate: [
-        "commodity",
-        "social_forestry_business_group",
-        "social_forestry_business_group.location",
-      ],
-      fields: [
-        "id",
-        "name",
-        "thumbnails",
-        "status",
-        "description",
-        "price",
-        "unit",
-        "product_usage",
-      ],
-      page: currentPage,
-      limit: 10,
-    });
-    const { data } = await $apiClient.GET(
-      `/products?${params.toString()}` as "/products"
-    );
-    const items = ((data as any)?.data ?? []) as ProductWithRelations[];
-    if (currentPage === 1) {
-      displayedProducts.value = items;
-    } else {
-      displayedProducts.value.push(...items);
-    }
-    hasMore.value = items.length === 10;
-  } finally {
-    isLoading.value = false;
-  }
-};
+const { search, displayedProducts, hasMore, isLoading, open: fetchFirst, reset, loadMore } =
+  useProductSearch(props.category);
 
-// Fetch on page increment
-watch(page, (p) => fetchPage(p));
-
-// Reset + refetch on search change (debounced)
-let searchTimer: ReturnType<typeof setTimeout>;
-watch(search, () => {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => {
-    if (page.value === 1) {
-      displayedProducts.value = [];
-      fetchPage(1);
-    } else {
-      page.value = 1; // triggers the page watcher above
-    }
-  }, 300);
-});
-
-// Fetch page 1 when modal opens
 watch(open, (val) => {
-  if (val) {
-    fetchPage(1);
-  } else {
-    search.value = "";
-    page.value = 1;
-    displayedProducts.value = [];
-    hasMore.value = true;
-  }
+  if (val) fetchFirst();
+  else reset();
 });
 
-// IntersectionObserver on sentinel
 watchEffect(() => {
   if (observer) observer.disconnect();
   const el = sentinel.value;
@@ -210,9 +158,7 @@ watchEffect(() => {
 
   observer = new IntersectionObserver(
     (entries) => {
-      if (entries[0]?.isIntersecting && !isLoading.value && hasMore.value) {
-        page.value++;
-      }
+      if (entries[0]?.isIntersecting) loadMore();
     },
     { threshold: 0.1 }
   );

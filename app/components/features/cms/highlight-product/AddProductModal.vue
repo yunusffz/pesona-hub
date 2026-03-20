@@ -12,11 +12,23 @@
       </DialogHeader>
 
       <div class="px-6 py-4">
-        <Input v-model="search" placeholder="Cari produk..." class="w-full" />
+        <div class="relative">
+          <Search
+            class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#717182] pointer-events-none"
+          />
+          <Input
+            v-model="search"
+            placeholder="Cari berdasarkan nama produk,wisata,kategori, atau KUPS..."
+            class="w-full rounded-xl pl-9 border-[#E8E8E8] bg-[#F7F7F7] placeholder:text-[#717182] focus-visible:ring-0"
+          />
+        </div>
       </div>
 
       <div class="flex-1 overflow-y-auto px-6 py-4">
-        <div v-if="isLoading && displayedProducts.length === 0" class="flex justify-center py-10">
+        <div
+          v-if="isLoading && displayedProducts.length === 0"
+          class="flex justify-center py-10"
+        >
           <span class="text-sm text-gray-400">Memuat produk...</span>
         </div>
         <div
@@ -64,7 +76,11 @@
 
         <!-- Sentinel always rendered for IntersectionObserver -->
         <div ref="sentinel" class="py-2 flex justify-center">
-          <span v-if="isLoading && displayedProducts.length > 0" class="text-xs text-gray-400">Memuat...</span>
+          <span
+            v-if="isLoading && displayedProducts.length > 0"
+            class="text-xs text-gray-400"
+            >Memuat...</span
+          >
         </div>
       </div>
 
@@ -82,6 +98,7 @@
 
 <script setup lang="ts">
 import { ref, watch, watchEffect, onUnmounted } from "vue";
+import { Search } from "lucide-vue-next";
 import BaseButton from "~/components/base/BaseButton.vue";
 import {
   Dialog,
@@ -123,8 +140,21 @@ const fetchPage = async (currentPage: number) => {
         product_category: { $eq: props.category },
         ...(search.value ? { name: { $containsi: search.value } } : {}),
       },
-      populate: ["commodity", "social_forestry_business_group", "social_forestry_business_group.location"],
-      fields: ["id", "name", "thumbnails", "status", "description", "price", "unit", "product_usage"],
+      populate: [
+        "commodity",
+        "social_forestry_business_group",
+        "social_forestry_business_group.location",
+      ],
+      fields: [
+        "id",
+        "name",
+        "thumbnails",
+        "status",
+        "description",
+        "price",
+        "unit",
+        "product_usage",
+      ],
       page: currentPage,
       limit: 10,
     });

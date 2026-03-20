@@ -8,7 +8,34 @@
           utama
         </p>
       </div>
-      <BaseButton class="py-0 px-4 text-sm h-9">Simpan Perubahan</BaseButton>
+      <BaseButton
+        class="py-0 px-4 text-sm h-9"
+        :disabled="isSaving"
+        @click="saveChanges"
+      >
+        <svg
+          v-if="isSaving"
+          class="animate-spin h-4 w-4"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          />
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+          />
+        </svg>
+        {{ isSaving ? "Menyimpan Perubahan..." : "Simpan Perubahan" }}
+      </BaseButton>
     </div>
 
     <HighlightTips />
@@ -17,7 +44,7 @@
       <div class="flex items-center justify-between rounded-xl p-1">
         <TabsList class="grid grid-cols-2 rounded-2xl w-[400px]">
           <TabsTrigger value="produk" class="rounded-xl"
-            >Highlight Produk 0/3</TabsTrigger
+            >Highlight Produk {{ highlightedProducts.length }}/3</TabsTrigger
           >
           <TabsTrigger value="ekowisata" class="rounded-xl"
             >Highlight Ekowisata 0/3</TabsTrigger
@@ -55,11 +82,45 @@
       :category="activeTab === 'produk' ? 'PRODUK' : 'EKOWISATA'"
       @select="selectProduct"
     />
+
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="translate-x-4 opacity-0"
+        enter-to-class="translate-x-0 opacity-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="translate-x-0 opacity-100"
+        leave-to-class="translate-x-4 opacity-0"
+      >
+        <div
+          v-if="showToast"
+          class="fixed top-5 right-5 z-[9999] flex items-center gap-3 rounded-xl px-4 py-3 shadow-lg"
+          style="background-color: #e8f5ee"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="h-5 w-5 shrink-0"
+            style="color: #035925"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53-1.471-1.47a.75.75 0 00-1.06 1.06l2.1 2.1a.75.75 0 001.14-.094l3.747-5.254z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span class="text-sm font-medium" style="color: #035925">
+            Perubahan berhasil disimpan
+          </span>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import draggable from "vuedraggable";
 import BaseButton from "~/components/base/BaseButton.vue";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
@@ -68,11 +129,33 @@ import HighlightAddCard from "./HighlightAddCard.vue";
 import HighlightProductCard from "./HighlightProductCard.vue";
 import AddProductModal from "./AddProductModal.vue";
 import type { ProductWithRelations } from "~/types/product";
+import {
+  useHighlights,
+  useCreateHighlight,
+  useDeleteHighlight,
+} from "~/queries/useHighlights";
 
 const activeTab = ref<"produk" | "ekowisata">("produk");
 const isModalOpen = ref(false);
 const highlightedProducts = ref<ProductWithRelations[]>([]);
+const isSaving = ref(false);
+const showToast = ref(false);
 
+const { data: highlightsData } = useHighlights();
+const { mutateAsync: createHighlight } = useCreateHighlight();
+const { mutateAsync: deleteHighlight } = useDeleteHighlight();
+
+watch(
+  highlightsData,
+  (highlights) => {
+    if (!highlights) return;
+    highlightedProducts.value = highlights
+      .sort((a, b) => a.order - b.order)
+      .map((h) => h.product as ProductWithRelations)
+      .filter(Boolean);
+  },
+  { immediate: true }
+);
 
 const selectProduct = (product: ProductWithRelations) => {
   if (highlightedProducts.value.length >= 3) return;
@@ -81,6 +164,27 @@ const selectProduct = (product: ProductWithRelations) => {
 };
 
 const removeProduct = (id: number) => {
-  highlightedProducts.value = highlightedProducts.value.filter((p) => p.id !== id);
+  highlightedProducts.value = highlightedProducts.value.filter(
+    (p) => p.id !== id
+  );
+};
+
+const saveChanges = async () => {
+  isSaving.value = true;
+  try {
+    const currentHighlights = highlightsData.value ?? [];
+    await Promise.all(currentHighlights.map((h) => deleteHighlight(h.id)));
+    await Promise.all(
+      highlightedProducts.value.map((product, index) =>
+        createHighlight({ product_id: product.id!, order: index + 1 })
+      )
+    );
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+    }, 3000);
+  } finally {
+    isSaving.value = false;
+  }
 };
 </script>

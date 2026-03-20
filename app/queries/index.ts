@@ -12,3 +12,9 @@ export {
   useCommodityPriority,
   useCommoditiesPriorityDetailed,
 } from "./useCommodityPriorities";
+export {
+  useHighlights,
+  useCreateHighlight,
+  useUpdateHighlight,
+  useDeleteHighlight,
+} from "./useHighlights";

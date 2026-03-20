@@ -756,6 +756,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/faqs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Faqs */
+        get: operations["get_faqs_faqs_get"];
+        put?: never;
+        /** Create Faq */
+        post: operations["create_faq_faqs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/faqs/{faq_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Faq */
+        get: operations["get_faq_faqs__faq_id__get"];
+        /** Update Faq */
+        put: operations["update_faq_faqs__faq_id__put"];
+        post?: never;
+        /** Delete Faq */
+        delete: operations["delete_faq_faqs__faq_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/files": {
         parameters: {
             query?: never;
@@ -809,6 +846,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/highlights": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Highlights */
+        get: operations["get_highlights_highlights_get"];
+        put?: never;
+        /** Create Highlight */
+        post: operations["create_highlight_highlights_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/highlights/{highlight_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Highlight */
+        get: operations["get_highlight_highlights__highlight_id__get"];
+        /** Update Highlight */
+        put: operations["update_highlight_highlights__highlight_id__put"];
+        post?: never;
+        /** Delete Highlight */
+        delete: operations["delete_highlight_highlights__highlight_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/locations": {
         parameters: {
             query?: never;
@@ -846,6 +920,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/partners": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Partners */
+        get: operations["get_partners_partners_get"];
+        put?: never;
+        /** Create Partner */
+        post: operations["create_partner_partners_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/partners/{partner_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Partner */
+        get: operations["get_partner_partners__partner_id__get"];
+        /** Update Partner */
+        put: operations["update_partner_partners__partner_id__put"];
+        post?: never;
+        /** Delete Partner */
+        delete: operations["delete_partner_partners__partner_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/products": {
         parameters: {
             query?: never;
@@ -858,6 +969,23 @@ export interface paths {
         put?: never;
         /** Create Product */
         post: operations["create_product_products_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/products/highlight": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Highlight */
+        get: operations["get_highlight_products_highlight_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1045,6 +1173,91 @@ export interface paths {
         };
         /** Get Me */
         get: operations["get_me_me_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Health Check */
+        get: operations["health_check_health__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/detailed": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Detailed Health Check */
+        get: operations["detailed_health_check_health_detailed_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/ready": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Readiness Check */
+        get: operations["readiness_check_health_ready_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/live": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Liveness Check */
+        get: operations["liveness_check_health_live_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/health/metrics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Metrics Check */
+        get: operations["metrics_check_health_metrics_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1244,10 +1457,7 @@ export interface components {
         };
         /** Body_upload_file_files_post */
         Body_upload_file_files_post: {
-            /**
-             * File
-             * Format: binary
-             */
+            /** File */
             file: string;
             /** Description */
             description?: string | null;
@@ -1545,6 +1755,27 @@ export interface components {
              */
             status?: string | null;
         };
+        /** DetailedHealthStatus */
+        DetailedHealthStatus: {
+            /** Status */
+            status: string;
+            /** Timestamp */
+            timestamp: string;
+            /** Version */
+            version: string;
+            /** Uptime */
+            uptime: string;
+            /** Service */
+            service: string;
+            /** Checks */
+            checks: {
+                [key: string]: unknown;
+            };
+            /** Metrics */
+            metrics: {
+                [key: string]: unknown;
+            };
+        };
         /** EconomicCreate */
         EconomicCreate: {
             /**
@@ -1678,6 +1909,143 @@ export interface components {
          * @enum {string}
          */
         EventType: "view" | "download" | "upload" | "create" | "update" | "delete" | "share" | "export" | "api_access" | "click" | "authenticate";
+        /** FAQCreate */
+        FAQCreate: {
+            /**
+             * Question
+             * @description FAQ question
+             */
+            question: string;
+            /**
+             * Answer
+             * @description FAQ answer
+             */
+            answer: string;
+            /**
+             * Order
+             * @description Display order
+             * @default 0
+             */
+            order: number;
+            /**
+             * @description FAQ status
+             * @default ACTIVE
+             */
+            status: components["schemas"]["Status"];
+        };
+        /** FAQResponse */
+        FAQResponse: {
+            /**
+             * Id
+             * @description FAQ ID
+             */
+            id: number;
+            /**
+             * Question
+             * @description FAQ question
+             */
+            question: string;
+            /**
+             * Answer
+             * @description FAQ answer
+             */
+            answer: string;
+            /**
+             * Order
+             * @description Display order
+             */
+            order: number;
+            /** @description FAQ status */
+            status: components["schemas"]["Status"];
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             * @description Last update timestamp
+             */
+            updated_at: string;
+        };
+        /** FAQUpdate */
+        FAQUpdate: {
+            /**
+             * Question
+             * @description FAQ question
+             */
+            question?: string | null;
+            /**
+             * Answer
+             * @description FAQ answer
+             */
+            answer?: string | null;
+            /**
+             * Order
+             * @description Display order
+             */
+            order?: number | null;
+            /** @description FAQ status */
+            status?: components["schemas"]["Status"] | null;
+        };
+        /** File */
+        File: {
+            /**
+             * Id
+             * @description File ID
+             */
+            id?: number | null;
+            /**
+             * Filename
+             * @description File name
+             */
+            filename: string;
+            /** @description File category */
+            category: components["schemas"]["CategoryFile"];
+            /**
+             * Bucket Name
+             * @description MinIO bucket name
+             */
+            bucket_name?: string | null;
+            /**
+             * Object Name
+             * @description Unique object name in storage
+             */
+            object_name: string;
+            /**
+             * Content Type
+             * @description MIME content type
+             */
+            content_type: string;
+            /**
+             * Size
+             * @description File size in bytes
+             */
+            size: number;
+            /**
+             * Description
+             * @description File description
+             */
+            description?: string | null;
+            /**
+             * Url
+             * @description File URL
+             */
+            url: string;
+            /**
+             * User Id
+             * @description Uploader user ID
+             */
+            user_id?: number | null;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Upload timestamp
+             */
+            created_at?: string;
+        };
         /** FileCreate */
         FileCreate: {
             /** Filename */
@@ -1720,6 +2088,64 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+        };
+        /** HealthStatus */
+        HealthStatus: {
+            /** Status */
+            status: string;
+            /** Timestamp */
+            timestamp: string;
+            /** Version */
+            version: string;
+            /** Uptime */
+            uptime: string;
+            /** Service */
+            service: string;
+            /** Checks */
+            checks: {
+                [key: string]: unknown;
+            };
+        };
+        /** HighlighResponse */
+        HighlighResponse: {
+            /**
+             * Id
+             * @description Highlight ID
+             */
+            id: number;
+            /** @description Product */
+            product?: components["schemas"]["Product"] | null;
+            /**
+             * Order
+             * @description Order number
+             */
+            order: number;
+        };
+        /** HighlightCreate */
+        HighlightCreate: {
+            /**
+             * Product Id
+             * @description Product ID
+             */
+            product_id: number;
+            /**
+             * Order
+             * @description Order number
+             */
+            order: number;
+        };
+        /** HighlightUpdate */
+        HighlightUpdate: {
+            /**
+             * Product Id
+             * @description Product ID
+             */
+            product_id?: number | null;
+            /**
+             * Order
+             * @description Order number
+             */
+            order?: number | null;
         };
         /** ListResponse[SocialForestryBusinessGroupResponse] */
         ListResponse_SocialForestryBusinessGroupResponse_: {
@@ -2048,6 +2474,177 @@ export interface components {
              * @description Total number of pages
              */
             page_count: number;
+        };
+        /** PartnerCreate */
+        PartnerCreate: {
+            /**
+             * Name
+             * @description Partner name
+             */
+            name: string;
+            /**
+             * Logo Id
+             * @description Logo file ID
+             */
+            logo_id?: number | null;
+            /**
+             * Order
+             * @description Display order
+             */
+            order: number;
+        };
+        /** PartnerResponse */
+        PartnerResponse: {
+            /**
+             * Id
+             * @description Partner ID
+             */
+            id: number;
+            /**
+             * Name
+             * @description Partner name
+             */
+            name: string;
+            /** @description Logo file */
+            logo?: components["schemas"]["File"] | null;
+            /**
+             * Order
+             * @description Display order
+             */
+            order: number;
+        };
+        /** PartnerUpdate */
+        PartnerUpdate: {
+            /**
+             * Name
+             * @description Partner name
+             */
+            name?: string | null;
+            /**
+             * Logo Id
+             * @description Logo file ID
+             */
+            logo_id?: number | null;
+            /**
+             * Order
+             * @description Display order
+             */
+            order?: number | null;
+        };
+        /** Product */
+        Product: {
+            /** Id */
+            id?: number | null;
+            /**
+             * Name
+             * @description Product name
+             */
+            name: string;
+            /**
+             * Description
+             * @description Product description
+             */
+            description?: string | null;
+            /**
+             * Product Usage
+             * @description Product usage
+             */
+            product_usage?: string | null;
+            /**
+             * Product Category
+             * @description Product category
+             */
+            product_category?: string | null;
+            /**
+             * Price
+             * @description Product price
+             */
+            price?: number | null;
+            /**
+             * Capacity
+             * @description Product capacity
+             */
+            capacity?: number | null;
+            /**
+             * Unit
+             * @description Product unit
+             */
+            unit?: string | null;
+            /**
+             * Value Chain
+             * @description Value chain
+             */
+            value_chain?: string | null;
+            /**
+             * Thumbnails
+             * @description Product thumbnails
+             */
+            thumbnails?: unknown[] | null;
+            /**
+             * Certification Id
+             * @description Certification ID
+             */
+            certification_id?: number | null;
+            /**
+             * Social Forestry Group Id
+             * @description Social Forestry Groups ID
+             */
+            social_forestry_group_id?: number | null;
+            /**
+             * Social Forestry Business Group Id
+             * @description Social Forestry Business Groups ID
+             */
+            social_forestry_business_group_id?: number | null;
+            /**
+             * Commodity Id
+             * @description Commodity ID
+             */
+            commodity_id?: number | null;
+            /**
+             * Collaboration Ids
+             * @description Collaboration IDs
+             */
+            collaboration_ids?: {
+                [key: string]: unknown;
+            }[] | number[] | null;
+            /**
+             * Metadatas
+             * @description metadatas data as JSON
+             */
+            metadatas?: {
+                [key: string]: unknown;
+            }[] | {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Status
+             * @description Product status
+             * @default ACTIVE
+             */
+            status: string;
+            /**
+             * Is Highlight
+             * @description Is highlight product
+             * @default false
+             */
+            is_highlight: boolean;
+            /**
+             * Source
+             * @description Sources
+             */
+            source?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             * @description Creation timestamp
+             */
+            created_at?: string;
+            /**
+             * Updated At
+             * Format: date-time
+             * @description Last update timestamp
+             */
+            updated_at?: string;
         };
         /** ProductCreate */
         ProductCreate: {
@@ -2454,11 +3051,6 @@ export interface components {
         /** SocialForestryBusinessGroupCreate */
         SocialForestryBusinessGroupCreate: {
             /**
-             * External Id
-             * @description External product ID
-             */
-            external_id: string;
-            /**
              * Name
              * @description Group name
              */
@@ -2480,8 +3072,6 @@ export interface components {
         SocialForestryBusinessGroupResponse: {
             /** Id */
             id: number;
-            /** External Id */
-            external_id: string;
             /** Name */
             name: string;
             /** Class Group */
@@ -2505,11 +3095,6 @@ export interface components {
         };
         /** SocialForestryBusinessGroupUpdate */
         SocialForestryBusinessGroupUpdate: {
-            /**
-             * External Id
-             * @description External product ID
-             */
-            external_id?: string | null;
             /**
              * Name
              * @description Group name
@@ -5527,6 +6112,226 @@ export interface operations {
             };
         };
     };
+    get_faqs_faqs_get: {
+        parameters: {
+            query?: {
+                /** @description Full-text search query. Use this parameter to search across multiple fields in the resource. */
+                search?: string | null;
+                /** @description Strapi-style filter configuration. Supports nested filtering using bracket notation, e.g. filters[username][$eq]=John. Accepts either a JSON string or repeated query parameters. */
+                filters?: string | null;
+                /** @description Populate configuration for including related resources. Can specify relations to populate, e.g. populate=profile or populate[profile][fields][0]=avatar. Accepts a JSON string or repeated query parameters. */
+                populate?: string | null;
+                /** @description List of fields to include in the response. Can be a comma-separated string or repeated fields parameters, e.g. fields=name&fields=email. */
+                fields?: string | null;
+                /** @description Sorting configuration for results. Accepts a comma-separated string or repeated sort parameters, e.g. sort=createdAt:desc. */
+                sort?: string | null;
+                /** @description Pagination configuration. Supports page-based or offset-based pagination, e.g. pagination[page]=1&pagination[pageSize]=10. Accepts a JSON string or repeated query parameters. */
+                pagination?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ListResponse_dict_str__Any__"] | components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["FAQResponse"] | null;
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    create_faq_faqs_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FAQCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["FAQResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_faq_faqs__faq_id__get: {
+        parameters: {
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
+            header?: never;
+            path: {
+                faq_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["FAQResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    update_faq_faqs__faq_id__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                faq_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FAQUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["FAQResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    delete_faq_faqs__faq_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                faq_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     get_files_files_get: {
         parameters: {
             query?: {
@@ -5709,6 +6514,226 @@ export interface operations {
             header?: never;
             path: {
                 object_name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_highlights_highlights_get: {
+        parameters: {
+            query?: {
+                /** @description Full-text search query. Use this parameter to search across multiple fields in the resource. */
+                search?: string | null;
+                /** @description Strapi-style filter configuration. Supports nested filtering using bracket notation, e.g. filters[username][$eq]=John. Accepts either a JSON string or repeated query parameters. */
+                filters?: string | null;
+                /** @description Populate configuration for including related resources. Can specify relations to populate, e.g. populate=profile or populate[profile][fields][0]=avatar. Accepts a JSON string or repeated query parameters. */
+                populate?: string | null;
+                /** @description List of fields to include in the response. Can be a comma-separated string or repeated fields parameters, e.g. fields=name&fields=email. */
+                fields?: string | null;
+                /** @description Sorting configuration for results. Accepts a comma-separated string or repeated sort parameters, e.g. sort=createdAt:desc. */
+                sort?: string | null;
+                /** @description Pagination configuration. Supports page-based or offset-based pagination, e.g. pagination[page]=1&pagination[pageSize]=10. Accepts a JSON string or repeated query parameters. */
+                pagination?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ListResponse_dict_str__Any__"] | components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["HighlighResponse"] | null;
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    create_highlight_highlights_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HighlightCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["HighlighResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_highlight_highlights__highlight_id__get: {
+        parameters: {
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
+            header?: never;
+            path: {
+                highlight_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["HighlighResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    update_highlight_highlights__highlight_id__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                highlight_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HighlightUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["HighlighResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    delete_highlight_highlights__highlight_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                highlight_id: number;
             };
             cookie?: never;
         };
@@ -5961,6 +6986,226 @@ export interface operations {
             };
         };
     };
+    get_partners_partners_get: {
+        parameters: {
+            query?: {
+                /** @description Full-text search query. Use this parameter to search across multiple fields in the resource. */
+                search?: string | null;
+                /** @description Strapi-style filter configuration. Supports nested filtering using bracket notation, e.g. filters[username][$eq]=John. Accepts either a JSON string or repeated query parameters. */
+                filters?: string | null;
+                /** @description Populate configuration for including related resources. Can specify relations to populate, e.g. populate=profile or populate[profile][fields][0]=avatar. Accepts a JSON string or repeated query parameters. */
+                populate?: string | null;
+                /** @description List of fields to include in the response. Can be a comma-separated string or repeated fields parameters, e.g. fields=name&fields=email. */
+                fields?: string | null;
+                /** @description Sorting configuration for results. Accepts a comma-separated string or repeated sort parameters, e.g. sort=createdAt:desc. */
+                sort?: string | null;
+                /** @description Pagination configuration. Supports page-based or offset-based pagination, e.g. pagination[page]=1&pagination[pageSize]=10. Accepts a JSON string or repeated query parameters. */
+                pagination?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ListResponse_dict_str__Any__"] | components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["PartnerResponse"] | null;
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    create_partner_partners_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PartnerCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["PartnerResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_partner_partners__partner_id__get: {
+        parameters: {
+            query?: {
+                /** @description Fields to include in the response. */
+                fields?: string | null;
+                /** @description Populate configuration for including related resources. */
+                populate?: string | null;
+            };
+            header?: never;
+            path: {
+                partner_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["PartnerResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    update_partner_partners__partner_id__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                partner_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PartnerUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"] | components["schemas"]["PartnerResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    delete_partner_partners__partner_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                partner_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     get_products_products_get: {
         parameters: {
             query?: {
@@ -6032,6 +7277,44 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BaseResponse_Union_dict_str__Any___NoneType__"] | components["schemas"]["ProductResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_highlight_products_highlight_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"];
                 };
             };
             /** @description Unprocessable Content */
@@ -7325,6 +8608,106 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    health_check_health__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthStatus"];
+                };
+            };
+        };
+    };
+    detailed_health_check_health_detailed_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DetailedHealthStatus"];
+                };
+            };
+        };
+    };
+    readiness_check_health_ready_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    liveness_check_health_live_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    metrics_check_health_metrics_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
         };

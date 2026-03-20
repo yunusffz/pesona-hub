@@ -33,47 +33,97 @@
       </div>
 
       <TabsContent value="produk" class="mt-4 flex gap-5">
-        <draggable
-          v-model="highlightedProducts"
-          item-key="id"
-          handle=".drag-handle"
-          :animation="200"
-          class="flex gap-5"
-        >
-          <template #item="{ element }">
-            <HighlightProductCard
-              :product="element"
-              @remove="removeProduct(element.id!)"
-            />
-          </template>
-        </draggable>
-        <HighlightAddCard
-          v-for="i in 3 - highlightedProducts.length"
-          :key="'add-' + i"
-          @click="isModalOpen = true"
-        />
+        <template v-if="isHighlightsLoading">
+          <div
+            v-for="i in 3"
+            :key="i"
+            class="w-[329px] h-[411px] rounded-2xl border border-neutral-200 flex flex-col flex-shrink-0 overflow-hidden"
+          >
+            <Skeleton class="h-[200px] rounded-none flex-shrink-0" />
+            <div class="flex flex-col flex-1 px-4 py-3 gap-3">
+              <Skeleton class="h-3 w-20" />
+              <Skeleton class="h-4 w-3/4" />
+              <div class="flex flex-col gap-2">
+                <Skeleton class="h-3 w-full" />
+                <Skeleton class="h-3 w-5/6" />
+                <Skeleton class="h-3 w-2/3" />
+              </div>
+              <hr />
+              <div class="flex justify-between mt-1">
+                <Skeleton class="h-3 w-24" />
+                <Skeleton class="h-4 w-20" />
+              </div>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <draggable
+            v-model="highlightedProducts"
+            item-key="id"
+            handle=".drag-handle"
+            :animation="200"
+            class="flex gap-5"
+          >
+            <template #item="{ element }">
+              <HighlightProductCard
+                :product="element"
+                @remove="removeProduct(element.id!)"
+              />
+            </template>
+          </draggable>
+          <HighlightAddCard
+            v-for="i in 3 - highlightedProducts.length"
+            :key="'add-' + i"
+            @click="isModalOpen = true"
+          />
+        </template>
       </TabsContent>
 
       <TabsContent value="ekowisata" class="mt-4 flex gap-5">
-        <draggable
-          v-model="highlightedEkowisata"
-          item-key="id"
-          handle=".drag-handle"
-          :animation="200"
-          class="flex gap-5"
-        >
-          <template #item="{ element }">
-            <HighlightProductCard
-              :product="element"
-              @remove="removeEkowisata(element.id!)"
-            />
-          </template>
-        </draggable>
-        <HighlightAddCard
-          v-for="i in 3 - highlightedEkowisata.length"
-          :key="'add-' + i"
-          @click="isModalOpen = true"
-        />
+        <template v-if="isHighlightsLoading">
+          <div
+            v-for="i in 3"
+            :key="i"
+            class="w-[329px] h-[411px] rounded-2xl border border-neutral-200 flex flex-col flex-shrink-0 overflow-hidden"
+          >
+            <Skeleton class="h-[200px] rounded-none flex-shrink-0" />
+            <div class="flex flex-col flex-1 px-4 py-3 gap-3">
+              <Skeleton class="h-3 w-20" />
+              <Skeleton class="h-4 w-3/4" />
+              <div class="flex flex-col gap-2">
+                <Skeleton class="h-3 w-full" />
+                <Skeleton class="h-3 w-5/6" />
+                <Skeleton class="h-3 w-2/3" />
+              </div>
+              <hr />
+              <div class="flex justify-between mt-1">
+                <Skeleton class="h-3 w-24" />
+                <Skeleton class="h-4 w-20" />
+              </div>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <draggable
+            v-model="highlightedEkowisata"
+            item-key="id"
+            handle=".drag-handle"
+            :animation="200"
+            class="flex gap-5"
+          >
+            <template #item="{ element }">
+              <HighlightProductCard
+                :product="element"
+                @remove="removeEkowisata(element.id!)"
+              />
+            </template>
+          </draggable>
+          <HighlightAddCard
+            v-for="i in 3 - highlightedEkowisata.length"
+            :key="'add-' + i"
+            @click="isModalOpen = true"
+          />
+        </template>
       </TabsContent>
     </Tabs>
 
@@ -115,6 +165,7 @@ import { LoaderCircle, Check } from "lucide-vue-next";
 import draggable from "vuedraggable";
 import BaseButton from "~/components/base/BaseButton.vue";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
+import { Skeleton } from "~/components/ui/skeleton";
 import HighlightTips from "./HighlightTips.vue";
 import HighlightAddCard from "./HighlightAddCard.vue";
 import HighlightProductCard from "./HighlightProductCard.vue";
@@ -133,7 +184,7 @@ const highlightedEkowisata = ref<ProductWithRelations[]>([]);
 const isSaving = ref(false);
 const showToast = ref(false);
 
-const { data: highlightsData } = useHighlights();
+const { data: highlightsData, isLoading: isHighlightsLoading } = useHighlights();
 const { mutateAsync: createHighlight } = useCreateHighlight();
 const { mutateAsync: deleteHighlight } = useDeleteHighlight();
 

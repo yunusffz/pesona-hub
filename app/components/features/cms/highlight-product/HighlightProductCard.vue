@@ -112,8 +112,11 @@ const isImageLoading = ref(true);
 watch(
   () => props.product,
   () => {
-    isImageLoading.value = true;
-    imageSource.value = getImage();
+    const newImage = getImage();
+    if (newImage !== imageSource.value) {
+      isImageLoading.value = true;
+      imageSource.value = newImage;
+    }
   }
 );
 </script>

@@ -13,27 +13,7 @@
         :disabled="isSaving"
         @click="saveChanges"
       >
-        <svg
-          v-if="isSaving"
-          class="animate-spin h-4 w-4"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            stroke-width="4"
-          />
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-          />
-        </svg>
+        <LoaderCircle v-if="isSaving" class="animate-spin h-4 w-4" />
         {{ isSaving ? "Menyimpan Perubahan..." : "Simpan Perubahan" }}
       </BaseButton>
     </div>
@@ -97,19 +77,9 @@
           class="fixed top-5 right-5 z-[9999] flex items-center gap-3 rounded-xl px-4 py-3 shadow-lg"
           style="background-color: #e8f5ee"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            class="h-5 w-5 shrink-0"
-            style="color: #035925"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53-1.471-1.47a.75.75 0 00-1.06 1.06l2.1 2.1a.75.75 0 001.14-.094l3.747-5.254z"
-              clip-rule="evenodd"
-            />
-          </svg>
+          <div class="h-5 w-5 shrink-0 rounded-full flex items-center justify-center" style="background-color: #035925">
+              <Check class="h-3 w-3 text-white" :stroke-width="3" />
+            </div>
           <span class="text-sm font-medium" style="color: #035925">
             Perubahan berhasil disimpan
           </span>
@@ -121,6 +91,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import { LoaderCircle, Check } from "lucide-vue-next";
 import draggable from "vuedraggable";
 import BaseButton from "~/components/base/BaseButton.vue";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";

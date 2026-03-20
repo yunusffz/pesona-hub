@@ -27,7 +27,7 @@
             >Highlight Produk {{ highlightedProducts.length }}/3</TabsTrigger
           >
           <TabsTrigger value="ekowisata" class="rounded-xl"
-            >Highlight Ekowisata 0/3</TabsTrigger
+            >Highlight Ekowisata {{ highlightedEkowisata.length }}/3</TabsTrigger
           >
         </TabsList>
       </div>
@@ -54,7 +54,27 @@
         />
       </TabsContent>
 
-      <TabsContent value="ekowisata" class="mt-4" />
+      <TabsContent value="ekowisata" class="mt-4 flex gap-5">
+        <draggable
+          v-model="highlightedEkowisata"
+          item-key="id"
+          handle=".drag-handle"
+          :animation="200"
+          class="flex gap-5"
+        >
+          <template #item="{ element }">
+            <HighlightProductCard
+              :product="element"
+              @remove="removeEkowisata(element.id!)"
+            />
+          </template>
+        </draggable>
+        <HighlightAddCard
+          v-for="i in 3 - highlightedEkowisata.length"
+          :key="'add-' + i"
+          @click="isModalOpen = true"
+        />
+      </TabsContent>
     </Tabs>
 
     <AddProductModal
@@ -109,6 +129,7 @@ import {
 const activeTab = ref<"produk" | "ekowisata">("produk");
 const isModalOpen = ref(false);
 const highlightedProducts = ref<ProductWithRelations[]>([]);
+const highlightedEkowisata = ref<ProductWithRelations[]>([]);
 const isSaving = ref(false);
 const showToast = ref(false);
 
@@ -120,8 +141,13 @@ watch(
   highlightsData,
   (highlights) => {
     if (!highlights) return;
-    highlightedProducts.value = highlights
-      .sort((a, b) => a.order - b.order)
+    const sorted = highlights.sort((a, b) => a.order - b.order);
+    highlightedProducts.value = sorted
+      .filter((h) => (h.product as any)?.product_category === "PRODUK")
+      .map((h) => h.product as ProductWithRelations)
+      .filter(Boolean);
+    highlightedEkowisata.value = sorted
+      .filter((h) => (h.product as any)?.product_category === "EKOWISATA")
       .map((h) => h.product as ProductWithRelations)
       .filter(Boolean);
   },
@@ -129,9 +155,15 @@ watch(
 );
 
 const selectProduct = (product: ProductWithRelations) => {
-  if (highlightedProducts.value.length >= 3) return;
-  if (highlightedProducts.value.some((p) => p.id === product.id)) return;
-  highlightedProducts.value.push(product);
+  if (activeTab.value === "produk") {
+    if (highlightedProducts.value.length >= 3) return;
+    if (highlightedProducts.value.some((p) => p.id === product.id)) return;
+    highlightedProducts.value.push(product);
+  } else {
+    if (highlightedEkowisata.value.length >= 3) return;
+    if (highlightedEkowisata.value.some((p) => p.id === product.id)) return;
+    highlightedEkowisata.value.push(product);
+  }
 };
 
 const removeProduct = (id: number) => {
@@ -140,13 +172,27 @@ const removeProduct = (id: number) => {
   );
 };
 
+const removeEkowisata = (id: number) => {
+  highlightedEkowisata.value = highlightedEkowisata.value.filter(
+    (p) => p.id !== id
+  );
+};
+
 const saveChanges = async () => {
   isSaving.value = true;
   try {
-    const currentHighlights = highlightsData.value ?? [];
+    const category = activeTab.value === "produk" ? "PRODUK" : "EKOWISATA";
+    const currentHighlights = (highlightsData.value ?? []).filter(
+      (h) => (h.product as any)?.product_category === category
+    );
+    const selected =
+      activeTab.value === "produk"
+        ? highlightedProducts.value
+        : highlightedEkowisata.value;
+
     await Promise.all(currentHighlights.map((h) => deleteHighlight(h.id)));
     await Promise.all(
-      highlightedProducts.value.map((product, index) =>
+      selected.map((product, index) =>
         createHighlight({ product_id: product.id!, order: index + 1 })
       )
     );

@@ -7,7 +7,7 @@
       >
         <EditProduct
           @cancel="showAddModal = false"
-          @submit="showAddModal = false"
+          @submit="onSubmit('add')"
         />
       </DialogContent>
     </Dialog>
@@ -20,10 +20,11 @@
         <EditProduct
           :product="selectedProduct"
           @cancel="showEditModal = false"
-          @submit="showEditModal = false"
+          @submit="onSubmit('edit')"
         />
       </DialogContent>
     </Dialog>
+
 
     <div
       class="flex flex-col sm:flex-row sm:items-center justify-between gap-3"
@@ -136,12 +137,40 @@
         </section>
       </TabsContent>
     </Tabs>
+
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="translate-x-4 opacity-0"
+        enter-to-class="translate-x-0 opacity-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="translate-x-0 opacity-100"
+        leave-to-class="translate-x-4 opacity-0"
+      >
+        <div
+          v-if="showToast"
+          class="fixed top-5 right-5 z-[9999] flex items-center gap-3 rounded-xl px-4 py-3 shadow-lg"
+          style="background-color: #e8f5ee"
+        >
+          <div
+            class="h-5 w-5 shrink-0 rounded-full flex items-center justify-center"
+            style="background-color: #035925"
+          >
+            <Check class="h-3 w-3 text-white" :stroke-width="3" />
+          </div>
+          <span class="text-sm font-medium" style="color: #035925">
+            {{ toastMessage }}
+          </span>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import { Plus } from "lucide-vue-next";
+import { Plus, Check } from "lucide-vue-next";
+import { useCmsToast } from "~/composables/useCmsToast";
 import BaseButton from "~/components/base/BaseButton.vue";
 import SearchInput from "~/components/base/SearchInput.vue";
 import CmsDataTable from "~/components/features/cms/product/DataTable.vue";
@@ -161,6 +190,13 @@ const searchQuery = ref("");
 const showAddModal = ref(false);
 const showEditModal = ref(false);
 const selectedProduct = ref<ProductWithRelations | null>(null);
+const { showToast, toastMessage, show: showCmsToast } = useCmsToast();
+
+const onSubmit = (type: "add" | "edit") => {
+  if (type === "add") showAddModal.value = false;
+  else showEditModal.value = false;
+  showCmsToast(type === "add" ? "Produk berhasil ditambahkan" : "Produk berhasil diperbarui");
+};
 
 const openEditModal = (product: ProductWithRelations) => {
   selectedProduct.value = product;

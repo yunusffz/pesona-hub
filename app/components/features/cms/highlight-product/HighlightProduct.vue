@@ -147,11 +147,14 @@
           class="fixed top-5 right-5 z-[9999] flex items-center gap-3 rounded-xl px-4 py-3 shadow-lg"
           style="background-color: #e8f5ee"
         >
-          <div class="h-5 w-5 shrink-0 rounded-full flex items-center justify-center" style="background-color: #035925">
-              <Check class="h-3 w-3 text-white" :stroke-width="3" />
-            </div>
+          <div
+            class="h-5 w-5 shrink-0 rounded-full flex items-center justify-center"
+            style="background-color: #035925"
+          >
+            <Check class="h-3 w-3 text-white" :stroke-width="3" />
+          </div>
           <span class="text-sm font-medium" style="color: #035925">
-            Perubahan berhasil disimpan
+            {{ toastMessage }}
           </span>
         </div>
       </Transition>
@@ -162,6 +165,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { LoaderCircle, Check } from "lucide-vue-next";
+import { useCmsToast } from "~/composables/useCmsToast";
 import draggable from "vuedraggable";
 import BaseButton from "~/components/base/BaseButton.vue";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
@@ -182,7 +186,7 @@ const isModalOpen = ref(false);
 const highlightedProducts = ref<ProductWithRelations[]>([]);
 const highlightedEkowisata = ref<ProductWithRelations[]>([]);
 const isSaving = ref(false);
-const showToast = ref(false);
+const { showToast, toastMessage, show: showCmsToast } = useCmsToast();
 
 const { data: highlightsData, isLoading: isHighlightsLoading } = useHighlights();
 const { mutateAsync: createHighlight } = useCreateHighlight();
@@ -247,10 +251,7 @@ const saveChanges = async () => {
         createHighlight({ product_id: product.id!, order: index + 1 })
       )
     );
-    showToast.value = true;
-    setTimeout(() => {
-      showToast.value = false;
-    }, 3000);
+    showCmsToast("Perubahan berhasil disimpan");
   } finally {
     isSaving.value = false;
   }

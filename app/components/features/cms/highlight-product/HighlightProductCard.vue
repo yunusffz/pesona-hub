@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-[329px] h-[411px] rounded-2xl border border-neutral-200 flex flex-col relative overflow-hidden flex-shrink-0"
+    class="w-[280px] sm:w-[329px] h-[411px] rounded-2xl border border-neutral-200 flex flex-col relative overflow-hidden flex-shrink-0"
   >
     <!-- Drag handle -->
     <div

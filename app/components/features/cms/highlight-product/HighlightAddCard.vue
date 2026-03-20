@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-[329px] h-[411px] border-2 border-dashed rounded-xl border-[#D1D5DC] flex flex-col justify-center items-center gap-3 cursor-pointer hover:border-green-400 hover:bg-green-50 transition-colors"
+    class="w-[280px] sm:w-[329px] h-[411px] border-2 border-dashed rounded-xl border-[#D1D5DC] flex flex-col justify-center items-center gap-3 cursor-pointer hover:border-green-400 hover:bg-green-50 transition-colors flex-shrink-0"
     @click="$emit('click')"
   >
     <div

@@ -1,7 +1,7 @@
 <template>
   <Dialog v-model:open="open">
     <DialogContent
-      class="max-w-2xl max-h-[80vh] flex flex-col gap-0 p-0 rounded-2xl"
+      class="w-[calc(100vw-2rem)] max-w-2xl max-h-[85vh] flex flex-col gap-0 p-0 rounded-2xl"
     >
       <DialogHeader class="px-6 pt-6 border-gray-100">
         <DialogTitle>Pilih Produk untuk Di-Highlight</DialogTitle>

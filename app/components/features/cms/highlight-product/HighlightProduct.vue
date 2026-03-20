@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-6">
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between gap-3">
       <div class="flex flex-col gap-1">
         <h1 class="font-bold text-xl text-[#101828]">Pengaturan Highlight</h1>
         <p class="text-[#6A7282] text-sm">
@@ -9,7 +9,7 @@
         </p>
       </div>
       <BaseButton
-        class="py-0 px-4 text-sm h-9"
+        class="py-0 px-4 text-sm h-9 self-start sm:self-auto flex-shrink-0"
         :disabled="isSaving"
         @click="saveChanges"
       >
@@ -22,7 +22,7 @@
 
     <Tabs v-model="activeTab" default-value="produk" class="gap-0 p-0">
       <div class="flex items-center justify-between rounded-xl p-1">
-        <TabsList class="grid grid-cols-2 rounded-2xl w-[400px]">
+        <TabsList class="grid grid-cols-2 rounded-2xl w-full sm:w-[400px]">
           <TabsTrigger value="produk" class="rounded-xl"
             >Highlight Produk {{ highlightedProducts.length }}/3</TabsTrigger
           >
@@ -32,12 +32,12 @@
         </TabsList>
       </div>
 
-      <TabsContent value="produk" class="mt-4 flex gap-5">
+      <TabsContent value="produk" class="mt-4 flex gap-5 overflow-x-auto pb-2">
         <template v-if="isHighlightsLoading">
           <div
             v-for="i in 3"
             :key="i"
-            class="w-[329px] h-[411px] rounded-2xl border border-neutral-200 flex flex-col flex-shrink-0 overflow-hidden"
+            class="w-[280px] sm:w-[329px] h-[411px] rounded-2xl border border-neutral-200 flex flex-col flex-shrink-0 overflow-hidden"
           >
             <Skeleton class="h-[200px] rounded-none flex-shrink-0" />
             <div class="flex flex-col flex-1 px-4 py-3 gap-3">
@@ -79,12 +79,12 @@
         </template>
       </TabsContent>
 
-      <TabsContent value="ekowisata" class="mt-4 flex gap-5">
+      <TabsContent value="ekowisata" class="mt-4 flex gap-5 overflow-x-auto pb-2">
         <template v-if="isHighlightsLoading">
           <div
             v-for="i in 3"
             :key="i"
-            class="w-[329px] h-[411px] rounded-2xl border border-neutral-200 flex flex-col flex-shrink-0 overflow-hidden"
+            class="w-[280px] sm:w-[329px] h-[411px] rounded-2xl border border-neutral-200 flex flex-col flex-shrink-0 overflow-hidden"
           >
             <Skeleton class="h-[200px] rounded-none flex-shrink-0" />
             <div class="flex flex-col flex-1 px-4 py-3 gap-3">

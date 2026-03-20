@@ -26,10 +26,10 @@
     </div>
     <div class="flex flex-col flex-1 px-5 py-4 gap-3">
       <div
-        class="flex items-start justify-between 2xl:gap-3 gap-6 2xl:flex-row flex-col"
+        class="flex items-start justify-between gap-3 flex-row"
       >
         <div
-          class="flex flex-col gap-3 2xl:flex-1 min-w-0 line-clamp-2 w-full 2xl:w-auto"
+          class="flex flex-col gap-3 flex-1 min-w-0 w-full"
         >
           <h1 class="font-semibold text-[20px] truncate">
             {{ toTitleCase(props.product.name || "") }}
@@ -69,7 +69,7 @@
             props.product.unit
           }}</BaseBadge>
         </div>
-        <div class="flex 2xl:flex-row flex-col gap-4 items-center">
+        <div class="flex xl:flex-row flex-col xl:items-end items-stretch gap-3">
           <div class="flex flex-col gap-1 flex-1">
             <div v-if="isAuthenticated" class="text-lg font-bold">
               {{
@@ -84,10 +84,10 @@
               Login untuk melihat harga & kontak supplier
             </div>
           </div>
-          <div class="w-full 2xl:w-auto">
+          <div class="shrink-0">
             <a
               :href="'/katalog/' + props.product.id"
-              class="border inline-flex items-center justify-center w-full 2xl:w-auto border-neutral-200 rounded-full px-5 py-[10px] text-md bg-white text-neutral-800 font-medium"
+              class="border inline-flex items-center justify-center w-full xl:w-auto border-neutral-200 rounded-full px-5 py-[10px] text-md bg-white text-neutral-800 font-medium whitespace-nowrap"
             >
               {{ props.linkText }}
             </a>

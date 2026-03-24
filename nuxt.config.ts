@@ -96,6 +96,8 @@ export default defineNuxtConfig({
         "clsx",
         "tailwind-merge",
         "vuedraggable",
+        "xlsx",
+        "reka-ui",
       ],
     },
   },

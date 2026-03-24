@@ -1,15 +1,13 @@
 // tailwind.config.ts
-import { createResolver } from "@nuxt/kit";
+import { resolve } from "path";
 import type { Config } from "tailwindcss";
-
-const { resolve } = createResolver(import.meta.url);
 
 export default <Partial<Config>>{
   content: [
-    resolve("./components/**/*.{vue,js,ts}"),
-    resolve("./layouts/**/*.vue"),
-    resolve("./pages/**/*.vue"),
-    resolve("./app.vue"),
+    resolve(__dirname, "./components/**/*.{vue,js,ts}"),
+    resolve(__dirname, "./layouts/**/*.vue"),
+    resolve(__dirname, "./pages/**/*.vue"),
+    resolve(__dirname, "./app.vue"),
   ],
   theme: {
     extend: {
@@ -19,6 +17,7 @@ export default <Partial<Config>>{
         },
         "rich-black": "#0D0D0E",
         "forest-green": "#035925",
+        charcoal: "#1E1E1E",
         primary: {
           DEFAULT: "#035925",
           light: "#047a32",
@@ -32,6 +31,7 @@ export default <Partial<Config>>{
         green: {
           400: "#2A9B4C",
         },
+        "sage-light": "#E7EFEA",
         neutral: {
           100: "#F5F5F5",
           200: "#E8E8E8",

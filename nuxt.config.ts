@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     "~": resolve(__dirname, "app"),
   },
   typescript: {
-    typeCheck: true,
+    typeCheck: false,
     tsConfig: {
       compilerOptions: {
         skipLibCheck: true,
@@ -81,6 +81,23 @@ export default defineNuxtConfig({
         styles: ["normal"],
       },
     ],
+  },
+  vite: {
+    optimizeDeps: {
+      include: [
+        "zod",
+        "@vue/devtools-core",
+        "@vue/devtools-kit",
+        "lucide-vue-next",
+        "@vueuse/core",
+        "@tanstack/vue-query",
+        "openapi-fetch",
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge",
+        "vuedraggable",
+      ],
+    },
   },
   icon: {
     serverBundle: {

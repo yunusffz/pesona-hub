@@ -104,6 +104,7 @@ import {
   Info,
   HelpCircle,
   ChevronLeft,
+  Users,
 } from "lucide-vue-next";
 import { useRoute } from "vue-router";
 
@@ -137,6 +138,14 @@ const navItems = computed(() => [
     icon: Star,
     to: "/cms/highlight-product",
     active: route.path.startsWith("/cms/highlight-product"),
+    soon: false,
+  },
+  {
+    label: "Mitra",
+    subtitle: "Kelola akun mitra",
+    icon: Users,
+    to: "/cms/mitra",
+    active: route.path.startsWith("/cms/mitra"),
     soon: false,
   },
   {

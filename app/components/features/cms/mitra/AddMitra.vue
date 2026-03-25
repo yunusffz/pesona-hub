@@ -158,7 +158,7 @@ const steps = [
   { id: 4, label: "Kolaborasi" },
 ];
 
-const currentStep = ref(3);
+const currentStep = ref(4);
 const errorMessage = ref("");
 const logoPreview = ref<string | null>(null);
 

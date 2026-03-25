@@ -1,19 +1,18 @@
 <template>
   <div class="flex flex-col gap-4">
+    <h1 class="font-semibold text-gray-900 text-lg">
+      Komoditas & Kebutuhan Material
+    </h1>
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium text-neutral-900">
         Jenis Komoditas <span class="text-red-500">*</span>
       </label>
-      <p class="text-xs text-[#6B7280]">
-        Cari dan pilih komoditas yang Anda butuhkan. Anda dapat memilih lebih
-        dari satu (maksimal 5 komoditas).
-      </p>
       <MultiSelectCombobox
         v-model="selectedCommodities"
         :options="commodities"
         placeholder="Cari Komoditas..."
         empty-text="Pilih Komoditas"
-        buttonClass="!bg-[#f8faf8] !rounded-2xl !border-transparent !py-2 !px-3 text-sm !font-normal"
+        buttonClass="!bg-[#f8faf8] !rounded-2xl !border-transparent !py-2 !px-3 text-sm !font-normal !text-[#717182]"
         :chevron-directional="true"
         :max="5"
       />

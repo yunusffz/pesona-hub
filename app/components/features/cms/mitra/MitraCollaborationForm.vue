@@ -1,27 +1,21 @@
 <template>
   <div class="flex flex-col gap-4">
-    <div>
-      <label class="text-sm font-medium text-neutral-900">
-        Bentuk Kerja Sama yang Diharapkan
-        <span class="text-red-500">*</span>
-      </label>
-      <p class="text-xs text-[#6B7280]">
-        Pilih peran dan bentuk kolaborasi yang sesuai dengan kebutuhan Anda.
-      </p>
-    </div>
+    <h1 class="font-semibold text-gray-900 text-lg">
+      Peran Kolaborasi & Preferensi
+    </h1>
 
     <div class="flex flex-col gap-2">
-      <label class="text-sm font-medium text-neutral-900">Bentuk Kerja Sama</label>
-      <p class="text-xs text-[#6B7280]">
-        Pilih bentuk kolaborasi yang sesuai dengan kebutuhan Anda. Bisa lebih dari satu.
-      </p>
+      <label class="text-sm font-medium text-neutral-900"
+        >Bentuk Kerja Sama</label
+      >
       <MultiSelectCombobox
         :model-value="form.collaborationType"
-        @update:model-value="form.collaborationType = $event"
+        @update:model-value="form.collaborationType = $event as string[]"
         :options="collaborationTypes"
         placeholder="Pilih bentuk kerja sama..."
         empty-text="Pilih bentuk kerja sama..."
-        buttonClass="!py-2 !px-3 rounded-lg text-sm"
+        buttonClass="!bg-[#f8faf8] !text-[#717182] !rounded-2xl !border-transparent !py-2 !px-3 text-sm !font-normal"
+        :chevron-directional="true"
       />
     </div>
 

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white rounded-2xl border border-[#e7efea] shadow-lg w-[560px] max-h-[90vh] overflow-hidden"
+    class="bg-white rounded-2xl border border-[#e7efea] shadow-lg w-[560px] lg:w-[768px] max-h-[90vh] overflow-hidden"
   >
     <div class="flex flex-col gap-0 overflow-y-auto max-h-[90vh]">
       <!-- Header -->
@@ -75,92 +75,23 @@
       <!-- Step Content -->
       <div class="px-6 py-4">
         <!-- Step 1: Akun -->
-        <div v-if="currentStep === 1" class="flex flex-col gap-4">
-          <div class="grid grid-cols-2 gap-3">
-            <div class="flex flex-col gap-1.5">
-              <label class="text-sm font-medium text-gray-800"
-                >Nama Lengkap</label
-              >
-              <input
-                v-model="accountForm.name"
-                type="text"
-                placeholder="Masukkan nama lengkap"
-                class="h-9 px-3 rounded-2xl border border-transparent bg-[#f8faf8] text-sm focus:outline-none focus:ring-1 focus:ring-[#035925]/30 placeholder:text-[#717182] w-full"
-              />
-            </div>
-            <div class="flex flex-col gap-1.5">
-              <label class="text-sm font-medium text-gray-800"
-                >Username <span class="text-red-500">*</span></label
-              >
-              <input
-                v-model="accountForm.username"
-                type="text"
-                required
-                placeholder="Pilih username"
-                class="h-9 px-3 rounded-2xl border border-transparent bg-[#f8faf8] text-sm focus:outline-none focus:ring-1 focus:ring-[#035925]/30 placeholder:text-[#717182] w-full"
-              />
-            </div>
-          </div>
-
-          <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-medium text-gray-800"
-              >Email <span class="text-red-500">*</span></label
-            >
-            <input
-              v-model="accountForm.email"
-              type="email"
-              required
-              placeholder="Masukkan email"
-              class="h-9 px-3 rounded-2xl border border-transparent bg-[#f8faf8] text-sm focus:outline-none focus:ring-1 focus:ring-[#035925]/30 placeholder:text-[#717182] w-full"
-            />
-          </div>
-
-          <div class="grid grid-cols-2 gap-3">
-            <div class="flex flex-col gap-1.5">
-              <label class="text-sm font-medium text-gray-800"
-                >Kata Sandi <span class="text-red-500">*</span></label
-              >
-              <input
-                v-model="accountForm.password"
-                type="password"
-                required
-                placeholder="Min. 8 karakter"
-                class="h-9 px-3 rounded-2xl border border-transparent bg-[#f8faf8] text-sm focus:outline-none focus:ring-1 focus:ring-[#035925]/30 placeholder:text-[#717182] w-full"
-                :class="{ 'border-red-400': passwordMismatch }"
-              />
-            </div>
-            <div class="flex flex-col gap-1.5">
-              <label class="text-sm font-medium text-gray-800"
-                >Konfirmasi Kata Sandi
-                <span class="text-red-500">*</span></label
-              >
-              <input
-                v-model="accountForm.confirmPassword"
-                type="password"
-                required
-                placeholder="Ulangi kata sandi"
-                class="h-9 px-3 rounded-2xl border border-transparent bg-[#f8faf8] text-sm focus:outline-none focus:ring-1 focus:ring-[#035925]/30 placeholder:text-[#717182] w-full"
-                :class="{ 'border-red-400': passwordMismatch }"
-              />
-            </div>
-          </div>
-          <p v-if="passwordMismatch" class="text-xs text-red-600 -mt-2">
-            Kata sandi tidak cocok
-          </p>
-        </div>
+        <MitraAccountForm v-if="currentStep === 1" v-model="accountForm" />
 
         <!-- Step 2: Identitas -->
-        <Step1Identity
+        <MitraIdentityForm
           v-else-if="currentStep === 2"
           v-model="profileForm"
           v-model:logo-preview="logoPreview"
         />
 
         <!-- Step 3: Minat -->
-        <Step2Interests v-else-if="currentStep === 3" v-model="profileForm" />
+        <MitraInterestsForm
+          v-else-if="currentStep === 3"
+          v-model="profileForm"
+        />
 
         <!-- Step 4: Kolaborasi -->
-        <Step3Collaboration
+        <MitraCollaborationForm
           v-else-if="currentStep === 4"
           v-model="profileForm"
         />
@@ -206,20 +137,14 @@
 import { ref, computed } from "vue";
 import { X, ChevronLeft, ChevronRight, Check } from "lucide-vue-next";
 import BaseButton from "~/components/base/BaseButton.vue";
-import Step1Identity from "~/components/features/cms/mitra/MitraIdentityForm.vue";
-import Step2Interests from "~/components/features/profile/Step2Interests.vue";
-import Step3Collaboration from "~/components/features/profile/Step3Collaboration.vue";
-
-interface ProfileFormData {
-  thumbnail: string | null;
-  companyName: string;
-  partnerLevel: string;
-  whatsappNumber: string;
-  websiteUrl: string;
-  commodities: (string | number)[];
-  collaborationType: string[];
-  additionalInfo: string;
-}
+import MitraAccountForm from "~/components/features/cms/mitra/MitraAccountForm.vue";
+import MitraIdentityForm from "~/components/features/cms/mitra/MitraIdentityForm.vue";
+import MitraInterestsForm from "~/components/features/cms/mitra/MitraInterestsForm.vue";
+import MitraCollaborationForm from "~/components/features/cms/mitra/MitraCollaborationForm.vue";
+import type {
+  ProfileFormData,
+  AccountFormData,
+} from "~/components/features/cms/mitra/types";
 
 const emit = defineEmits<{
   cancel: [];
@@ -247,6 +172,9 @@ const accountForm = ref({
 
 const profileForm = ref<ProfileFormData>({
   thumbnail: null,
+  picName: "",
+  picEmail: "",
+  picWhatsapp: "",
   companyName: "",
   partnerLevel: "",
   whatsappNumber: "",
@@ -261,26 +189,19 @@ const { $apiClient } = useNuxtApp();
 const isLoading = ref(false);
 const isPending = computed(() => isLoading.value);
 
-const passwordMismatch = computed(
-  () =>
-    accountForm.value.password !== accountForm.value.confirmPassword &&
-    accountForm.value.confirmPassword.length > 0
-);
-
 const canProceed = computed(() => {
   if (currentStep.value === 1) {
     return (
       !!accountForm.value.username &&
       !!accountForm.value.email &&
       accountForm.value.password.length >= 8 &&
-      !passwordMismatch.value
+      accountForm.value.password === accountForm.value.confirmPassword
     );
   }
   if (currentStep.value === 2) {
     return (
-      !!profileForm.value.companyName &&
-      !!profileForm.value.partnerLevel &&
-      !!profileForm.value.whatsappNumber
+      !!profileForm.value.picName &&
+      !!profileForm.value.companyName
     );
   }
   if (currentStep.value === 3) {

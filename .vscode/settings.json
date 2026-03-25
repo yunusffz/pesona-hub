@@ -23,5 +23,9 @@
     "javascript": "javascript",
     "typescript": "typescript"
   },
-  "tailwindCSS.experimental.configFile": "./tailwind.config.ts"
+  "tailwindCSS.experimental.configFile": "./tailwind.config.ts",
+  // --- ADD THESE ---
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "vue.server.hybridMode": true
 }

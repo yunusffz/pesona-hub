@@ -1,0 +1,12 @@
+{
+  "name": "pesona-hub-standards-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "pesona-hub-mcp": "./index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "zod": "^4.3.6"
+  }
+}

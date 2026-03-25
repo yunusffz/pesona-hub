@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "pesona-hub-standards": {
+      "type": "stdio",
+      "command": "bun",
+      "args": ["/home/ffz/Projects/pesona-hub/.mcp/index.ts"]
+    }
+  }
+}

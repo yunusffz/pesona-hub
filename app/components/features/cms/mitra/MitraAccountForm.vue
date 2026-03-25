@@ -1,38 +1,14 @@
 <template>
   <div class="flex flex-col gap-4">
-    <div class="grid grid-cols-2 gap-3">
-      <div class="flex flex-col gap-1.5">
-        <label class="text-sm font-medium text-gray-800">Nama Lengkap</label>
-        <input
-          v-model="form.name"
-          type="text"
-          placeholder="Masukkan nama lengkap"
-          class="h-9 px-3 rounded-2xl border border-transparent bg-[#f8faf8] text-sm focus:outline-none focus:ring-1 focus:ring-[#035925]/30 placeholder:text-[#717182] placeholder:font-normal w-full"
-        />
-      </div>
-      <div class="flex flex-col gap-1.5">
-        <label class="text-sm font-medium text-gray-800"
-          >Username <span class="text-red-500">*</span></label
-        >
-        <input
-          v-model="form.username"
-          type="text"
-          required
-          placeholder="Pilih username"
-          class="h-9 px-3 rounded-2xl border border-transparent bg-[#f8faf8] text-sm focus:outline-none focus:ring-1 focus:ring-[#035925]/30 placeholder:text-[#717182] placeholder:font-normal w-full"
-        />
-      </div>
-    </div>
-
     <div class="flex flex-col gap-1.5">
       <label class="text-sm font-medium text-gray-800"
-        >Email <span class="text-red-500">*</span></label
+        >Username <span class="text-red-500">*</span></label
       >
       <input
-        v-model="form.email"
-        type="email"
+        v-model="form.username"
+        type="text"
         required
-        placeholder="Masukkan email"
+        placeholder="Pilih username"
         class="h-9 px-3 rounded-2xl border border-transparent bg-[#f8faf8] text-sm focus:outline-none focus:ring-1 focus:ring-[#035925]/30 placeholder:text-[#717182] placeholder:font-normal w-full"
       />
     </div>

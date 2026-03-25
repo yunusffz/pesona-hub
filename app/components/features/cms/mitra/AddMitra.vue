@@ -158,14 +158,12 @@ const steps = [
   { id: 4, label: "Kolaborasi" },
 ];
 
-const currentStep = ref(4);
+const currentStep = ref(1);
 const errorMessage = ref("");
 const logoPreview = ref<string | null>(null);
 
 const accountForm = ref({
-  name: "",
   username: "",
-  email: "",
   password: "",
   confirmPassword: "",
 });
@@ -193,7 +191,6 @@ const canProceed = computed(() => {
   if (currentStep.value === 1) {
     return (
       !!accountForm.value.username &&
-      !!accountForm.value.email &&
       accountForm.value.password.length >= 8 &&
       accountForm.value.password === accountForm.value.confirmPassword
     );
@@ -233,9 +230,9 @@ const handleSubmit = async () => {
 
     const { error } = await $apiClient.POST("/users", {
       body: {
-        name: accountForm.value.name || accountForm.value.username,
+        name: profileForm.value.picName || accountForm.value.username,
         username: accountForm.value.username,
-        email: accountForm.value.email,
+        email: profileForm.value.picEmail,
         password: accountForm.value.password,
         phone: profileForm.value.whatsappNumber || null,
         thumbnail: profileForm.value.thumbnail || null,
@@ -245,9 +242,10 @@ const handleSubmit = async () => {
           stakeholder_type: profileForm.value.partnerLevel || null,
           contact_phone: profileForm.value.whatsappNumber || null,
           website: profileForm.value.websiteUrl || null,
-          collaboration_commodities: (commodityIds.length > 0
-            ? commodityIds
-            : null) as any,
+          collaboration_commodities:
+            commodityIds.length > 0
+              ? commodityIds.map((id) => ({ [String(id)]: null }))
+              : null,
           product_service_description: profileForm.value.additionalInfo || null,
           collaboration_ids:
             collaborationIds.length > 0 ? collaborationIds : null,

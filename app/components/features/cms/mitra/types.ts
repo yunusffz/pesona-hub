@@ -13,9 +13,7 @@ export interface ProfileFormData {
 }
 
 export interface AccountFormData {
-  name: string;
   username: string;
-  email: string;
   password: string;
   confirmPassword: string;
 }

@@ -12,10 +12,14 @@
       </button>
 
       <div class="flex flex-col gap-0.5 min-w-0">
-        <h1 class="text-lg lg:text-xl font-bold text-[#101828] leading-5 truncate">
+        <h1
+          class="text-lg lg:text-xl font-bold text-[#101828] leading-5 truncate"
+        >
           {{ breadcrumb.title }}
         </h1>
-        <p class="text-xs lg:text-sm text-[#6A7282] leading-4 truncate hidden sm:block">
+        <p
+          class="text-xs lg:text-sm text-[#6A7282] leading-4 truncate hidden sm:block"
+        >
           {{ breadcrumb.subtitle }}
         </p>
       </div>
@@ -77,7 +81,7 @@ import {
 import { useAuth } from "~/composables/useAuth";
 import { ROLE_MAP } from "~/utils/user-profile";
 
-const emit = defineEmits<{ 'toggle-sidebar': [] }>();
+const emit = defineEmits<{ "toggle-sidebar": [] }>();
 
 const route = useRoute();
 const config = useRuntimeConfig();
@@ -113,6 +117,10 @@ const breadcrumbMap: Record<string, { title: string; subtitle: string }> = {
   "/cms/highlight-product": {
     title: "Highlight Produk",
     subtitle: "Atur produk unggulan di halaman utama",
+  },
+  "/cms/mitra": {
+    title: "Data Mitra",
+    subtitle: "Kelola data mitra",
   },
   "/cms/kolaborasi": {
     title: "Kolaborasi",

@@ -158,7 +158,7 @@ const steps = [
   { id: 4, label: "Kolaborasi" },
 ];
 
-const currentStep = ref(2);
+const currentStep = ref(3);
 const errorMessage = ref("");
 const logoPreview = ref<string | null>(null);
 
@@ -199,10 +199,7 @@ const canProceed = computed(() => {
     );
   }
   if (currentStep.value === 2) {
-    return (
-      !!profileForm.value.picName &&
-      !!profileForm.value.companyName
-    );
+    return !!profileForm.value.picName && !!profileForm.value.companyName;
   }
   if (currentStep.value === 3) {
     return profileForm.value.commodities.length > 0;

@@ -19,7 +19,9 @@
           <span class="flex-1 block truncate text-left leading-none">
             {{ buttonLabel }}
           </span>
-          <ChevronsUpDown class="ms-2 !h-4 !w-4 shrink-0 text-neutral-500" />
+          <ChevronUp v-if="chevronDirectional && open" class="ms-2 !h-4 !w-4 shrink-0 text-neutral-500" />
+          <ChevronDown v-else-if="chevronDirectional && !open" class="ms-2 !h-4 !w-4 shrink-0 text-neutral-500" />
+          <ChevronsUpDown v-else class="ms-2 !h-4 !w-4 shrink-0 text-neutral-500" />
         </Button>
       </PopoverTrigger>
 
@@ -140,7 +142,7 @@
 
 <script setup lang="ts">
   import { computed, ref, watch, onMounted } from "vue";
-  import { Check, X, ChevronsUpDown } from "lucide-vue-next";
+  import { Check, X, ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-vue-next";
   import SvgIcon from "~/components/base/SvgIcon.vue";
 
   // shadcn-vue components
@@ -181,6 +183,7 @@
       listClass?: string;
       icon?: string;
       iconSize?: string;
+      chevronDirectional?: boolean;
     }>(),
     {
       placeholder: "Search…",
@@ -190,6 +193,7 @@
       showBadges: true,
       icon: "",
       iconSize: "24px",
+      chevronDirectional: false,
     }
   );
 

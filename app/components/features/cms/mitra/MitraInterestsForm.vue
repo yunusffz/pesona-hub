@@ -13,7 +13,8 @@
         :options="commodities"
         placeholder="Cari Komoditas..."
         empty-text="Pilih Komoditas"
-        buttonClass="!py-2 !px-3 rounded-lg text-sm"
+        buttonClass="!bg-[#f8faf8] !rounded-2xl !border-transparent !py-2 !px-3 text-sm !font-normal"
+        :chevron-directional="true"
         :max="5"
       />
     </div>

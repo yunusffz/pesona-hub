@@ -122,7 +122,7 @@ const breadcrumbMap: Record<string, { title: string; subtitle: string }> = {
     title: "Data Mitra",
     subtitle: "Kelola data mitra",
   },
-  "/cms/kolaborasi": {
+  "/cms/collaboration": {
     title: "Kolaborasi",
     subtitle: "Kelola logo partner & kolaborasi",
   },

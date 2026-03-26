@@ -1,9 +1,9 @@
 <template>
-  <Kolaborasi />
+  <Collaboration />
 </template>
 
 <script setup lang="ts">
-import Kolaborasi from "~/components/features/cms/kolaborasi/Kolaborasi.vue";
+import Collaboration from "~/components/features/cms/collaboration/Collaboration.vue";
 
 definePageMeta({
   layout: "cms",

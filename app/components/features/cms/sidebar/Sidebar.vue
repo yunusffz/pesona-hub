@@ -152,8 +152,8 @@ const navItems = computed(() => [
     label: "Kolaborasi",
     subtitle: "Kelola logo partner",
     icon: Handshake,
-    to: "/cms/kolaborasi",
-    active: route.path.startsWith("/cms/kolaborasi"),
+    to: "/cms/collaboration",
+    active: route.path.startsWith("/cms/collaboration"),
     soon: false,
   },
   {

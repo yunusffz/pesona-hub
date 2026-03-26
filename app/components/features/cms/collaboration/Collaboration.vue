@@ -90,8 +90,8 @@
 import { ref, computed } from "vue";
 import { Plus, Check, X, Handshake } from "lucide-vue-next";
 import BaseButton from "~/components/base/BaseButton.vue";
-import PartnerDataTable from "~/components/features/cms/kolaborasi/DataTable.vue";
-import PartnerForm from "~/components/features/cms/kolaborasi/PartnerForm.vue";
+import PartnerDataTable from "~/components/features/cms/collaboration/DataTable.vue";
+import PartnerForm from "~/components/features/cms/collaboration/PartnerForm.vue";
 import { Dialog, DialogContent } from "~/components/ui/dialog";
 import {
   usePartners,

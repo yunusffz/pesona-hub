@@ -154,7 +154,7 @@ const navItems = computed(() => [
     icon: Handshake,
     to: "/cms/kolaborasi",
     active: route.path.startsWith("/cms/kolaborasi"),
-    soon: true,
+    soon: false,
   },
   {
     label: "Tentang Kami",

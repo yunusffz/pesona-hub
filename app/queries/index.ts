@@ -18,3 +18,10 @@ export {
   useUpdateHighlight,
   useDeleteHighlight,
 } from "./useHighlights";
+export {
+  usePartners,
+  useCreatePartner,
+  useUpdatePartner,
+  useDeletePartner,
+  type PartnerItem,
+} from "./usePartners";

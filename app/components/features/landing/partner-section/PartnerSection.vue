@@ -57,11 +57,14 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import IconBadge from "~/components/base/IconBadge.vue";
+import { usePartners } from "~/queries/usePartners";
 
-// Partner logos array - add or remove logos here
-const partnerLogos = ref([
+const config = useRuntimeConfig();
+const { data: partnersData } = usePartners();
+
+const staticPartnerLogos = [
   {
     src: "/assets/images/logo-kemhut.jpeg",
     alt: "Logo Kementerian Kehutanan Republik Indonesia",
@@ -92,7 +95,21 @@ const partnerLogos = ref([
     alt: "Logo WARSI",
     size: "100px",
   },
-]);
+];
+
+const partnerLogos = computed(() => {
+  const apiPartners = Array.isArray(partnersData.value) ? partnersData.value : [];
+  const withLogos = apiPartners
+    .filter((p) => p.logo_object_name)
+    .sort((a, b) => a.order - b.order)
+    .map((p) => ({
+      src: `${config.public.pesonaApiUrl}/files/${p.logo_object_name}`,
+      alt: p.name,
+      size: "100px",
+    }));
+
+  return withLogos.length > 0 ? withLogos : staticPartnerLogos;
+});
 
 const containerRef = ref<HTMLElement | null>(null);
 const contentRef = ref<HTMLElement | null>(null);

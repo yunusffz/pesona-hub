@@ -132,7 +132,7 @@ const breadcrumbMap: Record<string, { title: string; subtitle: string }> = {
   },
   "/cms/faq": {
     title: "FAQ",
-    subtitle: "Kelola pertanyaan yang sering diajukan",
+    subtitle: "Kelola pertanyaan yang sering ditanyakan",
   },
 };
 

@@ -170,7 +170,7 @@ const navItems = computed(() => [
     icon: HelpCircle,
     to: "/cms/faq",
     active: route.path.startsWith("/cms/faq"),
-    soon: true,
+    soon: false,
   },
 ]);
 </script>

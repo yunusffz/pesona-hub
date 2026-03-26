@@ -26,6 +26,13 @@ export {
   type PartnerItem,
 } from "./usePartners";
 export {
+  useFaqs,
+  useCreateFaq,
+  useUpdateFaq,
+  useDeleteFaq,
+  type FaqItem,
+} from "./useFaq";
+export {
   useAboutUs,
   useSaveAboutUs,
   type AboutUsData,

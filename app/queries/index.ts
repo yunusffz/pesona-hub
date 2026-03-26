@@ -30,4 +30,5 @@ export {
   useSaveAboutUs,
   type AboutUsData,
   type MisiItem,
+  type VisiItem,
 } from "./useAboutUs";

@@ -230,6 +230,91 @@
       </div>
     </div>
 
+    <!-- Visi (Timeline) card -->
+    <div class="bg-white rounded-xl border border-[#E4E4E7]">
+      <div class="p-4 lg:p-6 border-b border-[#E4E4E7] flex items-center justify-between">
+        <span class="text-base font-semibold text-[#101828]">Visi (Timeline)</span>
+        <BaseButton class="py-1.5 px-3 text-sm" @click="addVisiItem">
+          <Plus class="w-4 h-4" />
+          Tambah Visi
+        </BaseButton>
+      </div>
+
+      <div class="p-4 lg:p-6 flex flex-col gap-4">
+        <div
+          v-for="(item, index) in form.visi"
+          :key="item.id"
+          class="rounded-xl border border-[#E4E4E7] p-4 flex flex-col gap-4"
+        >
+          <!-- Card header -->
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-white bg-[#035925] rounded-full px-3 py-1">
+              Visi #{{ index + 1 }}
+            </span>
+            <button
+              type="button"
+              class="p-1.5 rounded-lg text-red-400 hover:bg-red-50 transition"
+              @click="removeVisiItem(index)"
+            >
+              <Trash2 class="w-4 h-4" />
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Image -->
+            <div class="flex flex-col gap-1.5">
+              <label class="text-sm font-medium text-[#344054]">Gambar Ilustrasi</label>
+              <ImageUploader
+                v-model="item.image_object_name"
+                label="Upload gambar"
+                :accept="['PNG', 'JPG']"
+                :max-size-mb="3"
+                width="100%"
+                height="160px"
+                border-class="border-dashed"
+                @uploaded="(v) => (item.image_object_name = v)"
+              />
+              <p class="text-xs text-[#6A7282]">
+                Rekomendasi: 800 x 450px. Rasio gambar: 16/9. Ukuran maksimal: 3MB
+              </p>
+            </div>
+
+            <!-- Year + Description -->
+            <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-sm font-medium text-[#344054]">Tahun Target</label>
+                <div class="relative">
+                  <CalendarDays class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6A7282]" />
+                  <input
+                    v-model.number="item.year"
+                    type="number"
+                    :min="2000"
+                    :max="2100"
+                    placeholder="2025"
+                    class="w-full rounded-lg border border-[#D1D5DC] bg-[#F9FAFB] pl-9 pr-3.5 py-2.5 text-sm text-[#101828] placeholder:text-[#9DA4AE] focus:outline-none focus:ring-2 focus:ring-[#035925]/30 focus:border-[#035925] transition"
+                  />
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="text-sm font-medium text-[#344054]">Deskripsi Visi</label>
+                <textarea
+                  v-model="item.description"
+                  placeholder="Tuliskan visi untuk tahun ini..."
+                  rows="4"
+                  class="w-full rounded-lg border border-[#D1D5DC] bg-[#F9FAFB] px-3.5 py-2.5 text-sm text-[#101828] placeholder:text-[#9DA4AE] focus:outline-none focus:ring-2 focus:ring-[#035925]/30 focus:border-[#035925] transition resize-none"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p v-if="form.visi.length === 0" class="text-sm text-[#9DA4AE] text-center py-6">
+          Belum ada visi. Klik "Tambah Visi" untuk menambahkan.
+        </p>
+      </div>
+    </div>
+
     <!-- Toast -->
     <Teleport to="body">
       <Transition
@@ -274,13 +359,14 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { Save, Check, X, Trash2, Plus } from "lucide-vue-next";
+import { Save, Check, X, Trash2, Plus, CalendarDays } from "lucide-vue-next";
 import BaseButton from "~/components/base/BaseButton.vue";
 import ImageUploader from "~/components/base/ImageUploader.vue";
 import {
   useAboutUs,
   useSaveAboutUs,
   type MisiItem,
+  type VisiItem,
 } from "~/queries/useAboutUs";
 
 const MAX_ITEMS = 4;
@@ -298,6 +384,7 @@ const form = ref({
     description: "",
     items: [] as MisiItem[],
   },
+  visi: [] as VisiItem[],
 });
 
 watch(
@@ -313,6 +400,7 @@ watch(
         description: val.misi.description,
         items: val.misi.items.map((i) => ({ ...i })),
       };
+      form.value.visi = val.visi.map((i) => ({ ...i }));
     }
   },
   { immediate: true }
@@ -330,6 +418,19 @@ const addItem = () => {
 
 const removeItem = (index: number) => {
   form.value.misi.items.splice(index, 1);
+};
+
+const addVisiItem = () => {
+  form.value.visi.push({
+    id: `visi_${Date.now()}`,
+    image_object_name: null,
+    year: new Date().getFullYear(),
+    description: "",
+  });
+};
+
+const removeVisiItem = (index: number) => {
+  form.value.visi.splice(index, 1);
 };
 
 // Toast
@@ -373,6 +474,10 @@ const handleSave = async () => {
           description: i.description.trim(),
         })),
       },
+      visi: form.value.visi.map((i) => ({
+        ...i,
+        description: i.description.trim(),
+      })),
     });
     showNotification("Perubahan berhasil disimpan");
   } catch (err: any) {

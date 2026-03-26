@@ -2,7 +2,13 @@
   <div class="flex flex-col gap-1">
     <label
       class="relative flex flex-col items-center justify-center rounded-[14px] border-2 cursor-pointer overflow-hidden transition hover:bg-gray-50 bg-[#F9FAFB]"
-      :class="validationError ? 'border-red-400' : isDragging ? 'border-[#035925] border-dashed' : (borderClass ?? 'border-[#D1D5DC]')"
+      :class="
+        validationError
+          ? 'border-red-400'
+          : isDragging
+            ? 'border-[#035925] border-dashed'
+            : (borderClass ?? 'border-[#D1D5DC]')
+      "
       :style="{ width, height }"
       @dragover.prevent="isDragging = true"
       @dragleave.prevent="isDragging = false"
@@ -42,7 +48,10 @@
           :preserve-original-colors="true"
         />
 
-        <span class="text-sm font-medium text-[#364153]">{{ label }}</span>
+        <span
+          :class="['font-medium text-[#364153]', labelClass ?? 'text-sm']"
+          >{{ label }}</span
+        >
         <span class="text-xs w-[110px] text-center">{{ hint }}</span>
       </div>
 
@@ -92,6 +101,8 @@ interface Props {
   height?: string;
   /** custom border class, e.g. 'border-dashed border-blue-400' */
   borderClass?: string;
+  /** custom label text class, e.g. 'text-xs' — defaults to 'text-sm' */
+  labelClass?: string;
 }
 const props = withDefaults(defineProps<Props>(), {
   accept: () => ["PNG", "JPG"],
@@ -102,7 +113,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const hint = computed(() => {
   const types = props.accept.join(", ");
-  return `${types} (Max ${props.maxSizeMb}MB)`;
+  return `${types} hingga ${props.maxSizeMb}MB`;
 });
 const emit = defineEmits<{
   "update:modelValue": [value: string | null];

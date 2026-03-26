@@ -160,9 +160,9 @@ const navItems = computed(() => [
     label: "Tentang Kami",
     subtitle: "Kelola konten about",
     icon: Info,
-    to: "/cms/tentang",
-    active: route.path.startsWith("/cms/tentang"),
-    soon: true,
+    to: "/cms/about",
+    active: route.path.startsWith("/cms/about"),
+    soon: false,
   },
   {
     label: "FAQ",

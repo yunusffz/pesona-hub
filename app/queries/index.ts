@@ -25,3 +25,9 @@ export {
   useDeletePartner,
   type PartnerItem,
 } from "./usePartners";
+export {
+  useAboutUs,
+  useSaveAboutUs,
+  type AboutUsData,
+  type MisiItem,
+} from "./useAboutUs";

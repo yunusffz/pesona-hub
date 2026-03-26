@@ -126,9 +126,9 @@ const breadcrumbMap: Record<string, { title: string; subtitle: string }> = {
     title: "Kolaborasi",
     subtitle: "Kelola logo partner & kolaborasi",
   },
-  "/cms/tentang": {
+  "/cms/about": {
     title: "Tentang Kami",
-    subtitle: "Kelola konten halaman about",
+    subtitle: "Kelola konten halaman Tentang Kami",
   },
   "/cms/faq": {
     title: "FAQ",

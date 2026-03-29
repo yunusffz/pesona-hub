@@ -23,7 +23,7 @@ const parseFaqItem = (raw: unknown): FaqItem | null => {
 };
 
 const saveFaqs = async ($apiClient: any, items: FaqItem[]): Promise<void> => {
-  const { error } = await $apiClient.POST("/settings", {
+  const { error } = await $apiClient.PUT("/settings", {
     body: { key: SETTING_KEY, value: items },
   });
   if (error) throw new Error("Gagal menyimpan data FAQ");
@@ -37,13 +37,14 @@ export const useFaqs = () => {
     queryFn: async (): Promise<FaqItem[]> => {
       const { data, error } = await $apiClient.GET("/settings");
       if (error) return [];
-      const settings = (data as any)?.data ?? data;
-      const raw = settings?.[SETTING_KEY];
+      const list = (data as any)?.data;
+      const entry = Array.isArray(list)
+        ? list.find((s: any) => s.key === SETTING_KEY)
+        : null;
+      const raw = entry?.value;
       if (!Array.isArray(raw)) return [];
       return raw.map(parseFaqItem).filter((i): i is FaqItem => i !== null);
     },
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
   });
 };
 

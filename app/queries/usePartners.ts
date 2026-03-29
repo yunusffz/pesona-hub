@@ -27,9 +27,11 @@ export const usePartners = () => {
 
       if (error) return [];
 
-      // Response shape: { data: { partners: [...] } } or { partners: [...] }
-      const settings = (data as any)?.data ?? data;
-      return parsePartners(settings?.[SETTING_KEY]);
+      const list = (data as any)?.data;
+      const entry = Array.isArray(list)
+        ? list.find((s: any) => s.key === SETTING_KEY)
+        : null;
+      return parsePartners(entry?.value);
     },
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
@@ -40,7 +42,7 @@ const savePartners = async (
   $apiClient: any,
   partners: PartnerItem[]
 ): Promise<void> => {
-  const { error } = await $apiClient.POST("/settings", {
+  const { error } = await $apiClient.PUT("/settings", {
     body: { key: SETTING_KEY, value: partners },
   });
   if (error) throw new Error("Failed to save partner settings");
@@ -52,7 +54,9 @@ export const useCreatePartner = () => {
 
   return useMutation({
     mutationFn: async (partner: Omit<PartnerItem, "id">) => {
-      const current = queryClient.getQueryData<PartnerItem[]>(["settings", SETTING_KEY]) ?? [];
+      const current =
+        queryClient.getQueryData<PartnerItem[]>(["settings", SETTING_KEY]) ??
+        [];
       const newItem: PartnerItem = {
         ...partner,
         id: `partner_${Date.now()}`,
@@ -70,8 +74,16 @@ export const useUpdatePartner = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<Omit<PartnerItem, "id">> }) => {
-      const current = queryClient.getQueryData<PartnerItem[]>(["settings", SETTING_KEY]) ?? [];
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Partial<Omit<PartnerItem, "id">>;
+    }) => {
+      const current =
+        queryClient.getQueryData<PartnerItem[]>(["settings", SETTING_KEY]) ??
+        [];
       const updated = current.map((p) => (p.id === id ? { ...p, ...data } : p));
       await savePartners($apiClient, updated);
     },
@@ -87,7 +99,9 @@ export const useDeletePartner = () => {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const current = queryClient.getQueryData<PartnerItem[]>(["settings", SETTING_KEY]) ?? [];
+      const current =
+        queryClient.getQueryData<PartnerItem[]>(["settings", SETTING_KEY]) ??
+        [];
       const updated = current.filter((p) => p.id !== id);
       await savePartners($apiClient, updated);
     },

@@ -164,10 +164,7 @@ const handleFormSubmit = async (formData: PartnerFormData) => {
       });
       showNotification("Partner berhasil diperbarui");
     } else {
-      const nextOrder =
-        sortedPartners.value.length > 0
-          ? sortedPartners.value[sortedPartners.value.length - 1].order + 1
-          : 1;
+      const nextOrder = (sortedPartners.value.at(-1)?.order ?? 0) + 1;
       await createPartner({
         name: formData.name,
         logo_object_name: formData.logo_object_name,

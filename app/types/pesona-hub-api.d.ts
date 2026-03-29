@@ -1021,7 +1021,8 @@ export interface paths {
         };
         /** Get Settings */
         get: operations["get_settings_settings_get"];
-        put?: never;
+        /** Update Insert */
+        put: operations["update_insert_settings_put"];
         /** Create Setting */
         post: operations["create_setting_settings_post"];
         delete?: never;
@@ -1039,15 +1040,13 @@ export interface paths {
         };
         /** Get Setting */
         get: operations["get_setting_settings__key__get"];
-        /** Update Setting Full */
-        put: operations["update_setting_full_settings__key__put"];
+        put?: never;
         post?: never;
         /** Delete Setting */
         delete: operations["delete_setting_settings__key__delete"];
         options?: never;
         head?: never;
-        /** Patch Setting */
-        patch: operations["patch_setting_settings__key__patch"];
+        patch?: never;
         trace?: never;
     };
     "/social-forestry-groups": {
@@ -3042,7 +3041,7 @@ export interface components {
         /** SettingUpdate */
         SettingUpdate: {
             /** Key */
-            key?: string | null;
+            key: string;
             /** Value */
             value?: {
                 [key: string]: unknown;
@@ -7561,6 +7560,48 @@ export interface operations {
             };
         };
     };
+    update_insert_settings_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SettingUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     create_setting_settings_post: {
         parameters: {
             query?: never;
@@ -7643,50 +7684,6 @@ export interface operations {
             };
         };
     };
-    update_setting_full_settings__key__put: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                key: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SettingUpdate"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"];
-                };
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
     delete_setting_settings__key__delete: {
         parameters: {
             query?: never;
@@ -7704,50 +7701,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-            /** @description Unprocessable Content */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    patch_setting_settings__key__patch: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                key: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SettingUpdate"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseResponse_dict_str__Any__"];
-                };
             };
             /** @description Unprocessable Content */
             422: {

@@ -11,6 +11,7 @@ export interface VisiItem {
   id: string;
   image_object_name: string | null;
   year: number;
+  title: string;
   description: string;
 }
 
@@ -47,6 +48,7 @@ const parseVisiItem = (raw: unknown): VisiItem | null => {
     id: typeof d.id === "string" ? d.id : `visi_${Date.now()}_${Math.random()}`,
     image_object_name: typeof d.image_object_name === "string" ? d.image_object_name : null,
     year: typeof d.year === "number" ? d.year : new Date().getFullYear(),
+    title: typeof d.title === "string" ? d.title : "",
     description: typeof d.description === "string" ? d.description : "",
   };
 };
@@ -86,11 +88,12 @@ export const useAboutUs = () => {
     queryFn: async (): Promise<AboutUsData> => {
       const { data, error } = await $apiClient.GET("/settings");
       if (error) return parseAboutUs(null);
-      const settings = (data as any)?.data ?? data;
-      return parseAboutUs(settings?.[SETTING_KEY]);
+      const list = (data as any)?.data;
+      const entry = Array.isArray(list)
+        ? list.find((s: any) => s.key === SETTING_KEY)
+        : null;
+      return parseAboutUs(entry?.value);
     },
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
   });
 };
 
@@ -100,7 +103,7 @@ export const useSaveAboutUs = () => {
 
   return useMutation({
     mutationFn: async (payload: AboutUsData) => {
-      const { error } = await $apiClient.POST("/settings", {
+      const { error } = await $apiClient.PUT("/settings", {
         body: { key: SETTING_KEY, value: payload },
       });
       if (error) throw new Error("Gagal menyimpan data Tentang Kami");

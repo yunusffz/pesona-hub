@@ -279,8 +279,17 @@
               </p>
             </div>
 
-            <!-- Year + Description -->
+            <!-- Year + Title + Description -->
             <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-sm font-medium text-[#344054]">Judul Visi</label>
+                <input
+                  v-model="item.title"
+                  type="text"
+                  placeholder="Digitalisasi Perhutanan Sosial"
+                  class="w-full rounded-lg border border-[#D1D5DC] bg-[#F9FAFB] px-3.5 py-2.5 text-sm text-[#101828] placeholder:text-[#9DA4AE] focus:outline-none focus:ring-2 focus:ring-[#035925]/30 focus:border-[#035925] transition"
+                />
+              </div>
               <div class="flex flex-col gap-1.5">
                 <label class="text-sm font-medium text-[#344054]">Tahun Target</label>
                 <div class="relative">
@@ -425,6 +434,7 @@ const addVisiItem = () => {
     id: `visi_${Date.now()}`,
     image_object_name: null,
     year: new Date().getFullYear(),
+    title: "",
     description: "",
   });
 };
@@ -476,6 +486,7 @@ const handleSave = async () => {
       },
       visi: form.value.visi.map((i) => ({
         ...i,
+        title: i.title.trim(),
         description: i.description.trim(),
       })),
     });

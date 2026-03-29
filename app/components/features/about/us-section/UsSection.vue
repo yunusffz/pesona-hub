@@ -3,7 +3,7 @@
     <div class="flex gap-5 flex-col lg:flex-row">
       <div class="flex flex-col gap-8 lg:gap-[224px] justify-between">
         <div>
-          <IconBadge label="Mengapa Kami Hadir" icon="plant" variant="white" />
+          <IconBadge :label="sectionTitle" icon="plant" variant="white" />
         </div>
         <NuxtImg
           src="/assets/images/us-1.png"
@@ -16,13 +16,10 @@
           <h1
             class="text-2xl sm:text-3xl lg:text-4xl xl:text-[40px] font-medium leading-tight lg:leading-[48px]"
           >
-            Lebih dari sekadar platform — kami adalah mitra tumbuh yang
-            berkelanjutan.
+            {{ headline }}
           </h1>
           <p class="leading-6 text-sm sm:text-base text-[#585858]">
-            Pesona Hub Digi menghubungkan potensi masyarakat hutan dengan
-            peluang ekonomi global. Kami percaya setiap kolaborasi dapat membawa
-            dampak nyata bagi lingkungan dan kehidupan sosial.
+            {{ misiDescription }}
           </p>
         </div>
         <div
@@ -30,16 +27,16 @@
         >
           <div class="flex flex-col gap-4 lg:gap-5">
             <UsCard
-              :title="cards[0].title"
               v-if="cards[0]"
+              :title="cards[0].title"
               :description="cards[0].description"
               :imageSrc="cards[0].imageSrc"
               :imageAlt="cards[0].imageAlt"
               :variant="cards[0].variant"
             />
             <UsCard
-              :title="cards[1].title"
               v-if="cards[1]"
+              :title="cards[1].title"
               :description="cards[1].description"
               :imageSrc="cards[1].imageSrc"
               :imageAlt="cards[1].imageAlt"
@@ -48,16 +45,16 @@
           </div>
           <div class="flex flex-col gap-4 lg:gap-5">
             <UsCard
-              :title="cards[2].title"
               v-if="cards[2]"
+              :title="cards[2].title"
               :description="cards[2].description"
               :imageSrc="cards[2].imageSrc"
               :imageAlt="cards[2].imageAlt"
               :variant="cards[2].variant"
             />
             <UsCard
-              :title="cards[3].title"
               v-if="cards[3]"
+              :title="cards[3].title"
               :description="cards[3].description"
               :imageSrc="cards[3].imageSrc"
               :imageAlt="cards[3].imageAlt"
@@ -69,50 +66,70 @@
     </div>
   </section>
 </template>
+
 <script setup lang="ts">
-  import IconBadge from "~/components/base/IconBadge.vue";
-  import UsCard from "./UsCard.vue";
+import { computed } from "vue";
+import IconBadge from "~/components/base/IconBadge.vue";
+import UsCard from "./UsCard.vue";
+import { useAboutUs } from "~/queries/useAboutUs";
 
-  interface UsCard {
-    variant: "default" | "primary" | "secondary" | "accent";
-    title: string;
-    description: string;
-    imageSrc: string;
-    imageAlt: string;
-  }
+const STATIC_CARDS = [
+  {
+    variant: "default" as const,
+    title: "Inovasi Efektif",
+    description: "Kami menghadirkan solusi digital yang mempermudah promosi, distribusi, dan kolaborasi antar mitra Perhutanan sosial.",
+    imageSrc: "/assets/images/about-1.png",
+    imageAlt: "About 1",
+  },
+  {
+    variant: "primary" as const,
+    title: "Dipercaya Banyak Pihak",
+    description: "Didukung oleh KEMENTRIAN PERHUTANAN, Balai PS, dan mitra CSR di seluruh Indonesia — Pesona Hub Digi menjadi ruang kolaborasi yang kredibel dan aman.",
+    imageSrc: "/assets/images/about-2.png",
+    imageAlt: "About 2",
+  },
+  {
+    variant: "secondary" as const,
+    title: "Praktik Berkelanjutan",
+    description: "Setiap langkah kami mendukung pengelolaan hutan lestari dan ekonomi hijau di tingkat lokal.",
+    imageSrc: "/assets/images/about-3.png",
+    imageAlt: "About 3",
+  },
+  {
+    variant: "default" as const,
+    title: "Keahlian Global, Akar Lokal",
+    description: "Kami membawa pendekatan profesional dan teknologi terkini dengan semangat gotong royong masyarakat hutan.",
+    imageSrc: "/assets/images/about-4.png",
+    imageAlt: "About 4",
+  },
+];
 
-  const cards: UsCard[] = [
-    {
-      variant: "default",
-      title: "Inovasi Efektif",
-      description:
-        "Kami menghadirkan solusi digital yang mempermudah promosi, distribusi, dan kolaborasi antar mitra Perhutanan sosial.",
-      imageSrc: "/assets/images/about-1.png",
-      imageAlt: "About 1",
-    },
-    {
-      variant: "primary",
-      title: "Dipercaya Banyak Pihak",
-      description:
-        "Didukung oleh KEMENTRIAN PERHUTANAN, Balai PS, dan mitra CSR di seluruh Indonesia — Pesona Hub Digi menjadi ruang kolaborasi yang kredibel dan aman.",
-      imageSrc: "/assets/images/about-2.png",
-      imageAlt: "About 2",
-    },
-    {
-      variant: "secondary",
-      title: "Praktik Berkelanjutan",
-      description:
-        "Setiap langkah kami mendukung pengelolaan hutan lestari dan ekonomi hijau di tingkat lokal.",
-      imageSrc: "/assets/images/about-3.png",
-      imageAlt: "About 3",
-    },
-    {
-      variant: "default",
-      title: "Keahlian Global, Akar Lokal",
-      description:
-        "Kami membawa pendekatan profesional dan teknologi terkini dengan semangat gotong royong masyarakat hutan.",
-      imageSrc: "/assets/images/about-4.png",
-      imageAlt: "About 4",
-    },
-  ];
+const CARD_VARIANTS = ["default", "primary", "secondary", "default"] as const;
+const STATIC_IMAGES = [
+  "/assets/images/about-1.png",
+  "/assets/images/about-2.png",
+  "/assets/images/about-3.png",
+  "/assets/images/about-4.png",
+];
+
+const config = useRuntimeConfig();
+const { data } = useAboutUs();
+
+const sectionTitle = computed(() => data.value?.misi.section_title || "Mengapa Kami Hadir");
+const headline = computed(() => data.value?.misi.headline || "Lebih dari sekadar platform — kami adalah mitra tumbuh yang berkelanjutan.");
+const misiDescription = computed(() => data.value?.misi.description || "Pesona Hub Digi menghubungkan potensi masyarakat hutan dengan peluang ekonomi global. Kami percaya setiap kolaborasi dapat membawa dampak nyata bagi lingkungan dan kehidupan sosial.");
+
+const cards = computed(() => {
+  const items = data.value?.misi.items ?? [];
+  if (items.length === 0) return STATIC_CARDS;
+  return items.slice(0, 4).map((item, index) => ({
+    variant: CARD_VARIANTS[index % CARD_VARIANTS.length],
+    title: item.title,
+    description: item.description,
+    imageSrc: item.image_object_name
+      ? `${config.public.pesonaApiUrl}/files/${item.image_object_name}`
+      : STATIC_IMAGES[index] ?? STATIC_IMAGES[0],
+    imageAlt: item.title,
+  }));
+});
 </script>

@@ -5,7 +5,7 @@
     >
       <div class="h-full w-full max-h-[620px]">
         <img
-          src="/assets/images/about-hero.avif"
+          :src="heroImage"
           class="w-full object-cover object-center"
           alt="About Hero Image"
         />
@@ -18,7 +18,6 @@
         </div>
         <div class="flex flex-col gap-4 w-full items-center lg:items-start">
           <HeroTagline />
-
           <HeroText />
         </div>
       </div>
@@ -27,7 +26,18 @@
 </template>
 
 <script setup lang="ts">
-  import IconBadge from "~/components/base/IconBadge.vue";
-  import HeroTagline from "./HeroTagline.vue";
-  import HeroText from "./HeroText.vue";
+import { computed } from "vue";
+import IconBadge from "~/components/base/IconBadge.vue";
+import HeroTagline from "./HeroTagline.vue";
+import HeroText from "./HeroText.vue";
+import { useAboutUs } from "~/queries/useAboutUs";
+
+const config = useRuntimeConfig();
+const { data } = useAboutUs();
+
+const heroImage = computed(() =>
+  data.value?.image_object_name
+    ? `${config.public.pesonaApiUrl}/files/${data.value.image_object_name}`
+    : "/assets/images/about-hero.avif"
+);
 </script>

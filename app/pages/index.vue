@@ -27,4 +27,5 @@
   import TourSection from "~/components/features/landing/tour-section/TourSection.vue";
   import IntegratedSection from "~/components/features/landing/integrated-section/IntegratedSection.vue";
   import PartnerSection from "~/components/features/landing/partner-section/PartnerSection.vue";
+  import settingFeature from "~/utils/setting-feature";
 </script>

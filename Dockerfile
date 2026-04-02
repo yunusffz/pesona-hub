@@ -1,28 +1,24 @@
 # =====================
 # Build stage
 # =====================
-FROM oven/bun:1-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
 # Copy package files
-COPY package.json bun.lock ./
+COPY package.json ./
 
-# Install dependencies
-RUN bun install --frozen-lockfile
+# Install dependencies with npm (compatible with Nitro module resolution)
+RUN npm install
 
 # Copy all source files
 COPY . .
 
 # Generate Nuxt TypeScript config
-RUN bun run postinstall
+RUN npm run postinstall
 
 # Build Nuxt
-RUN bun run build
-
-# Fix: bun places vue in .nitro/ subdir but renderer.mjs expects vue/index.mjs at standard path
-RUN rm -rf .output/server/node_modules/vue && \
-    cp -rL node_modules/vue .output/server/node_modules/vue
+RUN npm run build
 
 # =====================
 # Runtime stage

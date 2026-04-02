@@ -103,7 +103,7 @@ export default defineNuxtConfig({
   },
   nitro: {
     externals: {
-      inline: ["vue", "@vue/server-renderer", "vue-router"],
+      inline: [/^(?!node:).*/],
     },
   },
   icon: {

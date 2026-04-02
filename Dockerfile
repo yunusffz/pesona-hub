@@ -20,6 +20,10 @@ RUN bun run postinstall
 # Build Nuxt
 RUN bun run build
 
+# Fix: bun places vue in .nitro/ subdir but renderer.mjs expects vue/index.mjs at standard path
+RUN rm -rf .output/server/node_modules/vue && \
+    cp -rL node_modules/vue .output/server/node_modules/vue
+
 # =====================
 # Runtime stage
 # =====================

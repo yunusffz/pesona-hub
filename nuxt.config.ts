@@ -101,11 +101,6 @@ export default defineNuxtConfig({
       ],
     },
   },
-  nitro: {
-    externals: {
-      inline: [/^(?!node:).*/],
-    },
-  },
   icon: {
     serverBundle: {
       collections: ["uil", "mdi"], // <!--- this

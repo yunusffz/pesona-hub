@@ -9,29 +9,19 @@
           <thead class="border-b border-gray-200">
             <tr>
               <th
-                class="bg-gray-50 px-6 rounded-tl-2xl py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[220px]"
+                class="bg-gray-50 px-6 rounded-tl-2xl py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[260px]"
               >
-                Nama Brand/Produk
+                Nama Produk
+              </th>
+              <th
+                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[200px]"
+              >
+                KUPS
               </th>
               <th
                 class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[130px]"
               >
-                Komoditas
-              </th>
-              <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[150px]"
-              >
-                Kapasitas Penyediaan
-              </th>
-              <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[90px]"
-              >
-                Satuan
-              </th>
-              <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[130px]"
-              >
-                Jenis Bahan
+                Kelas
               </th>
               <th
                 class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[140px]"
@@ -39,9 +29,9 @@
                 Wilayah
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[160px]"
+                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap w-[140px]"
               >
-                Nama KUPS
+                Harga Mulai
               </th>
               <th class="bg-gray-50 px-6 py-3 rounded-tr-2xl w-10"></th>
             </tr>
@@ -52,6 +42,7 @@
               :key="product.id"
               class="hover:bg-gray-50 transition-colors"
             >
+              <!-- Nama Produk -->
               <td class="px-6 py-4 overflow-hidden">
                 <div class="flex items-center gap-3 min-w-0">
                   <div
@@ -64,60 +55,60 @@
                       @error="handleImageError($event, product)"
                     />
                   </div>
-                  <div class="flex flex-col gap-1 min-w-0">
+                  <div class="flex flex-col gap-0.5 min-w-0">
                     <span
                       class="text-sm font-medium text-gray-900 truncate"
-                      :title="product.name"
-                      >{{ product.name }}</span
+                      :title="toTitleCase(product.name)"
+                      >{{ toTitleCase(product.name) }}</span
                     >
-                    <span
-                      v-if="product.status"
-                      class="text-xs text-gray-500 truncate"
-                      :title="product.status"
-                    >
-                      {{ product.status }}
+                    <span class="text-xs text-gray-500 truncate">
+                      {{ getCommodityUnit(product) }}
                     </span>
                   </div>
                 </div>
               </td>
+
+              <!-- KUPS -->
               <td class="px-6 py-4 overflow-hidden">
                 <span
                   class="text-sm text-gray-600 truncate block"
-                  :title="(product as any).commodity?.name"
-                  >{{ (product as any).commodity?.name || "-" }}</span
-                >
-              </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{
-                  product.capacity
-                }}</span>
-              </td>
-              <td class="px-6 py-4">
-                <span class="text-sm text-gray-900">{{ product.unit }}</span>
-              </td>
-              <td class="px-6 py-4 overflow-hidden">
-                <span
-                  class="text-sm text-gray-600 truncate block"
-                  :title="product.value_chain ?? ''"
-                  >{{ product.value_chain || "-" }}</span
-                >
-              </td>
-              <td class="px-6 py-4 overflow-hidden">
-                <span
-                  class="text-sm text-gray-600 truncate block"
-                  :title="getRegion(product)"
-                  >{{ getRegion(product) }}</span
-                >
-              </td>
-              <td class="px-6 py-4 overflow-hidden">
-                <span
-                  class="text-sm text-gray-900 truncate block"
-                  :title="product.social_forestry_business_group?.name"
+                  :title="
+                    toTitleCase(product.social_forestry_business_group?.name)
+                  "
                   >{{
-                    product.social_forestry_business_group?.name || "-"
+                    toTitleCase(product.social_forestry_business_group?.name) ||
+                    "-"
                   }}</span
                 >
               </td>
+
+              <!-- Kelas -->
+              <td class="px-6 py-4">
+                <RankBadges
+                  v-if="getClassGroup(product)"
+                  class="border-[#E5E5E5] text-[#737373] px-1.5 py-0.5 gap-1 rounded-lg"
+                  icon-size="w-3 h-3"
+                  :rank="getClassGroup(product) as any"
+                />
+                <span v-else class="text-sm text-gray-400">-</span>
+              </td>
+
+              <!-- Wilayah -->
+              <td class="px-6 py-4 overflow-hidden">
+                <span
+                  class="text-sm text-gray-600 truncate block"
+                  :title="toTitleCase(getRegion(product))"
+                  >{{ toTitleCase(getRegion(product)) }}</span
+                >
+              </td>
+
+              <!-- Harga Mulai -->
+              <td class="px-6 py-4">
+                <span class="text-sm text-gray-900">{{
+                  formatPrice(product.price)
+                }}</span>
+              </td>
+
               <td class="px-6 py-4">
                 <button
                   class="text-gray-400 hover:text-gray-600"
@@ -151,6 +142,7 @@
 import { ref, computed } from "vue";
 import Pagination from "~/components/ui/pagination/Pagination.vue";
 import Loader from "~/components/base/Loader.vue";
+import RankBadges from "~/components/base/RankBadges.vue";
 import type { ProductWithRelations } from "~/types/product";
 
 interface Props {
@@ -240,8 +232,32 @@ const handleImageError = (
   img.src = getRandomPlaceholderImage(product.id);
 };
 
+const toTitleCase = (value: string | null | undefined): string => {
+  if (!value) return "";
+  return value.replace(
+    /\w\S*/g,
+    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  );
+};
+
+const getCommodityUnit = (product: ProductWithRelations): string => {
+  const commodity = toTitleCase((product as any).commodity?.name);
+  const unit = toTitleCase(product.unit);
+  if (commodity && unit) return `${commodity} · ${unit}`;
+  return commodity || unit || "-";
+};
+
 const getRegion = (product: ProductWithRelations): string => {
   const businessGroup = product.social_forestry_business_group as any;
-  return businessGroup?.location?.province || "-";
+  return businessGroup?.location?.regency || "-";
+};
+
+const getClassGroup = (product: ProductWithRelations): string => {
+  return (product.social_forestry_business_group as any)?.class_group || "";
+};
+
+const formatPrice = (price: number | null | undefined): string => {
+  if (price == null) return "-";
+  return "Rp. " + price.toLocaleString("id-ID");
 };
 </script>

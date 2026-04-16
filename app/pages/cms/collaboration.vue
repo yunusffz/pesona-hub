@@ -7,7 +7,6 @@ import Collaboration from "~/components/features/cms/collaboration/Collaboration
 
 definePageMeta({
   layout: "cms",
-  middleware: "auth",
-  requiresAuth: true,
+  middleware: "admin",
 });
 </script>

@@ -7,7 +7,6 @@ import Faq from "~/components/features/cms/faq/Faq.vue";
 
 definePageMeta({
   layout: "cms",
-  middleware: "auth",
-  requiresAuth: true,
+  middleware: "admin",
 });
 </script>

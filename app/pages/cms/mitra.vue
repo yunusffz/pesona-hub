@@ -5,7 +5,6 @@
 import Mitra from "~/components/features/cms/mitra/Mitra.vue";
 definePageMeta({
   layout: "cms",
-  middleware: "auth",
-  requiresAuth: true,
+  middleware: "admin",
 });
 </script>

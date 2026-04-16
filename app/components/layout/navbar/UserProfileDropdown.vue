@@ -36,6 +36,7 @@
     >
       <!-- Menu Items -->
       <DropdownMenuItem
+        v-if="!isAdmin"
         @click="handleProfileClick"
         class="hover:bg-[#D2D2D2BF] rounded-lg cursor-pointer"
       >
@@ -86,7 +87,7 @@
   });
 
   // Authentication
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin } = useAuth();
   const config = useRuntimeConfig();
 
   // Avatar URL

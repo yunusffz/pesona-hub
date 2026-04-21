@@ -3,7 +3,7 @@ export default defineAppConfig({
     product: {
       canCreate: false,
       canUpdate: true,
-      canDelete: true,
+      canDelete: false,
     },
   },
 });

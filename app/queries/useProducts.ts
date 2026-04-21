@@ -114,6 +114,23 @@ export const usePostProduct = () => {
   });
 };
 
+export const useDeleteProduct = () => {
+  const { $apiClient } = useNuxtApp();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const { error } = await $apiClient.DELETE("/products/{product_id}", {
+        params: { path: { product_id: id } },
+      });
+      if (error) throw new Error(`Failed to delete product: ${error}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+};
+
 export const usePatchProduct = () => {
   const { $apiClient } = useNuxtApp();
   const queryClient = useQueryClient();

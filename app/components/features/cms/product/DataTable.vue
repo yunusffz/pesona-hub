@@ -110,12 +110,31 @@
               </td>
 
               <td class="px-6 py-4">
-                <button
-                  class="text-gray-400 hover:text-gray-600"
-                  @click="emit('edit', product)"
-                >
-                  <Icon name="uil:ellipsis-v" class="w-5 h-5" />
-                </button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger as-child>
+                    <button class="text-gray-400 hover:text-gray-600">
+                      <Icon name="uil:ellipsis-v" class="w-5 h-5" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" class="w-36">
+                    <DropdownMenuItem
+                      v-if="appConfig.cms.product.canUpdate"
+                      class="cursor-pointer gap-2"
+                      @click="emit('edit', product)"
+                    >
+                      <Icon name="uil:edit" class="w-4 h-4" />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      v-if="appConfig.cms.product.canDelete"
+                      class="cursor-pointer gap-2 text-red-600 focus:text-red-600"
+                      @click="emit('delete', product)"
+                    >
+                      <Icon name="uil:trash-alt" class="w-4 h-4" />
+                      Hapus
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </td>
             </tr>
           </tbody>
@@ -143,7 +162,15 @@ import { ref, computed } from "vue";
 import Pagination from "~/components/ui/pagination/Pagination.vue";
 import Loader from "~/components/base/Loader.vue";
 import RankBadges from "~/components/base/RankBadges.vue";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
 import type { ProductWithRelations } from "~/types/product";
+
+const appConfig = useAppConfig();
 
 interface Props {
   products?: ProductWithRelations[];
@@ -157,6 +184,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   edit: [product: ProductWithRelations];
+  delete: [product: ProductWithRelations];
 }>();
 
 const currentPage = ref(1);

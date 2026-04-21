@@ -25,6 +25,38 @@
       </DialogContent>
     </Dialog>
 
+    <!-- Delete Confirmation Modal -->
+    <Dialog v-model:open="showDeleteModal">
+      <DialogContent class="max-w-sm [&>button:last-child]:hidden">
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1">
+            <h2 class="font-semibold text-lg text-[#1e1e1e]">Hapus Produk</h2>
+            <p class="text-sm text-[#6a7282]">
+              Apakah Anda yakin ingin menghapus produk
+              <span class="font-medium text-[#1e1e1e]">{{ selectedProduct?.name }}</span>?
+              Tindakan ini tidak dapat dibatalkan.
+            </p>
+          </div>
+          <div class="flex justify-end gap-3">
+            <BaseButton
+              variant="secondary"
+              class="h-9 px-4 rounded-2xl text-sm border border-[#e7efea] text-[#1e1e1e]"
+              @click="showDeleteModal = false"
+            >
+              Batal
+            </BaseButton>
+            <BaseButton
+              class="h-9 px-4 rounded-2xl text-sm bg-red-600 hover:bg-red-700 text-white"
+              :disabled="isDeletePending"
+              @click="handleDelete"
+            >
+              {{ isDeletePending ? "Menghapus..." : "Hapus" }}
+            </BaseButton>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+
 
     <div
       class="flex flex-col sm:flex-row sm:items-center justify-between gap-3"
@@ -98,6 +130,7 @@
               :products="filteredProducts"
               :isLoading="isLoading"
               @edit="openEditModal"
+              @delete="openDeleteModal"
             />
           </div>
         </section>
@@ -132,6 +165,7 @@
               :products="filteredProducts"
               :isLoading="isLoading"
               @edit="openEditModal"
+              @delete="openDeleteModal"
             />
           </div>
         </section>
@@ -179,7 +213,7 @@ import FilterSheet from "~/components/features/dashboard/filter/FilterSheet.vue"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
 import { SheetTrigger } from "~/components/ui/sheet";
 import { Dialog, DialogContent } from "~/components/ui/dialog";
-import { useProducts } from "~/queries/useProducts";
+import { useProducts, useDeleteProduct } from "~/queries/useProducts";
 import { useCatalogStore } from "~/stores/useCatalogStore";
 import type { ProductWithRelations } from "~/types/product";
 
@@ -189,6 +223,7 @@ const activeTab = ref<"produk" | "ekowisata">("produk");
 const searchQuery = ref("");
 const showAddModal = ref(false);
 const showEditModal = ref(false);
+const showDeleteModal = ref(false);
 const selectedProduct = ref<ProductWithRelations | null>(null);
 const { showToast, toastMessage, show: showCmsToast } = useCmsToast();
 
@@ -201,6 +236,20 @@ const onSubmit = (type: "add" | "edit") => {
 const openEditModal = (product: ProductWithRelations) => {
   selectedProduct.value = product;
   showEditModal.value = true;
+};
+
+const openDeleteModal = (product: ProductWithRelations) => {
+  selectedProduct.value = product;
+  showDeleteModal.value = true;
+};
+
+const { mutateAsync: deleteProduct, isPending: isDeletePending } = useDeleteProduct();
+
+const handleDelete = async () => {
+  if (!selectedProduct.value?.id) return;
+  await deleteProduct(selectedProduct.value.id);
+  showDeleteModal.value = false;
+  showCmsToast("Produk berhasil dihapus");
 };
 
 const catalogStore = useCatalogStore();

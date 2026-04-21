@@ -41,9 +41,13 @@
             :model-value="modelValue.picName"
             type="text"
             placeholder="Masukkan nama lengkap PIC"
-            class="bg-[#f8faf8] rounded-2xl border-transparent h-9 text-sm w-full placeholder:text-[#717182] placeholder:font-normal"
+            class="bg-[#f8faf8] rounded-2xl h-9 text-sm w-full placeholder:text-[#717182] placeholder:font-normal"
+            :class="showErrors && !modelValue.picName ? 'border-red-400' : 'border-transparent'"
             @update:model-value="updateValue('picName', $event)"
           />
+          <p v-if="showErrors && !modelValue.picName" class="text-xs text-red-600">
+            Nama PIC wajib diisi
+          </p>
         </div>
 
         <!-- Email PIC & Whatsapp PIC -->
@@ -56,9 +60,13 @@
               :model-value="modelValue.picEmail"
               type="email"
               placeholder="email@contoh.com"
-              class="bg-[#f8faf8] rounded-2xl border-transparent h-9 text-sm w-full placeholder:text-[#717182] placeholder:font-normal"
+              class="bg-[#f8faf8] rounded-2xl h-9 text-sm w-full placeholder:text-[#717182] placeholder:font-normal"
+              :class="showErrors && modelValue.picEmail && !isValidEmail(modelValue.picEmail) ? 'border-red-400' : 'border-transparent'"
               @update:model-value="updateValue('picEmail', $event)"
             />
+            <p v-if="showErrors && modelValue.picEmail && !isValidEmail(modelValue.picEmail)" class="text-xs text-red-600">
+              Format email tidak valid
+            </p>
           </div>
           <div class="flex flex-col gap-2">
             <label class="text-sm font-medium text-[#1e1e1e]">
@@ -83,9 +91,13 @@
             :model-value="modelValue.companyName"
             type="text"
             placeholder="Masukkan nama organisasi / perusahaan"
-            class="bg-[#f8faf8] rounded-2xl border-transparent h-9 text-sm w-full placeholder:text-[#717182] placeholder:font-normal"
+            class="bg-[#f8faf8] rounded-2xl h-9 text-sm w-full placeholder:text-[#717182] placeholder:font-normal"
+            :class="showErrors && !modelValue.companyName ? 'border-red-400' : 'border-transparent'"
             @update:model-value="updateValue('companyName', $event)"
           />
+          <p v-if="showErrors && !modelValue.companyName" class="text-xs text-red-600">
+            Nama organisasi wajib diisi
+          </p>
         </div>
       </div>
     </div>
@@ -125,9 +137,13 @@ import type { ProfileFormData } from "./types";
 interface Props {
   modelValue: ProfileFormData;
   logoPreview?: string | null;
+  showErrors?: boolean;
 }
 
 const props = defineProps<Props>();
+
+const isValidEmail = (email: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const emit = defineEmits<{
   "update:modelValue": [value: ProfileFormData];
   "update:logoPreview": [value: string | null];

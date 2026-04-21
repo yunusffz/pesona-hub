@@ -12,10 +12,13 @@
         :options="commodities"
         placeholder="Cari Komoditas..."
         empty-text="Pilih Komoditas"
-        buttonClass="!bg-[#f8faf8] !rounded-2xl !border-transparent !py-2 !px-3 text-sm !font-normal !text-[#717182]"
+        :buttonClass="`!bg-[#f8faf8] !rounded-2xl !py-2 !px-3 text-sm !font-normal !text-[#717182] ${showErrors && selectedCommodities.length === 0 ? '!border !border-red-400' : '!border-transparent'}`"
         :chevron-directional="true"
         :max="5"
       />
+      <p v-if="showErrors && selectedCommodities.length === 0" class="text-xs text-red-600">
+        Pilih minimal 1 komoditas
+      </p>
     </div>
   </div>
 </template>
@@ -25,6 +28,8 @@ import { computed } from "vue";
 import MultiSelectCombobox from "~/components/common/multi-select-combobox/MultiSelectComboBoxVirtual.vue";
 import { useCommodities } from "~/queries/useCommodities";
 import type { ProfileFormData } from "~/components/features/cms/mitra/types";
+
+const props = defineProps<{ showErrors?: boolean }>();
 
 const form = defineModel<ProfileFormData>({ required: true });
 

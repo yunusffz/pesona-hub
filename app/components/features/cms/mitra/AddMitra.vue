@@ -75,19 +75,25 @@
       <!-- Step Content -->
       <div class="px-6 py-4">
         <!-- Step 1: Akun -->
-        <MitraAccountForm v-if="currentStep === 1" v-model="accountForm" />
+        <MitraAccountForm
+          v-if="currentStep === 1"
+          v-model="accountForm"
+          :show-errors="showErrors"
+        />
 
         <!-- Step 2: Identitas -->
         <MitraIdentityForm
           v-else-if="currentStep === 2"
           v-model="profileForm"
           v-model:logo-preview="logoPreview"
+          :show-errors="showErrors"
         />
 
         <!-- Step 3: Minat -->
         <MitraInterestsForm
           v-else-if="currentStep === 3"
           v-model="profileForm"
+          :show-errors="showErrors"
         />
 
         <!-- Step 4: Kolaborasi -->
@@ -145,6 +151,7 @@ import type {
   ProfileFormData,
   AccountFormData,
 } from "~/components/features/cms/mitra/types";
+import { mitraAccountSchema } from "~/schemas/mitra";
 import type { components } from "~/types/pesona-hub-api";
 
 type UserResponse = components["schemas"]["UserResponse"];
@@ -172,6 +179,7 @@ const activeSteps = computed(() =>
 const firstStepId = computed(() => activeSteps.value[0]?.id ?? 1);
 
 const currentStep = ref(firstStepId.value);
+const showErrors = ref(false);
 const errorMessage = ref("");
 const logoPreview = ref<string | null>(null);
 
@@ -222,11 +230,7 @@ const isPending = computed(() => isLoading.value);
 
 const canProceed = computed(() => {
   if (currentStep.value === 1) {
-    return (
-      !!accountForm.value.username &&
-      accountForm.value.password.length >= 8 &&
-      accountForm.value.password === accountForm.value.confirmPassword
-    );
+    return mitraAccountSchema.safeParse(accountForm.value).success;
   }
   if (currentStep.value === 2) {
     return !!profileForm.value.picName && !!profileForm.value.companyName;
@@ -238,11 +242,17 @@ const canProceed = computed(() => {
 });
 
 const handleBack = () => {
+  showErrors.value = false;
   const idx = activeSteps.value.findIndex((s) => s.id === currentStep.value);
   if (idx > 0) currentStep.value = activeSteps.value[idx - 1]!.id;
 };
 
 const handleNext = async () => {
+  if (!canProceed.value) {
+    showErrors.value = true;
+    return;
+  }
+  showErrors.value = false;
   errorMessage.value = "";
   const lastStepId = activeSteps.value[activeSteps.value.length - 1]?.id;
   if (currentStep.value === lastStepId) {

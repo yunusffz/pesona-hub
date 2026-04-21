@@ -1,5 +1,37 @@
 <template>
   <div class="flex flex-col gap-8">
+    <!-- Delete Confirmation Modal -->
+    <Dialog v-model:open="showDeleteModal">
+      <DialogContent class="max-w-sm [&>button:last-child]:hidden">
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1">
+            <h2 class="font-semibold text-lg text-[#1e1e1e]">Hapus Mitra</h2>
+            <p class="text-sm text-[#6a7282]">
+              Apakah Anda yakin ingin menghapus mitra
+              <span class="font-medium text-[#1e1e1e]">{{ selectedUser?.name }}</span>?
+              Tindakan ini tidak dapat dibatalkan.
+            </p>
+          </div>
+          <div class="flex justify-end gap-3">
+            <BaseButton
+              variant="secondary"
+              class="h-9 px-4 rounded-2xl text-sm border border-[#e7efea] text-[#1e1e1e]"
+              @click="showDeleteModal = false"
+            >
+              Batal
+            </BaseButton>
+            <BaseButton
+              class="h-9 px-4 rounded-2xl text-sm bg-red-600 hover:bg-red-700 text-white"
+              :disabled="isDeletePending"
+              @click="handleDelete"
+            >
+              {{ isDeletePending ? "Menghapus..." : "Hapus" }}
+            </BaseButton>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+
     <!-- Add Modal -->
     <Dialog v-model:open="showAddModal">
       <DialogContent
@@ -7,7 +39,20 @@
       >
         <AddMitra
           @cancel="showAddModal = false"
-          @submit="onSubmit"
+          @submit="onSubmit('add')"
+        />
+      </DialogContent>
+    </Dialog>
+
+    <!-- Edit Modal -->
+    <Dialog v-model:open="showEditModal">
+      <DialogContent
+        class="p-0 border-none shadow-none bg-transparent max-w-fit [&>button:last-child]:hidden"
+      >
+        <AddMitra
+          :user="selectedUser"
+          @cancel="showEditModal = false"
+          @submit="onSubmit('edit')"
         />
       </DialogContent>
     </Dialog>
@@ -54,6 +99,8 @@
         <MitraDataTable
           :users="filteredUsers"
           :isLoading="isLoading"
+          @edit="openEditModal"
+          @delete="openDeleteModal"
         />
       </div>
     </div>
@@ -96,19 +143,42 @@ import SearchInput from "~/components/base/SearchInput.vue";
 import MitraDataTable from "~/components/features/cms/mitra/DataTable.vue";
 import AddMitra from "~/components/features/cms/mitra/AddMitra.vue";
 import { Dialog, DialogContent } from "~/components/ui/dialog";
-import { useUsers } from "~/queries/useUsers";
+import { useUsers, useDeleteUser } from "~/queries/useUsers";
 import type { components } from "~/types/pesona-hub-api";
 
 type UserResponse = components["schemas"]["UserResponse"];
 
 const showAddModal = ref(false);
+const showEditModal = ref(false);
+const showDeleteModal = ref(false);
+const selectedUser = ref<UserResponse | null>(null);
 const searchQuery = ref("");
 const { showToast, toastMessage, show: showCmsToast } = useCmsToast();
 
-const onSubmit = () => {
-  showAddModal.value = false;
+const onSubmit = (type: "add" | "edit") => {
+  if (type === "add") showAddModal.value = false;
+  else showEditModal.value = false;
   refetch();
-  showCmsToast("Mitra berhasil ditambahkan");
+  showCmsToast(type === "add" ? "Mitra berhasil ditambahkan" : "Mitra berhasil diperbarui");
+};
+
+const openEditModal = (user: UserResponse) => {
+  selectedUser.value = user;
+  showEditModal.value = true;
+};
+
+const openDeleteModal = (user: UserResponse) => {
+  selectedUser.value = user;
+  showDeleteModal.value = true;
+};
+
+const { mutateAsync: deleteUser, isPending: isDeletePending } = useDeleteUser();
+
+const handleDelete = async () => {
+  if (!selectedUser.value?.username) return;
+  await deleteUser(selectedUser.value.username);
+  showDeleteModal.value = false;
+  showCmsToast("Mitra berhasil dihapus");
 };
 
 const { data, isLoading, refetch } = useUsers({

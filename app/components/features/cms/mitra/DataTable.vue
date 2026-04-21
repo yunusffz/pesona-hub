@@ -29,15 +29,16 @@
                 Lokasi Target
               </th>
               <th
-                class="bg-gray-50 px-6 py-3 rounded-tr-2xl text-left text-sm font-medium text-gray-700 whitespace-nowrap"
+                class="bg-gray-50 px-6 py-3 text-left text-sm font-medium text-gray-700 whitespace-nowrap"
               >
                 Kontak Mitra
               </th>
+              <th class="bg-gray-50 px-6 py-3 rounded-tr-2xl w-10"></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
             <tr v-if="paginatedData.length === 0">
-              <td colspan="5" class="px-6 py-10 text-center text-sm text-gray-500">
+              <td colspan="6" class="px-6 py-10 text-center text-sm text-gray-500">
                 Tidak ada data mitra
               </td>
             </tr>
@@ -71,6 +72,33 @@
               <td class="px-6 py-4">
                 <span class="text-sm text-gray-900">{{ getContact(user) }}</span>
               </td>
+              <td class="px-6 py-4">
+                <DropdownMenu>
+                  <DropdownMenuTrigger as-child>
+                    <button class="text-gray-400 hover:text-gray-600">
+                      <Icon name="uil:ellipsis-v" class="w-5 h-5" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" class="w-36">
+                    <DropdownMenuItem
+                      v-if="appConfig.cms.mitra.canUpdate"
+                      class="cursor-pointer gap-2"
+                      @click="emit('edit', user)"
+                    >
+                      <Icon name="uil:edit" class="w-4 h-4" />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      v-if="appConfig.cms.mitra.canDelete"
+                      class="cursor-pointer gap-2 text-red-600 focus:text-red-600"
+                      @click="emit('delete', user)"
+                    >
+                      <Icon name="uil:trash-alt" class="w-4 h-4" />
+                      Hapus
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -96,11 +124,19 @@
 import { ref, computed } from "vue";
 import Pagination from "~/components/ui/pagination/Pagination.vue";
 import Loader from "~/components/base/Loader.vue";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
 import type { components } from "~/types/pesona-hub-api";
 import { useCommodities } from "~/queries/useCommodities";
 import { useCollaborations } from "~/queries/useCollaborations";
 
 type UserResponse = components["schemas"]["UserResponse"];
+
+const appConfig = useAppConfig();
 
 interface Props {
   users?: UserResponse[];
@@ -111,6 +147,11 @@ const props = withDefaults(defineProps<Props>(), {
   users: () => [],
   isLoading: false,
 });
+
+const emit = defineEmits<{
+  edit: [user: UserResponse];
+  delete: [user: UserResponse];
+}>();
 
 const currentPage = ref(1);
 const itemsPerPage = ref(10);

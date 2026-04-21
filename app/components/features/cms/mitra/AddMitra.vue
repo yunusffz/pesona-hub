@@ -9,10 +9,10 @@
       >
         <div class="flex flex-col gap-0.5">
           <h2 class="font-bold text-lg text-gray-900 tracking-tight">
-            Tambah Mitra Baru
+            {{ user ? "Edit Mitra" : "Tambah Mitra Baru" }}
           </h2>
           <p class="text-gray-500 text-xs">
-            Langkah {{ currentStep }} dari {{ steps.length }}
+            Langkah {{ currentStep }} dari {{ activeSteps.length }}
           </p>
         </div>
         <button
@@ -27,7 +27,7 @@
       <!-- Step Progress -->
       <div class="px-6 pt-4 pb-2 shrink-0">
         <div class="flex items-center w-full">
-          <template v-for="(step, index) in steps" :key="step.id">
+          <template v-for="(step, index) in activeSteps" :key="step.id">
             <div class="flex flex-col items-center gap-1">
               <div
                 class="flex items-center justify-center w-8 h-8 rounded-full z-10 transition-colors"
@@ -41,7 +41,7 @@
                     currentStep >= step.id ? 'text-white' : 'text-gray-500'
                   "
                 >
-                  {{ step.id }}
+                  {{ index + 1 }}
                 </span>
               </div>
               <span
@@ -56,7 +56,7 @@
               </span>
             </div>
             <div
-              v-if="index < steps.length - 1"
+              v-if="index < activeSteps.length - 1"
               class="flex-1 h-[3px] mx-2 mb-4 rounded-full transition-colors duration-300"
               :class="currentStep > step.id ? 'bg-[#035925]' : 'bg-[#e7efea]'"
             />
@@ -104,7 +104,7 @@
         <BaseButton
           variant="secondary"
           class="h-9 px-4 rounded-2xl text-sm border border-[#e7efea] text-[#1e1e1e] flex items-center gap-2"
-          :disabled="currentStep === 1"
+          :disabled="currentStep === activeSteps[0]?.id"
           @click="handleBack"
         >
           <ChevronLeft class="h-4 w-4" />
@@ -117,14 +117,14 @@
           @click="handleNext"
         >
           <span>{{
-            currentStep === steps.length
+            currentStep === activeSteps[activeSteps.length - 1]?.id
               ? isPending
                 ? "Menyimpan..."
                 : "Selesai"
               : "Lanjutkan"
           }}</span>
           <component
-            :is="currentStep === steps.length ? Check : ChevronRight"
+            :is="currentStep === activeSteps[activeSteps.length - 1]?.id ? Check : ChevronRight"
             class="h-4 w-4"
           />
         </BaseButton>
@@ -145,42 +145,75 @@ import type {
   ProfileFormData,
   AccountFormData,
 } from "~/components/features/cms/mitra/types";
+import type { components } from "~/types/pesona-hub-api";
+
+type UserResponse = components["schemas"]["UserResponse"];
+
+const props = defineProps<{
+  user?: UserResponse | null;
+}>();
 
 const emit = defineEmits<{
   cancel: [];
   submit: [];
 }>();
 
-const steps = [
+const allSteps = [
   { id: 1, label: "Akun" },
   { id: 2, label: "Identitas" },
   { id: 3, label: "Minat" },
   { id: 4, label: "Kolaborasi" },
 ];
 
-const currentStep = ref(1);
+const activeSteps = computed(() =>
+  props.user ? allSteps.filter((s) => s.id !== 1) : allSteps
+);
+
+const firstStepId = computed(() => activeSteps.value[0]?.id ?? 1);
+
+const currentStep = ref(firstStepId.value);
 const errorMessage = ref("");
 const logoPreview = ref<string | null>(null);
 
-const accountForm = ref({
+const accountForm = ref<AccountFormData>({
   username: "",
   password: "",
   confirmPassword: "",
 });
 
-const profileForm = ref<ProfileFormData>({
-  thumbnail: null,
-  picName: "",
-  picEmail: "",
-  picWhatsapp: "",
-  companyName: "",
-  partnerLevel: "",
-  whatsappNumber: "",
-  websiteUrl: "",
-  commodities: [],
-  collaborationType: [],
-  additionalInfo: "",
-});
+const buildProfileForm = (u?: UserResponse | null): ProfileFormData => {
+  const details = u?.details as any;
+  const commodityIds: (string | number)[] = [];
+  if (Array.isArray(details?.collaboration_commodities)) {
+    details.collaboration_commodities.forEach((entry: any) => {
+      if (typeof entry === "object" && entry !== null) {
+        const key = Object.keys(entry)[0];
+        if (key) commodityIds.push(key);
+      } else if (!isNaN(entry)) {
+        commodityIds.push(String(entry));
+      }
+    });
+  }
+  const collaborationIds: string[] = Array.isArray(details?.collaboration_ids)
+    ? details.collaboration_ids.map(String)
+    : [];
+
+  return {
+    thumbnail: u?.thumbnail ?? null,
+    picName: u?.name ?? "",
+    picEmail: u?.email ?? "",
+    picWhatsapp: u?.phone ?? details?.contact_phone ?? "",
+    companyName: details?.institution_name ?? "",
+    partnerLevel: details?.stakeholder_type ?? "",
+    whatsappNumber: u?.phone ?? details?.contact_phone ?? "",
+    websiteUrl: details?.website ?? "",
+    commodities: commodityIds,
+    collaborationType: collaborationIds,
+    additionalInfo: details?.product_service_description ?? "",
+  };
+};
+
+const profileForm = ref<ProfileFormData>(buildProfileForm(props.user));
 
 const { $apiClient } = useNuxtApp();
 
@@ -205,61 +238,81 @@ const canProceed = computed(() => {
 });
 
 const handleBack = () => {
-  if (currentStep.value > 1) currentStep.value--;
+  const idx = activeSteps.value.findIndex((s) => s.id === currentStep.value);
+  if (idx > 0) currentStep.value = activeSteps.value[idx - 1]!.id;
 };
 
 const handleNext = async () => {
   errorMessage.value = "";
-  if (currentStep.value === steps.length) {
+  const lastStepId = activeSteps.value[activeSteps.value.length - 1]?.id;
+  if (currentStep.value === lastStepId) {
     await handleSubmit();
   } else {
-    currentStep.value++;
+    const idx = activeSteps.value.findIndex((s) => s.id === currentStep.value);
+    if (idx < activeSteps.value.length - 1) {
+      currentStep.value = activeSteps.value[idx + 1]!.id;
+    }
   }
+};
+
+const buildDetailsBody = () => {
+  const commodityIds: number[] = profileForm.value.commodities
+    .map((c) => (typeof c === "string" ? parseInt(c, 10) : c))
+    .filter((c): c is number => !isNaN(c));
+
+  const collaborationIds: number[] = profileForm.value.collaborationType
+    .map((id) => parseInt(id, 10))
+    .filter((id) => !isNaN(id));
+
+  return {
+    institution_name: profileForm.value.companyName || null,
+    stakeholder_type: profileForm.value.partnerLevel || null,
+    contact_phone: profileForm.value.whatsappNumber || null,
+    website: profileForm.value.websiteUrl || null,
+    collaboration_commodities:
+      commodityIds.length > 0
+        ? commodityIds.map((id) => ({ [String(id)]: null }))
+        : null,
+    product_service_description: profileForm.value.additionalInfo || null,
+    collaboration_ids: collaborationIds.length > 0 ? collaborationIds : null,
+  };
 };
 
 const handleSubmit = async () => {
   isLoading.value = true;
   try {
-    const commodityIds: number[] = profileForm.value.commodities
-      .map((c) => (typeof c === "string" ? parseInt(c, 10) : c))
-      .filter((c): c is number => !isNaN(c));
-
-    const collaborationIds: number[] = profileForm.value.collaborationType
-      .map((id) => parseInt(id, 10))
-      .filter((id) => !isNaN(id));
-
-    const { error } = await $apiClient.POST("/users", {
-      body: {
-        name: profileForm.value.picName || accountForm.value.username,
-        username: accountForm.value.username,
-        email: profileForm.value.picEmail,
-        password: accountForm.value.password,
-        phone: profileForm.value.whatsappNumber || null,
-        thumbnail: profileForm.value.thumbnail || null,
-        role: "PARTNER",
-        details: {
-          institution_name: profileForm.value.companyName || null,
-          stakeholder_type: profileForm.value.partnerLevel || null,
-          contact_phone: profileForm.value.whatsappNumber || null,
-          website: profileForm.value.websiteUrl || null,
-          collaboration_commodities:
-            commodityIds.length > 0
-              ? commodityIds.map((id) => ({ [String(id)]: null }))
-              : null,
-          product_service_description: profileForm.value.additionalInfo || null,
-          collaboration_ids:
-            collaborationIds.length > 0 ? collaborationIds : null,
+    if (props.user) {
+      const { error } = await $apiClient.PATCH("/users/{username}", {
+        params: { path: { username: props.user.username } },
+        body: {
+          name: profileForm.value.picName || props.user.username,
+          email: profileForm.value.picEmail || null,
+          phone: profileForm.value.whatsappNumber || null,
+          thumbnail: profileForm.value.thumbnail || null,
+          details: buildDetailsBody(),
         },
-      },
-    });
-
-    if (error)
-      throw new Error((error as any)?.message || "Gagal membuat mitra");
+      });
+      if (error) throw new Error((error as any)?.message || "Gagal memperbarui mitra");
+    } else {
+      const { error } = await $apiClient.POST("/users", {
+        body: {
+          name: profileForm.value.picName || accountForm.value.username,
+          username: accountForm.value.username,
+          email: profileForm.value.picEmail,
+          password: accountForm.value.password,
+          phone: profileForm.value.whatsappNumber || null,
+          thumbnail: profileForm.value.thumbnail || null,
+          role: "PARTNER",
+          details: buildDetailsBody(),
+        },
+      });
+      if (error) throw new Error((error as any)?.message || "Gagal membuat mitra");
+    }
 
     emit("submit");
   } catch (error: any) {
     errorMessage.value =
-      error.message || "Gagal membuat mitra. Silakan coba lagi.";
+      error.message || "Terjadi kesalahan. Silakan coba lagi.";
   } finally {
     isLoading.value = false;
   }

@@ -5,5 +5,10 @@ export default defineAppConfig({
       canUpdate: true,
       canDelete: false,
     },
+    mitra: {
+      canCreate: true,
+      canUpdate: true,
+      canDelete: true,
+    },
   },
 });

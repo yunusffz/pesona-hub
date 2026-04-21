@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/vue-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/vue-query";
 import { computed, toValue } from "vue";
 import type { components } from "~/types/pesona-hub-api";
 import type { UseStrapiParamsOptions } from "~/types/strapi";
@@ -58,5 +58,47 @@ export const useUsers = (options: UseStrapiParamsOptions = {}) => {
     enabled,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+};
+
+export const usePatchUser = () => {
+  const { $apiClient } = useNuxtApp();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      username,
+      body,
+    }: {
+      username: string;
+      body: components["schemas"]["UserUpdate"];
+    }) => {
+      const { data, error } = await $apiClient.PATCH("/users/{username}", {
+        params: { path: { username } },
+        body,
+      });
+      if (error) throw new Error(`Failed to update user: ${error}`);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+};
+
+export const useDeleteUser = () => {
+  const { $apiClient } = useNuxtApp();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (username: string) => {
+      const { error } = await $apiClient.DELETE("/users/{username}", {
+        params: { path: { username } },
+      });
+      if (error) throw new Error(`Failed to delete user: ${error}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
   });
 };

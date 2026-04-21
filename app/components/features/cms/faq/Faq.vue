@@ -28,23 +28,21 @@
 
     <!-- Stats -->
     <div class="grid grid-cols-2 gap-4">
-      <div class="bg-white rounded-xl border border-[#E4E4E7] p-4 flex items-center gap-4">
-        <div class="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-          <MessageCircleQuestion class="h-5 w-5 text-blue-500" />
-        </div>
+      <div class="relative overflow-hidden rounded-xl p-4 flex items-center gap-4 h-[108px]" style="background: linear-gradient(135deg, #DBEBFF 0%, #FFFFFF 100%)">
+        <img src="/assets/images/faq-icon-total.png" alt="" class="h-12 w-12 shrink-0" />
         <div class="flex flex-col">
-          <span class="text-2xl font-bold text-[#101828]">{{ sortedFaqs.length }}</span>
-          <span class="text-xs text-[#6A7282]">Total FAQ</span>
+          <span class="font-bold text-[#155DFC] text-[30px]">{{ sortedFaqs.length }}</span>
+          <span class="text-sm font-medium text-[#4A5565]">Total FAQ</span>
         </div>
+        <img src="/assets/images/faq-vector.svg" alt="" class="absolute bottom-0 right-0 pointer-events-none select-none" />
       </div>
-      <div class="bg-[#e8f5ee] rounded-xl border border-[#d1ead9] p-4 flex items-center gap-4">
-        <div class="h-10 w-10 rounded-xl bg-white/60 flex items-center justify-center shrink-0">
-          <ToggleRight class="h-5 w-5 text-[#035925]" />
-        </div>
+      <div class="relative overflow-hidden rounded-xl p-4 flex items-center gap-4 h-[108px]" style="background: linear-gradient(137.67deg, #D7F4E0 0%, #FEFEFE 108.08%)">
+        <img src="/assets/images/faq-icon-active.png" alt="" class="h-12 w-12 shrink-0" />
         <div class="flex flex-col">
-          <span class="text-2xl font-bold text-[#035925]">{{ activeFaqs }}</span>
-          <span class="text-xs text-[#035925]/70">FAQ Aktif</span>
+          <span class="font-bold text-[30px] text-[#00A63E]">{{ activeFaqs }}</span>
+          <span class="text-sm font-medium text-[#4A5565]">FAQ Aktif</span>
         </div>
+        <img src="/assets/images/faq-vector.svg" alt="" class="absolute bottom-0 right-0 pointer-events-none select-none" />
       </div>
     </div>
 
@@ -213,7 +211,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { Plus, Check, X, Pencil, Trash2, Search, MessageCircleQuestion, ToggleRight } from "lucide-vue-next";
+import { Plus, Check, X, Pencil, Trash2, Search, MessageCircleQuestion } from "lucide-vue-next";
 import BaseButton from "~/components/base/BaseButton.vue";
 import FaqForm from "~/components/features/cms/faq/FaqForm.vue";
 import { Dialog, DialogContent } from "~/components/ui/dialog";

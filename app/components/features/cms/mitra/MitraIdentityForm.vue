@@ -54,7 +54,7 @@
         <div class="grid grid-cols-2 gap-3">
           <div class="flex flex-col gap-2">
             <label class="text-sm font-medium text-[#1e1e1e]">
-              Email PIC
+              Email PIC <span class="text-red-500">*</span>
             </label>
             <BaseInput
               :model-value="modelValue.picEmail"

@@ -16,7 +16,7 @@ export const PASSWORD_RULES = [
 export const mitraPasswordSchema = z.string().superRefine((pw, ctx) => {
   for (const rule of PASSWORD_RULES) {
     if (!rule.test(pw)) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: rule.label });
+      ctx.addIssue({ code: "custom", message: rule.label });
     }
   }
 });
@@ -31,3 +31,9 @@ export const mitraAccountSchema = z
     message: "Kata sandi tidak cocok",
     path: ["confirmPassword"],
   });
+
+export const mitraIdentitySchema = z.object({
+  picName: z.string().min(1, "Nama PIC wajib diisi"),
+  picEmail: z.email("Format email tidak valid").min(1, "Email PIC wajib diisi"),
+  companyName: z.string().min(1, "Nama organisasi wajib diisi"),
+});

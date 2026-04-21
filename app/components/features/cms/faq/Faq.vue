@@ -58,7 +58,7 @@
     </div>
 
     <!-- List -->
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-col">
       <!-- Loading -->
       <template v-if="isLoading">
         <div
@@ -95,20 +95,24 @@
       </div>
 
       <!-- FAQ items -->
-      <div
+      <draggable
         v-else
-        v-for="item in filteredFaqs"
-        :key="item.id"
-        class="bg-white rounded-xl border border-[#E4E4E7] overflow-hidden"
+        v-model="orderedFaqs"
+        item-key="id"
+        handle=".drag-handle"
+        :disabled="!!searchQuery"
+        animation="200"
+        ghost-class="opacity-40"
+        @end="handleReorder"
       >
+        <template #item="{ element: item }">
+        <div
+          class="bg-white rounded-xl border border-[#E4E4E7] overflow-hidden mb-3"
+        >
         <div class="flex items-start gap-3 p-4">
-          <!-- Active indicator -->
-          <div
-            :class="[
-              'mt-0.5 h-2 w-2 rounded-full shrink-0',
-              item.is_active ? 'bg-[#035925]' : 'bg-gray-300',
-            ]"
-          />
+          <!-- Drag handle -->
+          <GripVertical class="drag-handle mt-0.5 h-4 w-4 text-[#9DA4AE] shrink-0 cursor-grab" />
+
 
           <!-- Content -->
           <div class="flex-1 min-w-0">
@@ -117,7 +121,7 @@
           </div>
 
           <!-- Actions -->
-          <div class="flex items-center gap-1 shrink-0">
+          <div class="flex items-center gap-2 shrink-0">
             <!-- Toggle active -->
             <button
               type="button"
@@ -136,43 +140,73 @@
               />
             </button>
 
-            <button
-              type="button"
-              class="p-1.5 rounded-lg text-[#6A7282] hover:bg-gray-100 hover:text-[#101828] transition"
-              @click="openEditModal(item)"
-            >
-              <Pencil class="h-4 w-4" />
-            </button>
-
-            <button
-              v-if="deletingId !== item.id"
-              type="button"
-              class="p-1.5 rounded-lg text-[#6A7282] hover:bg-red-50 hover:text-red-500 transition"
-              @click="deletingId = item.id"
-            >
-              <Trash2 class="h-4 w-4" />
-            </button>
-
-            <!-- Confirm delete -->
-            <div v-else class="flex items-center gap-1">
+            <!-- 3-dot menu -->
+            <div class="relative">
               <button
                 type="button"
-                class="px-2 py-1 rounded-lg text-xs font-medium text-white bg-red-500 hover:bg-red-600 transition"
-                @click="handleDelete(item.id)"
+                class="p-1.5 rounded-lg text-[#6A7282] hover:bg-gray-100 hover:text-[#101828] transition"
+                @click.stop="toggleDropdown(item.id)"
               >
-                Hapus
+                <MoreVertical class="h-4 w-4" />
               </button>
-              <button
-                type="button"
-                class="px-2 py-1 rounded-lg text-xs font-medium text-[#344054] bg-gray-100 hover:bg-gray-200 transition"
-                @click="deletingId = null"
+
+              <div
+                v-if="openDropdownId === item.id"
+                class="absolute right-0 top-8 z-50 w-36 rounded-xl border border-[#E4E4E7] bg-white shadow-lg py-1"
               >
-                Batal
-              </button>
+                <button
+                  type="button"
+                  class="flex items-center gap-2 w-full px-3 py-2 text-sm text-[#344054] hover:bg-gray-50 transition"
+                  @click="openEditModal(item); openDropdownId = null"
+                >
+                  <Pencil class="h-4 w-4" />
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  class="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-500 hover:bg-red-50 transition"
+                  @click="deletingId = item.id; openDropdownId = null"
+                >
+                  <Trash2 class="h-4 w-4" />
+                  Hapus
+                </button>
+              </div>
             </div>
           </div>
+
+          <!-- Confirm delete -->
+          <Teleport to="body">
+            <div
+              v-if="deletingId === item.id"
+              class="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
+              @click.self="deletingId = null"
+            >
+              <div class="bg-white rounded-2xl shadow-xl p-6 w-80 flex flex-col gap-4">
+                <p class="text-sm font-semibold text-[#101828]">Hapus FAQ ini?</p>
+                <p class="text-sm text-[#6A7282]">Tindakan ini tidak dapat dibatalkan.</p>
+                <div class="flex gap-2 justify-end">
+                  <button
+                    type="button"
+                    class="px-4 py-2 rounded-lg text-sm font-medium text-[#344054] bg-gray-100 hover:bg-gray-200 transition"
+                    @click="deletingId = null"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="button"
+                    class="px-4 py-2 rounded-lg text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition"
+                    @click="handleDelete(item.id)"
+                  >
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Teleport>
         </div>
-      </div>
+        </div>
+        </template>
+      </draggable>
     </div>
 
     <!-- Toast -->
@@ -210,8 +244,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { Plus, Check, X, Pencil, Trash2, Search, MessageCircleQuestion } from "lucide-vue-next";
+import { ref, computed, watch, onMounted, onUnmounted } from "vue";
+import draggable from "vuedraggable";
+import { Plus, Check, X, Pencil, Trash2, Search, MessageCircleQuestion, MoreVertical, GripVertical } from "lucide-vue-next";
 import BaseButton from "~/components/base/BaseButton.vue";
 import FaqForm from "~/components/features/cms/faq/FaqForm.vue";
 import { Dialog, DialogContent } from "~/components/ui/dialog";
@@ -220,6 +255,7 @@ import {
   useCreateFaq,
   useUpdateFaq,
   useDeleteFaq,
+  useReorderFaqs,
   type FaqItem,
 } from "~/queries/useFaq";
 
@@ -233,21 +269,33 @@ const { data: faqsData, isLoading } = useFaqs();
 const { mutateAsync: createFaq } = useCreateFaq();
 const { mutateAsync: updateFaq } = useUpdateFaq();
 const { mutateAsync: deleteFaq } = useDeleteFaq();
+const { mutateAsync: reorderFaqs } = useReorderFaqs();
 
 const sortedFaqs = computed<FaqItem[]>(() => {
   if (!Array.isArray(faqsData.value)) return [];
   return [...faqsData.value].sort((a, b) => a.order - b.order);
 });
 
+const orderedFaqs = ref<FaqItem[]>([]);
+watch(sortedFaqs, (val) => { orderedFaqs.value = [...val]; }, { immediate: true });
+
 const searchQuery = ref("");
 
 const filteredFaqs = computed(() => {
-  if (!searchQuery.value.trim()) return sortedFaqs.value;
+  if (!searchQuery.value.trim()) return orderedFaqs.value;
   const q = searchQuery.value.toLowerCase();
-  return sortedFaqs.value.filter(
+  return orderedFaqs.value.filter(
     (f) => f.question.toLowerCase().includes(q) || f.answer.toLowerCase().includes(q)
   );
 });
+
+const handleReorder = async () => {
+  try {
+    await reorderFaqs(orderedFaqs.value);
+  } catch {
+    showNotification("Gagal menyimpan urutan FAQ", "error");
+  }
+};
 
 const activeFaqs = computed(() => sortedFaqs.value.filter((f) => f.is_active).length);
 
@@ -256,6 +304,18 @@ const showFormModal = ref(false);
 const editingFaq = ref<FaqItem | null>(null);
 const isSubmitting = ref(false);
 const deletingId = ref<string | null>(null);
+const openDropdownId = ref<string | null>(null);
+
+const toggleDropdown = (id: string) => {
+  openDropdownId.value = openDropdownId.value === id ? null : id;
+};
+
+const handleClickOutside = () => {
+  openDropdownId.value = null;
+};
+
+onMounted(() => window.addEventListener("click", handleClickOutside));
+onUnmounted(() => window.removeEventListener("click", handleClickOutside));
 
 const openAddModal = () => {
   editingFaq.value = null;

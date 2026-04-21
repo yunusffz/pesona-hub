@@ -76,6 +76,19 @@ export const useUpdateFaq = () => {
   });
 };
 
+export const useReorderFaqs = () => {
+  const { $apiClient } = useNuxtApp();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (items: FaqItem[]) => {
+      const reordered = items.map((item, index) => ({ ...item, order: index + 1 }));
+      await saveFaqs($apiClient, reordered);
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["settings", SETTING_KEY] }),
+  });
+};
+
 export const useDeleteFaq = () => {
   const { $apiClient } = useNuxtApp();
   const queryClient = useQueryClient();

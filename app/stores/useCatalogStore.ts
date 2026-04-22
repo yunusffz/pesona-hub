@@ -15,6 +15,7 @@ export const useCatalogStore = defineStore("catalog", () => {
   const selectedCommodities = ref<number[]>([]);
   const selectedCommodityPriorities = ref<string[]>([]);
   const selectedCollaborations = ref<number[]>([]);
+  const selectedHalls = ref<string[]>([]);
   const selectedKupsIds = ref<number[]>([]);
   const selectedKupsClasses = ref<string[]>([]);
   const priceRange = ref<{ min: number; max: number } | null>(null);
@@ -51,6 +52,16 @@ export const useCatalogStore = defineStore("catalog", () => {
           location: locationFilter,
         };
       }
+    }
+
+    if (selectedHalls.value.length > 0) {
+      filterObj.social_forestry_business_group = {
+        ...filterObj.social_forestry_business_group,
+        location: {
+          ...filterObj.social_forestry_business_group?.location,
+          hall: { $in: selectedHalls.value },
+        },
+      };
     }
 
     if (selectedKupsIds.value.length > 0) {
@@ -124,6 +135,11 @@ export const useCatalogStore = defineStore("catalog", () => {
     currentPage.value = 1;
   };
 
+  const setSelectedHalls = (halls: string[]) => {
+    selectedHalls.value = halls;
+    currentPage.value = 1;
+  };
+
   const setSelectedKupsIds = (ids: number[]) => {
     selectedKupsIds.value = ids;
     currentPage.value = 1;
@@ -146,6 +162,7 @@ export const useCatalogStore = defineStore("catalog", () => {
     selectedCommodities.value = [];
     selectedCommodityPriorities.value = [];
     selectedCollaborations.value = [];
+    selectedHalls.value = [];
     selectedKupsIds.value = [];
     selectedKupsClasses.value = [];
     priceRange.value = null;
@@ -161,6 +178,7 @@ export const useCatalogStore = defineStore("catalog", () => {
       selectedCommodities.value.length > 0 ||
       selectedCommodityPriorities.value.length > 0 ||
       selectedCollaborations.value.length > 0 ||
+      selectedHalls.value.length > 0 ||
       selectedKupsIds.value.length > 0 ||
       selectedKupsClasses.value.length > 0 ||
       priceRange.value !== null ||
@@ -203,6 +221,7 @@ export const useCatalogStore = defineStore("catalog", () => {
     selectedCommodities,
     selectedCommodityPriorities,
     selectedCollaborations,
+    selectedHalls,
     selectedKupsIds,
     selectedKupsClasses,
     priceRange,
@@ -220,6 +239,7 @@ export const useCatalogStore = defineStore("catalog", () => {
     setSelectedCommodities,
     setSelectedCommodityPriorities,
     setSelectedCollaborations,
+    setSelectedHalls,
     setSelectedKupsIds,
     setSelectedKupsClasses,
     setSortBy,

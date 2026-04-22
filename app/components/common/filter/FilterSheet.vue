@@ -35,6 +35,13 @@
               :default-expanded="expandedSections.regions"
             />
 
+            <!-- Hall Filter -->
+            <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
+            <HallFilterSection
+              v-model="selectedHalls"
+              :default-expanded="true"
+            />
+
             <!-- KUPS Filter -->
             <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
             <KupsFilterSection
@@ -90,6 +97,7 @@
   import LocationFilterSection from "./LocationFilterSection.vue";
   import KupsFilterSection from "./KupsFilterSection.vue";
   import KupsClassFilterSection from "./KupsClassFilterSection.vue";
+  import HallFilterSection from "./HallFilterSection.vue";
   import type { LocationFilter } from "~/stores/useCatalogStore";
 
   const catalogStore = useCatalogStore();
@@ -115,6 +123,7 @@
 
     selectedLocations.value = [...catalogStore.selectedLocations];
     selectedCommodityPriorities.value = [...catalogStore.selectedCommodityPriorities];
+    selectedHalls.value = [...catalogStore.selectedHalls];
     selectedKupsIds.value = [...catalogStore.selectedKupsIds];
     selectedKupsClasses.value = [...catalogStore.selectedKupsClasses];
   });
@@ -146,6 +155,7 @@
   // Local state
   const selectedCommodityPriorities = ref<string[]>([]);
   const selectedLocations = ref<LocationFilter[]>([]);
+  const selectedHalls = ref<string[]>([]);
   const selectedKupsIds = ref<number[]>([]);
   const selectedKupsClasses = ref<string[]>([]);
   const priceMin = ref<number | null>(catalogStore.priceRange?.min || null);
@@ -199,6 +209,7 @@
   const handleApplyFilters = () => {
     catalogStore.setSelectedLocations(selectedLocations.value);
     catalogStore.setSelectedCommodityPriorities(selectedCommodityPriorities.value);
+    catalogStore.setSelectedHalls(selectedHalls.value);
     catalogStore.setSelectedKupsIds(selectedKupsIds.value);
     catalogStore.setSelectedKupsClasses(selectedKupsClasses.value);
 
@@ -217,6 +228,7 @@
   const handleClearFilters = () => {
     selectedCommodityPriorities.value = [];
     selectedLocations.value = [];
+    selectedHalls.value = [];
     selectedKupsIds.value = [];
     selectedKupsClasses.value = [];
     priceMin.value = null;

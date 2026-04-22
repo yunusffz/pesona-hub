@@ -83,7 +83,7 @@ import type { LocationFilter } from "~/stores/useCatalogStore";
 import { useLocationHierarchy } from "~/composables/useLocationHierarchy";
 import { useLocationSearch } from "~/composables/useLocationSearch";
 import { useLocationSelection } from "~/composables/useLocationSelection";
-import LocationTreeItem from "../../catalog/catalog-product-section/filter-location/LocationTreeItem.vue";
+import LocationTreeItem from "~/components/common/filter/LocationTreeItem.vue";
 
 interface Props {
   locationsData: any;

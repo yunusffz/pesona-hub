@@ -15,6 +15,8 @@ export const useCatalogStore = defineStore("catalog", () => {
   const selectedCommodities = ref<number[]>([]);
   const selectedCommodityPriorities = ref<string[]>([]);
   const selectedCollaborations = ref<number[]>([]);
+  const selectedKupsIds = ref<number[]>([]);
+  const selectedKupsClasses = ref<string[]>([]);
   const priceRange = ref<{ min: number; max: number } | null>(null);
   const sortBy = ref<string>("");
 
@@ -45,9 +47,23 @@ export const useCatalogStore = defineStore("catalog", () => {
 
       if (Object.keys(locationFilter).length > 0) {
         filterObj.social_forestry_business_group = {
+          ...filterObj.social_forestry_business_group,
           location: locationFilter,
         };
       }
+    }
+
+    if (selectedKupsIds.value.length > 0) {
+      filterObj.social_forestry_business_group_id = {
+        $in: selectedKupsIds.value,
+      };
+    }
+
+    if (selectedKupsClasses.value.length > 0) {
+      filterObj.social_forestry_business_group = {
+        ...filterObj.social_forestry_business_group,
+        class_group: { $in: selectedKupsClasses.value },
+      };
     }
 
     if (priceRange.value) {
@@ -108,6 +124,16 @@ export const useCatalogStore = defineStore("catalog", () => {
     currentPage.value = 1;
   };
 
+  const setSelectedKupsIds = (ids: number[]) => {
+    selectedKupsIds.value = ids;
+    currentPage.value = 1;
+  };
+
+  const setSelectedKupsClasses = (classes: string[]) => {
+    selectedKupsClasses.value = classes;
+    currentPage.value = 1;
+  };
+
   const setSortBy = (sort: string) => {
     sortBy.value = sort;
     currentPage.value = 1;
@@ -120,6 +146,8 @@ export const useCatalogStore = defineStore("catalog", () => {
     selectedCommodities.value = [];
     selectedCommodityPriorities.value = [];
     selectedCollaborations.value = [];
+    selectedKupsIds.value = [];
+    selectedKupsClasses.value = [];
     priceRange.value = null;
     sortBy.value = "";
     currentPage.value = 1;
@@ -133,6 +161,8 @@ export const useCatalogStore = defineStore("catalog", () => {
       selectedCommodities.value.length > 0 ||
       selectedCommodityPriorities.value.length > 0 ||
       selectedCollaborations.value.length > 0 ||
+      selectedKupsIds.value.length > 0 ||
+      selectedKupsClasses.value.length > 0 ||
       priceRange.value !== null ||
       sortBy.value !== ""
     );
@@ -173,6 +203,8 @@ export const useCatalogStore = defineStore("catalog", () => {
     selectedCommodities,
     selectedCommodityPriorities,
     selectedCollaborations,
+    selectedKupsIds,
+    selectedKupsClasses,
     priceRange,
     sortBy,
     currentPage,
@@ -188,6 +220,8 @@ export const useCatalogStore = defineStore("catalog", () => {
     setSelectedCommodities,
     setSelectedCommodityPriorities,
     setSelectedCollaborations,
+    setSelectedKupsIds,
+    setSelectedKupsClasses,
     setSortBy,
     clearAllFilters,
     setCurrentPage,

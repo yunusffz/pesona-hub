@@ -209,7 +209,7 @@ import BaseButton from "~/components/base/BaseButton.vue";
 import SearchInput from "~/components/base/SearchInput.vue";
 import CmsDataTable from "~/components/features/cms/product/DataTable.vue";
 import EditProduct from "~/components/features/cms/product/EditProduct.vue";
-import FilterSheet from "~/components/features/dashboard/filter/FilterSheet.vue";
+import FilterSheet from "~/components/common/filter/FilterSheet.vue";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
 import { SheetTrigger } from "~/components/ui/sheet";
 import { Dialog, DialogContent } from "~/components/ui/dialog";

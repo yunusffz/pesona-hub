@@ -35,6 +35,20 @@
               :default-expanded="expandedSections.regions"
             />
 
+            <!-- KUPS Filter -->
+            <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
+            <KupsFilterSection
+              v-model="selectedKupsIds"
+              :default-expanded="true"
+            />
+
+            <!-- KUPS Class Filter -->
+            <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
+            <KupsClassFilterSection
+              v-model="selectedKupsClasses"
+              :default-expanded="true"
+            />
+
             <div class="w-full h-px bg-[rgba(0,0,0,0.1)]"></div>
           </div>
         </div>
@@ -74,6 +88,8 @@
   import { useCatalogStore } from "~/stores/useCatalogStore";
   import CommodityPriorityFilterSection from "./CommodityPriorityFilterSection.vue";
   import LocationFilterSection from "./LocationFilterSection.vue";
+  import KupsFilterSection from "./KupsFilterSection.vue";
+  import KupsClassFilterSection from "./KupsClassFilterSection.vue";
   import type { LocationFilter } from "~/stores/useCatalogStore";
 
   const catalogStore = useCatalogStore();
@@ -99,6 +115,8 @@
 
     selectedLocations.value = [...catalogStore.selectedLocations];
     selectedCommodityPriorities.value = [...catalogStore.selectedCommodityPriorities];
+    selectedKupsIds.value = [...catalogStore.selectedKupsIds];
+    selectedKupsClasses.value = [...catalogStore.selectedKupsClasses];
   });
 
   // Commodity priority options
@@ -128,6 +146,8 @@
   // Local state
   const selectedCommodityPriorities = ref<string[]>([]);
   const selectedLocations = ref<LocationFilter[]>([]);
+  const selectedKupsIds = ref<number[]>([]);
+  const selectedKupsClasses = ref<string[]>([]);
   const priceMin = ref<number | null>(catalogStore.priceRange?.min || null);
   const priceMax = ref<number | null>(catalogStore.priceRange?.max || null);
   const sortBy = ref<string>((catalogStore as any).sortBy || "");
@@ -177,9 +197,10 @@
   };
 
   const handleApplyFilters = () => {
-    // Use LocationFilter objects directly
     catalogStore.setSelectedLocations(selectedLocations.value);
     catalogStore.setSelectedCommodityPriorities(selectedCommodityPriorities.value);
+    catalogStore.setSelectedKupsIds(selectedKupsIds.value);
+    catalogStore.setSelectedKupsClasses(selectedKupsClasses.value);
 
     if (priceMin.value !== null || priceMax.value !== null) {
       catalogStore.priceRange = {
@@ -196,6 +217,8 @@
   const handleClearFilters = () => {
     selectedCommodityPriorities.value = [];
     selectedLocations.value = [];
+    selectedKupsIds.value = [];
+    selectedKupsClasses.value = [];
     priceMin.value = null;
     priceMax.value = null;
     sortBy.value = "";

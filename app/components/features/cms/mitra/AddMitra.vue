@@ -191,14 +191,16 @@ const accountForm = ref<AccountFormData>({
 
 const buildProfileForm = (u?: UserResponse | null): ProfileFormData => {
   const details = u?.details as any;
-  const commodityIds: (string | number)[] = [];
+  const commodityIds: number[] = [];
   if (Array.isArray(details?.collaboration_commodities)) {
     details.collaboration_commodities.forEach((entry: any) => {
       if (typeof entry === "object" && entry !== null) {
         const key = Object.keys(entry)[0];
-        if (key) commodityIds.push(key);
-      } else if (!isNaN(entry)) {
-        commodityIds.push(String(entry));
+        const num = Number(key);
+        if (key && !isNaN(num)) commodityIds.push(num);
+      } else {
+        const num = Number(entry);
+        if (!isNaN(num)) commodityIds.push(num);
       }
     });
   }
@@ -280,9 +282,7 @@ const buildDetailsBody = () => {
     contact_phone: profileForm.value.whatsappNumber || null,
     website: profileForm.value.websiteUrl || null,
     collaboration_commodities:
-      commodityIds.length > 0
-        ? commodityIds.map((id) => ({ [String(id)]: null }))
-        : null,
+      commodityIds.length > 0 ? commodityIds : null,
     product_service_description: profileForm.value.additionalInfo || null,
     collaboration_ids: collaborationIds.length > 0 ? collaborationIds : null,
   };

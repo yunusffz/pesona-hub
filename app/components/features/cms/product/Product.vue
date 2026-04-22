@@ -1,5 +1,18 @@
 <template>
   <div class="flex flex-col gap-8">
+    <!-- Detail Modal -->
+    <Dialog v-model:open="showDetailModal">
+      <DialogContent
+        class="p-0 border-none shadow-none bg-transparent max-w-fit [&>button:last-child]:hidden"
+      >
+        <DetailProduct
+          v-if="selectedProduct"
+          :product="selectedProduct"
+          @close="showDetailModal = false"
+        />
+      </DialogContent>
+    </Dialog>
+
     <!-- Add Modal -->
     <Dialog v-model:open="showAddModal">
       <DialogContent
@@ -129,6 +142,7 @@
             <CmsDataTable
               :products="filteredProducts"
               :isLoading="isLoading"
+              @view="openDetailModal"
               @edit="openEditModal"
               @delete="openDeleteModal"
             />
@@ -164,6 +178,7 @@
             <CmsDataTable
               :products="filteredProducts"
               :isLoading="isLoading"
+              @view="openDetailModal"
               @edit="openEditModal"
               @delete="openDeleteModal"
             />
@@ -209,6 +224,7 @@ import BaseButton from "~/components/base/BaseButton.vue";
 import SearchInput from "~/components/base/SearchInput.vue";
 import CmsDataTable from "~/components/features/cms/product/DataTable.vue";
 import EditProduct from "~/components/features/cms/product/EditProduct.vue";
+import DetailProduct from "~/components/features/cms/product/DetailProduct.vue";
 import FilterSheet from "~/components/common/filter/FilterSheet.vue";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
 import { SheetTrigger } from "~/components/ui/sheet";
@@ -224,6 +240,7 @@ const searchQuery = ref("");
 const showAddModal = ref(false);
 const showEditModal = ref(false);
 const showDeleteModal = ref(false);
+const showDetailModal = ref(false);
 const selectedProduct = ref<ProductWithRelations | null>(null);
 const { showToast, toastMessage, show: showCmsToast } = useCmsToast();
 
@@ -231,6 +248,11 @@ const onSubmit = (type: "add" | "edit") => {
   if (type === "add") showAddModal.value = false;
   else showEditModal.value = false;
   showCmsToast(type === "add" ? "Produk berhasil ditambahkan" : "Produk berhasil diperbarui");
+};
+
+const openDetailModal = (product: ProductWithRelations) => {
+  selectedProduct.value = product;
+  showDetailModal.value = true;
 };
 
 const openEditModal = (product: ProductWithRelations) => {

@@ -118,6 +118,13 @@
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" class="w-36">
                     <DropdownMenuItem
+                      class="cursor-pointer gap-2"
+                      @click="emit('view', product)"
+                    >
+                      <Icon name="uil:eye" class="w-4 h-4" />
+                      Lihat Detail
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
                       v-if="appConfig.cms.product.canUpdate"
                       class="cursor-pointer gap-2"
                       @click="emit('edit', product)"
@@ -185,6 +192,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   edit: [product: ProductWithRelations];
   delete: [product: ProductWithRelations];
+  view: [product: ProductWithRelations];
 }>();
 
 const currentPage = ref(1);

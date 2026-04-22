@@ -81,6 +81,13 @@
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" class="w-36">
                     <DropdownMenuItem
+                      class="cursor-pointer gap-2"
+                      @click="emit('detail', user)"
+                    >
+                      <Icon name="uil:eye" class="w-4 h-4" />
+                      Detail
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
                       v-if="appConfig.cms.mitra.canUpdate"
                       class="cursor-pointer gap-2"
                       @click="emit('edit', user)"
@@ -149,6 +156,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
+  detail: [user: UserResponse];
   edit: [user: UserResponse];
   delete: [user: UserResponse];
 }>();

@@ -32,6 +32,21 @@
       </DialogContent>
     </Dialog>
 
+    <!-- Detail Modal -->
+    <Dialog v-model:open="showDetailModal">
+      <DialogContent
+        class="p-0 border-none shadow-none bg-transparent max-w-fit [&>button:last-child]:hidden"
+      >
+        <MitraDetail
+          v-if="selectedUser"
+          :user="selectedUser"
+          :can-edit="appConfig.cms.mitra.canUpdate"
+          @close="showDetailModal = false"
+          @edit="openEditFromDetail"
+        />
+      </DialogContent>
+    </Dialog>
+
     <!-- Add Modal -->
     <Dialog v-model:open="showAddModal">
       <DialogContent
@@ -99,6 +114,7 @@
         <MitraDataTable
           :users="filteredUsers"
           :isLoading="isLoading"
+          @detail="openDetailModal"
           @edit="openEditModal"
           @delete="openDeleteModal"
         />
@@ -142,16 +158,19 @@ import BaseButton from "~/components/base/BaseButton.vue";
 import SearchInput from "~/components/base/SearchInput.vue";
 import MitraDataTable from "~/components/features/cms/mitra/DataTable.vue";
 import AddMitra from "~/components/features/cms/mitra/AddMitra.vue";
+import MitraDetail from "~/components/features/cms/mitra/MitraDetail.vue";
 import { Dialog, DialogContent } from "~/components/ui/dialog";
 import { useUsers, useDeleteUser } from "~/queries/useUsers";
 import type { components } from "~/types/pesona-hub-api";
 
 type UserResponse = components["schemas"]["UserResponse"];
 
+const showDetailModal = ref(false);
 const showAddModal = ref(false);
 const showEditModal = ref(false);
 const showDeleteModal = ref(false);
 const selectedUser = ref<UserResponse | null>(null);
+const appConfig = useAppConfig();
 const searchQuery = ref("");
 const { showToast, toastMessage, show: showCmsToast } = useCmsToast();
 
@@ -162,7 +181,18 @@ const onSubmit = (type: "add" | "edit") => {
   showCmsToast(type === "add" ? "Mitra berhasil ditambahkan" : "Mitra berhasil diperbarui");
 };
 
+const openDetailModal = (user: UserResponse) => {
+  selectedUser.value = user;
+  showDetailModal.value = true;
+};
+
 const openEditModal = (user: UserResponse) => {
+  selectedUser.value = user;
+  showEditModal.value = true;
+};
+
+const openEditFromDetail = (user: UserResponse) => {
+  showDetailModal.value = false;
   selectedUser.value = user;
   showEditModal.value = true;
 };

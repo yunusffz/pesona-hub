@@ -15,7 +15,7 @@ env:
 jobs:
   build-and-push:
     name: Build and Push Docker Image
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: production
     permissions:
       contents: read
@@ -72,7 +72,7 @@ jobs:
   deploy:
     name: Deploy to Production Server
     needs: [build-and-push]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: production
 
     steps:
@@ -81,7 +81,7 @@ jobs:
 
       - name: Create .env file
         run: |
-          cat > .env << EOF
+          cat > ~/pesona-hub-prod/.env << EOF
           # Docker Configuration
           DOCKER_REGISTRY=${{ env.REGISTRY }}/${{ github.repository }}
           IMAGE_TAG=${{ env.IMAGE_TAG }}
@@ -90,50 +90,31 @@ jobs:
           NUXT_PUBLIC_PESONA_API_URL=${{ secrets.NUXT_PUBLIC_PESONA_API_URL }}
           EOF
 
-      - name: Copy files to server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.PROD_SERVER_HOST }}
-          username: ${{ secrets.PROD_SERVER_USER }}
-          password: ${{ secrets.PROD_SERVER_PASSWORD }}
-          port: ${{ secrets.PROD_SERVER_PORT || 22 }}
-          source: "docker/docker-compose.prod.yml,.env"
-          target: "~/pesona-hub-prod"
-          strip_components: 0
+      - name: Copy compose file
+        run: |
+          mkdir -p ~/pesona-hub-prod/docker
+          cp docker/docker-compose.prod.yml ~/pesona-hub-prod/docker/docker-compose.prod.yml
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.PROD_SERVER_HOST }}
-          username: ${{ secrets.PROD_SERVER_USER }}
-          password: ${{ secrets.PROD_SERVER_PASSWORD }}
-          port: ${{ secrets.PROD_SERVER_PORT || 22 }}
-          script: |
-            cd ~/pesona-hub-prod
+      - name: Deploy
+        run: |
+          cd ~/pesona-hub-prod
 
-            # Login to GitHub Container Registry
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
 
-            # Pull latest images with specific tag
-            docker compose -f docker/docker-compose.prod.yml --env-file .env pull
+          docker compose -f docker/docker-compose.prod.yml --env-file .env pull
 
-            # Perform rolling update with zero downtime (force recreate to ensure new image is used)
-            docker compose -f docker/docker-compose.prod.yml --env-file .env up -d --force-recreate --pull always frontend
+          docker compose -f docker/docker-compose.prod.yml --env-file .env up -d --force-recreate --pull always frontend
 
+          docker compose -f docker/docker-compose.prod.yml --env-file .env ps
 
-            # Check service health
-            docker compose -f docker/docker-compose.prod.yml --env-file .env ps
+          docker image prune -af --filter "until=168h"
 
-            # Clean up old images
-            docker image prune -af --filter "until=168h"
-
-            # Logout
-            docker logout ${{ env.REGISTRY }}
+          docker logout ${{ env.REGISTRY }}
 
   notify:
     name: Send Notification
     needs: [build-and-push, deploy]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: production
     if: always()
 
